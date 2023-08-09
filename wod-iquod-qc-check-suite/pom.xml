@@ -19,6 +19,7 @@
     <module>wod-iquod-qc-check-argo-impossible-date</module>
     <module>wod-iquod-qc-check-argo-impossible-location</module>
     <module>wod-iquod-qc-check-argo-regional-range</module>
+    <module>wod-iquod-qc-check-csiro-constant-bottom</module>
   </modules>
 
   <dependencies>
