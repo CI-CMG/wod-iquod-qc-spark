@@ -21,7 +21,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,13 +34,11 @@ public class AomlSpikeCheckTest {
 
   private final AomlSpikeCheck check = (AomlSpikeCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
-  private SparkSession spark;
-  private CastCheckContext context;
+  private static SparkSession spark;
+  private static CastCheckContext context;
 
-  @BeforeEach
-  public void before() throws Exception {
-    FileUtils.deleteQuietly(TEMP_DIR.toFile());
-    Files.createDirectories(TEMP_DIR);
+  @BeforeAll
+  public static void beforeAll() throws Exception {
     spark = SparkSession
         .builder()
         .appName("test")
@@ -57,10 +57,21 @@ public class AomlSpikeCheckTest {
     };
   }
 
+  @AfterAll
+  public static void afterAll() throws Exception {
+    spark.sparkContext().stop(0);
+  }
+
+  @BeforeEach
+  public void before() throws Exception {
+    FileUtils.deleteQuietly(TEMP_DIR.toFile());
+    Files.createDirectories(TEMP_DIR);
+
+  }
+
   @AfterEach
   public void after() throws Exception {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
-    spark.sparkContext().stop(0);
   }
 
   @Test

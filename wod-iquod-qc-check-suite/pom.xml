@@ -16,6 +16,7 @@
     <module>wod-iquod-qc-check-aoml-gradient</module>
     <module>wod-iquod-qc-check-aoml-gross</module>
     <module>wod-iquod-qc-check-aoml-spike</module>
+    <module>wod-iquod-qc-check-argo-impossible-date</module>
   </modules>
 
   <dependencies>

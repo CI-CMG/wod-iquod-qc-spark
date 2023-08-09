@@ -9,6 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>wod-iquod-qc-check-aoml-spike</artifactId>
+  <artifactId>wod-iquod-qc-check-argo-impossible-date</artifactId>
+
 
 </project>
