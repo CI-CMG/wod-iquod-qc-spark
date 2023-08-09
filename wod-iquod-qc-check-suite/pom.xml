@@ -18,6 +18,7 @@
     <module>wod-iquod-qc-check-aoml-spike</module>
     <module>wod-iquod-qc-check-argo-impossible-date</module>
     <module>wod-iquod-qc-check-argo-impossible-location</module>
+    <module>wod-iquod-qc-check-argo-regional-range</module>
   </modules>
 
   <dependencies>
