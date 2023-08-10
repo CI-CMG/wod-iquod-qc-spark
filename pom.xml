@@ -23,7 +23,16 @@
     <hadoop.version>3.3.4</hadoop.version>
     <spark.version>3.4.1</spark.version>
     <scala.version>2.13</scala.version>
+    <netcdf.version>5.5.3</netcdf.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>unidata-all</id>
+      <name>Unidata All</name>
+      <url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -96,6 +105,16 @@
         <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-core</artifactId>
         <version>1.18.2</version>
+      </dependency>
+      <dependency>
+        <groupId>edu.ucar</groupId>
+        <artifactId>cdm-core</artifactId>
+        <version>${netcdf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>edu.ucar</groupId>
+        <artifactId>netcdf4</artifactId>
+        <version>${netcdf.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

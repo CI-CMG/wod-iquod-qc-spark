@@ -14,4 +14,8 @@ public interface CastCheck {
     return Collections.emptySet();
   }
 
+  default void initialize(CastCheckInitializationContext initContext) {
+
+  }
+
 }
