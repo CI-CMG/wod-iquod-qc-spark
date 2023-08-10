@@ -134,6 +134,11 @@
 <!--        <configuration>-->
 <!--          <minimizeJar>true</minimizeJar>-->
 <!--        </configuration>-->
+        <configuration>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+          </transformers>
+        </configuration>
         <executions>
           <execution>
             <phase>package</phase>

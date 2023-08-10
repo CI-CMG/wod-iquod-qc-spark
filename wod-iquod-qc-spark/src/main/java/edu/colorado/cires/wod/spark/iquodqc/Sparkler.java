@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.apache.spark.scheduler.JobFailed;
+import org.apache.spark.scheduler.JobResult;
+import org.apache.spark.scheduler.SparkListener;
+import org.apache.spark.scheduler.SparkListenerJobEnd;
 import org.apache.spark.sql.SparkSession;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -70,6 +74,19 @@ public class Sparkler implements Serializable, Runnable {
     }
 
     SparkSession spark = sparkBuilder.getOrCreate();
+
+
+    spark.sparkContext().addSparkListener(new SparkListener() {
+
+      @Override
+      public void onJobEnd(SparkListenerJobEnd jobEnd) {
+        JobResult result = jobEnd.jobResult();
+        if (result instanceof JobFailed) {
+          System.err.println("Failed job detected. Exiting.");
+          spark.sparkContext().stop(1);
+        }
+      }
+    });
 
     SparklerExecutor executor = new SparklerExecutor(spark, inputBucket, outputBucket, inputKey, outputPrefix, new HashSet<>(checksToRun));
     executor.run();

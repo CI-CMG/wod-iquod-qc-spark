@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
+import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -33,7 +34,7 @@ public class BackgroundAvailableCheckTest {
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
-  private final BackgroundAvailableCheck check = (BackgroundAvailableCheck) ServiceLoader.load(CastCheck.class).iterator().next();
+  private static final BackgroundAvailableCheck check = (BackgroundAvailableCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
   private static SparkSession spark;
   private static CastCheckContext context;
@@ -45,6 +46,8 @@ public class BackgroundAvailableCheckTest {
         .appName("test")
         .master("local[*]")
         .getOrCreate();
+    Properties properties = new Properties();
+    properties.put("EN_background_available_check.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -58,11 +61,15 @@ public class BackgroundAvailableCheckTest {
 
       @Override
       public Properties getProperties() {
-        Properties properties = new Properties();
-        properties.put("EN_background_available_check.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
         return properties;
       }
     };
+    check.initialize(new CastCheckInitializationContext() {
+      @Override
+      public Properties getProperties() {
+        return properties;
+      }
+    });
   }
 
   @AfterAll

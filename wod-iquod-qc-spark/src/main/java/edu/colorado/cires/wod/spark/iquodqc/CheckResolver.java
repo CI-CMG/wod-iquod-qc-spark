@@ -1,11 +1,13 @@
 package edu.colorado.cires.wod.spark.iquodqc;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
+import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,8 +21,14 @@ public class CheckResolver {
 
   private final Graph<CastCheck, DefaultEdge> dag;
 
-  public CheckResolver(Set<String> checksToRun) {
-    checks = Collections.unmodifiableMap(loadChecks(checksToRun));
+  public CheckResolver(Set<String> checksToRun, Properties properties) {
+    CastCheckInitializationContext initContext = new CastCheckInitializationContext() {
+      @Override
+      public Properties getProperties() {
+        return properties;
+      }
+    };
+    checks = Collections.unmodifiableMap(loadChecks(checksToRun, initContext));
     dag = planChecks();
   }
 
@@ -33,13 +41,14 @@ public class CheckResolver {
     return getRunnableChecks();
   }
 
-  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun) {
+  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun, CastCheckInitializationContext initContext) {
     Map<String, CastCheck> checks = new HashMap<>();
     for (CastCheck check : ServiceLoader.load(CastCheck.class)) {
       if (checks.get(check.getName()) != null) {
         throw new IllegalArgumentException("Duplicate check with name '" + check.getName() + "' detected");
       }
       if (checksToRun.isEmpty() || checksToRun.contains(check.getName())) {
+        check.initialize(initContext);
         checks.put(check.getName(), check);
       }
     }

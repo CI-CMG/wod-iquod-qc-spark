@@ -2,8 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.en.backgroundavailcheck;
 
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
-import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
-import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.ArrayUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -19,10 +18,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.DoubleStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
@@ -39,6 +39,7 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
   private static final double THRESHOLD = 0.0000000001;
 
   private static EnBackgroundCheckParameters parameters;
+  private Properties properties;
 
   @Override
   public String getName() {
@@ -46,11 +47,16 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
   }
 
   @Override
-  public Dataset<CastCheckResult> joinResultDataset(CastCheckContext context) {
+  public void initialize(CastCheckInitializationContext initContext) {
+    properties = initContext.getProperties();
+  }
+
+  @Override
+  protected Row checkUdf(Row row) {
     if (parameters == null) {
-      loadParameters(context);
+      loadParameters(properties);
     }
-    return super.joinResultDataset(context);
+    return super.checkUdf(row);
   }
 
   @Override
@@ -101,10 +107,10 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
     return failures;
   }
 
-  private static void loadParameters(CastCheckContext context) {
+  private static void loadParameters(Properties properties) {
     synchronized (BackgroundAvailableCheck.class) {
       if (parameters == null) {
-        String uri = context.getProperties().getProperty(EN_BG_AVAIL_CHECK_NC_PROP);
+        String uri = properties.getProperty(EN_BG_AVAIL_CHECK_NC_PROP);
         System.err.println("Downloading " + uri);
         Path ncFile;
         try {

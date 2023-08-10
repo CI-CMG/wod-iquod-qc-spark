@@ -18,6 +18,8 @@ import org.apache.spark.sql.SparkSession;
 
 public class SparklerExecutor implements Runnable {
 
+  private static final int MAX_RECORDS_PER_FILE = 1000000;
+
   private final SparkSession spark;
   private final String inputBucket;
   private final String outputBucket;
@@ -44,13 +46,13 @@ public class SparklerExecutor implements Runnable {
     this.outputBucket = outputBucket;
     this.inputKey = inputKey;
     this.outputPrefix = outputPrefix;
-    checkResolver = new CheckResolver(checksToRun);
     properties = new Properties();
     try (InputStream in = this.getClass().getResourceAsStream("spark.properties")) {
       properties.load(in);
     } catch (IOException e) {
       throw new RuntimeException("Unable to load properties", e);
     }
+    checkResolver = new CheckResolver(checksToRun, properties);
   }
 
   @Override
@@ -141,7 +143,7 @@ public class SparklerExecutor implements Runnable {
       System.err.println("Writing " + parquetUri.toString());
       resultDataset.write()
           .mode(SaveMode.Overwrite)
-          .option("maxRecordsPerFile", 500000)
+          .option("maxRecordsPerFile", MAX_RECORDS_PER_FILE)
           .parquet(parquetUri.toString());
       completeCheck(check);
       System.err.println("Finished " + check.getName());

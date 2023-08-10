@@ -25,7 +25,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
     return castDataset.select(callUDF(getName(), struct(col("*"))).as("result")).select("result.*").as(Encoders.bean(CastCheckResult.class));
   }
 
-  private Row checkUdf(Row row) {
+  protected Row checkUdf(Row row) {
     return checkCast(Cast.builder(row).build()).asRow();
   }
 
