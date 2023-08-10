@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.spark.iquodqc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
 
@@ -14,7 +15,10 @@ import edu.colorado.cires.wod.parquet.model.QcAttribute;
 import edu.colorado.cires.wod.parquet.model.Variable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -29,9 +33,19 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
-@Disabled
 @Testcontainers
 public class SparklerExecutorTest {
+
+  private static final List<String> CHECK_NAMES = Arrays.asList(
+      "AOML_gradient",
+      "AOML_gross",
+      "AOML_spike",
+      "Argo_impossible_date_test",
+      "Argo_impossible_location_test",
+      "Argo_regional_range_test",
+      "CSIRO_constant_bottom_validation",
+      "EN_background_available_check"
+  );
 
 
   @Container
@@ -118,13 +132,17 @@ public class SparklerExecutorTest {
 
     dataset.write().parquet(String.format("s3a://%s/%s", inputBucket, inputKey));
 
-    SparklerExecutor executor = new SparklerExecutor(spark, inputBucket, outputBucket, inputKey, outputPrefix);
+    SparklerExecutor executor = new SparklerExecutor(spark, inputBucket, outputBucket, inputKey, outputPrefix, new HashSet<>());
     executor.run();
 
-    Dataset<CastCheckResult> resultDataset = spark.read().parquet(String.format("s3a://%s/%smy_check.parquet", outputBucket, outputPrefix)).as(Encoders.bean(CastCheckResult.class));
-
-    resultDataset.show();
-    System.out.println(resultDataset.schema().toDDL());
+    for (String name : CHECK_NAMES) {
+      List<CastCheckResult> testResult = spark.read()
+          .parquet(String.format("s3a://%s/%s/%s.parquet", outputBucket, outputPrefix, name))
+          .as(Encoders.bean(CastCheckResult.class)).collectAsList();
+      assertEquals(1, testResult.size());
+      CastCheckResult result = testResult.get(0);
+      assertEquals(1, result.getCastNumber());
+    }
 
   }
 

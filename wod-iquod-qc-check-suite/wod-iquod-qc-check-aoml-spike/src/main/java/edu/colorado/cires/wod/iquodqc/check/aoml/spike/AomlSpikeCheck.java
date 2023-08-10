@@ -18,7 +18,7 @@ public class AomlSpikeCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "Argo_impossible_date_test";
+    return "AOML_spike";
   }
 
 

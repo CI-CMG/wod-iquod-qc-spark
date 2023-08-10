@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -14,11 +15,12 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 
 public class CheckResolver {
 
-  private static final Map<String, CastCheck> checks = Collections.unmodifiableMap(loadChecks());
+  private final Map<String, CastCheck> checks;
 
   private final Graph<CastCheck, DefaultEdge> dag;
 
-  public CheckResolver() {
+  public CheckResolver(Set<String> checksToRun) {
+    checks = Collections.unmodifiableMap(loadChecks(checksToRun));
     dag = planChecks();
   }
 
@@ -31,18 +33,20 @@ public class CheckResolver {
     return getRunnableChecks();
   }
 
-  private static Map<String, CastCheck> loadChecks() {
+  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun) {
     Map<String, CastCheck> checks = new HashMap<>();
     for (CastCheck check : ServiceLoader.load(CastCheck.class)) {
       if (checks.get(check.getName()) != null) {
         throw new IllegalArgumentException("Duplicate check with name '" + check.getName() + "' detected");
       }
-      checks.put(check.getName(), check);
+      if (checksToRun.isEmpty() || checksToRun.contains(check.getName())) {
+        checks.put(check.getName(), check);
+      }
     }
     return checks;
   }
 
-  private static Graph<CastCheck, DefaultEdge> planChecks() {
+  private Graph<CastCheck, DefaultEdge> planChecks() {
     Graph<CastCheck, DefaultEdge> dag = new DirectedAcyclicGraph<>(DefaultEdge.class);
     checks.values().forEach(dag::addVertex);
     checks.values().forEach( check -> check.dependsOn()

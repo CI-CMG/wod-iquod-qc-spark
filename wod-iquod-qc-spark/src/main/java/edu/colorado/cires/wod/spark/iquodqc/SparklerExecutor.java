@@ -4,8 +4,11 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.parquet.model.Cast;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -20,18 +23,34 @@ public class SparklerExecutor implements Runnable {
   private final String outputBucket;
   private final String inputKey;
   private final String outputPrefix;
+  private final Properties properties;
 
   private final Set<CastCheck> runningChecks = new HashSet<>();
-  private final CheckResolver checkResolver = new CheckResolver();
+  private final CheckResolver checkResolver;
 
   private boolean complete = false;
 
-  public SparklerExecutor(SparkSession spark, String inputBucket, String outputBucket, String inputKey, String outputPrefix) {
+
+  public SparklerExecutor(
+      SparkSession spark,
+      String inputBucket,
+      String outputBucket,
+      String inputKey,
+      String outputPrefix,
+      Set<String> checksToRun
+  ) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
     this.inputKey = inputKey;
     this.outputPrefix = outputPrefix;
+    checkResolver = new CheckResolver(checksToRun);
+    properties = new Properties();
+    try (InputStream in = this.getClass().getResourceAsStream("spark.properties")) {
+      properties.load(in);
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to load properties", e);
+    }
   }
 
   @Override
@@ -59,7 +78,7 @@ public class SparklerExecutor implements Runnable {
   private synchronized void startCheck(CastCheck check) {
     runningChecks.add(check);
     System.err.println("Starting check: " + check.getName());
-    Thread thread = new Thread(new CheckRunner(check));
+    Thread thread = new Thread(new CheckRunner(check, properties));
     thread.start();
   }
 
@@ -83,13 +102,16 @@ public class SparklerExecutor implements Runnable {
   private class CheckRunner implements Runnable {
 
     private final CastCheck check;
+    private final Properties properties;
 
-    private CheckRunner(CastCheck check) {
+    private CheckRunner(CastCheck check, Properties properties) {
       this.check = check;
+      this.properties = properties;
     }
 
     @Override
     public void run() {
+      System.err.println("Running " + check.getName());
       CastCheckContext context = new CastCheckContext() {
         @Override
         public SparkSession getSparkSession() {
@@ -102,13 +124,27 @@ public class SparklerExecutor implements Runnable {
               .parquet(String.format("s3a://%s/%s", inputBucket, inputKey))
               .as(Encoders.bean(Cast.class));
         }
+
+        @Override
+        public Properties getProperties() {
+          return properties;
+        }
       };
       Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
+
+      StringBuilder parquetUri = new StringBuilder("s3a://")
+          .append(outputBucket).append("/");
+      if (outputPrefix != null) {
+        parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
+      }
+      parquetUri.append(check.getName()).append(".parquet");
+      System.err.println("Writing " + parquetUri.toString());
       resultDataset.write()
           .mode(SaveMode.Overwrite)
           .option("maxRecordsPerFile", 500000)
-          .parquet(String.format("s3a://%s/%s/%s.parquet", outputBucket, outputPrefix.replaceAll("/+$", ""), check.getName()));
+          .parquet(parquetUri.toString());
       completeCheck(check);
+      System.err.println("Finished " + check.getName());
     }
   }
 

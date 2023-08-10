@@ -12,6 +12,49 @@
   <artifactId>wod-iquod-qc-spark</artifactId>
 
   <dependencies>
+
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-aoml-gradient</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-aoml-gross</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-aoml-spike</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-argo-impossible-date</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-argo-impossible-location</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-argo-regional-range</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-en-background-available-check</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-constant-bottom</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-api</artifactId>
@@ -66,6 +109,11 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>localstack</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.13.0</version>
     </dependency>
   </dependencies>
 

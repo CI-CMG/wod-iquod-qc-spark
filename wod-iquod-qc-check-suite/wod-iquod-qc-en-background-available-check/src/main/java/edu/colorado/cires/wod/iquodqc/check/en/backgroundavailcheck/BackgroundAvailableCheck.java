@@ -105,6 +105,7 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
     synchronized (BackgroundAvailableCheck.class) {
       if (parameters == null) {
         String uri = context.getProperties().getProperty(EN_BG_AVAIL_CHECK_NC_PROP);
+        System.err.println("Downloading " + uri);
         Path ncFile;
         try {
           ncFile = Files.createTempFile(NAME + "_", ".nc");
@@ -126,6 +127,7 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
         } finally {
           FileUtils.deleteQuietly(ncFile.toFile());
         }
+        System.err.println("Done downloading " + uri);
       }
     }
   }
