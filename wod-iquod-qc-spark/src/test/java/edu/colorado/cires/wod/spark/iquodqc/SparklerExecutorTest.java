@@ -54,7 +54,7 @@ public class SparklerExecutorTest {
   public void test() throws Exception {
     final String inputBucket = "wod-input-bucket";
     final String outputBucket = "wod-qc-results-bucket";
-    final String inputKey = "source/APB/OBS/WOD_APB_OBS.parquet";
+    final String inputKey = "source/OBS/WOD_APB_OBS.parquet";
     final String outputPrefix = "qc";
     final String inputPrefix = "source";
     final List<String> datasets = Collections.singletonList("APB");

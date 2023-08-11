@@ -180,7 +180,7 @@ public class SparklerExecutor implements Runnable {
           if (inputPrefix != null) {
             sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
           }
-          sb.append(dataset).append("/").append(processingLevel).append("/")
+          sb.append(processingLevel).append("/")
               .append("WOD_").append(dataset).append("_").append(processingLevel).append(".parquet");
           return spark.read()
               .parquet(sb.toString())
