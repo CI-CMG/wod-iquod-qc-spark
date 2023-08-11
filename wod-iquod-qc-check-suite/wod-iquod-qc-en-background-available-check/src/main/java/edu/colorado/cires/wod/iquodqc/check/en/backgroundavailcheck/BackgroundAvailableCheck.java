@@ -126,7 +126,7 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
           throw new RuntimeException("Unable to create temp file", e);
         }
         try {
-          if (uri.endsWith("s3://")) {
+          if (uri.startsWith("s3://")) {
             //TODO make this more robust, region, creds, etc
             S3Client s3 = S3Client.builder().build();
             String bucket = uri.replaceAll("s3://", "").split("/")[0];
