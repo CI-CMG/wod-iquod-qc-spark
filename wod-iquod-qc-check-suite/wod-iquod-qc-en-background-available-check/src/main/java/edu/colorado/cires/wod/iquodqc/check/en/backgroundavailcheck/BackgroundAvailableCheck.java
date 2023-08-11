@@ -8,7 +8,11 @@ import edu.colorado.cires.wod.iquodqc.common.ArrayUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +26,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.DoubleStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.spark.sql.Row;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
@@ -119,11 +126,22 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
           throw new RuntimeException("Unable to create temp file", e);
         }
         try {
-          FileUtils.copyURLToFile(
-              new URL(uri),
-              ncFile.toFile(),
-              CONNECT_TIMEOUT,
-              READ_TIMEOUT);
+          if (uri.endsWith("s3://")) {
+            //TODO make this more robust, region, creds, etc
+            S3Client s3 = S3Client.builder().build();
+            String bucket = uri.replaceAll("s3://", "").split("/")[0];
+            String key = uri.replaceAll("s3://", "").split("/", 2)[1];
+            try(InputStream in = new BufferedInputStream(s3.getObject(c -> c.bucket(bucket).key(key)));
+                OutputStream out = new BufferedOutputStream(Files.newOutputStream(ncFile))) {
+              IOUtils.copy(in, out);
+            }
+          }else {
+            FileUtils.copyURLToFile(
+                new URL(uri),
+                ncFile.toFile(),
+                CONNECT_TIMEOUT,
+                READ_TIMEOUT);
+          }
 
           parameters = readEnBackgroundCheckAux(ncFile);
           validateGrid();

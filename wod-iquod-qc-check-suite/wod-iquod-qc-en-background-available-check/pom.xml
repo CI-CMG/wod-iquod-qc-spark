@@ -19,7 +19,10 @@
     <dependency>
       <groupId>edu.ucar</groupId>
       <artifactId>netcdf4</artifactId>
-      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>s3</artifactId>
     </dependency>
   </dependencies>
 

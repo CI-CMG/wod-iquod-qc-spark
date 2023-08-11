@@ -12,12 +12,16 @@ import edu.colorado.cires.wod.parquet.model.PrincipalInvestigator;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import edu.colorado.cires.wod.parquet.model.QcAttribute;
 import edu.colorado.cires.wod.parquet.model.Variable;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -131,6 +135,11 @@ public class SparklerExecutorTest {
 
     dataset.write().parquet(String.format("s3a://%s/%s", inputBucket, inputKey));
 
+    Properties properties = new Properties();
+    try (InputStream in = Files.newInputStream(Paths.get("src/test/resources/spark.properties"))) {
+      properties.load(in);
+    }
+
     SparklerExecutor executor = new SparklerExecutor(
         spark,
         inputBucket,
@@ -140,7 +149,9 @@ public class SparklerExecutorTest {
         processingLevels,
         outputPrefix,
         2,
-        new HashSet<>());
+        new HashSet<>(),
+        properties
+    );
     executor.run();
 
     for (String name : CHECK_NAMES) {

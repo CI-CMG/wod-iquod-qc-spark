@@ -4,8 +4,6 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.parquet.model.Cast;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -50,7 +48,8 @@ public class SparklerExecutor implements Runnable {
       List<String> processingLevels,
       String outputPrefix,
       int concurrency,
-      Set<String> checksToRun
+      Set<String> checksToRun,
+      Properties properties
   ) {
     this.spark = spark;
     this.inputBucket = inputBucket;
@@ -60,12 +59,7 @@ public class SparklerExecutor implements Runnable {
     this.processingLevels = processingLevels;
     this.outputPrefix = outputPrefix;
     this.checksToRun = Collections.unmodifiableSet(new LinkedHashSet<>(checksToRun));
-    properties = new Properties();
-    try (InputStream in = this.getClass().getResourceAsStream("spark.properties")) {
-      properties.load(in);
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to load properties", e);
-    }
+    this.properties = properties;
     executor = Executors.newFixedThreadPool(concurrency);
   }
 
