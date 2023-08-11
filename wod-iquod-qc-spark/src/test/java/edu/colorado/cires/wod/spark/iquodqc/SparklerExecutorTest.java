@@ -1,7 +1,6 @@
 package edu.colorado.cires.wod.spark.iquodqc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
@@ -22,7 +21,6 @@ import java.util.List;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -56,8 +54,11 @@ public class SparklerExecutorTest {
   public void test() throws Exception {
     final String inputBucket = "wod-input-bucket";
     final String outputBucket = "wod-qc-results-bucket";
-    final String inputKey = "OBS/WOD_APB_OBS.parquet";
-    final String outputPrefix = "qc/OBS/APB/";
+    final String inputKey = "source/APB/OBS/WOD_APB_OBS.parquet";
+    final String outputPrefix = "qc";
+    final String inputPrefix = "source";
+    final List<String> datasets = Collections.singletonList("APB");
+    final List<String> processingLevels = Collections.singletonList("OBS");
 
     SparkSession spark = SparkSession
         .builder()
@@ -79,8 +80,6 @@ public class SparklerExecutorTest {
 
     s3.createBucket(c -> c.bucket(inputBucket));
     s3.createBucket(c -> c.bucket(outputBucket));
-
-
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(Cast.builder()
         .withDataset("APB")
@@ -118,26 +117,35 @@ public class SparklerExecutorTest {
             .withOriginatorsFlag(2)
             .build())))
         .withDepths(Collections.singletonList(Depth.builder()
-                .withDepth(25.0)
-                .withDepthErrorFlag(1)
-                .withOriginatorsFlag(0)
-                .withData(Collections.singletonList(ProfileData.builder()
-                        .withVariable(3)
-                        .withValue(446.3)
-                        .withOriginatorsFlag(1)
-                        .withQcFlag(3)
-                    .build()))
+            .withDepth(25.0)
+            .withDepthErrorFlag(1)
+            .withOriginatorsFlag(0)
+            .withData(Collections.singletonList(ProfileData.builder()
+                .withVariable(3)
+                .withValue(446.3)
+                .withOriginatorsFlag(1)
+                .withQcFlag(3)
+                .build()))
             .build()))
         .build()), Encoders.bean(Cast.class));
 
     dataset.write().parquet(String.format("s3a://%s/%s", inputBucket, inputKey));
 
-    SparklerExecutor executor = new SparklerExecutor(spark, inputBucket, outputBucket, inputKey, outputPrefix, new HashSet<>());
+    SparklerExecutor executor = new SparklerExecutor(
+        spark,
+        inputBucket,
+        outputBucket,
+        inputPrefix,
+        datasets,
+        processingLevels,
+        outputPrefix,
+        2,
+        new HashSet<>());
     executor.run();
 
     for (String name : CHECK_NAMES) {
       List<CastCheckResult> testResult = spark.read()
-          .parquet(String.format("s3a://%s/%s/%s.parquet", outputBucket, outputPrefix, name))
+          .parquet(String.format("s3a://wod-qc-results-bucket/qc/APB/OBS/%s.parquet", name))
           .as(Encoders.bean(CastCheckResult.class)).collectAsList();
       assertEquals(1, testResult.size());
       CastCheckResult result = testResult.get(0);
