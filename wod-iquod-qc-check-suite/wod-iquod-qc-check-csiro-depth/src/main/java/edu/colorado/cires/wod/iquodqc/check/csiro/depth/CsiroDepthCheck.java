@@ -1,15 +1,17 @@
-package edu.colorado.cires.wod.iquodqc.check.csiro.constantbottom;
+package edu.colorado.cires.wod.iquodqc.check.csiro.depth;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
+import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.isProbeTypeXBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,13 +20,13 @@ import java.util.OptionalDouble;
 import java.util.Set;
 import org.apache.commons.math3.util.Precision;
 
-public class CsiroConstantBottomCheck extends CommonCastCheck {
+public class CsiroDepthCheck extends CommonCastCheck {
 
 
 
   @Override
   public String getName() {
-    return "CSIRO_constant_bottom_validation";
+    return "CSIRO_depth_validation";
   }
 
   /*
@@ -34,30 +36,23 @@ public class CsiroConstantBottomCheck extends CommonCastCheck {
     passed the check and True where it failed.
     """
 
-    # Get temperature values from the profile.
-    t = p.t()
-    # depths
+    # Get depth values (m) from the profile.
     d = p.z()
     # is this an xbt?
     isXBT = p.probe_type() == 2
-    latitude = p.latitude()
 
     # initialize qc as a bunch of falses;
-    qc = numpy.zeros(len(t.data), dtype=bool)
+    qc = numpy.zeros(p.n_levels(), dtype=bool)
 
     # check for gaps in data
-    isTemperature = (t.mask==False)
     isDepth = (d.mask==False)
-    isData = isTemperature & isDepth
 
-    # need more than one level
-    if len(isData) < 2:
-        return qc
-
-    # constant temperature at bottom of profile, for latitude > -40 and bottom two depths at least 30m apart:
-    if isData[-1] and isData[-2] and isXBT:
-        if t.data[-1] == t.data[-2] and latitude > -40 and d.data[-1] - d.data[-2] > 30:
-            qc[-1] = True
+    for i in range(p.n_levels()):
+        if isDepth[i]:
+            # too-shallow temperatures on XBT probes
+            # note we simply flag this profile for manual QC, in order to minimize false negatives.
+            if isXBT and d.data[i] < 3.6:
+                qc[i] = True
 
     return qc
    */
@@ -66,25 +61,20 @@ public class CsiroConstantBottomCheck extends CommonCastCheck {
 
     List<Depth> depths = cast.getDepths();
     Set<Integer> failures = new LinkedHashSet<>();
+//    Optional<Double> probeType = cast.getAttributes().stream()
+//        .filter(a -> a.getCode()==PROBE_TYPE).findFirst().map(Attribute::getValue);
 
-    if (depths.size() < 2){
-      return failures;
-    }
-    Optional<Double> temp1 = getTemperature(depths.get(depths.size()-1))
-        .map(v-> v.getValue());
-
-    Optional<Double> temp2 = getTemperature(depths.get(depths.size()-2))
-        .map(v-> v.getValue());
-
-    Optional<Double> probeType = cast.getAttributes().stream()
-        .filter(a -> a.getCode()==PROBE_TYPE).findFirst().map(Attribute::getValue);
-
-    if (doubleEquals(probeType, Optional.of((double)XBT))  &&
-        doubleEquals(temp1, temp2) && cast.getLatitude() > -40  &&
-        depths.get(depths.size()-1).getDepth() - depths.get(depths.size()-2).getDepth() > 30){
-        failures.add(depths.size()-1);
+//    if (doubleEquals(probeType, Optional.of((double)XBT))){
+    if (isProbeTypeXBT(cast)){
+      for (int i = 0; i < depths.size(); i++) {
+        Depth depth = depths.get(i);
+        if (depth.getDepth() < 3.6) {
+          failures.add(i);
+        }
+      }
     }
 
     return failures;
   }
+
 }

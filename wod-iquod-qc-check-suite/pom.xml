@@ -21,6 +21,11 @@
     <module>wod-iquod-qc-check-argo-regional-range</module>
     <module>wod-iquod-qc-en-background-available-check</module>
     <module>wod-iquod-qc-check-csiro-constant-bottom</module>
+    <module>wod-iquod-qc-check-csiro-depth</module>
+    <module>wod-iquod-qc-check-csiro-long-gradient</module>
+    <module>wod-iquod-qc-check-csiro-short-gradient</module>
+    <module>wod-iquod-qc-check-csiro-surface-spikes</module>
+    <module>wod-iquod-qc-check-csiro-wire-break</module>
   </modules>
 
   <dependencies>
