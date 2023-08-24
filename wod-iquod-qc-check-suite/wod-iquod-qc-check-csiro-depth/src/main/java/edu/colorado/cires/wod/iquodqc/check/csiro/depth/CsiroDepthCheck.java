@@ -1,24 +1,14 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.depth;
 
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.doubleEquals;
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.isProbeTypeXBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
-import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
-import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.Set;
-import org.apache.commons.math3.util.Precision;
 
 public class CsiroDepthCheck extends CommonCastCheck {
 

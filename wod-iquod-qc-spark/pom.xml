@@ -12,7 +12,11 @@
   <artifactId>wod-iquod-qc-spark</artifactId>
 
   <dependencies>
-
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-aoml-constant</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-gradient</artifactId>
@@ -48,9 +52,35 @@
       <artifactId>wod-iquod-qc-en-background-available-check</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-constant-bottom</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-depth</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-long-gradient</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-short-gradient</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-surface-spikes</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-csiro-wire-break</artifactId>
       <version>${project.version}</version>
     </dependency>
 

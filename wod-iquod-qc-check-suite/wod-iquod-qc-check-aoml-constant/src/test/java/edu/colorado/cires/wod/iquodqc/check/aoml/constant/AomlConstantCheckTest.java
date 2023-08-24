@@ -1,4 +1,4 @@
-package edu.colorado.cires.wod.iquodqc.check.csiro.wirebreak;
+package edu.colorado.cires.wod.iquodqc.check.aoml.constant;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
@@ -30,11 +30,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CsiroWireBreakCheckTest {
+class AomlConstantCheckTest {
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
-  private final CsiroWireBreakCheck check = (CsiroWireBreakCheck) ServiceLoader.load(CastCheck.class).iterator().next();
+  private final AomlConstantCheck check = (AomlConstantCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
   private static SparkSession spark;
   private static CastCheckContext context;
@@ -58,7 +58,6 @@ class CsiroWireBreakCheckTest {
       }
     };
   }
-
   @AfterAll
   public static void afterAll() throws Exception {
     spark.sparkContext().stop(0);
@@ -75,283 +74,10 @@ class CsiroWireBreakCheckTest {
   public void after() throws Exception {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
-  @Test
-  public void testCsiroWireBreakCheckFailedColdTemp() throws Exception{
-    // failed to flag too-cold temperature at bottom of profile
-    Cast cast = Cast.builder()
-        .withLatitude(0)
-        .withLongitude(0)
-        .withYear((short) 1900)
-        .withMonth((short) 1)
-        .withDay((short) 15)
-        .withTime(0D)
-        .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
-        .withBiologicalAttributes(Collections.emptyList())
-        .withTaxonomicDatasets(Collections.emptyList())
-        .withCastNumber(123)
-        .withDepths(Arrays.asList(
-            Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.399)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(20D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.399)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(30D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.4001)
-                    .build()))
-                .build()
-        ))
-        .build();
-
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
-
-    CastCheckResult expected = CastCheckResult.builder()
-        .withCastNumber(123)
-        .withPassed(false)
-        .withFailedDepths(Arrays.asList(2))
-        .build();
-
-    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
-    assertEquals(1, results.size());
-    CastCheckResult result = results.get(0);
-    assertEquals(expected, result);
-  }
 
   @Test
-  public void testCsiroWireBreakCheckFailedHotTemp() throws Exception{
-    // failed to flag too-hot temperature at bottom of profile
-    Cast cast = Cast.builder()
-        .withLatitude(0)
-        .withLongitude(0)
-        .withYear((short) 1900)
-        .withMonth((short) 1)
-        .withDay((short) 15)
-        .withTime(0D)
-        .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
-        .withBiologicalAttributes(Collections.emptyList())
-        .withTaxonomicDatasets(Collections.emptyList())
-        .withCastNumber(123)
-        .withDepths(Arrays.asList(
-            Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(20D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(30D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(32.001)
-                    .build()))
-                .build()
-        ))
-        .build();
-
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
-
-    CastCheckResult expected = CastCheckResult.builder()
-        .withCastNumber(123)
-        .withPassed(false)
-        .withFailedDepths(Arrays.asList(2))
-        .build();
-
-    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
-    assertEquals(1, results.size());
-    CastCheckResult result = results.get(0);
-    assertEquals(expected, result);
-  }
-
-  @Test
-  public void testCsiroWireBreakCheckMarginalCold() throws Exception{
-    // flagged marginally cold temperature at bottom of profile
-    Cast cast = Cast.builder()
-        .withLatitude(0)
-        .withLongitude(0)
-        .withYear((short) 1900)
-        .withMonth((short) 1)
-        .withDay((short) 15)
-        .withTime(0D)
-        .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
-        .withBiologicalAttributes(Collections.emptyList())
-        .withTaxonomicDatasets(Collections.emptyList())
-        .withCastNumber(123)
-        .withDepths(Arrays.asList(
-            Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.399)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(20D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.399)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(30D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(-2.4)
-                    .build()))
-                .build()
-        ))
-        .build();
-
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
-
-    CastCheckResult expected = CastCheckResult.builder()
-        .withCastNumber(123)
-        .withPassed(true)
-        .withFailedDepths(new ArrayList<>())
-        .build();
-
-    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
-    assertEquals(1, results.size());
-    CastCheckResult result = results.get(0);
-    assertEquals(expected, result);
-  }
-  @Test
-  public void testCsiroWireBreakCheckMarginalHot() throws Exception{
-    // flagged marginally hot temperature at bottom of profile
-    Cast cast = Cast.builder()
-        .withLatitude(0)
-        .withLongitude(0)
-        .withYear((short) 1900)
-        .withMonth((short) 1)
-        .withDay((short) 15)
-        .withTime(0D)
-        .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
-        .withBiologicalAttributes(Collections.emptyList())
-        .withTaxonomicDatasets(Collections.emptyList())
-        .withCastNumber(123)
-        .withDepths(Arrays.asList(
-            Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(20D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(30D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(32)
-                    .build()))
-                .build()
-        ))
-        .build();
-
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
-
-    CastCheckResult expected = CastCheckResult.builder()
-        .withCastNumber(123)
-        .withPassed(true)
-        .withFailedDepths(new ArrayList<>())
-        .build();
-
-    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
-    assertEquals(1, results.size());
-    CastCheckResult result = results.get(0);
-    assertEquals(expected, result);
-  }
-
-  @Test
-  public void testCsiroWireBreakCheckNotXBT() throws Exception{
-    // flagged non-xbt profile
-    Cast cast = Cast.builder()
-        .withLatitude(0)
-        .withLongitude(0)
-        .withYear((short) 1900)
-        .withMonth((short) 1)
-        .withDay((short) 15)
-        .withTime(0D)
-        .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(1)
-            .build()))
-        .withBiologicalAttributes(Collections.emptyList())
-        .withTaxonomicDatasets(Collections.emptyList())
-        .withCastNumber(123)
-        .withDepths(Arrays.asList(
-            Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(20D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
-                    .build()))
-                .build(),
-            Depth.builder().withDepth(30D)
-                .withData(Collections.singletonList(ProfileData.builder()
-                    .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(32)
-                    .build()))
-                .build()
-        ))
-        .build();
-
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
-
-    CastCheckResult expected = CastCheckResult.builder()
-        .withCastNumber(123)
-        .withPassed(true)
-        .withFailedDepths(new ArrayList<>())
-        .build();
-
-    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
-    assertEquals(1, results.size());
-    CastCheckResult result = results.get(0);
-    assertEquals(expected, result);
-  }
-
-  @Test
-  public void testCsiroWireBreakCheckMiddleHot() throws Exception{
-    // flagged hot temperature that wasn't at bottom of profile
+  public void testAomlConstantCheckFailedConstantTemp() throws Exception{
+    // failed to flag constant temperature
     Cast cast = Cast.builder()
         .withLatitude(0)
         .withLongitude(0)
@@ -377,13 +103,211 @@ class CsiroWireBreakCheckTest {
             Depth.builder().withDepth(20D)
                 .withData(Collections.singletonList(ProfileData.builder()
                     .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(32.01)
+                    .withVariable(TEMPERATURE).withValue(0)
                     .build()))
                 .build(),
             Depth.builder().withDepth(30D)
                 .withData(Collections.singletonList(ProfileData.builder()
                     .withOriginatorsFlag(0).withQcFlag(0)
-                    .withVariable(TEMPERATURE).withValue(31.99)
+                    .withVariable(TEMPERATURE).withValue(0)
+                    .build()))
+                .build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder()
+        .withCastNumber(123)
+        .withPassed(false)
+        .withFailedDepths(Arrays.asList(0,1,2))
+        .build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    assertEquals(1, results.size());
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testAomlConstantCheckFailedMissingTemp() throws Exception{
+    // failed to ignore masked value correctly
+    Cast cast = Cast.builder()
+        .withLatitude(0)
+        .withLongitude(0)
+        .withYear((short) 1900)
+        .withMonth((short) 1)
+        .withDay((short) 15)
+        .withTime(0D)
+        .withPrincipalInvestigators(Collections.emptyList())
+        .withAttributes(Collections.singletonList(Attribute.builder()
+            .withCode(PROBE_TYPE)
+            .withValue(XBT)
+            .build()))
+        .withBiologicalAttributes(Collections.emptyList())
+        .withTaxonomicDatasets(Collections.emptyList())
+        .withCastNumber(123)
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(10D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(1)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(20D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(30D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(1)
+                    .build()))
+                .build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder()
+        .withCastNumber(123)
+        .withPassed(false)
+        .withFailedDepths(Arrays.asList(0,1,2))
+        .build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    assertEquals(1, results.size());
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testAomlConstantCheckSingleDepth() throws Exception{
+    // flagged single level profile
+    Cast cast = Cast.builder()
+        .withLatitude(0)
+        .withLongitude(0)
+        .withYear((short) 1900)
+        .withMonth((short) 1)
+        .withDay((short) 15)
+        .withTime(0D)
+        .withPrincipalInvestigators(Collections.emptyList())
+        .withAttributes(Collections.singletonList(Attribute.builder()
+            .withCode(PROBE_TYPE)
+            .withValue(XBT)
+            .build()))
+        .withBiologicalAttributes(Collections.emptyList())
+        .withTaxonomicDatasets(Collections.emptyList())
+        .withCastNumber(123)
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(0)
+                    .build()))
+                .build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder()
+        .withCastNumber(123)
+        .withPassed(true)
+        .withFailedDepths(new ArrayList<>())
+        .build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    assertEquals(1, results.size());
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+  }
+  @Test
+  public void testAomlConstantCheckOneTemp() throws Exception{
+    // flagged profile with only a single unmasked level
+    Cast cast = Cast.builder()
+        .withLatitude(0)
+        .withLongitude(0)
+        .withYear((short) 1900)
+        .withMonth((short) 1)
+        .withDay((short) 15)
+        .withTime(0D)
+        .withPrincipalInvestigators(Collections.emptyList())
+        .withAttributes(Collections.singletonList(Attribute.builder()
+            .withCode(PROBE_TYPE)
+            .withValue(XBT)
+            .build()))
+        .withBiologicalAttributes(Collections.emptyList())
+        .withTaxonomicDatasets(Collections.emptyList())
+        .withCastNumber(123)
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(1D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .build()))
+                .build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder()
+        .withCastNumber(123)
+        .withPassed(true)
+        .withFailedDepths(new ArrayList<>())
+        .build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    assertEquals(1, results.size());
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void testAomlConstantCheckMultipleTemp() throws Exception{
+    // flagged two different temperatures
+    Cast cast = Cast.builder()
+        .withLatitude(0)
+        .withLongitude(0)
+        .withYear((short) 1900)
+        .withMonth((short) 1)
+        .withDay((short) 15)
+        .withTime(0D)
+        .withPrincipalInvestigators(Collections.emptyList())
+        .withAttributes(Collections.singletonList(Attribute.builder()
+            .withCode(PROBE_TYPE)
+            .withValue(XBT)
+            .build()))
+        .withBiologicalAttributes(Collections.emptyList())
+        .withTaxonomicDatasets(Collections.emptyList())
+        .withCastNumber(123)
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(1D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(2D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariable(TEMPERATURE).withValue(1)
                     .build()))
                 .build()
         ))

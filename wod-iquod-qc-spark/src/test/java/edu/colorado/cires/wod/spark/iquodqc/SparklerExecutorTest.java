@@ -11,6 +11,7 @@ import edu.colorado.cires.wod.parquet.model.Metadata;
 import edu.colorado.cires.wod.parquet.model.PrincipalInvestigator;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import edu.colorado.cires.wod.parquet.model.QcAttribute;
+import edu.colorado.cires.wod.parquet.model.TaxonomicDataset;
 import edu.colorado.cires.wod.parquet.model.Variable;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -114,12 +115,14 @@ public class SparklerExecutorTest {
             .withCode(7)
             .withValue(41.2)
             .build()))
-        .withTaxonomicDatasets(Collections.singletonList(Collections.singletonList(QcAttribute.builder()
-            .withCode(3)
-            .withValue(88.4)
-            .withQcFlag(1)
-            .withOriginatorsFlag(2)
-            .build())))
+        .withTaxonomicDatasets(Collections.singletonList(TaxonomicDataset.builder()
+            .withAttributes(Collections.singletonList(QcAttribute.builder()
+                .withCode(3)
+                .withValue(88.4)
+                .withQcFlag(1)
+                .withOriginatorsFlag(2)
+                .build()))
+            .build()))
         .withDepths(Collections.singletonList(Depth.builder()
             .withDepth(25.0)
             .withDepthErrorFlag(1)
