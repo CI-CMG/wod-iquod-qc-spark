@@ -1,6 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.constant;
 
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.doubleEquals;
+import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
@@ -19,7 +19,7 @@ public class AomlConstantCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "AOML_constant_check";
+    return "AOML_constant";
   }
 
 

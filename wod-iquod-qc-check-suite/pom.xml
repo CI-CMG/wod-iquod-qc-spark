@@ -17,16 +17,21 @@
     <module>wod-iquod-qc-check-aoml-gradient</module>
     <module>wod-iquod-qc-check-aoml-gross</module>
     <module>wod-iquod-qc-check-aoml-spike</module>
+    <module>wod-iquod-qc-check-argo-global-range</module>
+    <module>wod-iquod-qc-check-argo-gradient</module>
     <module>wod-iquod-qc-check-argo-impossible-date</module>
     <module>wod-iquod-qc-check-argo-impossible-location</module>
     <module>wod-iquod-qc-check-argo-regional-range</module>
     <module>wod-iquod-qc-en-background-available-check</module>
+    <module>wod-iquod-qc-check-en-range</module>
     <module>wod-iquod-qc-check-csiro-constant-bottom</module>
     <module>wod-iquod-qc-check-csiro-depth</module>
     <module>wod-iquod-qc-check-csiro-long-gradient</module>
     <module>wod-iquod-qc-check-csiro-short-gradient</module>
     <module>wod-iquod-qc-check-csiro-surface-spikes</module>
     <module>wod-iquod-qc-check-csiro-wire-break</module>
+    <module>wod-iquod-qc-check-iquod-gross-range</module>
+    <module>wod-iquod-qc-check-wod-gradient</module>
   </modules>
 
   <dependencies>
@@ -80,6 +85,10 @@
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>s3</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.ci-cmg</groupId>
+      <artifactId>ci-mgg-teos-gsw-java</artifactId>
     </dependency>
   </dependencies>
 

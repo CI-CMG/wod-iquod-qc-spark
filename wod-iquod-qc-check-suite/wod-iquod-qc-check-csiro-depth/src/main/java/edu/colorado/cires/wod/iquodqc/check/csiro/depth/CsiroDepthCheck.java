@@ -16,7 +16,7 @@ public class CsiroDepthCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_depth_validation";
+    return "CSIRO_depth";
   }
 
   /*
@@ -51,10 +51,7 @@ public class CsiroDepthCheck extends CommonCastCheck {
 
     List<Depth> depths = cast.getDepths();
     Set<Integer> failures = new LinkedHashSet<>();
-//    Optional<Double> probeType = cast.getAttributes().stream()
-//        .filter(a -> a.getCode()==PROBE_TYPE).findFirst().map(Attribute::getValue);
 
-//    if (doubleEquals(probeType, Optional.of((double)XBT))){
     if (isProbeTypeXBT(cast)){
       for (int i = 0; i < depths.size(); i++) {
         Depth depth = depths.get(i);

@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.common;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
+import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -17,12 +18,7 @@ public final class DepthUtils {
     return depth.getData().stream().filter((pd) -> pd.getVariable() == TEMPERATURE).findFirst();
   }
 
-  public static boolean doubleEquals(Optional<Double> v1, Optional<Double> v2){
-    if (v1.isEmpty() || v2.isEmpty()){
-      return false;
-    }
-    return Precision.equals(v1.get(), v2.get(),0.000001d );
-  }
+
 
   public static boolean isProbeTypeXBT(Cast cast){
     Optional<Double> probeType = cast.getAttributes().stream()

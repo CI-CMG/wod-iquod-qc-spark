@@ -17,7 +17,7 @@ public class CsiroWireBreakCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_wire_break_validation";
+    return "CSIRO_wire_break";
   }
 
   /*

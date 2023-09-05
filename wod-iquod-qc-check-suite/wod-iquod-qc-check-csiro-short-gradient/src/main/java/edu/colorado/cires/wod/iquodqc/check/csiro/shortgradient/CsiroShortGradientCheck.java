@@ -1,7 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.shortgradient;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.doubleEquals;
+import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static java.lang.Math.abs;
 
@@ -20,7 +20,7 @@ public class CsiroShortGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_short_gradient_validation";
+    return "CSIRO_short_gradient";
   }
 
   /*

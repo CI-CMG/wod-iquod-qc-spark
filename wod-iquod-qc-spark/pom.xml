@@ -34,6 +34,16 @@
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-argo-global-range</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-argo-gradient</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-impossible-date</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -52,7 +62,11 @@
       <artifactId>wod-iquod-qc-en-background-available-check</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-en-range</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-constant-bottom</artifactId>
@@ -83,7 +97,16 @@
       <artifactId>wod-iquod-qc-check-csiro-wire-break</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-iquod-gross-range</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-wod-gradient</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>

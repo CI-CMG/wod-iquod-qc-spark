@@ -18,7 +18,7 @@ public class CsiroLongGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_long_gradient_validation";
+    return "CSIRO_long_gradient";
   }
 
   /*

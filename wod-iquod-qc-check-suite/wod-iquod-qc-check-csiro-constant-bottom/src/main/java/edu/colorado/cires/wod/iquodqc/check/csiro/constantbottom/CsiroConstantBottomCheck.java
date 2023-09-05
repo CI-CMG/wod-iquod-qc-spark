@@ -3,7 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.csiro.constantbottom;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.doubleEquals;
+import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
@@ -24,7 +24,7 @@ public class CsiroConstantBottomCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_constant_bottom_validation";
+    return "CSIRO_constant_bottom";
   }
 
   /*
