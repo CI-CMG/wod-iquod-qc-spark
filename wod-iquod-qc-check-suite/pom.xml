@@ -24,6 +24,7 @@
     <module>wod-iquod-qc-check-argo-regional-range</module>
     <module>wod-iquod-qc-check-en-background-available</module>
     <module>wod-iquod-qc-check-en-background</module>
+    <module>wod-iquod-qc-check-en-constant-value</module>
     <module>wod-iquod-qc-check-en-range</module>
     <module>wod-iquod-qc-check-csiro-constant-bottom</module>
     <module>wod-iquod-qc-check-csiro-depth</module>
