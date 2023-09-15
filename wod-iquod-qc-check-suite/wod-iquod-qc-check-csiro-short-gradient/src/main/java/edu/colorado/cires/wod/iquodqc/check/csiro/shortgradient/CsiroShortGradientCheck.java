@@ -1,6 +1,5 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.shortgradient;
 
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
 import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static java.lang.Math.abs;

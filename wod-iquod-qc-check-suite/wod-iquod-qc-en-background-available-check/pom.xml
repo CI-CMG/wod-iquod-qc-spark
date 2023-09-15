@@ -13,16 +13,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>edu.ucar</groupId>
-      <artifactId>cdm-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>edu.ucar</groupId>
-      <artifactId>netcdf4</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>s3</artifactId>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-common</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

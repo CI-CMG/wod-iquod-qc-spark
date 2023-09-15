@@ -47,7 +47,7 @@ public class BackgroundAvailableCheckTest {
         .master("local[*]")
         .getOrCreate();
     Properties properties = new Properties();
-    properties.put("EN_background_available_check.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
+    properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -57,6 +57,11 @@ public class BackgroundAvailableCheckTest {
       @Override
       public Dataset<Cast> readCastDataset() {
         return spark.read().parquet(TEST_PARQUET).as(Encoders.bean(Cast.class));
+      }
+
+      @Override
+      public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
+        throw new UnsupportedOperationException("not implemented for test");
       }
 
       @Override

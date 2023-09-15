@@ -8,9 +8,12 @@ import org.apache.spark.sql.SparkSession;
 public interface CastCheckContext {
 
   SparkSession getSparkSession();
+
   Dataset<Cast> readCastDataset();
 
-  default Properties getProperties(){
+  Dataset<CastCheckResult> readCastCheckResultDataset(String checkName);
+
+  default Properties getProperties() {
     return new Properties();
   }
 

@@ -51,6 +51,11 @@ public class ArgoImpossibleDateCheckTest {
       public Dataset<Cast> readCastDataset() {
         return spark.read().parquet(TEST_PARQUET).as(Encoders.bean(Cast.class));
       }
+
+      @Override
+      public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
+        throw new UnsupportedOperationException("not implemented for test");
+      }
     };
   }
 

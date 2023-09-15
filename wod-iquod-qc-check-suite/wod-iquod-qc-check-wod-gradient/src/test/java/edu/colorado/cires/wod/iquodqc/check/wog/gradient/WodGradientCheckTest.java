@@ -2,7 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.wog.gradient;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
@@ -55,6 +55,11 @@ class WodGradientCheckTest {
       @Override
       public Dataset<Cast> readCastDataset() {
         return spark.read().parquet(TEST_PARQUET).as(Encoders.bean(Cast.class));
+      }
+
+      @Override
+      public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
+        throw new UnsupportedOperationException("not implemented for test");
       }
     };
   }

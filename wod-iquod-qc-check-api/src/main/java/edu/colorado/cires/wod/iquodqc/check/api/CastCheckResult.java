@@ -13,6 +13,7 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
 public class CastCheckResult implements Serializable {
+
   private static final long serialVersionUID = 0L;
 
   public static StructType structType() {
@@ -21,10 +22,12 @@ public class CastCheckResult implements Serializable {
         new StructField("passed", DataTypes.BooleanType, false, Metadata.empty()),
         new StructField("failedDepths", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
     });
-  };
+  }
+
+  ;
 
   public Row asRow() {
-    return new GenericRowWithSchema(new Object[] {castNumber, passed, failedDepths}, structType());
+    return new GenericRowWithSchema(new Object[]{castNumber, passed, failedDepths}, structType());
   }
 
   private int castNumber;
@@ -106,7 +109,12 @@ public class CastCheckResult implements Serializable {
     return new Builder(orig);
   }
 
+  public static Builder builder(Row row) {
+    return new Builder(row);
+  }
+
   public static class Builder {
+
     private int castNumber;
     private boolean passed;
     private List<Integer> failedDepths = new ArrayList<>(0);
@@ -119,6 +127,12 @@ public class CastCheckResult implements Serializable {
       castNumber = orig.castNumber;
       passed = orig.passed;
       failedDepths = new ArrayList<>(orig.failedDepths);
+    }
+
+    private Builder(Row row) {
+      this.castNumber = row.getAs("castNumber");
+      this.passed = row.getAs("passed");
+      this.failedDepths = row.getList(row.fieldIndex("failedDepths"));
     }
 
     public Builder withCastNumber(int castNumber) {

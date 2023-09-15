@@ -74,96 +74,102 @@ public class SparklerExecutorTest {
         .config("spark.hadoop.fs.s3a.endpoint", localstack.getEndpoint().toString())
         .config("spark.hadoop.fs.s3a.endpoint.region", localstack.getRegion())
         .getOrCreate();
+    try {
+      S3Client s3 = S3Client.builder()
+          .credentialsProvider(StaticCredentialsProvider.create(
+              AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
+          ))
+          .endpointOverride(localstack.getEndpoint())
+          .region(Region.of(localstack.getRegion()))
+          .build();
 
-    S3Client s3 = S3Client.builder()
-        .credentialsProvider(StaticCredentialsProvider.create(
-            AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
-        ))
-        .endpointOverride(localstack.getEndpoint())
-        .region(Region.of(localstack.getRegion()))
-        .build();
+      s3.createBucket(c -> c.bucket(inputBucket));
+      s3.createBucket(c -> c.bucket(outputBucket));
 
-    s3.createBucket(c -> c.bucket(inputBucket));
-    s3.createBucket(c -> c.bucket(outputBucket));
+      Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(Cast.builder()
+          .withDataset("APB")
+          .withCastNumber(1)
+          .withYear(2006)
+          .withMonth(6)
+          .withDay(11)
+          .withTime(0D)
+          .withTimestamp(LocalDateTime.of(2006, 6, 11, 0, 0).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli())
+          .withLongitude(55.4D)
+          .withLatitude(10.5)
+          .withProfileType(1)
+          .withOriginatorsStationCode("foo")
+          .withGeohash("rdty")
+          .withVariables(Collections.singletonList(Variable.builder()
+              .withCode(5)
+              .withMetadata(Collections.singletonList(Metadata.builder().withCode(2).withValue(55.4).build()))
+              .build()))
+          .withPrincipalInvestigators(Collections.singletonList(PrincipalInvestigator.builder()
+              .withVariable(2)
+              .withCode(88)
+              .build()))
+          .withAttributes(Collections.singletonList(Attribute.builder()
+              .withCode(9)
+              .withValue(534.5)
+              .build()))
+          .withBiologicalAttributes(Collections.singletonList(Attribute.builder()
+              .withCode(7)
+              .withValue(41.2)
+              .build()))
+          .withTaxonomicDatasets(Collections.singletonList(TaxonomicDataset.builder()
+              .withAttributes(Collections.singletonList(QcAttribute.builder()
+                  .withCode(3)
+                  .withValue(88.4)
+                  .withQcFlag(1)
+                  .withOriginatorsFlag(2)
+                  .build()))
+              .build()))
+          .withDepths(Collections.singletonList(Depth.builder()
+              .withDepth(25.0)
+              .withDepthErrorFlag(1)
+              .withOriginatorsFlag(0)
+              .withData(Collections.singletonList(ProfileData.builder()
+                  .withVariable(3)
+                  .withValue(446.3)
+                  .withOriginatorsFlag(1)
+                  .withQcFlag(3)
+                  .build()))
+              .build()))
+          .build()), Encoders.bean(Cast.class));
 
-    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(Cast.builder()
-        .withDataset("APB")
-        .withCastNumber(1)
-        .withYear(2006)
-        .withMonth(6)
-        .withDay(11)
-        .withTime(0D)
-        .withTimestamp(LocalDateTime.of(2006, 6, 11, 0, 0).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli())
-        .withLongitude(55.4D)
-        .withLatitude(10.5)
-        .withProfileType(1)
-        .withOriginatorsStationCode("foo")
-        .withGeohash("rdty")
-        .withVariables(Collections.singletonList(Variable.builder()
-            .withCode(5)
-            .withMetadata(Collections.singletonList(Metadata.builder().withCode(2).withValue(55.4).build()))
-            .build()))
-        .withPrincipalInvestigators(Collections.singletonList(PrincipalInvestigator.builder()
-            .withVariable(2)
-            .withCode(88)
-            .build()))
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(9)
-            .withValue(534.5)
-            .build()))
-        .withBiologicalAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(7)
-            .withValue(41.2)
-            .build()))
-        .withTaxonomicDatasets(Collections.singletonList(TaxonomicDataset.builder()
-            .withAttributes(Collections.singletonList(QcAttribute.builder()
-                .withCode(3)
-                .withValue(88.4)
-                .withQcFlag(1)
-                .withOriginatorsFlag(2)
-                .build()))
-            .build()))
-        .withDepths(Collections.singletonList(Depth.builder()
-            .withDepth(25.0)
-            .withDepthErrorFlag(1)
-            .withOriginatorsFlag(0)
-            .withData(Collections.singletonList(ProfileData.builder()
-                .withVariable(3)
-                .withValue(446.3)
-                .withOriginatorsFlag(1)
-                .withQcFlag(3)
-                .build()))
-            .build()))
-        .build()), Encoders.bean(Cast.class));
+      dataset.write().parquet(String.format("s3a://%s/%s", inputBucket, inputKey));
 
-    dataset.write().parquet(String.format("s3a://%s/%s", inputBucket, inputKey));
+      dataset.printSchema();
 
-    Properties properties = new Properties();
-    try (InputStream in = Files.newInputStream(Paths.get("src/test/resources/spark.properties"))) {
-      properties.load(in);
-    }
+      Properties properties = new Properties();
+      try (InputStream in = Files.newInputStream(Paths.get("src/test/resources/spark.properties"))) {
+        properties.load(in);
+      }
 
-    SparklerExecutor executor = new SparklerExecutor(
-        spark,
-        inputBucket,
-        outputBucket,
-        inputPrefix,
-        datasets,
-        processingLevels,
-        outputPrefix,
-        2,
-        new HashSet<>(),
-        properties
-    );
-    executor.run();
+      SparklerExecutor executor = new SparklerExecutor(
+          spark,
+          inputBucket,
+          outputBucket,
+          inputPrefix,
+          datasets,
+          processingLevels,
+          outputPrefix,
+          2,
+          new HashSet<>(),
+          properties
+      );
+      executor.run();
 
-    for (String name : CHECK_NAMES) {
-      List<CastCheckResult> testResult = spark.read()
-          .parquet(String.format("s3a://wod-qc-results-bucket/qc/APB/OBS/%s.parquet", name))
-          .as(Encoders.bean(CastCheckResult.class)).collectAsList();
-      assertEquals(1, testResult.size());
-      CastCheckResult result = testResult.get(0);
-      assertEquals(1, result.getCastNumber());
+      for (String name : CHECK_NAMES) {
+        List<CastCheckResult> testResult = spark.read()
+            .parquet(String.format("s3a://wod-qc-results-bucket/qc/APB/OBS/%s.parquet", name))
+            .as(Encoders.bean(CastCheckResult.class))
+            .collectAsList();
+        assertEquals(1, testResult.size());
+        CastCheckResult result = testResult.get(0);
+        assertEquals(1, result.getCastNumber());
+      }
+    } finally {
+      spark.close();
     }
 
   }

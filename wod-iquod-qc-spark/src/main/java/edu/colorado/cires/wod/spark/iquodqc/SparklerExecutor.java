@@ -30,7 +30,7 @@ public class SparklerExecutor implements Runnable {
   private final String outputBucket;
   private final String inputPrefix;
   private final List<String> datasets;
-  private List<String> processingLevels;
+  private final List<String> processingLevels;
   private final String outputPrefix;
   private final Set<String> checksToRun;
   private final Properties properties;
@@ -131,6 +131,8 @@ public class SparklerExecutor implements Runnable {
     private final CastCheck check;
     private final Properties properties;
     private final CheckResolver checkResolver;
+    private final String inputUri;
+    private final String outputUri;
 
     private CheckRunner(String dataset, String processingLevel, CastCheck check, Properties properties, CheckResolver checkResolver) {
       this.dataset = dataset;
@@ -138,6 +140,8 @@ public class SparklerExecutor implements Runnable {
       this.check = check;
       this.properties = properties;
       this.checkResolver = checkResolver;
+      inputUri = getInputUri();
+      outputUri = getOutputUri(this.check.getName());
     }
 
     private CheckRunner(CastCheck check, CheckRunner parent) {
@@ -146,6 +150,8 @@ public class SparklerExecutor implements Runnable {
       this.check = check;
       this.properties = parent.properties;
       this.checkResolver = parent.checkResolver;
+      inputUri = getInputUri();
+      outputUri = getOutputUri(this.check.getName());
     }
 
     public Set<CastCheck> completed() {
@@ -156,6 +162,26 @@ public class SparklerExecutor implements Runnable {
           .map(cr -> cr.check).collect(Collectors.toSet());
       newChecks.removeAll(runningChecksForDatasetAndProcessingLevel);
       return newChecks;
+    }
+
+    private String getInputUri() {
+      StringBuilder sb = new StringBuilder("s3a://").append(inputBucket).append("/");
+      if (inputPrefix != null) {
+        sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
+      }
+      sb.append(processingLevel).append("/")
+          .append("WOD_").append(dataset).append("_").append(processingLevel).append(".parquet");
+      return sb.toString();
+    }
+
+    private String getOutputUri(String checkName) {
+      StringBuilder parquetUri = new StringBuilder("s3a://").append(outputBucket).append("/");
+      if (outputPrefix != null) {
+        parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
+      }
+      parquetUri.append(dataset).append("/").append(processingLevel).append("/")
+          .append(checkName).append(".parquet");
+      return parquetUri.toString();
     }
 
     @Override
@@ -170,15 +196,12 @@ public class SparklerExecutor implements Runnable {
 
         @Override
         public Dataset<Cast> readCastDataset() {
-          StringBuilder sb = new StringBuilder("s3a://").append(inputBucket).append("/");
-          if (inputPrefix != null) {
-            sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
-          }
-          sb.append(processingLevel).append("/")
-              .append("WOD_").append(dataset).append("_").append(processingLevel).append(".parquet");
-          return spark.read()
-              .parquet(sb.toString())
-              .as(Encoders.bean(Cast.class));
+          return spark.read().parquet(inputUri).as(Encoders.bean(Cast.class));
+        }
+
+        @Override
+        public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
+          return spark.read().parquet(getOutputUri(checkName)).as(Encoders.bean(CastCheckResult.class));
         }
 
         @Override
@@ -189,17 +212,9 @@ public class SparklerExecutor implements Runnable {
 
       Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
 
-      StringBuilder parquetUri = new StringBuilder("s3a://").append(outputBucket).append("/");
-      if (outputPrefix != null) {
-        parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
-      }
-      parquetUri.append(dataset).append("/").append(processingLevel).append("/")
-          .append(check.getName()).append(".parquet");
-      System.err.println("Writing " + parquetUri.toString());
-      resultDataset.write()
-          .mode(SaveMode.Overwrite)
-          .option("maxRecordsPerFile", MAX_RECORDS_PER_FILE)
-          .parquet(parquetUri.toString());
+      System.err.println("Writing " + outputUri);
+
+      resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
       completeCheck(this);
       System.err.println("Finished " + check.getName());
     }

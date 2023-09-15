@@ -2,9 +2,9 @@ package edu.colorado.cires.wod.iquodqc.check.csiro.constantbottom;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.XBT;
 import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.parquet.model.Attribute;
