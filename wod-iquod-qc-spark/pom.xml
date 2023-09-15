@@ -59,7 +59,12 @@
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
-      <artifactId>wod-iquod-qc-en-background-available-check</artifactId>
+      <artifactId>wod-iquod-qc-check-en-background-available</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-en-background</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
