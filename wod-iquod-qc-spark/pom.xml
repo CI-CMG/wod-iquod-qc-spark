@@ -89,6 +89,11 @@
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-en-spike-and-step-suspect</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-constant-bottom</artifactId>
       <version>${project.version}</version>
     </dependency>
