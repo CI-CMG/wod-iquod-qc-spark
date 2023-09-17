@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.common;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
@@ -22,6 +23,9 @@ public final class DepthUtils {
     return depth.getData().stream().filter((pd) -> pd.getVariable() == SALINITY).findFirst();
   }
 
+  public static Optional<ProfileData> getPressure(Depth depth) {
+    return depth.getData().stream().filter((pd) -> pd.getVariable() == PRESSURE).findFirst();
+  }
 
   public static boolean isProbeTypeXBT(Cast cast) {
     Optional<Double> probeType = CastUtils.getProbeType(cast).map(Attribute::getValue);
