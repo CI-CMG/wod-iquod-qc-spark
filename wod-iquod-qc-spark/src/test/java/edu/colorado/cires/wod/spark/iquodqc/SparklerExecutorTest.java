@@ -46,7 +46,7 @@ public class SparklerExecutorTest {
       "Argo_impossible_date_test",
       "Argo_impossible_location_test",
       "Argo_regional_range_test",
-      "CSIRO_constant_bottom_validation",
+      "CSIRO_constant_bottom",
       "EN_background_available_check"
   );
 

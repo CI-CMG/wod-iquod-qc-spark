@@ -21,7 +21,9 @@
     <module>wod-iquod-qc-check-argo-gradient</module>
     <module>wod-iquod-qc-check-argo-impossible-date</module>
     <module>wod-iquod-qc-check-argo-impossible-location</module>
+    <module>wod-iquod-qc-check-argo-pressure-increasing</module>
     <module>wod-iquod-qc-check-argo-regional-range</module>
+    <module>wod-iquod-qc-check-argo-spike</module>
     <module>wod-iquod-qc-check-en-background-available</module>
     <module>wod-iquod-qc-check-en-background</module>
     <module>wod-iquod-qc-check-en-constant-value</module>
