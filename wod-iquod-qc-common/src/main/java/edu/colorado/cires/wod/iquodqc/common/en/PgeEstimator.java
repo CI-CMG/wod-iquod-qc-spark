@@ -1,4 +1,4 @@
-package edu.colorado.cires.wod.iquodqc.check.en.backgroundcheck;
+package edu.colorado.cires.wod.iquodqc.common.en;
 
 import edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants;
 import java.util.Set;

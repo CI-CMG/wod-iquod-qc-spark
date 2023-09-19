@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.argo.impossiblelocation;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -12,7 +13,7 @@ public class ArgoImpossibleLocationCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "Argo_impossible_location_test";
+    return CheckNames.ARGO_IMPOSSIBLE_LOCATION_TEST.getName();
   }
 
   @Override

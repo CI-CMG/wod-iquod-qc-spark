@@ -7,6 +7,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -24,7 +25,7 @@ public class CsiroConstantBottomCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_constant_bottom";
+    return CheckNames.CSIRO_CONSTANT_BOTTOM.getName();
   }
 
   /*

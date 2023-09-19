@@ -11,12 +11,5 @@
 
   <artifactId>wod-iquod-qc-check-en-background</artifactId>
 
-  <dependencies>
-    <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
-      <artifactId>wod-iquod-qc-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
 
 </project>

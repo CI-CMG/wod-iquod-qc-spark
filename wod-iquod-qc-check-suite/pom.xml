@@ -32,6 +32,7 @@
     <module>wod-iquod-qc-check-en-spike-and-step</module>
     <module>wod-iquod-qc-check-en-spike-and-step-suspect</module>
     <module>wod-iquod-qc-check-en-stability</module>
+    <module>wod-iquod-qc-check-en-std-lev-bkg-and-buddy</module>
     <module>wod-iquod-qc-check-csiro-constant-bottom</module>
     <module>wod-iquod-qc-check-csiro-depth</module>
     <module>wod-iquod-qc-check-csiro-long-gradient</module>
@@ -43,11 +44,6 @@
   </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
-      <artifactId>wod-iquod-qc-check-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-common</artifactId>

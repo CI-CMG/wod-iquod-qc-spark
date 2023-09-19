@@ -7,6 +7,7 @@ import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static java.lang.Math.abs;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -22,7 +23,7 @@ public class CsiroSurfaceSpikesCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_surface_spikes";
+    return CheckNames.CSIRO_SURFACE_SPIKES.getName();
   }
 
   /*

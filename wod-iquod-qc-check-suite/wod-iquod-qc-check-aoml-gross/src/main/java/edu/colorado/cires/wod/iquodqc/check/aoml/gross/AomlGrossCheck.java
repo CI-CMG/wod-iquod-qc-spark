@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.gross;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -18,7 +19,7 @@ public class AomlGrossCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "AOML_gross";
+    return CheckNames.AOML_GROSS.getName();
   }
 
 

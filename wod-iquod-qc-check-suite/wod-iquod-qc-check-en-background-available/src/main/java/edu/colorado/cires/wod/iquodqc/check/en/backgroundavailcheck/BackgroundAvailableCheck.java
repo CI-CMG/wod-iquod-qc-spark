@@ -5,6 +5,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.ArrayUtils;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.en.EnUtils;
 import edu.colorado.cires.wod.iquodqc.common.en.GridCell;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParameters;
@@ -27,14 +28,13 @@ import ucar.ma2.Range;
 
 public class BackgroundAvailableCheck extends CommonCastCheck {
 
-  private final static String NAME = "EN_background_available_check";
 
   private static EnBgCheckInfoParameters parameters;
   private Properties properties;
 
   @Override
   public String getName() {
-    return NAME;
+    return CheckNames.EN_BACKGROUND_AVAILABLE_CHECK.getName();
   }
 
   @Override

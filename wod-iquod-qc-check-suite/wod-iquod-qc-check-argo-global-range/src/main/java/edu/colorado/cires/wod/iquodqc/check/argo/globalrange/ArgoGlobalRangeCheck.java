@@ -4,6 +4,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static java.lang.Math.max;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ObsUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class ArgoGlobalRangeCheck extends CommonCastCheck {
   @Override
   public String getName() {
-    return "Argo_global_range_check";
+    return CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName();
   }
 
 

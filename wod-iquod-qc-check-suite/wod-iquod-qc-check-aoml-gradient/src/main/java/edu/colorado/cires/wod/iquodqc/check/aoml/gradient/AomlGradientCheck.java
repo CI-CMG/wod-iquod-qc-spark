@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.gradient;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -16,7 +17,7 @@ public class AomlGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "AOML_gradient";
+    return CheckNames.AOML_GRADIENT.getName();
   }
 
 

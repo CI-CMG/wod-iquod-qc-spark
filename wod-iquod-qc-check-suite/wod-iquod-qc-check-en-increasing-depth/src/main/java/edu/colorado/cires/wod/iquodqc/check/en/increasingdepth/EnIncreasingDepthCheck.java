@@ -2,7 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.en.increasingdepth;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
-import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -13,17 +13,14 @@ import java.util.TreeSet;
 
 public class EnIncreasingDepthCheck extends CommonCastCheck {
 
-  private static final String NAME = "EN_increasing_depth_check";
-  private final static String EN_SPIKE_AND_STEP_CHECK = "EN_spike_and_step_check";
-
   @Override
   public String getName() {
-    return NAME;
+    return CheckNames.EN_INCREASING_DEPTH_CHECK.getName();
   }
 
   @Override
   public Collection<String> dependsOn() {
-    return Collections.singleton(EN_SPIKE_AND_STEP_CHECK);
+    return Collections.singleton(CheckNames.EN_SPIKE_AND_STEP_CHECK.getName());
   }
 
   @Override
@@ -112,7 +109,7 @@ public class EnIncreasingDepthCheck extends CommonCastCheck {
 
             // Check if one was rejected by the spike and step
             // check, otherwise reject both.
-            CastCheckResult spikeqc = otherTestResults.get(EN_SPIKE_AND_STEP_CHECK);
+            CastCheckResult spikeqc = otherTestResults.get(CheckNames.EN_SPIKE_AND_STEP_CHECK.getName());
             if (spikeqc.getFailedDepths().contains(currentLev)) {
               failures.add(currentLev);
             }

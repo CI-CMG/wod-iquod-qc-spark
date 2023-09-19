@@ -4,6 +4,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.ArrayUtils;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public class AomlSpikeCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "AOML_spike";
+    return CheckNames.AOML_SPIKE.getName();
   }
 
 

@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.argo.gradient;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DoubleUtils;
 import edu.colorado.cires.wod.iquodqc.common.ObsUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class ArgoGradientCheck extends CommonCastCheck {
   @Override
   public String getName() {
-    return "Argo_gradient_test";
+    return CheckNames.ARGO_GRADIENT_TEST.getName();
   }
 
 

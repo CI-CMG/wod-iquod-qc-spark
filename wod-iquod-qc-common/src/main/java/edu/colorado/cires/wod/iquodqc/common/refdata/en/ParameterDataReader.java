@@ -1,4 +1,4 @@
-package edu.colorado.cires.wod.iquodqc.check.en.backgroundcheck;
+package edu.colorado.cires.wod.iquodqc.common.refdata.en;
 
 import edu.colorado.cires.wod.iquodqc.common.en.EnUtils;
 import edu.colorado.cires.wod.iquodqc.common.en.GridCell;

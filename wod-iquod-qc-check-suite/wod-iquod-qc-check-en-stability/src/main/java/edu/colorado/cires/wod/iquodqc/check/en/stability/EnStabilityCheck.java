@@ -7,6 +7,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getSalinity;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -19,11 +20,9 @@ import java.util.TreeSet;
 
 public class EnStabilityCheck extends CommonCastCheck {
 
-  private static final String NAME = "EN_stability_check";
-
   @Override
   public String getName() {
-    return NAME;
+    return CheckNames.EN_STABILITY_CHECK.getName();
   }
 
   @Override

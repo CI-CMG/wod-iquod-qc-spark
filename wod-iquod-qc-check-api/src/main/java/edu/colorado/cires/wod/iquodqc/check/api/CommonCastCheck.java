@@ -23,7 +23,6 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
 
   @Override
   public Dataset<CastCheckResult> joinResultDataset(CastCheckContext context) {
-    registerUdf(context);
     return convertResultToDataset(executeQuery(context));
   }
 
@@ -36,7 +35,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
     spark.udf().register(getName(), udf((UDF1<Row, Row>) this::checkUdf, CastCheckResult.structType()));
   }
 
-  private static Column[] resolveColumns(Dataset<Cast> castDataset, Map<String, Dataset<CastCheckResult>> otherResultDatasets) {
+  protected static Column[] resolveColumns(Dataset<Cast> castDataset, Map<String, Dataset<CastCheckResult>> otherResultDatasets) {
     Column[] columns = new Column[otherResultDatasets.size() + 1];
     columns[0] = struct(castDataset.col("*")).as("cast");
     int i = 1;
@@ -46,7 +45,8 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
     return columns;
   }
 
-  protected Dataset<Row> executeQuery(CastCheckContext context) {
+  protected Dataset<Row> createQuery(CastCheckContext context) {
+    registerUdf(context);
     Dataset<Cast> castDataset = context.readCastDataset();
     Map<String, Dataset<CastCheckResult>> otherResultDatasets = new HashMap<>();
     Dataset<Row> joined = null;
@@ -58,8 +58,15 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         otherResultDatasets.put(otherTestName, otherResultDataset);
       }
     }
-    joined = (joined == null ? castDataset : joined).select(resolveColumns(castDataset, otherResultDatasets));
-    return joined.select(callUDF(getName(), struct(col("*"))).as("result"));
+    return (joined == null ? castDataset : joined).select(resolveColumns(castDataset, otherResultDatasets));
+  }
+
+  protected Dataset<Row> selectCallUdf(Dataset<Row> queryDataset) {
+    return queryDataset.select(callUDF(getName(), struct(col("*"))).as("result"));
+  }
+
+  protected Dataset<Row> executeQuery(CastCheckContext context) {
+    return selectCallUdf(createQuery(context));
   }
 
   protected Dataset<CastCheckResult> convertResultToDataset(Dataset<Row> rows) {

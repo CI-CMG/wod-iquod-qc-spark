@@ -4,6 +4,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static java.lang.Math.abs;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -18,7 +19,7 @@ public class CsiroLongGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_long_gradient";
+    return CheckNames.CSIRO_LONG_GRADIENT.getName();
   }
 
   /*

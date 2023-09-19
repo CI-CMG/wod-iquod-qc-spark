@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.en.constant;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.en.constant.TemperatureCounter.TemperatureCount;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -13,11 +14,9 @@ import java.util.Optional;
 
 public class EnConstantValueCheck extends CommonCastCheck {
 
-  private static final String NAME = "EN_constant_value_check";
-
   @Override
   public String getName() {
-    return NAME;
+    return CheckNames.EN_CONSTANT_VALUE_CHECK.getName();
   }
 
   @Override

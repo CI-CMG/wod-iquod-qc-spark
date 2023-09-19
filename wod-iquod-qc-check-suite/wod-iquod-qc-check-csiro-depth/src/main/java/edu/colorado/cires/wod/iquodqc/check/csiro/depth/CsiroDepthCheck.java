@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.csiro.depth;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.isProbeTypeXBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -16,7 +17,7 @@ public class CsiroDepthCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "CSIRO_depth";
+    return CheckNames.CSIRO_DEPTH.getName();
   }
 
   /*
