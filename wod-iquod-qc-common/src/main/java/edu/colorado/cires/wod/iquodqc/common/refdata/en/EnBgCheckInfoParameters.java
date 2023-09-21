@@ -13,18 +13,39 @@ public class EnBgCheckInfoParameters {
   private Array obev;
   private double lonGridSize;
   private double latGridSize;
-  private double fillValue;
+  private double climFillValue;
+  private double bgevFillValue;
+  private double obevFillValue;
 
   EnBgCheckInfoParameters() {
 
   }
 
-  public double getFillValue() {
-    return fillValue;
+  public double getClimFillValue() {
+    return climFillValue;
   }
 
-  void setFillValue(double fillValue) {
-    this.fillValue = fillValue;
+  public EnBgCheckInfoParameters setClimFillValue(double climFillValue) {
+    this.climFillValue = climFillValue;
+    return this;
+  }
+
+  public double getBgevFillValue() {
+    return bgevFillValue;
+  }
+
+  public EnBgCheckInfoParameters setBgevFillValue(double bgevFillValue) {
+    this.bgevFillValue = bgevFillValue;
+    return this;
+  }
+
+  public double getObevFillValue() {
+    return obevFillValue;
+  }
+
+  public EnBgCheckInfoParameters setObevFillValue(double obevFillValue) {
+    this.obevFillValue = obevFillValue;
+    return this;
   }
 
   public double getLonGridSize() {

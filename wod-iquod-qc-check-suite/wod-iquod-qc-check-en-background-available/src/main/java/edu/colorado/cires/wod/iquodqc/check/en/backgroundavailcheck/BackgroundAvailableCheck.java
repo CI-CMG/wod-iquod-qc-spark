@@ -71,7 +71,7 @@ public class BackgroundAvailableCheck extends CommonCastCheck {
       throw new RuntimeException(e);
     }
 
-    boolean[] mask = ArrayUtils.getMask(clim, parameters.getFillValue());
+    boolean[] mask = ArrayUtils.getMask(clim, parameters.getClimFillValue());
 
     double[] ncDepths = (double[]) parameters.getDepth().get1DJavaArray(DataType.DOUBLE);
 

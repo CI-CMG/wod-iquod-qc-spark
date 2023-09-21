@@ -9,72 +9,114 @@ import edu.colorado.cires.wod.iquodqc.common.CastUtils;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.iquodqc.common.ObsUtils;
+import edu.colorado.cires.wod.iquodqc.common.refdata.en.CastParameterDataReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParameters;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.ParameterDataReader;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalDouble;
+import javax.annotation.Nullable;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
-public final class EnBackgroundChecker {
-
-  private EnBackgroundChecker() {
-
-  }
+public class EnBackgroundChecker {
 
   private static final double DEFAULT_SALINITY = 35D;
 
-  public static EnBackgroundCheckerResult getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults,
-      EnBgCheckInfoParameters parameters) {
+  private final EnBgCheckInfoParameters parameters;
+  private final ParameterDataReader parameterData;
+  private final List<Double> obevArray;
+  private final List<Double> depthArray;
+
+  public EnBackgroundChecker(EnBgCheckInfoParameters parameters) {
+    this.parameters = parameters;
+    parameterData = new ParameterDataReader(parameters);
+    obevArray = parameterData.getObev();
+    depthArray = parameterData.getDepths();
+  }
+
+  private static class ArrayWrapper {
+
+    double[] depths;
+    double[] clim;
+    double[] bgev;
+    double[] obev;
+  }
+
+  private ArrayWrapper getParameterData(Cast cast) {
+    CastParameterDataReader castParameterData = new CastParameterDataReader(cast, parameters);
+    List<Double> climArray = castParameterData.getClim();
+    List<Double> bgevArray = castParameterData.getBgev();
+
+    List<Double> climArrayOk = new ArrayList<>(depthArray.size());
+    List<Double> bgevArrayOk = new ArrayList<>(depthArray.size());
+    List<Double> obevArrayOk = new ArrayList<>(depthArray.size());
+    List<Double> depthArrayOk = new ArrayList<>(depthArray.size());
+
+    for (int i = 0; i < depthArray.size(); i++) {
+      if (climArray.get(i) != null && bgevArray.get(i) != null && obevArray.get(i) != null && depthArray.get(i) != null) {
+        climArrayOk.add(climArray.get(i));
+        bgevArrayOk.add(bgevArray.get(i));
+        obevArrayOk.add(obevArray.get(i));
+        depthArrayOk.add(depthArray.get(i));
+      }
+    }
+
+    ArrayWrapper wrapper = new ArrayWrapper();
+    wrapper.depths = depthArrayOk.stream().mapToDouble(Double::doubleValue).toArray();
+    wrapper.clim = climArrayOk.stream().mapToDouble(Double::doubleValue).toArray();
+    wrapper.bgev = bgevArrayOk.stream().mapToDouble(Double::doubleValue).toArray();
+    wrapper.obev = obevArrayOk.stream().mapToDouble(Double::doubleValue).toArray();
+
+    return wrapper;
+  }
+
+  public EnBackgroundCheckerResult getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
     EnBackgroundCheckerResult enBackgroundCheckerResult = new EnBackgroundCheckerResult();
 
     List<Depth> levels = cast.getDepths();
 
-    ParameterDataReader parameterData = new ParameterDataReader(cast, parameters);
-    double[] clim = parameterData.getClim();
-    double[] bgev = parameterData.getBgev();
-    double[] obev = parameterData.getObev();
-    double[] depths = parameterData.getDepths();
+    ArrayWrapper parameterData = getParameterData(cast);
 
     double[] pressures = levels.stream()
         .mapToDouble(Depth::getDepth)
         .map(depth -> TeosGsw10.INSTANCE.gsw_p_from_z(-depth, cast.getLatitude(), 0D, 0D))
         .toArray();
 
-    PolynomialSplineFunction climFunction = new LinearInterpolator().interpolate(depths, clim);
-    PolynomialSplineFunction bgevFunction = new LinearInterpolator().interpolate(depths, bgev);
-    PolynomialSplineFunction obevFunction = new LinearInterpolator().interpolate(depths, obev);
+    PolynomialSplineFunction climFunction = new LinearInterpolator().interpolate(parameterData.depths, parameterData.clim);
+    PolynomialSplineFunction bgevFunction = new LinearInterpolator().interpolate(parameterData.depths, parameterData.bgev);
+    PolynomialSplineFunction obevFunction = new LinearInterpolator().interpolate(parameterData.depths, parameterData.obev);
 
-    CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).ifPresent(probeType -> {
-      for (int i = 0; i < levels.size(); i++) {
-        final int iLevel = i;
-        Depth level = levels.get(iLevel);
-        getTemperature(level).ifPresent(tempProfile -> {
-          //  Get the climatology and error variance values at this level.
-          interpolate(level.getDepth(), climFunction).ifPresent(climLevel -> {
-            interpolate(level.getDepth(), bgevFunction).ifPresent(bgevLevel -> {
-              if (bgevLevel <= 0D) {
-                throw new IllegalArgumentException("Background error variance <= 0");
+    Integer probeType = CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).orElse(null);
+
+    for (int i = 0; i < levels.size(); i++) {
+      final int iLevel = i;
+      Depth level = levels.get(iLevel);
+      getTemperature(level).ifPresent(tempProfile -> {
+        //  Get the climatology and error variance values at this level.
+        interpolate(level.getDepth(), climFunction).ifPresent(climLevel -> {
+          interpolate(level.getDepth(), bgevFunction).ifPresent(bgevLevel -> {
+            if (bgevLevel <= 0D) {
+              throw new IllegalArgumentException("Background error variance <= 0");
+            }
+            interpolate(level.getDepth(), obevFunction).ifPresent(obevLevel -> {
+              if (obevLevel <= 0D) {
+                throw new IllegalArgumentException("Observation error variance <= 0");
               }
-              interpolate(level.getDepth(), obevFunction).ifPresent(obevLevel -> {
-                if (obevLevel <= 0D) {
-                  throw new IllegalArgumentException("Observation error variance <= 0");
-                }
-                boolean failedSpikeTest = otherTestResults.get(CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName()).getFailedDepths().contains(iLevel);
-                double pressure = pressures[iLevel];
-                isCheckFailed(cast, level, tempProfile.getValue(), climLevel, bgevLevel, obevLevel, probeType, pressure, failedSpikeTest,
-                    enBackgroundCheckerResult, iLevel);
-              });
+              boolean failedSpikeTest = otherTestResults.get(CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName()).getFailedDepths().contains(iLevel);
+              double pressure = pressures[iLevel];
+              isCheckFailed(cast, level, tempProfile.getValue(), climLevel, bgevLevel, obevLevel, probeType, pressure, failedSpikeTest,
+                  enBackgroundCheckerResult, iLevel);
             });
           });
         });
-      }
-    });
+      });
+    }
 
     return enBackgroundCheckerResult;
   }
@@ -86,7 +128,7 @@ public final class EnBackgroundChecker {
       double climLevel,
       double bgevLevel,
       double obevLevel,
-      int probeType,
+      @Nullable Integer probeType,
       double pressure,
       boolean failedSpikeTest,
       EnBackgroundCheckerResult checkerResult,

@@ -34,7 +34,9 @@ public final class EnBgCheckInfoParametersReader {
       parameters.setDepth(Objects.requireNonNull(nc.findVariable("depth")).read());
       parameters.setMonth(Objects.requireNonNull(nc.findVariable("month")).read());
       parameters.setClim(Objects.requireNonNull(nc.findVariable("potm_climatology")).read());
-      parameters.setFillValue(nc.findVariable("potm_climatology").findAttribute("_FillValue").getNumericValue().doubleValue());
+      parameters.setClimFillValue(nc.findVariable("potm_climatology").findAttribute("_FillValue").getNumericValue().doubleValue());
+      parameters.setBgevFillValue(nc.findVariable("bg_err_var").findAttribute("_FillValue").getNumericValue().doubleValue());
+      parameters.setObevFillValue(nc.findVariable("ob_err_var").findAttribute("_FillValue").getNumericValue().doubleValue());
       parameters.setBgev(Objects.requireNonNull(nc.findVariable("bg_err_var")).read());
       parameters.setObev(Objects.requireNonNull(nc.findVariable("ob_err_var")).read());
       return parameters;

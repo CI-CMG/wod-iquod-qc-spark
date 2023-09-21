@@ -22,7 +22,4 @@ public class EnBackgroundCheckerResult {
     return levels;
   }
 
-  public void setLevels(List<EnBackgroundCheckerLevelResult> levels) {
-    this.levels = levels;
-  }
 }

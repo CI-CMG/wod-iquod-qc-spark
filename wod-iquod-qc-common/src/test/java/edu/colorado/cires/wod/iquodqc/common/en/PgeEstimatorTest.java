@@ -1,8 +1,7 @@
-package edu.colorado.cires.wod.iquodqc.check.en.backgroundcheck;
+package edu.colorado.cires.wod.iquodqc.common.en;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import edu.colorado.cires.wod.iquodqc.common.en.PgeEstimator;
 import org.apache.commons.math3.util.Precision;
 import org.junit.jupiter.api.Test;
 

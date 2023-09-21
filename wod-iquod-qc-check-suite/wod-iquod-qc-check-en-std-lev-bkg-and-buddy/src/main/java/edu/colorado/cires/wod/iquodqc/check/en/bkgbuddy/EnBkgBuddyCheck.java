@@ -1,12 +1,10 @@
 package edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy;
 
-import static org.apache.spark.sql.functions.callUDF;
-import static org.apache.spark.sql.functions.col;
-import static org.apache.spark.sql.functions.struct;
+import static edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy.BuddyCheckFunctions.buddyCovariance;
+import static edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy.BuddyCheckFunctions.determinePge;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.apache.spark.sql.functions.udf;
 
-import com.github.davidmoten.geo.GeoHash;
-import com.google.common.annotations.VisibleForTesting;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
@@ -17,6 +15,7 @@ import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundChecker;
 import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundCheckerLevelResult;
 import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundCheckerResult;
 import edu.colorado.cires.wod.iquodqc.common.en.PgeEstimator;
+import edu.colorado.cires.wod.iquodqc.common.refdata.en.CastParameterDataReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParameters;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParametersReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.ParameterDataReader;
@@ -32,15 +31,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import javax.annotation.Nullable;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.api.java.UDF2;
 import org.apache.spark.sql.api.java.UDF4;
 import org.apache.spark.sql.types.DataTypes;
@@ -53,54 +51,68 @@ import org.opengis.referencing.operation.TransformException;
 
 public class EnBkgBuddyCheck extends CommonCastCheck {
 
-
+  private static final int MAX_DISTANCE_M = 400000;
+  private static final CoordinateReferenceSystem EPSG_4326;
   private static EnBgCheckInfoParameters parameters;
-  private Properties properties;
+  private static final String NAME = CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName();
+  private static final String DISTANCE = NAME + "_distance";
+  private static final String GEOHASH = NAME + "_geohash";
+  private static final String TEMP_T = NAME + "_t";
 
-  private static final Set<String> OTHER_TEST_TO_CHECK = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-      CheckNames.EN_BACKGROUND_CHECK.getName(),
-      CheckNames.EN_CONSTANT_VALUE_CHECK.getName(),
-      CheckNames.EN_INCREASING_DEPTH_CHECK.getName(),
-      CheckNames.EN_RANGE_CHECK.getName(),
-      CheckNames.EN_SPIKE_AND_STEP_CHECK.getName(),
-      CheckNames.EN_STABILITY_CHECK.getName()
-  )));
+
+  private static final Collection<String> DEPENDS_ON;
+
+  static {
+    try {
+      EPSG_4326 = CRS.decode("EPSG:4326");
+    } catch (FactoryException e) {
+      throw new RuntimeException("Unable to determine CRS", e);
+    }
+    List<String> dependsOn = new ArrayList<>(StdLevelResolver.OTHER_TESTS);
+    dependsOn.add(CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName());
+    DEPENDS_ON = Collections.unmodifiableList(dependsOn);
+  }
+
+
+  private Properties properties;
 
   @Override
   public String getName() {
-    return CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName();
+    return NAME;
   }
 
   @Override
   protected void registerUdf(CastCheckContext context) {
     super.registerUdf(context);
     SparkSession spark = context.getSparkSession();
-    spark.udf().register(getName() + "_distance", udf((UDF4<Double, Double, Double, Double, Double>) this::getDistanceUdf, DataTypes.DoubleType));
-    spark.udf().register(getName() + "_geohash", udf((UDF2<Double, Double, List<String>>) this::getGeoHashesUdf, DataTypes.createArrayType(DataTypes.StringType)));
+    spark.udf().register(DISTANCE, udf((UDF4<Double, Double, Double, Double, Double>) this::getDistanceUdf, DataTypes.DoubleType));
+    spark.udf().register(GEOHASH, udf((UDF2<Double, Double, List<String>>) this::getGeoHashesUdf, DataTypes.createArrayType(DataTypes.StringType)));
   }
+
 
   @Override
   public Collection<String> dependsOn() {
-    return Arrays.asList(
-        CheckNames.EN_BACKGROUND_CHECK.getName(),
-        CheckNames.EN_CONSTANT_VALUE_CHECK.getName(),
-        CheckNames.EN_INCREASING_DEPTH_CHECK.getName(),
-        CheckNames.EN_RANGE_CHECK.getName(),
-        CheckNames.EN_SPIKE_AND_STEP_CHECK.getName(),
-        CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName(), // needed for EnBackgroundChecker
-        CheckNames.EN_STABILITY_CHECK.getName()
-    );
+    return DEPENDS_ON;
   }
-
 
   @Override
   protected Dataset<Row> createQuery(CastCheckContext context) {
     Dataset<Row> joined = super.createQuery(context);
-    joined.createOrReplaceTempView(getName() + "_t");
+    joined.createOrReplaceTempView(TEMP_T);
     Dataset<Row> buddies = context.getSparkSession().sql(
         "select A.*, " +
-            "(select first(C.result) from (select struct(B.*) as result, " + getName() + "_distance(A.cast.longitude, A.cast.latitude, B.cast.longitude, B.cast.latitude) as distance from " + getName() + "_t B where array_contains(" + getName() + "_geohash(A.cast.longitude, A.cast.latitude), B.cast.geohash) and A.cast.year == B.cast.year and A.cast.month = B.cast.month and A.cast.cruiseNumber != B.cast.cruiseNumber and A.cast.castNumber != B.cast.castNumber order by distance asc) C ) as buddy "+
-            "from " + getName() + "_t  A");
+            "(select first(struct(C.*)) from "
+            + "  (select struct(B.*) as result, " + DISTANCE + "(A.cast.longitude, A.cast.latitude, B.cast.longitude, B.cast.latitude) as distance "
+            + "      from " + TEMP_T + " B "
+            + "      where array_contains(" + GEOHASH + "(A.cast.longitude, A.cast.latitude), B.cast.geohash) "
+            + "        and A.cast.year == B.cast.year "
+            + "        and A.cast.month = B.cast.month "
+            + "        and A.cast.cruiseNumber != B.cast.cruiseNumber "
+            + "        and A.cast.castNumber != B.cast.castNumber "
+            + "        order by distance asc"
+            + "   ) C"
+            + " ) as buddy "
+            + "from " + TEMP_T + " A");
     return buddies;
   }
 
@@ -109,25 +121,13 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     properties = initContext.getProperties();
   }
 
-  private static final CoordinateReferenceSystem EPSG_4326;
-
-  static {
-    try {
-      EPSG_4326 = CRS.decode("EPSG:4326");
-    } catch (FactoryException e) {
-      throw new RuntimeException("Unable to determine CRS", e);
-    }
-  }
-
   private double getDistanceUdf(double lon1, double lat1, double lon2, double lat2) {
     try {
       return JTS.orthodromicDistance(new Coordinate(lon1, lat1), new Coordinate(lon2, lat2), EPSG_4326);
     } catch (TransformException e) {
-      throw new RuntimeException("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ")",  e);
+      throw new RuntimeException("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ")", e);
     }
   }
-
-  private static final int MAX_DISTANCE_M = 400000;
 
   private List<String> getGeoHashesUdf(double lon, double lat) {
     return new ArrayList<>(GeoHashFinder.getNeighborsInDistance(lon, lat, MAX_DISTANCE_M));
@@ -138,7 +138,34 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     if (parameters == null) {
       loadParameters(properties);
     }
-    return super.checkUdf(row);
+
+    Row castRow = row.getStruct(row.fieldIndex("cast"));
+    Map<String, CastCheckResult> otherTestResults = new HashMap<>();
+    for (String otherTestName : dependsOn()) {
+      CastCheckResult otherTestResult = CastCheckResult.builder(row.getStruct(row.fieldIndex(otherTestName))).build();
+      otherTestResults.put(otherTestName, otherTestResult);
+    }
+    Cast buddy = null;
+    double distance = -1D;
+    Map<String, CastCheckResult> buddyOtherTestResults = new HashMap<>();
+    Row buddyRow = row.getStruct(row.fieldIndex("buddy"));
+    if (buddyRow != null) {
+      Row resultRow = buddyRow.getStruct(buddyRow.fieldIndex("result"));
+      distance = buddyRow.getDouble(buddyRow.fieldIndex("distance"));
+      Row buddyCastRow = resultRow.getStruct(resultRow.fieldIndex("cast"));
+      buddy = Cast.builder(buddyCastRow).build();
+      for (String otherTestName : dependsOn()) {
+        CastCheckResult otherTestResult = CastCheckResult.builder(buddyRow.getStruct(buddyRow.fieldIndex(otherTestName))).build();
+        buddyOtherTestResults.put(otherTestName, otherTestResult);
+      }
+    }
+    Cast cast = Cast.builder(castRow).build();
+    Collection<Integer> failed = getFailedDepths(cast, otherTestResults, buddy, buddyOtherTestResults, distance);
+    return CastCheckResult.builder()
+        .withCastNumber(cast.getCastNumber())
+        .withPassed(failed.isEmpty())
+        .withFailedDepths(new ArrayList<>(failed))
+        .build().asRow();
   }
 
   private static void loadParameters(Properties properties) {
@@ -154,295 +181,151 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     throw new UnsupportedOperationException("This method is not used");
   }
 
+  private static boolean hasTemperature(Cast cast) {
+    return cast.getVariables().stream().filter(v -> v.getCode() == TEMPERATURE).count() > 0 &&
+        cast.getDepths().stream().flatMap(d -> d.getData().stream().filter(pd -> pd.getVariable() == TEMPERATURE)).count() > 0;
+  }
 
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+  private Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults, @Nullable Cast buddy,
+      Map<String, CastCheckResult> buddyOtherTestResults, double distance) {
 
+    Set<Integer> failures = new TreeSet<>();
 
-    ParameterDataReader parameterData = new ParameterDataReader(cast, parameters);
-    double[] bgsl = parameterData.getClim();
-    double[] slev = parameterData.getDepths();
-    double[] bgev = parameterData.getBgev();
-    double[] obev = parameterData.getObev();
+    Integer probeType = CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).orElse(null);
 
-    int probeType = 1; // TODO
-    boolean failedSpikeTest = false; // TODO
+    ParameterDataReader parameterData = new ParameterDataReader(parameters);
+    CastParameterDataReader castParameterData = new CastParameterDataReader(cast, parameters);
+    List<Double> bgsl = castParameterData.getClim();
+    List<Double> slev = parameterData.getDepths();
+    List<Double> bgev = castParameterData.getBgev();
+    List<Double> obev = parameterData.getObev();
 
-    List<StdLevel> stdLevels = getStdLevels(cast, otherTestResults, slev);
-    for (StdLevel stdLevel: stdLevels) {
-      double pge = determinePge(stdLevel.getStdLevelIndex(), stdLevel.getMeanDifference(), bgev, obev, cast.getLatitude(), probeType, failedSpikeTest);
+    TreeMap<Integer, StdLevel> pgeLevels = new TreeMap<>();
 
+    EnBackgroundChecker enBackgroundChecker = new EnBackgroundChecker(parameters);
+    StdLevelResolver stdLevelResolver = new StdLevelResolver(enBackgroundChecker, slev);
+
+    List<StdLevel> stdLevels = stdLevelResolver.getStdLevels(cast, otherTestResults);
+    for (StdLevel stdLevel : stdLevels) {
+      stdLevel.setPge(determinePge(stdLevel.getStdLevelIndex(), stdLevel.getStdLevel(), bgev, obev, cast.getLatitude(), probeType));
+      pgeLevels.put(stdLevel.getStdLevelIndex(), stdLevel);
     }
 
+    if (!stdLevels.isEmpty()) {
+      if (buddy != null) {
+        // buddy vetos
+        if (hasTemperature(buddy)) {
+          CastUtils.getProbeType(buddy).map(Attribute::getValue).map(Double::intValue).ifPresent(buddyProbeType -> {
+            CastParameterDataReader buddyParameterData = new CastParameterDataReader(buddy, parameters);
+            List<Double> buddyBgev = buddyParameterData.getBgev();
 
-//
-//    List<Depth> levels = cast.getDepths();
-    Set<Integer> failures = new TreeSet<>();
-//
-//    EnBackgroundCheckerResult bgResult = EnBackgroundChecker.getFailedDepths(cast, otherTestResults, parameters);
-//    for (EnBackgroundCheckerLevelResult levelResult : bgResult.getLevels()) {
-//      if (!preQc.contains(levelResult.getOrigLevel())) {
-//        StdLevelWrapper stdLevelWrapper = atStandardLevel(levels, levelResult, slev);
-//        double pge = determinePge(stdLevelWrapper.getStdLevelIndex(), stdLevelWrapper.getAvgLevel(), bgev, obev, cast.getLatitude(), probeType, failedSpikeTest);
-//      }
-//
-//    }
-//
-//    for (int i = 0; i < levels.size(); i++) {
-//      Depth levelDepth = levels.get(i);
-//
-//    }
+            List<StdLevel> buddyStdLevels = stdLevelResolver.getStdLevels(buddy, buddyOtherTestResults);
+            for (StdLevel buddyStdLevel : buddyStdLevels) {
+              StdLevel stdLevel = pgeLevels.get(buddyStdLevel.getStdLevelIndex());
+              if (stdLevel != null) {
+                double buddyPge = determinePge(buddyStdLevel.getStdLevelIndex(), buddyStdLevel.getStdLevel(), buddyBgev, obev, buddy.getLatitude(),
+                    buddyProbeType);
+                stdLevel.setPge(updatePge(
+                    stdLevel.getPge(),
+                    buddyPge,
+                    cast,
+                    buddy,
+                    stdLevel.getStdLevel(),
+                    buddyStdLevel.getStdLevel(),
+                    distance,
+                    bgev.get(stdLevel.getStdLevelIndex()),
+                    obev.get(stdLevel.getStdLevelIndex())));
+              }
+            }
+          });
+
+
+        }
+
+
+      }
+
+      reinstateLevels(cast, pgeLevels, bgsl, slev);
+
+      pgeLevels.values().forEach(stdLevel -> {
+        if (stdLevel.getPge() >= 0.5) {
+          stdLevel.getLevelWrappers().forEach(lw -> {
+            failures.add(lw.getLevel().getOrigLevel());
+          });
+        }
+      });
+    }
 
     return failures;
   }
 
-//  private Map<String, CastCheckResult> getTestResultsForBuddy(Cast buddy) {
-//
-//  }
-//
-//  private Optional<Cast> findBuddy(Cast cast, double maxDistance, EnBgCheckInfoParameters parameters) {
-//
-//  }
-
-  /*
-  def record_parameters(profile, bgStdLevels, bgevStdLevels, origLevels, ptLevels, bgLevels, data_store):
-    # pack the parameter arrays into the enbackground table
-    # for consumption by the buddy check
-    data_store.put(profile.uid(), 'enbackground', {'bgstdlevels':bgStdLevels, 'bgevstdlevels':bgevStdLevels, 'origlevels':origLevels, 'ptlevels':ptLevels, 'bglevels':bgLevels})
-
-   */
-
-
-//  private static void stdLevelData(Cast cast, Map<String, CastCheckResult> otherTestResults, ParameterDataReader parameterData) {
-//    Set<Integer> preQc = new HashSet<>();
-//    otherTestResults.values().stream().map(CastCheckResult::getFailedDepths).forEach(preQc::addAll);
-//
-//    EnBackgroundCheckerResult bgResult = EnBackgroundChecker.getFailedDepths(cast, otherTestResults, parameters);
-//
-//    double[] stdLevels = parameterData.getDepths();
-//
-//    boolean failedSpikeTest = otherTestResults.get(CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName()).getFailedDepths().contains(iLevel);
-//
-//    CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).ifPresent(probeType -> {
-//    });
-//
-//    bgResult.getLevels().stream().filter(level -> !preQc.contains(level.getOrigLevel())).forEach(levelResult -> {
-//
-//    });
-//
-//
-//  }
-
-  private static double determinePge(int iLevel, double level, double[] bgev, double[] obev, double latitude, int probeType, boolean failedSpikeTest) {
-    double bgevLevel = bgev[iLevel];
-    if (Math.abs(latitude) < 10D) {
-      bgevLevel *= Math.pow(1.5, 2D);
-    }
-    double obevLevel = obev[iLevel];
-    double pgeEst = PgeEstimator.estimateProbabilityOfGrossError(probeType, failedSpikeTest);
-    double kappa = 0.1;
-    double evLevel = obevLevel + bgevLevel; // V from the text
-    double sdiff = Math.pow(level, 2D) / evLevel;
-    double pdGood = Math.exp(-0.5 * Math.min(sdiff, 160D)) / Math.sqrt(2D * Math.PI * evLevel);
-    double pdTotal = kappa * pgeEst + pdGood * (1D - pgeEst);
-    return kappa * pgeEst / pdTotal;
-  }
-
-//  private static List<Double> determinePge(List<Double> levels, double[] bgev, double[] obev, double latitude, int probeType, boolean failedSpikeTest) {
-//    /*
-//    determine the probability of gross error per level given:
-//    levels: a list of observed - background temperatures per level (ie the first return of stdLevelData)
-//    bgev: list of background error variance per level
-//    obev: list of observational error variances per level
-//    profile: the wodpy profile object in question
-//     */
-//    List<Double> pge = new ArrayList<>(levels.size());
-//    for (int iLevel = 0; iLevel < levels.size(); iLevel++) {
-//      Double level = levels.get(iLevel);
-//      if (level != null) {
-//        double bgevLevel = bgev[iLevel];
-//        if (Math.abs(latitude) < 10D){
-//          bgevLevel *= Math.pow(1.5, 2D);
-//        }
-//        double obevLevel = obev[iLevel];
-//        double pgeEst = PgeEstimator.estimateProbabilityOfGrossError(probeType, failedSpikeTest);
-//        double kappa = 0.1;
-//        double evLevel = obevLevel + bgevLevel; // V from the text
-//        double sdiff   = Math.pow(level, 2D) / evLevel;
-//        double pdGood = Math.exp(-0.5 * Math.min(sdiff, 160D)) / Math.sqrt(2D * Math.PI * evLevel);
-//        double pdTotal = kappa * pgeEst + pdGood * (1D - pgeEst);
-//        pge.add(kappa * pgeEst / pdTotal);
-//      } else {
-//        pge.add(null);
-//      }
-//    }
-//    return pge;
-//  }
-
-  /*
-  def determine_pge(levels, bgev, obev, profile):
-    '''
-    determine the probability of gross error per level given:
-    levels: a list of observed - background temperatures per level (ie the first return of stdLevelData)
-    bgev: list of background error variance per level
-    obev: list of observational error variances per level
-    profile: the wodpy profile object in question
-    '''
-    pge = np.ma.array(np.ndarray(len(levels)))
-    pge.mask = True
-
-    for iLevel, level in enumerate(levels):
-        if levels.mask[iLevel] or bgev.mask[iLevel]: continue
-        bgevLevel = bgev[iLevel]
-        if np.abs(profile.latitude()) < 10.0: bgevLevel *= 1.5**2
-        obevLevel = obev[iLevel]
-        pge_est = EN_background_check.estimatePGE(profile.probe_type(), False)
-
-        kappa   = 0.1
-        evLevel = obevLevel + bgevLevel  #V from the text
-        sdiff   = level**2 / evLevel
-        pdGood  = np.exp(-0.5 * np.min([sdiff, 160.0])) / np.sqrt(2.0 * np.pi * evLevel)
-        pdTotal = kappa * pge_est + pdGood * (1.0 - pge_est)
-        pge[iLevel] = kappa * pge_est / pdTotal
-
-    return pge
-   */
-
-  private static class StdLevelWrapper {
-
-    private final EnBackgroundCheckerLevelResult level;
-    private final int stdLevelIndex;
-    private final double stdLevelDifference;
-    private final double diffLevel;
-
-    private StdLevelWrapper(EnBackgroundCheckerLevelResult level, int stdLevelIndex, double stdLevelDifference, double diffLevel) {
-      this.level = level;
-      this.stdLevelIndex = stdLevelIndex;
-      this.stdLevelDifference = stdLevelDifference;
-      this.diffLevel = diffLevel;
-    }
-
-    public EnBackgroundCheckerLevelResult getLevel() {
-      return level;
-    }
-
-    public int getStdLevelIndex() {
-      return stdLevelIndex;
-    }
-
-    public double getStdLevelDifference() {
-      return stdLevelDifference;
-    }
-
-    public double getDiffLevel() {
-      return diffLevel;
-    }
-  }
-
-  private static StdLevelWrapper atStandardLevel(List<Depth> depths, EnBackgroundCheckerLevelResult level, double[] slev) {
-    double diffLevel = level.getPtLevel() - level.getBgLevel();
-    // Find the closest standard level
-    int minIndex = -1;
-    double minDiff = Integer.MAX_VALUE;
-    for (int j = 0; j < slev.length; j++) {
-      double diff = Math.abs(depths.get(level.getOrigLevel()).getDepth() - slev[j]);
-      if (minIndex < 0 || diff < minDiff) {
-        minIndex = j;
-        minDiff = diff;
-      }
-    }
-    return new StdLevelWrapper(level, minIndex, minDiff, diffLevel);
-  }
-
-  private static class StdLevel {
-    private final int stdLevelIndex;
-    private final double stdLevel;
-    private final List<StdLevelWrapper> levelWrappers = new ArrayList<>();
-
-    public StdLevel(int stdLevelIndex, double stdLevel) {
-      this.stdLevelIndex = stdLevelIndex;
-      this.stdLevel = stdLevel;
-    }
-
-    public int getStdLevelIndex() {
-      return stdLevelIndex;
-    }
-
-    public double getStdLevel() {
-      return stdLevel;
-    }
-
-    public List<StdLevelWrapper> getLevelWrappers() {
-      return levelWrappers;
-    }
-
-    public double getMeanDifference() {
-      return levelWrappers.stream().mapToDouble(StdLevelWrapper::getStdLevelDifference).reduce(0, Double::sum) / (double) levelWrappers.size();
-    }
-  }
-
-  private static List<StdLevel> getStdLevels(Cast cast, Map<String, CastCheckResult> otherTestResults, double[] slev) {
-    final Set<Integer> preQc = new HashSet<>();
-    for (Entry<String, CastCheckResult> entry : otherTestResults.entrySet()) {
-      if (OTHER_TEST_TO_CHECK.contains(entry.getKey())) {
-        preQc.addAll(entry.getValue().getFailedDepths());
-      }
-    }
-
-    Map<Integer, StdLevel> stdLevelMap = new TreeMap<>();
-
-    EnBackgroundCheckerResult bgResult = EnBackgroundChecker.getFailedDepths(cast, otherTestResults, parameters);
-    for (EnBackgroundCheckerLevelResult levelResult : bgResult.getLevels()) {
-      if (!preQc.contains(levelResult.getOrigLevel())) {
-        StdLevelWrapper stdLevelWrapper = atStandardLevel(cast.getDepths(), levelResult, slev);
-        StdLevel stdLevel = stdLevelMap.get(stdLevelWrapper.getStdLevelIndex());
-        if (stdLevel == null) {
-          stdLevel = new StdLevel(stdLevelWrapper.getStdLevelIndex(), slev[stdLevelWrapper.getStdLevelIndex()]);
-          stdLevelMap.put(stdLevelWrapper.getStdLevelIndex(), stdLevel);
+  protected void reinstateLevels(Cast cast, TreeMap<Integer, StdLevel> pgeLevels, List<Double> bgsl, List<Double> slev) {
+    final double depthTol = Math.abs(cast.getLatitude()) < 20D ? 300D : 200D;
+    int nsl = new ArrayList<>(pgeLevels.keySet()).get(pgeLevels.size() - 1);
+    for (StdLevel stdLevel : pgeLevels.values()) {
+      if (stdLevel.getPge() >= 0.5) {
+        int i = stdLevel.getStdLevelIndex();
+        boolean okBelow = false;
+        if (i > 0) {
+          if ((pgeLevels.get(i - 1) == null || pgeLevels.get(i - 1).getPge() < 0.5) && bgsl.get(i - 1) != null) {
+            okBelow = true;
+          }
         }
-        stdLevel.getLevelWrappers().add(stdLevelWrapper);
+        boolean okAbove = false;
+        if (i < nsl - 1) {
+          if ((pgeLevels.get(i + 1) == null || pgeLevels.get(i + 1).getPge() < 0.5) && bgsl.get(i + 1) != null) {
+            okAbove = true;
+          }
+        }
+        double depth = slev.get(i);
+        double tolFactor;
+        if (depth > depthTol + 100D) {
+          tolFactor = 0.5;
+        } else if (depth > depthTol) {
+          tolFactor = 1.0 - 0.005 * (depth - depthTol);
+        } else {
+          tolFactor = 1D;
+        }
+        double ttol = 0.5 * tolFactor;
+        double xMax;
+        double xMin;
+        if (okBelow && okAbove) {
+          xMax = pgeLevels.get(i - 1).getStdLevel() + bgsl.get(i - 1) + ttol;
+          xMin = pgeLevels.get(i + 1).getStdLevel() + bgsl.get(i + 1) - ttol;
+        } else if (okBelow) {
+          xMax = pgeLevels.get(i - 1).getStdLevel() + bgsl.get(i - 1) + ttol;
+          xMin = pgeLevels.get(i - 1).getStdLevel() + bgsl.get(i - 1) - ttol;
+        } else if (okAbove) {
+          xMax = pgeLevels.get(i + 1).getStdLevel() + bgsl.get(i + 1) + ttol;
+          xMin = pgeLevels.get(i + 1).getStdLevel() + bgsl.get(i + 1) - ttol;
+        } else {
+          continue;
+        }
+        if (pgeLevels.get(i).getStdLevel() + bgsl.get(i) >= xMin && pgeLevels.get(i).getStdLevel() + bgsl.get(i) <= xMax) {
+          pgeLevels.get(i).setPge(0.49);
+        }
       }
     }
-
-
-
-    return new ArrayList<>(stdLevelMap.values());
-
   }
 
-  /*
-def meanDifferencesAtStandardLevels(origLevels, diffLevels, depths, parameters):
-    '''
-    origLevels: list of level indices under consideration
-    diffLevels: list of differences corresponding to origLevels
-    depths: list of depths of all levels in profile.
-    returns (levels, assocLevs), where
-    levels == a masked array of mean differences at each standard level
-    assocLevs == a list of the indices of the closest standard levels to the levels indicated in origLevels
-    '''
+  private static double updatePge(double pge, double buddyPge, Cast cast, Cast buddy, double level, double levelBuddy, double minDist, double bgev,
+      double obev) {
+    final double covar = buddyCovariance(minDist, cast, buddy, bgev / 2D, bgev / 2.0D, bgev / 2D, bgev / 2D);
+    final double errVarA = obev + bgev;
+    final double errVarB = obev + bgev;
+    final double rho2 = Math.pow(covar, 2D) / (errVarA * errVarB);
+    double expArg =
+        -(0.5 * rho2 / (1.0 - rho2)) * (Math.pow(level, 2D) / errVarA + Math.pow(levelBuddy, 2D) / errVarB - 2D * level * levelBuddy / covar);
+    expArg = -0.5 * Math.log(1D - rho2) + expArg;
+    expArg = Math.min(80D, Math.max(-80D, expArg));
+    double z = 1D / (1D - (1D - pge) * (1D - buddyPge) * (1D - expArg));
+    //  In case of rounding errors.
+    if (z < 0D) {
+      z = 1D;
+    }
+    z = Math.pow(z, 0.5);
+    return pge * z;
+  }
 
-    # Get the set of standard levels.
-    stdLevels = parameters['enbackground']['depth']
 
-    # Create arrays to hold the standard level data and aggregate.
-    nStdLevels = len(stdLevels)
-    levels     = np.zeros(nStdLevels)
-    nPerLev    = np.zeros(nStdLevels)
-    assocLevs  = []
-    for i, origLevel in enumerate(origLevels):
-        # Find the closest standard level.
-        j          = np.argmin(np.abs(depths[origLevel] - stdLevels))
-        assocLevs.append(j)
-        levels[j]  += diffLevels[i]
-        nPerLev[j] += 1
-
-    # Average the standard levels where there are data.
-    iGT1 = nPerLev > 1
-    levels[iGT1] /= nPerLev[iGT1]
-    levels = np.ma.array(levels)
-    levels.mask = False
-    levels.mask[nPerLev == 0] = True
-
-    return levels, assocLevs
-   */
 }

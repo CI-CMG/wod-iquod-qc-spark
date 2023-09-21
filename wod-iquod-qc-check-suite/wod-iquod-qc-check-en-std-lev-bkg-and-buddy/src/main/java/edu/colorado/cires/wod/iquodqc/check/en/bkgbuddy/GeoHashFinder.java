@@ -1,31 +1,17 @@
 package edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy;
 
-import com.github.davidmoten.geo.Coverage;
 import com.github.davidmoten.geo.GeoHash;
-import java.awt.geom.Point2D;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
-import org.locationtech.jts.geom.Coordinate;
-import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 public class GeoHashFinder {
 
   private static final int GEOHASH_LENGTH = 3;
-  private static final double POLE_THRESHOLD = 20000D;
   private static final CoordinateReferenceSystem EPSG_4326;
-  private static final double NORTH = 0D;
-  private static final double EAST = 90D;
-  private static final double SOUTH = 180D;
-  private static final double WEST = 270D;
 
   static {
     try {
@@ -34,6 +20,11 @@ public class GeoHashFinder {
       throw new RuntimeException("Unable to determine CRS", e);
     }
   }
+
+  private static final double NORTH = 0D;
+  private static final double EAST = 90D;
+  private static final double SOUTH = 180D;
+  private static final double WEST = 270D;
 
   private static double distanceToPole(double longitude, double latitude, boolean north) {
     GeodeticCalculator gc = new GeodeticCalculator(EPSG_4326);

@@ -17,6 +17,7 @@ import org.apache.spark.sql.Row;
 public class BackgroundCheck extends CommonCastCheck {
 
   private static EnBgCheckInfoParameters parameters;
+  private static EnBackgroundChecker enBackgroundChecker;
   private Properties properties;
 
   @Override
@@ -50,13 +51,14 @@ public class BackgroundCheck extends CommonCastCheck {
 
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return EnBackgroundChecker.getFailedDepths(cast, otherTestResults, parameters).getFailures();
+    return enBackgroundChecker.getFailedDepths(cast, otherTestResults).getFailures();
   }
 
   private static void loadParameters(Properties properties) {
     synchronized (BackgroundCheck.class) {
       if (parameters == null) {
         parameters = EnBgCheckInfoParametersReader.loadParameters(properties);
+        enBackgroundChecker = new EnBackgroundChecker(parameters);
       }
     }
   }
