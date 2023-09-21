@@ -53,8 +53,10 @@ public class EnBgCheckInfoParametersReaderTest {
     builder.addVariable("month", DataType.SHORT, Arrays.asList(monDim));
     Variable.Builder potmBuilder = builder.addVariable("potm_climatology", DataType.FLOAT, Arrays.asList(zDim, latDim, lonDim, monDim));
     potmBuilder.addAttribute(new Attribute("_FillValue", Float.MIN_VALUE));
-    builder.addVariable("bg_err_var", DataType.FLOAT, Arrays.asList(zDim, latDim, lonDim));
-    builder.addVariable("ob_err_var", DataType.FLOAT, Arrays.asList(zDim));
+    Variable.Builder bgErrVarBuilder = builder.addVariable("bg_err_var", DataType.FLOAT, Arrays.asList(zDim, latDim, lonDim));
+    bgErrVarBuilder.addAttribute(new Attribute("_FillValue", Float.MIN_VALUE));
+    Variable.Builder obErrVarBuilder = builder.addVariable("ob_err_var", DataType.FLOAT, Arrays.asList(zDim));
+    obErrVarBuilder.addAttribute(new Attribute("_FillValue", Float.MIN_VALUE));
 
     try (NetcdfFormatWriter writer = builder.build()) {
       writer.write("longitude", Array.makeFromJavaArray(testLon));

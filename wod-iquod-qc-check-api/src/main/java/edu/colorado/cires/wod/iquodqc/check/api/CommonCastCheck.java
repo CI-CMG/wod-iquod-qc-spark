@@ -6,12 +6,16 @@ import static org.apache.spark.sql.functions.struct;
 import static org.apache.spark.sql.functions.udf;
 
 import edu.colorado.cires.wod.parquet.model.Cast;
+import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -20,6 +24,8 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.api.java.UDF1;
 
 public abstract class CommonCastCheck implements CastCheck, Serializable {
+
+  private static final int TEMPERATURE = 1;
 
   @Override
   public Dataset<CastCheckResult> joinResultDataset(CastCheckContext context) {
@@ -82,7 +88,32 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         otherTestResults.put(otherTestName, otherTestResult);
       }
     }
-    return checkCast(Cast.builder(castRow).build(), otherTestResults).asRow();
+    return checkCast(filterFlags(Cast.builder(castRow).build()), otherTestResults).asRow();
+  }
+
+
+  protected Cast filterFlags(Cast cast) {
+    /*
+      In some IQuOD datasets temperature values of 99.9 or 99.99 are special values to
+      signify not to use the data value. These are flagged here so they are not
+      sent to the quality control programs for testing.
+     */
+    return Cast.builder(cast)
+        .withDepths(cast.getDepths().stream()
+            .map(depth -> Depth.builder(depth).withData(filterProfileData(depth)).build())
+            .collect(Collectors.toList())).build();
+  }
+
+  private static List<ProfileData> filterProfileData(Depth depth) {
+    return depth.getData().stream().filter(CommonCastCheck::isValidProfileData).collect(Collectors.toList());
+  }
+
+  private static boolean isValidProfileData(ProfileData pd) {
+    return pd.getVariable() != TEMPERATURE || (pd.getVariable() == TEMPERATURE && isValidTemperature(pd.getValue()));
+  }
+
+  private static boolean isValidTemperature(double temp) {
+    return temp < 99D || temp >= 100D;
   }
 
   protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {

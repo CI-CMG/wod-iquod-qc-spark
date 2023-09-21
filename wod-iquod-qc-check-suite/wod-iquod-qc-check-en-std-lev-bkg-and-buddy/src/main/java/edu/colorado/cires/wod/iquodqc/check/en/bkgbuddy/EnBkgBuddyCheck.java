@@ -54,6 +54,11 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   private static final int MAX_DISTANCE_M = 400000;
   private static final CoordinateReferenceSystem EPSG_4326;
   private static EnBgCheckInfoParameters parameters;
+  private static ParameterDataReader parameterData;
+  private static EnBackgroundChecker enBackgroundChecker;
+  private static StdLevelResolver stdLevelResolver;
+  private static List<Double> slev;
+  private static List<Double> obev;
   private static final String NAME = CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName();
   private static final String DISTANCE = NAME + "_distance";
   private static final String GEOHASH = NAME + "_geohash";
@@ -110,7 +115,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
             + "        and A.cast.cruiseNumber != B.cast.cruiseNumber "
             + "        and A.cast.castNumber != B.cast.castNumber "
             + "        order by distance asc"
-            + "   ) C"
+            + "   ) C where C.distance <= " + MAX_DISTANCE_M + " "
             + " ) as buddy "
             + "from " + TEMP_T + " A");
     return buddies;
@@ -153,13 +158,13 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
       Row resultRow = buddyRow.getStruct(buddyRow.fieldIndex("result"));
       distance = buddyRow.getDouble(buddyRow.fieldIndex("distance"));
       Row buddyCastRow = resultRow.getStruct(resultRow.fieldIndex("cast"));
-      buddy = Cast.builder(buddyCastRow).build();
+      buddy = filterFlags(Cast.builder(buddyCastRow).build());
       for (String otherTestName : dependsOn()) {
-        CastCheckResult otherTestResult = CastCheckResult.builder(buddyRow.getStruct(buddyRow.fieldIndex(otherTestName))).build();
+        CastCheckResult otherTestResult = CastCheckResult.builder(resultRow.getStruct(resultRow.fieldIndex(otherTestName))).build();
         buddyOtherTestResults.put(otherTestName, otherTestResult);
       }
     }
-    Cast cast = Cast.builder(castRow).build();
+    Cast cast = filterFlags(Cast.builder(castRow).build());
     Collection<Integer> failed = getFailedDepths(cast, otherTestResults, buddy, buddyOtherTestResults, distance);
     return CastCheckResult.builder()
         .withCastNumber(cast.getCastNumber())
@@ -172,6 +177,11 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     synchronized (EnBkgBuddyCheck.class) {
       if (parameters == null) {
         parameters = EnBgCheckInfoParametersReader.loadParameters(properties);
+        parameterData = new ParameterDataReader(parameters);
+        slev = parameterData.getDepths();
+        obev = parameterData.getObev();
+        enBackgroundChecker = new EnBackgroundChecker(parameters);
+        stdLevelResolver = new StdLevelResolver(enBackgroundChecker, slev);
       }
     }
   }
@@ -182,8 +192,22 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   }
 
   private static boolean hasTemperature(Cast cast) {
-    return cast.getVariables().stream().filter(v -> v.getCode() == TEMPERATURE).count() > 0 &&
-        cast.getDepths().stream().flatMap(d -> d.getData().stream().filter(pd -> pd.getVariable() == TEMPERATURE)).count() > 0;
+    return cast.getDepths().stream().flatMap(d -> d.getData().stream().filter(pd -> pd.getVariable() == TEMPERATURE)).findAny().isPresent();
+  }
+
+  private List<StdLevel> getStdLevels(Cast cast, Map<String, CastCheckResult> otherTestResults, CastParameterDataReader castParameterData) {
+    return getStdLevels(stdLevelResolver.getStdLevels(cast, otherTestResults), cast,  castParameterData);
+  }
+
+  private List<StdLevel> getStdLevels(List<StdLevel> stdLevels, Cast cast, CastParameterDataReader castParameterData) {
+    List<Double> bgev = castParameterData.getBgev();
+    Integer probeType = CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).orElse(null);
+    for (StdLevel stdLevel : stdLevels) {
+      if (stdLevel.getPge() == null) {
+        stdLevel.setPge(determinePge(stdLevel.getStdLevelIndex(), stdLevel.getStdLevel(), bgev, obev, cast.getLatitude(), probeType));
+      }
+    }
+    return stdLevels;
   }
 
   private Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults, @Nullable Cast buddy,
@@ -191,23 +215,11 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
 
     Set<Integer> failures = new TreeSet<>();
 
-    Integer probeType = CastUtils.getProbeType(cast).map(Attribute::getValue).map(Double::intValue).orElse(null);
-
-    ParameterDataReader parameterData = new ParameterDataReader(parameters);
-    CastParameterDataReader castParameterData = new CastParameterDataReader(cast, parameters);
-    List<Double> bgsl = castParameterData.getClim();
-    List<Double> slev = parameterData.getDepths();
-    List<Double> bgev = castParameterData.getBgev();
-    List<Double> obev = parameterData.getObev();
-
     TreeMap<Integer, StdLevel> pgeLevels = new TreeMap<>();
 
-    EnBackgroundChecker enBackgroundChecker = new EnBackgroundChecker(parameters);
-    StdLevelResolver stdLevelResolver = new StdLevelResolver(enBackgroundChecker, slev);
-
-    List<StdLevel> stdLevels = stdLevelResolver.getStdLevels(cast, otherTestResults);
+    CastParameterDataReader parameterData = new CastParameterDataReader(cast, parameters);
+    List<StdLevel> stdLevels = getStdLevels(cast, otherTestResults, parameterData);
     for (StdLevel stdLevel : stdLevels) {
-      stdLevel.setPge(determinePge(stdLevel.getStdLevelIndex(), stdLevel.getStdLevel(), bgev, obev, cast.getLatitude(), probeType));
       pgeLevels.put(stdLevel.getStdLevelIndex(), stdLevel);
     }
 
@@ -215,16 +227,13 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
       if (buddy != null) {
         // buddy vetos
         if (hasTemperature(buddy)) {
-          CastUtils.getProbeType(buddy).map(Attribute::getValue).map(Double::intValue).ifPresent(buddyProbeType -> {
             CastParameterDataReader buddyParameterData = new CastParameterDataReader(buddy, parameters);
-            List<Double> buddyBgev = buddyParameterData.getBgev();
-
-            List<StdLevel> buddyStdLevels = stdLevelResolver.getStdLevels(buddy, buddyOtherTestResults);
+            // not sure why we are passing the levels from the main cast.  This is what the Python test did.
+            List<StdLevel> buddyStdLevels = getStdLevels(stdLevels, buddy, buddyParameterData);
             for (StdLevel buddyStdLevel : buddyStdLevels) {
+              double buddyPge = buddyStdLevel.getPge();
               StdLevel stdLevel = pgeLevels.get(buddyStdLevel.getStdLevelIndex());
               if (stdLevel != null) {
-                double buddyPge = determinePge(buddyStdLevel.getStdLevelIndex(), buddyStdLevel.getStdLevel(), buddyBgev, obev, buddy.getLatitude(),
-                    buddyProbeType);
                 stdLevel.setPge(updatePge(
                     stdLevel.getPge(),
                     buddyPge,
@@ -233,19 +242,15 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
                     stdLevel.getStdLevel(),
                     buddyStdLevel.getStdLevel(),
                     distance,
-                    bgev.get(stdLevel.getStdLevelIndex()),
+                    parameterData.getBgev().get(stdLevel.getStdLevelIndex()),
+                    buddyParameterData.getBgev().get(stdLevel.getStdLevelIndex()),
                     obev.get(stdLevel.getStdLevelIndex())));
               }
             }
-          });
-
-
         }
-
-
       }
 
-      reinstateLevels(cast, pgeLevels, bgsl, slev);
+      reinstateLevels(cast, pgeLevels, parameterData.getClim(), slev);
 
       pgeLevels.values().forEach(stdLevel -> {
         if (stdLevel.getPge() >= 0.5) {
@@ -308,11 +313,10 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     }
   }
 
-  private static double updatePge(double pge, double buddyPge, Cast cast, Cast buddy, double level, double levelBuddy, double minDist, double bgev,
-      double obev) {
-    final double covar = buddyCovariance(minDist, cast, buddy, bgev / 2D, bgev / 2.0D, bgev / 2D, bgev / 2D);
+  private static double updatePge(double pge, double buddyPge, Cast cast, Cast buddy, double level, double levelBuddy, double minDist, double bgev, double bgevBuddy, double obev) {
+    final double covar = buddyCovariance(minDist, cast, buddy, bgev / 2D, bgevBuddy / 2.0D, bgev / 2D, bgevBuddy / 2D);
     final double errVarA = obev + bgev;
-    final double errVarB = obev + bgev;
+    final double errVarB = obev + bgevBuddy;
     final double rho2 = Math.pow(covar, 2D) / (errVarA * errVarB);
     double expArg =
         -(0.5 * rho2 / (1.0 - rho2)) * (Math.pow(level, 2D) / errVarA + Math.pow(levelBuddy, 2D) / errVarB - 2D * level * levelBuddy / covar);
