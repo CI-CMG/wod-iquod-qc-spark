@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.common;
 
 public enum CheckNames {
+  AOML_CLIMATOLOGY("AOML_climatology_test"),
   AOML_CONSTANT("AOML_constant"),
   AOML_GRADIENT("AOML_gradient"),
   AOML_GROSS("AOML_gross"),
@@ -24,8 +25,7 @@ public enum CheckNames {
   EN_SPIKE_AND_STEP_CHECK("EN_spike_and_step_check"),
   EN_SPIKE_AND_STEP_SUSPECT("EN_spike_and_step_suspect"),
   EN_STABILITY_CHECK("EN_stability_check"),
-  EN_STD_LEV_BKG_AND_BUDDY_CHECK("EN_std_lev_bkg_and_buddy_check"),
-  ;
+  EN_STD_LEV_BKG_AND_BUDDY_CHECK("EN_std_lev_bkg_and_buddy_check");
 
   private final String name;
 

@@ -91,6 +91,7 @@ public class EnBgCheckInfoParametersReaderTest {
 
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", createTestNetCdf(testLon, testLat));
+    properties.put("data.dir", DIR.toString());
     EnBgCheckInfoParameters parameters = EnBgCheckInfoParametersReader.loadParameters(properties);
     GridCell gridCell = EnUtils.findGridCell(cast, parameters);
     assertTrue(Precision.equals(1D, gridCell.getiLon()));
@@ -124,6 +125,7 @@ public class EnBgCheckInfoParametersReaderTest {
 
       Properties properties = new Properties();
       properties.put("EN_bgcheck_info.netcdf.uri", createTestNetCdf(testLon, testLat));
+      properties.put("data.dir", DIR.toString());
       EnBgCheckInfoParameters parameters = EnBgCheckInfoParametersReader.loadParameters(properties);
       EnUtils.findGridCell(cast, parameters);
     });
@@ -157,6 +159,7 @@ public class EnBgCheckInfoParametersReaderTest {
 
       Properties properties = new Properties();
       properties.put("EN_bgcheck_info.netcdf.uri", createTestNetCdf(testLon, testLat));
+      properties.put("data.dir", DIR.toString());
       EnBgCheckInfoParameters parameters = EnBgCheckInfoParametersReader.loadParameters(properties);
       EnUtils.findGridCell(cast, parameters);
     });

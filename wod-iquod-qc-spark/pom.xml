@@ -14,6 +14,11 @@
   <dependencies>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
+      <artifactId>wod-iquod-qc-check-aoml-climatology</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-constant</artifactId>
       <version>${project.version}</version>
     </dependency>

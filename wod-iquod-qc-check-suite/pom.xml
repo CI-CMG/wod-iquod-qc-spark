@@ -13,6 +13,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>wod-iquod-qc-check-aoml-climatology</module>
     <module>wod-iquod-qc-check-aoml-constant</module>
     <module>wod-iquod-qc-check-aoml-gradient</module>
     <module>wod-iquod-qc-check-aoml-gross</module>

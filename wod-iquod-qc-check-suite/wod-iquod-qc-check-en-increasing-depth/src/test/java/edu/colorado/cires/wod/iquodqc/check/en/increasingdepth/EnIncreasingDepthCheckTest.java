@@ -50,6 +50,7 @@ public class EnIncreasingDepthCheckTest {
         .getOrCreate();
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
+    properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
