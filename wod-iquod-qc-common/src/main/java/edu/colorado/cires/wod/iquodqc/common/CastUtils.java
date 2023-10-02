@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.common;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -15,6 +16,10 @@ public final class CastUtils {
 
   public static OptionalInt getProbeTypeValue(Cast cast) {
     return getProbeType(cast).map(Attribute::getValue).stream().mapToInt(Double::intValue).findFirst();
+  }
+
+  public static boolean isProbeTypeXBT(Cast cast) {
+    return getProbeTypeValue(cast).equals(OptionalInt.of(XBT));
   }
 
   private CastUtils() {

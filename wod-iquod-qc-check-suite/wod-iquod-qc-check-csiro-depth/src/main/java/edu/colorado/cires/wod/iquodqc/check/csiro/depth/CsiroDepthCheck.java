@@ -1,6 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.depth;
 
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.isProbeTypeXBT;
+import static edu.colorado.cires.wod.iquodqc.common.CastUtils.isProbeTypeXBT;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;

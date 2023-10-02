@@ -40,6 +40,13 @@
     <module>wod-iquod-qc-check-csiro-short-gradient</module>
     <module>wod-iquod-qc-check-csiro-surface-spikes</module>
     <module>wod-iquod-qc-check-csiro-wire-break</module>
+    <module>wod-iquod-qc-check-icdc-aqc-01-level-order</module>
+    <module>wod-iquod-qc-check-icdc-aqc-02-crude-range</module>
+    <module>wod-iquod-qc-check-icdc-aqc-04-max-obs-depth</module>
+    <module>wod-iquod-qc-check-icdc-aqc-05-stuck-value</module>
+    <module>wod-iquod-qc-check-icdc-aqc-06-n-temperature-extrema</module>
+    <module>wod-iquod-qc-check-icdc-aqc-07-spike-check</module>
+    <module>wod-iquod-qc-check-icdc-aqc-08-gradient-check</module>
     <module>wod-iquod-qc-check-iquod-gross-range</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
   </modules>

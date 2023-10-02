@@ -1,7 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.wirebreak;
 
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.isProbeTypeXBT;
+import static edu.colorado.cires.wod.iquodqc.common.CastUtils.isProbeTypeXBT;
 import static java.lang.Math.abs;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
