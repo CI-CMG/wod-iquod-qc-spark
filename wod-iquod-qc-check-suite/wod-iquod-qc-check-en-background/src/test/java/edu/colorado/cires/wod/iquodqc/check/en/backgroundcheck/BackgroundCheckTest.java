@@ -108,6 +108,8 @@ public class BackgroundCheckTest {
         assert numpy.array_equal(qc, expected), 'mismatch between qc results and expected values'
      */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(55.6)
         .withLongitude(12.9)
         .withYear((short) 1900)
@@ -168,6 +170,8 @@ public class BackgroundCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -258,6 +262,8 @@ public class BackgroundCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -336,6 +342,8 @@ public class BackgroundCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

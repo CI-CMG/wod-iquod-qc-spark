@@ -82,6 +82,8 @@ public class ArgoImpossibleLocationCheckTest {
   @CsvSource({"-180.1,0,true", "180.1,0,true", "0,-90.1,true", "0,90.1,true", "40,50,false"})
   public void test(double lon, double lat, boolean failed) throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLongitude(lon)
         .withLatitude(lat)
         .withPrincipalInvestigators(Collections.emptyList())

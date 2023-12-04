@@ -101,6 +101,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthOutsideValidRangeNegative() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(-1D)
@@ -174,6 +176,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthOutsideValidRangeBigun() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
@@ -247,6 +251,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
@@ -320,6 +326,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging2() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
@@ -393,6 +401,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging3() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
@@ -466,6 +476,8 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthAllZero() throws Exception {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -538,6 +550,8 @@ public class EnIncreasingDepthCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -632,6 +646,8 @@ public class EnIncreasingDepthCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -710,6 +726,8 @@ public class EnIncreasingDepthCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

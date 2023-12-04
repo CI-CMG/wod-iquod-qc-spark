@@ -85,6 +85,8 @@ class ArgoGlobalRangeCheckTest {
   public void testArgoGlobalRangeCheckPassTemp() throws Exception{
     // -2.5 OK
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -134,6 +136,8 @@ class ArgoGlobalRangeCheckTest {
   public void testArgoGlobalRangeCheckFailTemperature() throws Exception{
     // failed to flag temperature slightly colder than -2.5 C
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -184,6 +188,8 @@ class ArgoGlobalRangeCheckTest {
     // failed to flag pressure slightly below -5
     double lat = 0.0;
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(lat)
         .withLongitude(0)
         .withYear((short) 1900)

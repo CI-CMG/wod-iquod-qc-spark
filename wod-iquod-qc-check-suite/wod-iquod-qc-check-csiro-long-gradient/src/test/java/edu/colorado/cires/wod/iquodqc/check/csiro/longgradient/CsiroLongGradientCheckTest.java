@@ -84,6 +84,8 @@ class CsiroLongGradientCheckTest {
   public void testCsiroLongGradientFailedNominal() throws Exception{
     // failed to flag a nominal long inversion
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -157,6 +159,8 @@ class CsiroLongGradientCheckTest {
   public void testCsiroLongGradientGradlong() throws Exception{
     // should not flag a long inversion with such a large gradient
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -230,6 +234,8 @@ class CsiroLongGradientCheckTest {
   public void testCsiroLongGradientShallow() throws Exception{
     // should not flag a long inversion that begins at < 5m
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

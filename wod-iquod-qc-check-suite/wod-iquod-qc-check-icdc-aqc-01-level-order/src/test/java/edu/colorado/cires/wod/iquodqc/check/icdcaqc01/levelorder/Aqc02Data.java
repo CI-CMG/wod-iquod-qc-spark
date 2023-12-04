@@ -54,6 +54,8 @@ public class Aqc02Data {
   }
   public Cast buildCast() {
     return Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withYear((short) 1900)
         .withMonth((short) 1)

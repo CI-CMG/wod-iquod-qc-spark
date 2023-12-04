@@ -84,6 +84,8 @@ class CsiroDepthCheckTest {
   public void testCsiroDepthFailedShallow() throws Exception{
     // failed to flag a too-shallow xbt measurement
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -139,6 +141,8 @@ class CsiroDepthCheckTest {
   public void testCsiroDepthNotXBT() throws Exception{
     // flagged a non-xbt measurement
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -194,6 +198,8 @@ class CsiroDepthCheckTest {
   public void testCsiroDepthAtThreshold() throws Exception{
     // shouldn't flag measurements at threshold
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

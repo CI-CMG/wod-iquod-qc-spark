@@ -79,6 +79,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestYear() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 1699)
         .withMonth((short) 1)
         .withDay((short) 1)
@@ -111,6 +113,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestMonth() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 2001)
         .withMonth((short) 0)
         .withDay((short) 1)
@@ -143,6 +147,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestDayBasic() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 2001)
         .withMonth((short) 2)
         .withDay((short) 29)
@@ -175,6 +181,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestDayLeapYear() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 2004)
         .withMonth((short) 2)
         .withDay((short) 29)
@@ -206,6 +214,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestHour() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 2004)
         .withMonth((short) 2)
         .withDay((short) 29)
@@ -238,6 +248,8 @@ public class ArgoImpossibleDateCheckTest {
   @Test
   public void testArgoImpossibleDateTestHourMissing() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withYear((short) 2004)
         .withMonth((short) 1)
         .withDay((short) 29)

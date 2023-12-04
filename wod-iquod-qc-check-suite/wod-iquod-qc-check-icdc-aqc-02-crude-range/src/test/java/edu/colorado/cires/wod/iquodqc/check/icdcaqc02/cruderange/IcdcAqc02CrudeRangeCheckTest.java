@@ -108,6 +108,8 @@ example1 = np.array([
 [ 2027.0,    48.800,  1]])
      */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -199,6 +201,8 @@ example2 = np.array([
 [  356.0,    36.140,  1]])
      */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -323,6 +327,8 @@ example3 = np.array([
 [ 5021.8,     7.290,  2]])
      */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(6.9)
@@ -488,6 +494,8 @@ example4 = np.array([
 [  610.2,     1.393,  0]])
      */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5.2)
@@ -581,6 +589,8 @@ example5 = np.array([
 [  140.0,    14.700,  0]])
     */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(.0)
@@ -689,6 +699,8 @@ example6 = np.array([
 [  326.0,    28.390,  2]])
     */
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
 

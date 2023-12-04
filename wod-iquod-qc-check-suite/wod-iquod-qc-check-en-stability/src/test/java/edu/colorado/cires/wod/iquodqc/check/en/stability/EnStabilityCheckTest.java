@@ -87,6 +87,8 @@ class EnStabilityCheckTest {
   @Test
   public void testEnStabilityCheckPadded() {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -172,6 +174,8 @@ class EnStabilityCheckTest {
   @Test
   public void testEnStabilityCheckUnpadded() {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -223,6 +227,8 @@ class EnStabilityCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -307,6 +313,8 @@ class EnStabilityCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -385,6 +393,8 @@ class EnStabilityCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

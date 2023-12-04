@@ -82,6 +82,8 @@ public class AomlGradientCheckTest {
   public void testAomlGradientBoundaries1() {
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -129,6 +131,8 @@ public class AomlGradientCheckTest {
   @Test
   public void testAomlGradientBoundaries2() {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -176,6 +180,8 @@ public class AomlGradientCheckTest {
   @Test
   public void testAomlGradientEdge() {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())

@@ -98,6 +98,8 @@ public class BackgroundAvailableCheckTest {
   @Test
   public void testEnBackgroundAvailableCheckDepth() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(55.6)
         .withLongitude(12.9)
         .withYear((short) 1900)
@@ -157,6 +159,8 @@ public class BackgroundAvailableCheckTest {
   @Test
   public void testEnBackgroundAvailableCheckLocation() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0D)
         .withLongitude(20D)
         .withYear((short) 1900)

@@ -23,6 +23,7 @@ public class AsciiToSparkModelTransformer {
 
   public static Cast fromAsciiModel(edu.colorado.cires.wod.ascii.model.Cast asciiCast) {
     return Cast.builder()
+        .withDataset(asciiCast.getDataset())
         .withCastNumber(asciiCast.getCastNumber())
         .withCruiseNumber(asciiCast.getCruiseNumber())
         .withOriginatorsStationCode(asciiCast.getOriginatorsStationCode())

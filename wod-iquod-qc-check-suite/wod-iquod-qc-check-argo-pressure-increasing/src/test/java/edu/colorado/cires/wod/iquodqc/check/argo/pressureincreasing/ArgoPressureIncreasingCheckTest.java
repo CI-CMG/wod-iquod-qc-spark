@@ -84,6 +84,8 @@ class ArgoPressureIncreasingCheckTest {
   public void testArgoPressureIncreaseCheckFailConstantPressure() throws Exception{
     // test should flag only the subsequent levels of constant pressure.
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -140,6 +142,8 @@ class ArgoPressureIncreasingCheckTest {
     // test should flag only the subsequent levels of constant pressure.
 //    must flag all levels corresponding to pressure inversion.
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

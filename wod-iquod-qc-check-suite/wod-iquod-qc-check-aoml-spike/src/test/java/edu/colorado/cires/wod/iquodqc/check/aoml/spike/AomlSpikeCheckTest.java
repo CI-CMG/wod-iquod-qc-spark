@@ -82,6 +82,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeSmooth() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -127,6 +129,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeHasSpike() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -173,6 +177,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeMissingTemp() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -215,6 +221,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeHasNegativeSpike() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -271,6 +279,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeSlice1() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
@@ -327,6 +337,8 @@ public class AomlSpikeCheckTest {
   @Test
   public void testAomlSpikeSlice2() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())

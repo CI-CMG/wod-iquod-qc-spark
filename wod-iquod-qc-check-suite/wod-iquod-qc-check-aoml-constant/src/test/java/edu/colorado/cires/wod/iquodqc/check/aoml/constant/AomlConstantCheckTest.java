@@ -84,6 +84,8 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckFailedConstantTemp() throws Exception{
     // failed to flag constant temperature
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -139,6 +141,8 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckFailedMissingTemp() throws Exception{
     // failed to ignore masked value correctly
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -193,6 +197,8 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckSingleDepth() throws Exception{
     // flagged single level profile
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -235,6 +241,8 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckOneTemp() throws Exception{
     // flagged profile with only a single unmasked level
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -283,6 +291,8 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckMultipleTemp() throws Exception{
     // flagged two different temperatures
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

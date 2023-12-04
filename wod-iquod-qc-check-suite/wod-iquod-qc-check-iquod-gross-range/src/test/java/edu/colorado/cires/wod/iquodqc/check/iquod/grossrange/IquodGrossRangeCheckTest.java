@@ -84,6 +84,8 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailedColdTemp() throws Exception{
     // failed to flag temperature slightly colder than -4 C
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -127,6 +129,8 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckPassedColdTemp() throws Exception{
     // -4 OK
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -170,6 +174,8 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailedHotTemp() throws Exception{
     // failed to flag temperature slightly warmer than 100 C
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -213,6 +219,8 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckPassedHotTemp() throws Exception{
     // 100 OK
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -256,6 +264,8 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailTemps() throws Exception{
     // test of a sequence of temperatures contained in a profile
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

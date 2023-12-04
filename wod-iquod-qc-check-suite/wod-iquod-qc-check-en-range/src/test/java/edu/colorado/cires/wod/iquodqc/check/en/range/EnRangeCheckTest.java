@@ -85,6 +85,8 @@ class EnRangeCheckTest {
   public void testEnRangeCheckFailedColdTemp() throws Exception{
     // failed to flag temperature slightly colder than -4 C
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -128,6 +130,8 @@ class EnRangeCheckTest {
   public void testEnRangeCheckPassedColdTemp() throws Exception{
     // -4 OK
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -171,6 +175,8 @@ class EnRangeCheckTest {
   public void testEnRangeCheckFailedHotTemp() throws Exception{
     // failed to flag temperature slightly warmer than 40 C
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -214,6 +220,8 @@ class EnRangeCheckTest {
   public void testEnRangeCheckPassedHotTemp() throws Exception{
     // 40 OK
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -257,6 +265,8 @@ class EnRangeCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -341,6 +351,8 @@ class EnRangeCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -419,6 +431,8 @@ class EnRangeCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

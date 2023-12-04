@@ -85,6 +85,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomFailedConstantTemp() throws Exception{
     // failed to flag a constant temperature at bottom of profile
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -142,6 +144,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomProbeType() throws Exception{
     //flagged a constant temperature for an inappropriate probe type
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -197,6 +201,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomLatitude() throws Exception{
     //flagged a constant temperature for an inappropriate latitude
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(-41)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -252,6 +258,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomDepth() throws Exception{
     //flagged a constant temperature for an inappropriate depth distance
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(-41)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -307,6 +315,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomNotBottom() throws Exception{
     //flagged a constant temperature not at the bottom of the profile
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(-41)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -362,6 +372,8 @@ class CsiroConstantBottomCheckTest {
   public void testCsiroConstantBottomSingleLevel() throws Exception{
     //cant perform this check with a single-level profile
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(-41)
         .withLongitude(0)
         .withYear((short) 1900)

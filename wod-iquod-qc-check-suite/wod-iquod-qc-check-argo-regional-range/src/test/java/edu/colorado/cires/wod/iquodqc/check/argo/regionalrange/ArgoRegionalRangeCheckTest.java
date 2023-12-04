@@ -82,6 +82,8 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestNotInRangeRed() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(30.540632)
         .withLongitude(34.705133)
         .withYear((short) 1900)
@@ -128,6 +130,8 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestNotInRangeMed() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(43.808479)
         .withLongitude(7.445307)
         .withYear((short) 1900)
@@ -174,6 +178,8 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestMediterraneanHot() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(35D)
         .withLongitude(18D)
         .withYear((short) 1900)
@@ -221,6 +227,8 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestRedCold() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(22D)
         .withLongitude(38D)
         .withYear((short) 1900)

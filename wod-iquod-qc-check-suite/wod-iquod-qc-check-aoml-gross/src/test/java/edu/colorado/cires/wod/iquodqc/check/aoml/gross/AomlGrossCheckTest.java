@@ -84,6 +84,8 @@ public class AomlGrossCheckTest {
 
 
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())

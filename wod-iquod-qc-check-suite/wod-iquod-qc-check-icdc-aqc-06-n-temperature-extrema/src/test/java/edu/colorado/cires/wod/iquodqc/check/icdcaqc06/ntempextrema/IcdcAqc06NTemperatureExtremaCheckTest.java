@@ -106,6 +106,8 @@ class IcdcAqc06NTemperatureExtremaCheckTest {
 
   private Cast buildCast(ICDCdata data) {
     return Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(data.getLatitude())
         .withLongitude(data.getLongitude())
         .withYear(data.getYear())

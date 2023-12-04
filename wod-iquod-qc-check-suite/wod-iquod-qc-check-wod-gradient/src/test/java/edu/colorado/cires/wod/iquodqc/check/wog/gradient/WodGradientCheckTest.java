@@ -85,6 +85,8 @@ class WodGradientCheckTest {
     // should just barely pass; gradient exactly at threshold
     // flagged temperature inversion at threshold
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -135,6 +137,8 @@ class WodGradientCheckTest {
     // should just barely fail; gradient slightly over threshold
     // failed to flag slight excess temperature inversion
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -185,6 +189,8 @@ class WodGradientCheckTest {
     // should just barely fail; inversion slightly over threshold
     // failed to flag slight excess temperature gradient
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -240,6 +246,8 @@ class WodGradientCheckTest {
     // should just barely pass; gradient exactly at threshold
     // flagged temperature gradient at threshold
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

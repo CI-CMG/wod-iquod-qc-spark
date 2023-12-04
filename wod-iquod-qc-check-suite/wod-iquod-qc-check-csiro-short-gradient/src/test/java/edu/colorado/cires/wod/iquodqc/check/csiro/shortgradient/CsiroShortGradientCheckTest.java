@@ -84,6 +84,8 @@ class CsiroShortGradientCheckTest {
   public void testCsiroShortGradientFailed1() throws Exception{
     // failed to flag a gradient at small delta-temp and delta-depth
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -133,6 +135,8 @@ class CsiroShortGradientCheckTest {
   public void testCsiroShortGradientFailed2() throws Exception{
     // failed to flag a gradient outside of delta temp and depth ranges, but inside gradshort ranges
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -182,6 +186,8 @@ class CsiroShortGradientCheckTest {
   public void testCsiroShortGradientSmalltemp() throws Exception{
     // flagged a gradient even though its temperature change was too small to consider
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

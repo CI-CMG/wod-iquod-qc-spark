@@ -140,6 +140,8 @@ public class EnBkgBuddyCheckTest {
   public void testQuery() throws Exception {
     List<Cast> casts = Arrays.asList(
         Cast.builder()
+            .withDataset("TEST")
+            .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(12.9)
             .withGeohash("u3c")
@@ -159,6 +161,8 @@ public class EnBkgBuddyCheckTest {
             ))
             .build(),
         Cast.builder()
+            .withDataset("TEST")
+            .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15)
             .withGeohash("u3f")
@@ -178,6 +182,8 @@ public class EnBkgBuddyCheckTest {
             ))
             .build(),
         Cast.builder()
+            .withDataset("TEST")
+            .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15.3)
             .withGeohash("u3f")
@@ -197,6 +203,8 @@ public class EnBkgBuddyCheckTest {
             ))
             .build(),
         Cast.builder()
+            .withDataset("TEST")
+            .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15.1)
             .withGeohash("u3f")
@@ -216,6 +224,8 @@ public class EnBkgBuddyCheckTest {
             ))
             .build(),
         Cast.builder()
+            .withDataset("TEST")
+            .withGeohash("TEST")
             .withLatitude(56.3)
             .withLongitude(15.1)
             .withGeohash("u64")
@@ -340,6 +350,8 @@ public class EnBkgBuddyCheckTest {
   @Test
   public void testEnStdLevelBkgAndBuddyCheckTemperature() throws Exception {
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(55.6)
         .withLongitude(12.9)
         .withGeohash("u3c")
@@ -372,6 +384,8 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Cast buddy = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0D)
         .withLongitude(0D)
         .withGeohash("s00")
@@ -460,6 +474,8 @@ public class EnBkgBuddyCheckTest {
   @Test
   public void testEnStdLevelBkgAndBuddyRealProfiles1() throws Exception {
     Cast realProfile1 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -578,6 +594,8 @@ public class EnBkgBuddyCheckTest {
   @Test
   public void testEnStdLevelBkgAndBuddyRealProfiles2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -657,6 +675,8 @@ public class EnBkgBuddyCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)
@@ -785,6 +805,8 @@ public class EnBkgBuddyCheckTest {
   @Test
   public void testEnStdLevelBkgAndBuddyRealProfiles3() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -864,6 +886,8 @@ public class EnBkgBuddyCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

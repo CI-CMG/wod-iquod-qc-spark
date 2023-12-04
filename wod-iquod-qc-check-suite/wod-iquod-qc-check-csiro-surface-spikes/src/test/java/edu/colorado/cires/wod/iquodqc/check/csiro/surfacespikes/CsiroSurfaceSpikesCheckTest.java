@@ -84,6 +84,8 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesFailed1() throws Exception{
     // failed to flag a collection of shallow profiles
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -139,6 +141,8 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesProbeType() throws Exception{
     // flagged shallow profiles for an inappropriate probe type
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -194,6 +198,8 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesNoClusters() throws Exception{
     // flagged shallow profile without a cluster
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

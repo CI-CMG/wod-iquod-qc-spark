@@ -85,6 +85,8 @@ class ArgoGradientCheckTest {
   public void testArgoGradientCheckPassPositiveSpike() throws Exception{
     // pass a marginal positive spike (criteria exactly 9 C):
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -144,6 +146,8 @@ class ArgoGradientCheckTest {
   public void testArgoGradientCheckPassNegativeSpike() throws Exception{
     // pass a marginal negative spike (criteria exactly 9 C):
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -204,6 +208,8 @@ class ArgoGradientCheckTest {
   public void testArgoGradientCheckFailPositiveSpike() throws Exception{
     // fail a marginal positive spike (criteria > 9 C):
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -258,6 +264,8 @@ class ArgoGradientCheckTest {
   public void testArgoGradientCheckFailNegativeSpike() throws Exception{
     // fail a marginal negative spike (criteria > 9 C):
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -313,6 +321,8 @@ class ArgoGradientCheckTest {
     // pass a marginal positive spike (criteria exactly 9 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -369,6 +379,8 @@ class ArgoGradientCheckTest {
     // pass a marginal negative spike (criteria exactly 9 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -425,6 +437,8 @@ class ArgoGradientCheckTest {
     // fail a marginal positive spike (criteria exactly 9 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -481,6 +495,8 @@ class ArgoGradientCheckTest {
     // fail a marginal negative spike (criteria exactly 9 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -538,6 +554,8 @@ class ArgoGradientCheckTest {
     // at threshold, use deep criteria
     double lat = 0.0;
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(lat)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -595,6 +613,8 @@ class ArgoGradientCheckTest {
     // but passes just above 500m
     double lat = 0.0;
     Cast cast = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
         .withLatitude(lat)
         .withLongitude(0)
         .withYear((short) 1900)
