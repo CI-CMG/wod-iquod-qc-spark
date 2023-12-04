@@ -94,7 +94,7 @@ public class ICDCdata {
     }
     depths.add(Depth.builder().withDepth(Double.parseDouble(data[0]))
         .withData(Collections.singletonList(ProfileData.builder()
-            .withVariable(TEMPERATURE).withValue(Double.parseDouble(data[1]))
+            .withVariableCode(TEMPERATURE).withValue(Double.parseDouble(data[1]))
             .build()))
         .build());
   }

@@ -41,10 +41,10 @@ public class StdLevelTest {
         .withTime(12D)
         .withAttributes(Collections.singletonList(Attribute.builder().withCode(PROBE_TYPE).withValue(2D).build()))
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(5.1).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(45).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(46).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build()
+            Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(5.1).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(45).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(46).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build()
             ))
         .build();
 
@@ -91,11 +91,11 @@ public class StdLevelTest {
         .withTime(12D)
         .withAttributes(Collections.singletonList(Attribute.builder().withCode(PROBE_TYPE).withValue(2D).build()))
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build(),
-            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.6900).build())).build()
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build()
         ))
         .build();
 

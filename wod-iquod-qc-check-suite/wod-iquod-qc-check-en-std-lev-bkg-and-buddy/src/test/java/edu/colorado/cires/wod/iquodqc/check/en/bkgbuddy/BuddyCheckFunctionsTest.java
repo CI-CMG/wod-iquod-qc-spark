@@ -98,9 +98,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 6)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -111,9 +111,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 11)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -124,9 +124,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 1)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -145,9 +145,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 1)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -158,9 +158,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 6)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -180,9 +180,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 1)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 
@@ -193,9 +193,9 @@ public class BuddyCheckFunctionsTest {
         .withDay((short) 6)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build(),
-            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(0).build())).build()
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build(),
+            Depth.builder().withDepth(0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(0).build())).build()
         ))
         .build();
 

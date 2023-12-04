@@ -80,7 +80,7 @@ public class EnBgCheckInfoParametersReaderTest {
         .withDepths(Collections.singletonList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build()
         ))
@@ -112,7 +112,7 @@ public class EnBgCheckInfoParametersReaderTest {
         .withDepths(Collections.singletonList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build()
         ))
@@ -146,7 +146,7 @@ public class EnBgCheckInfoParametersReaderTest {
         .withDepths(Collections.singletonList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build()
         ))

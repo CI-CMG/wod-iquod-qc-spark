@@ -15,15 +15,15 @@ import java.util.OptionalInt;
 public final class DepthUtils {
 
   public static Optional<ProfileData> getTemperature(Depth depth) {
-    return depth.getData().stream().filter((pd) -> pd.getVariable() == TEMPERATURE).findFirst();
+    return depth.getData().stream().filter((pd) -> pd.getVariableCode() == TEMPERATURE).findFirst();
   }
 
   public static Optional<ProfileData> getSalinity(Depth depth) {
-    return depth.getData().stream().filter((pd) -> pd.getVariable() == SALINITY).findFirst();
+    return depth.getData().stream().filter((pd) -> pd.getVariableCode() == SALINITY).findFirst();
   }
 
   public static Optional<ProfileData> getPressure(Depth depth) {
-    return depth.getData().stream().filter((pd) -> pd.getVariable() == PRESSURE).findFirst();
+    return depth.getData().stream().filter((pd) -> pd.getVariableCode() == PRESSURE).findFirst();
   }
 
 //  public static boolean isProbeTypeXBT(Cast cast) {

@@ -50,7 +50,7 @@ public class Aqc02Data {
   private void addCastDepth(double depth, double temp){
     castDepths.add(Depth.builder().withDepth(depth)
         .withData(Collections.singletonList(ProfileData.builder()
-            .withVariable(TEMPERATURE).withValue(temp).build())).build());
+            .withVariableCode(TEMPERATURE).withValue(temp).build())).build());
   }
   public Cast buildCast() {
     return Cast.builder()

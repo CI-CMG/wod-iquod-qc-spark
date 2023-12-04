@@ -109,7 +109,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
   }
 
   private static boolean isValidProfileData(ProfileData pd) {
-    return pd.getVariable() != TEMPERATURE || (pd.getVariable() == TEMPERATURE && isValidTemperature(pd.getValue()));
+    return pd.getVariableCode() != TEMPERATURE || (pd.getVariableCode() == TEMPERATURE && isValidTemperature(pd.getValue()));
   }
 
   private static boolean isValidTemperature(double temp) {

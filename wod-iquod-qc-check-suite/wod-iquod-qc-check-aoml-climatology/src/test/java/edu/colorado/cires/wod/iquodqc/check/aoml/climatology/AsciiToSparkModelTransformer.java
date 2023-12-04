@@ -87,7 +87,7 @@ public class AsciiToSparkModelTransformer {
   }
 
   private static PrincipalInvestigator map(edu.colorado.cires.wod.ascii.model.PrincipalInvestigator asciiPi) {
-    return PrincipalInvestigator.builder().withCode(asciiPi.getCode()).withVariable(asciiPi.getVariable()).build();
+    return PrincipalInvestigator.builder().withPiCode(asciiPi.getCode()).withVariableCode(asciiPi.getVariable()).build();
   }
 
   private static Attribute map(edu.colorado.cires.wod.ascii.model.Attribute asciiAttribute) {
@@ -95,7 +95,7 @@ public class AsciiToSparkModelTransformer {
   }
 
   private static TaxonomicDataset map(List<edu.colorado.cires.wod.ascii.model.QcAttribute> asciiQcAttributes) {
-    return TaxonomicDataset.builder().withAttributes(asciiQcAttributes.stream().map(AsciiToSparkModelTransformer::map).collect(Collectors.toList())).build();
+    return TaxonomicDataset.builder().withValues(asciiQcAttributes.stream().map(AsciiToSparkModelTransformer::map).collect(Collectors.toList())).build();
   }
 
   private static QcAttribute map(edu.colorado.cires.wod.ascii.model.QcAttribute asciiQcAttribute) {
@@ -118,7 +118,7 @@ public class AsciiToSparkModelTransformer {
 
   private static ProfileData map(edu.colorado.cires.wod.ascii.model.ProfileData asciiData) {
     return ProfileData.builder()
-        .withVariable(asciiData.getVariable())
+        .withVariableCode(asciiData.getVariable())
         .withValue(asciiData.getValue())
         .withQcFlag(asciiData.getQcFlag())
         .withOriginatorsFlag(asciiData.getOriginatorsFlag())

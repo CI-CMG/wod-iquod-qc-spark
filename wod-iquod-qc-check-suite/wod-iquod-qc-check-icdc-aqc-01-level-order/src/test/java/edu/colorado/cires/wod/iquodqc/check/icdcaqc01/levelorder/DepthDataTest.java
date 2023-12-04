@@ -60,11 +60,11 @@ class DepthDataTest {
         .withDay((short) 6)
         .withTime(12D)
         .withDepths(Arrays.asList(
-            Depth.builder().withDepth(2.0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.0).build()))
+            Depth.builder().withDepth(2.0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.0).build()))
                 .build(),
             Depth.builder().withDepth(-1.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(2.0).build())).build(),
-            Depth.builder().withDepth(1.0).withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.0).build()))
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(2.0).build())).build(),
+            Depth.builder().withDepth(1.0).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.0).build()))
                 .build()
         ))
         .build();

@@ -21,22 +21,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(10D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(20D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(30D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build()
         )).build();
@@ -52,22 +52,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(20D)
+                    .withVariableCode(TEMPERATURE).withValue(20D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(10D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(24D)
+                    .withVariableCode(TEMPERATURE).withValue(24D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(20D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(18D)
+                    .withVariableCode(TEMPERATURE).withValue(18D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(30D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(17D)
+                    .withVariableCode(TEMPERATURE).withValue(17D)
                     .build()))
                 .build()
         )).build();
@@ -83,22 +83,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(21D)
+                    .withVariableCode(TEMPERATURE).withValue(21D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(10D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(24D)
+                    .withVariableCode(TEMPERATURE).withValue(24D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(70D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(18D)
+                    .withVariableCode(TEMPERATURE).withValue(18D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(80D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(17D)
+                    .withVariableCode(TEMPERATURE).withValue(17D)
                     .build()))
                 .build()
         )).build();
@@ -114,22 +114,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(20D)
+                    .withVariableCode(TEMPERATURE).withValue(20D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(510D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(21D)
+                    .withVariableCode(TEMPERATURE).withValue(21D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(670D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(18D)
+                    .withVariableCode(TEMPERATURE).withValue(18D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(680D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(17D)
+                    .withVariableCode(TEMPERATURE).withValue(17D)
                     .build()))
                 .build()
         )).build();
@@ -145,22 +145,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(22.5)
+                    .withVariableCode(TEMPERATURE).withValue(22.5)
                     .build()))
                 .build(),
             Depth.builder().withDepth(510D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(24D)
+                    .withVariableCode(TEMPERATURE).withValue(24D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(520D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(22.5)
+                    .withVariableCode(TEMPERATURE).withValue(22.5)
                     .build()))
                 .build(),
             Depth.builder().withDepth(530D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(22D)
+                    .withVariableCode(TEMPERATURE).withValue(22D)
                     .build()))
                 .build()
         )).build();
@@ -176,22 +176,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(24D)
+                    .withVariableCode(TEMPERATURE).withValue(24D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(20D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(24D)
+                    .withVariableCode(TEMPERATURE).withValue(24D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(30D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(2D)
+                    .withVariableCode(TEMPERATURE).withValue(2D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(40D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(1D)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
                     .build()))
                 .build()
         )).build();
@@ -207,22 +207,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(310D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(13D)
+                    .withVariableCode(TEMPERATURE).withValue(13D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(320D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(13D)
+                    .withVariableCode(TEMPERATURE).withValue(13D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(330D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(13D)
+                    .withVariableCode(TEMPERATURE).withValue(13D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(340D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(1D)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
                     .build()))
                 .build()
         )).build();
@@ -238,22 +238,22 @@ public class EnSpikeAndStepCheckerTest {
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(20D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(30D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build(),
             Depth.builder().withDepth(40D)
                 .withData(Collections.singletonList(ProfileData.builder()
-                    .withVariable(TEMPERATURE).withValue(0D)
+                    .withVariableCode(TEMPERATURE).withValue(0D)
                     .build()))
                 .build()
         )).build();

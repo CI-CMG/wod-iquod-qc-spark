@@ -99,7 +99,7 @@ class AomlClimatologyCheckTest {
 
     Cast cast;
     try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("src/test/resources/APBO2020-19827232.ascii"))) {
-      CastFileReader reader = new CastFileReader(new BufferedCharReader(bufferedReader), "APB", null);
+      CastFileReader reader = new CastFileReader(new BufferedCharReader(bufferedReader), "APB");
       cast = AsciiToSparkModelTransformer.fromAsciiModel(reader.next());
     }
 

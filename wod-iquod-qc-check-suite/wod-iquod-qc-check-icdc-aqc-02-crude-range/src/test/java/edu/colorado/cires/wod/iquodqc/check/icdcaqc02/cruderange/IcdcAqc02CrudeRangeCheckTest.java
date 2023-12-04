@@ -111,51 +111,51 @@ example1 = np.array([
         .withCastNumber(1)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.600).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.600).build())).build(),
             Depth.builder().withDepth(10D)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.600).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.600).build())).build(),
             Depth.builder().withDepth(25.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.520).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.520).build())).build(),
             Depth.builder().withDepth(50.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(27.410).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(27.410).build())).build(),
             Depth.builder().withDepth(73.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.120).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.120).build())).build(),
             Depth.builder().withDepth(98.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.390).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.390).build())).build(),
             Depth.builder().withDepth(122.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(23.320).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(23.320).build())).build(),
             Depth.builder().withDepth(147.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(22.790).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.790).build())).build(),
             Depth.builder().withDepth(197.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(22.040).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.040).build())).build(),
             Depth.builder().withDepth(247.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.880).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.880).build())).build(),
             Depth.builder().withDepth(297.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.860).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.860).build())).build(),
             Depth.builder().withDepth(396.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.780).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.780).build())).build(),
             Depth.builder().withDepth(496.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.760).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.760).build())).build(),
             Depth.builder().withDepth(595.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.740).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.740).build())).build(),
             Depth.builder().withDepth(795.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.810).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.810).build())).build(),
             Depth.builder().withDepth(994.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.840).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.840).build())).build(),
             Depth.builder().withDepth(1193.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.860).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.860).build())).build(),
             Depth.builder().withDepth(1492.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.930).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.930).build())).build(),
             Depth.builder().withDepth(1888.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.960).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.960).build())).build(),
             Depth.builder().withDepth(1937.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(22.330).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.330).build())).build(),
             Depth.builder().withDepth(1987.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.560).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.560).build())).build(),
             Depth.builder().withDepth(2008.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(38.150).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(38.150).build())).build(),
             Depth.builder().withDepth(2027.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(48.800).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(48.800).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
@@ -202,43 +202,43 @@ example2 = np.array([
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(30.310).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(30.310).build())).build(),
             Depth.builder().withDepth(5.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(30.310).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(30.310).build())).build(),
             Depth.builder().withDepth(18.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(29.260).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(29.260).build())).build(),
             Depth.builder().withDepth(30.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(29.170).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(29.170).build())).build(),
             Depth.builder().withDepth(34.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(27.500).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(27.500).build())).build(),
             Depth.builder().withDepth(42.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.300).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.300).build())).build(),
             Depth.builder().withDepth(43.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.740).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.740).build())).build(),
             Depth.builder().withDepth(48.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.810).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.810).build())).build(),
             Depth.builder().withDepth(55.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.070).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.070).build())).build(),
             Depth.builder().withDepth(83.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(22.590).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.590).build())).build(),
             Depth.builder().withDepth(108.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.850).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.850).build())).build(),
             Depth.builder().withDepth(113.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(21.300).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.300).build())).build(),
             Depth.builder().withDepth(163.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(19.920).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.920).build())).build(),
             Depth.builder().withDepth(255.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(18.830).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.830).build())).build(),
             Depth.builder().withDepth(327.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(18.730).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.730).build())).build(),
             Depth.builder().withDepth(334.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(23.330).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(23.330).build())).build(),
             Depth.builder().withDepth(341.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(27.780).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(27.780).build())).build(),
             Depth.builder().withDepth(349.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.050).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.050).build())).build(),
             Depth.builder().withDepth(356.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(36.140).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(36.140).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
@@ -326,125 +326,125 @@ example3 = np.array([
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(6.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.700).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.700).build())).build(),
             Depth.builder().withDepth(8.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.700).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.700).build())).build(),
             Depth.builder().withDepth(18.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.700).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.700).build())).build(),
             Depth.builder().withDepth(28.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.670).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.670).build())).build(),
             Depth.builder().withDepth(38.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.440).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.440).build())).build(),
             Depth.builder().withDepth(48.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(13.620).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.620).build())).build(),
             Depth.builder().withDepth(58.5)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(11.920).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(11.920).build())).build(),
             Depth.builder().withDepth(68.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(11.390).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(11.390).build())).build(),
             Depth.builder().withDepth(78.3)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(11.270).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(11.270).build())).build(),
             Depth.builder().withDepth(98.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(10.900).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.900).build())).build(),
             Depth.builder().withDepth(117.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(10.730).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.730).build())).build(),
             Depth.builder().withDepth(137.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(10.510).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.510).build())).build(),
             Depth.builder().withDepth(157.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(10.340).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.340).build())).build(),
             Depth.builder().withDepth(177.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(9.470).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(9.470).build())).build(),
             Depth.builder().withDepth(197.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(9.140).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(9.140).build())).build(),
             Depth.builder().withDepth(222.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(8.380).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(8.380).build())).build(),
             Depth.builder().withDepth(246.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(8.090).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(8.090).build())).build(),
             Depth.builder().withDepth(271.5)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(7.870).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(7.870).build())).build(),
             Depth.builder().withDepth(296.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(7.290).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(7.290).build())).build(),
             Depth.builder().withDepth(321.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.910).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.910).build())).build(),
             Depth.builder().withDepth(345.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.830).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.830).build())).build(),
             Depth.builder().withDepth(370.5)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.720).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.720).build())).build(),
             Depth.builder().withDepth(395.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.210).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.210).build())).build(),
             Depth.builder().withDepth(419.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.070).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.070).build())).build(),
             Depth.builder().withDepth(444.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.690).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.690).build())).build(),
             Depth.builder().withDepth(469.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.790).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.790).build())).build(),
             Depth.builder().withDepth(494.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.570).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.570).build())).build(),
             Depth.builder().withDepth(518.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.650).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.650).build())).build(),
             Depth.builder().withDepth(543.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.680).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.680).build())).build(),
             Depth.builder().withDepth(568.3)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.270).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.270).build())).build(),
             Depth.builder().withDepth(593.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.170).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.170).build())).build(),
             Depth.builder().withDepth(617.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.010).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.010).build())).build(),
             Depth.builder().withDepth(642.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.030).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.030).build())).build(),
             Depth.builder().withDepth(667.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.120).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.120).build())).build(),
             Depth.builder().withDepth(691.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(5.180).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.180).build())).build(),
             Depth.builder().withDepth(741.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(4.920).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.920).build())).build(),
             Depth.builder().withDepth(787.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(36.560).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(36.560).build())).build(),
             Depth.builder().withDepth(790.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(4.370).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.370).build())).build(),
             Depth.builder().withDepth(840.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(4.200).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.200).build())).build(),
             Depth.builder().withDepth(888.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(33.530).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(33.530).build())).build(),
             Depth.builder().withDepth(889.3)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(4.110).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.110).build())).build(),
             Depth.builder().withDepth(938.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(4.040).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.040).build())).build(),
             Depth.builder().withDepth(987.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.370).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.370).build())).build(),
             Depth.builder().withDepth(988.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.970).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.970).build())).build(),
             Depth.builder().withDepth(1037.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.910).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.910).build())).build(),
             Depth.builder().withDepth(1084.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(15.690).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.690).build())).build(),
             Depth.builder().withDepth(1086.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.840).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.840).build())).build(),
             Depth.builder().withDepth(1136.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.780).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.780).build())).build(),
             Depth.builder().withDepth(1431.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.420).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.420).build())).build(),
             Depth.builder().withDepth(1480.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.370).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.370).build())).build(),
             Depth.builder().withDepth(1530.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.340).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.340).build())).build(),
             Depth.builder().withDepth(1579.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.320).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.320).build())).build(),
             Depth.builder().withDepth(1628.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.300).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.300).build())).build(),
             Depth.builder().withDepth(1676.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.260).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.260).build())).build(),
             Depth.builder().withDepth(1725.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.240).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.240).build())).build(),
             Depth.builder().withDepth(1775.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.230).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.230).build())).build(),
             Depth.builder().withDepth(1825.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.230).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.230).build())).build(),
             Depth.builder().withDepth(1874.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.210).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.210).build())).build(),
             Depth.builder().withDepth(1923.3)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(3.170).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.170).build())).build(),
             Depth.builder().withDepth(5021.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(7.290).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(7.290).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
@@ -491,43 +491,43 @@ example4 = np.array([
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.370).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.370).build())).build(),
             Depth.builder().withDepth(31.9)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.370).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.370).build())).build(),
             Depth.builder().withDepth(66.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.480).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.480).build())).build(),
             Depth.builder().withDepth(73.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.504).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.504).build())).build(),
             Depth.builder().withDepth(96.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(33.846).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(33.846).build())).build(),
             Depth.builder().withDepth(23.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(35.412).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(35.412).build())).build(),
             Depth.builder().withDepth(131.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.393).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.393).build())).build(),
             Depth.builder().withDepth(161.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.442).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.442).build())).build(),
             Depth.builder().withDepth(195.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(260.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(298.5)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(344.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(363.1)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(370.7)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(386.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(412.6)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(465.8)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(492.4)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.497).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.497).build())).build(),
             Depth.builder().withDepth(610.2)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(1.393).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(1.393).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
@@ -584,63 +584,63 @@ example5 = np.array([
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(5.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(10.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(15.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(20.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(25.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(30.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(35.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(40.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(45.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(50.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(55.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(60.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
             Depth.builder().withDepth(65.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.800).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.800).build())).build(),
             Depth.builder().withDepth(70.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.400).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.400).build())).build(),
             Depth.builder().withDepth(75.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.100).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.100).build())).build(),
             Depth.builder().withDepth(80.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.000).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.000).build())).build(),
             Depth.builder().withDepth(85.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.500).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.500).build())).build(),
             Depth.builder().withDepth(90.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.100).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.100).build())).build(),
             Depth.builder().withDepth(95.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(31.800).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(31.800).build())).build(),
             Depth.builder().withDepth(100.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(20.600).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.600).build())).build(),
             Depth.builder().withDepth(105.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.200).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.200).build())).build(),
             Depth.builder().withDepth(110.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(36.100).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(36.100).build())).build(),
             Depth.builder().withDepth(115.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(31.500).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(31.500).build())).build(),
             Depth.builder().withDepth(120.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(.300).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(.300).build())).build(),
             Depth.builder().withDepth(125.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(.300).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(.300).build())).build(),
             Depth.builder().withDepth(130.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(6.800).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.800).build())).build(),
             Depth.builder().withDepth(135.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(95.200).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(95.200).build())).build(),
             Depth.builder().withDepth(140.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(14.700).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.700).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
@@ -693,53 +693,53 @@ example6 = np.array([
         .withDepths(Arrays.asList(
 
             Depth.builder().withDepth(.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.410).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.410).build())).build(),
             Depth.builder().withDepth(1.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.320).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.320).build())).build(),
             Depth.builder().withDepth(14.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.560).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.560).build())).build(),
             Depth.builder().withDepth(35.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.680).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.680).build())).build(),
             Depth.builder().withDepth(42.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.020).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.020).build())).build(),
             Depth.builder().withDepth(49.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.800).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.800).build())).build(),
             Depth.builder().withDepth(69.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(24.640).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(24.640).build())).build(),
             Depth.builder().withDepth(81.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(25.610).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(25.610).build())).build(),
             Depth.builder().withDepth(83.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.530).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.530).build())).build(),
             Depth.builder().withDepth(91.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.960).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.960).build())).build(),
             Depth.builder().withDepth(97.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(27.310).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(27.310).build())).build(),
             Depth.builder().withDepth(121.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(26.860).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.860).build())).build(),
             Depth.builder().withDepth(140.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.360).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.360).build())).build(),
             Depth.builder().withDepth(142.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(29.180).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(29.180).build())).build(),
             Depth.builder().withDepth(163.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(29.850).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(29.850).build())).build(),
             Depth.builder().withDepth(168.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(30.630).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(30.630).build())).build(),
             Depth.builder().withDepth(171.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(32.220).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.220).build())).build(),
             Depth.builder().withDepth(177.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(33.130).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(33.130).build())).build(),
             Depth.builder().withDepth(184.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(30.750).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(30.750).build())).build(),
             Depth.builder().withDepth(195.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(29.380).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(29.380).build())).build(),
             Depth.builder().withDepth(210.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.960).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.960).build())).build(),
             Depth.builder().withDepth(215.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.760).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.760).build())).build(),
             Depth.builder().withDepth(241.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.210).build())).build(),
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.210).build())).build(),
             Depth.builder().withDepth(326.0)
-                .withData(Collections.singletonList(ProfileData.builder().withVariable(TEMPERATURE).withValue(28.390).build())).build()
+                .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.390).build())).build()
         )).build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));

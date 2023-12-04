@@ -192,7 +192,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   }
 
   private static boolean hasTemperature(Cast cast) {
-    return cast.getDepths().stream().flatMap(d -> d.getData().stream().filter(pd -> pd.getVariable() == TEMPERATURE)).findAny().isPresent();
+    return cast.getDepths().stream().flatMap(d -> d.getData().stream().filter(pd -> pd.getVariableCode() == TEMPERATURE)).findAny().isPresent();
   }
 
   private List<StdLevel> getStdLevels(Cast cast, Map<String, CastCheckResult> otherTestResults, CastParameterDataReader castParameterData) {
