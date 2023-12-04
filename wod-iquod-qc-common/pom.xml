@@ -34,7 +34,7 @@
       <artifactId>s3</artifactId>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-parquet-model</artifactId>
     </dependency>
     <dependency>

@@ -34,7 +34,7 @@
       <artifactId>spatial4j</artifactId>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-ascii-model</artifactId>
       <scope>test</scope>
     </dependency>
