@@ -49,6 +49,7 @@
     <module>wod-iquod-qc-check-icdc-aqc-08-gradient-check</module>
     <module>wod-iquod-qc-check-iquod-gross-range</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
+    <module>wod-iquod-qc-check-cotede-digit-rollover</module>
   </modules>
 
   <dependencies>
