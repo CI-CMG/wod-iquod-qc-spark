@@ -53,6 +53,7 @@
     <module>wod-iquod-qc-check-cotede-tukey-53H</module>
     <module>wod-iquod-qc-check-cotede-gradient</module>
     <module>wod-iquod-qc-check-cotede-rate-of-change</module>
+    <module>wod-iquod-qc-check-cotede-spike</module>
   </modules>
 
   <dependencies>
