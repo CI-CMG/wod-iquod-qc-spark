@@ -51,6 +51,7 @@
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-cotede-digit-rollover</module>
     <module>wod-iquod-qc-check-cotede-tukey-53H</module>
+    <module>wod-iquod-qc-check-cotede-gradient</module>
   </modules>
 
   <dependencies>
