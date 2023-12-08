@@ -50,6 +50,7 @@
     <module>wod-iquod-qc-check-iquod-gross-range</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-cotede-digit-rollover</module>
+    <module>wod-iquod-qc-check-cotede-tukey-53H</module>
   </modules>
 
   <dependencies>
