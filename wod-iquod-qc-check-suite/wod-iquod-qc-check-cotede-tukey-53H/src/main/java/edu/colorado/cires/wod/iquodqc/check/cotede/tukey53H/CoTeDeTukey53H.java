@@ -7,14 +7,32 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.ranking.NaNStrategy;
 
 public class CoTeDeTukey53H {
   
-  public static List<Integer> checkTukey53H(double[] input, double threshold) {
+  public static List<Integer> checkTukey53H(double[] input, double threshold, boolean isNorm) {
+    return getFlags(input, computeTukey53H(input, isNorm), threshold);
+  }
+  
+  public static List<Integer> getFlags(double[] input, double[] result, double threshold) {
+    return IntStream.range(0, result.length).boxed()
+        .filter(i -> {
+          double value = result[i];
+          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
+          if (i < 2 || i >= input.length - 2) {
+            return inputWasInvalid;
+          }
+          return Math.abs(value) > threshold || inputWasInvalid;
+        }).collect(Collectors.toList());
+  }
+
+  public static double[] computeTukey53H(double[] input, boolean isNorm) {
+    double[] median5 = computeWindowedMedian(input, 5);
     double[] median53H = computeWindowedMedian(
-        computeWindowedMedian(input, 5),
+        median5,
         3
     );
 
@@ -27,20 +45,23 @@ public class CoTeDeTukey53H {
     RealVector vector2 = MatrixUtils.createRealVector(median53H)
         .mapMultiply(2);
     RealVector vector3 = MatrixUtils.createRealVector(median53HRight);
-    
-    double[] result = MatrixUtils.createRealVector(input).subtract(
+
+    double[] tukey53H = MatrixUtils.createRealVector(input).subtract(
         vector1.add(vector2).add(vector3).mapMultiply(0.25)
     ).toArray();
     
-    return IntStream.range(0, result.length).boxed()
-        .filter(i -> {
-          double value = result[i];
-          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]); 
-          if (i < 2 || i >= input.length - 2) {
-            return inputWasInvalid;
-          }
-          return Math.abs(value) > threshold || inputWasInvalid;
-        }).collect(Collectors.toList());
+    if (!isNorm) {
+      return tukey53H;
+    }
+    
+    return MatrixUtils.createRealVector(tukey53H)
+        .mapDivide(
+            new StandardDeviation().evaluate(
+                Arrays.stream(median5)
+                    .filter(v -> !Double.isNaN(v))
+                    .toArray()
+            )
+        ).toArray();
   }
 
   private static void shiftArray(double[] input, int shift) {

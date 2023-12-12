@@ -9,6 +9,7 @@ import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
   protected Collection<Integer> getFailedDepths(Cast cast) {
     Set<Integer> failedDepths = new HashSet<>();
     failedDepths.addAll(
-        CoTeDeTukey53H.checkTukey53H(
+        checkTukey53H(
             cast.getDepths().stream()
                 .map(d ->
                     getTemperature(d)
@@ -35,12 +36,12 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
                         .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            TEMPERATURE_THRESHOLD
+            getTemperatureThreshold()
         )
     );
     
     failedDepths.addAll(
-        CoTeDeTukey53H.checkTukey53H(
+        checkTukey53H(
             cast.getDepths().stream()
                 .map(d ->
                     getPressure(d)
@@ -48,12 +49,12 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
                         .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            PRESSURE_THRESHOLD
+              getPressureThreshold()
         )  
     );
 
     failedDepths.addAll(
-        CoTeDeTukey53H.checkTukey53H(
+        checkTukey53H(
             cast.getDepths().stream()
                 .map(d ->
                     getSalinity(d)
@@ -61,10 +62,30 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
                         .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            SALINITY_THRESHOLD
+            getSalinityThreshold()
         )
     );
     
     return failedDepths.stream().sorted().collect(Collectors.toList());
+  }
+  
+  protected double getPressureThreshold() {
+    return PRESSURE_THRESHOLD;
+  }
+  
+  protected double getTemperatureThreshold() {
+    return TEMPERATURE_THRESHOLD;
+  }
+  
+  protected double getSalinityThreshold() {
+    return SALINITY_THRESHOLD;
+  }
+  
+  protected List<Integer> checkTukey53H(double[] input, double threshold) {
+    return CoTeDeTukey53H.checkTukey53H(
+        input,
+        threshold,
+        false
+    );
   }
 }
