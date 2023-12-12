@@ -55,6 +55,7 @@
     <module>wod-iquod-qc-check-cotede-gradient</module>
     <module>wod-iquod-qc-check-cotede-rate-of-change</module>
     <module>wod-iquod-qc-check-cotede-spike</module>
+    <module>wod-iquod-qc-check-cotede-spike-gtspp</module>
   </modules>
 
   <dependencies>
