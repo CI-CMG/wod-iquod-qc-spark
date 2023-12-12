@@ -36,7 +36,7 @@ public class CoTeDeGradientCheck extends CommonCastCheck {
                       .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            TEMPERATURE_THRESHOLD
+            getTemperatureThreshold()
         )
     );
 
@@ -49,7 +49,7 @@ public class CoTeDeGradientCheck extends CommonCastCheck {
                         .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            PRESSURE_THRESHOLD
+            getPressureThreshold()
         )
     );
 
@@ -62,12 +62,24 @@ public class CoTeDeGradientCheck extends CommonCastCheck {
                         .orElse(Double.NaN)
                 ).mapToDouble(Double::doubleValue)
                 .toArray(),
-            SALINITY_THRESHOLD
+            getSalinityThreshold()
         )
     );
     
     return failedDepths.stream()
         .sorted()
         .collect(Collectors.toList());
+  }
+  
+  protected double getTemperatureThreshold() {
+    return TEMPERATURE_THRESHOLD;
+  }
+  
+  protected double getPressureThreshold() {
+    return PRESSURE_THRESHOLD;
+  }
+
+  protected double getSalinityThreshold() {
+    return SALINITY_THRESHOLD;
   }
 }
