@@ -57,6 +57,7 @@
     <module>wod-iquod-qc-check-cotede-spike</module>
     <module>wod-iquod-qc-check-cotede-spike-gtspp</module>
     <module>wod-iquod-qc-check-cotede-gradient-gtspp</module>
+    <module>wod-iquod-qc-check-cotede-global-range-gtspp</module>
   </modules>
 
   <dependencies>
