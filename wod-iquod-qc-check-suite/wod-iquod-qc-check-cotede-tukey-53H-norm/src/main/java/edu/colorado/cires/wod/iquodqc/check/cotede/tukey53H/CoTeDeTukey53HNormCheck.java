@@ -5,8 +5,6 @@ import java.util.List;
 public class CoTeDeTukey53HNormCheck extends CoTeDeTukey53HCheck {
 
   private static final double TEMPERATURE_THRESHOLD = 2.5;
-  private static final double PRESSURE_THRESHOLD = 2.5;
-  private static final double SALINITY_THRESHOLD = 2.5;
 
   @Override
   public String getName() {
@@ -19,17 +17,7 @@ public class CoTeDeTukey53HNormCheck extends CoTeDeTukey53HCheck {
   }
 
   @Override
-  protected double getPressureThreshold() {
-    return PRESSURE_THRESHOLD;
-  }
-
-  @Override
   protected double getTemperatureThreshold() {
     return TEMPERATURE_THRESHOLD;
-  }
-
-  @Override
-  protected double getSalinityThreshold() {
-    return SALINITY_THRESHOLD;
   }
 }

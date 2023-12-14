@@ -14,8 +14,6 @@ import java.util.stream.IntStream;
 
 public class CoTeDeDigitRolloverCheck extends CommonCastCheck {
   private static final double TEMPERATURE_THRESHOLD = 2.5;
-  private static final double PRESSURE_THRESHOLD = 2.5;
-  private static final double SALINITY_THRESHOLD = 2.5;
 
   @FunctionalInterface
   interface GetVariableValue {
@@ -37,16 +35,14 @@ public class CoTeDeDigitRolloverCheck extends CommonCastCheck {
   }
   
   private static boolean checkDigitRolloverAllFields(Depth current, Depth previous) {
-    return checkDigitRolloverField(current, previous, TEMPERATURE_THRESHOLD, DepthUtils::getTemperature) &&
-        checkDigitRolloverField(current, previous, PRESSURE_THRESHOLD, DepthUtils::getPressure) &&
-        checkDigitRolloverField(current, previous, SALINITY_THRESHOLD, DepthUtils::getSalinity);
+    return checkDigitRolloverField(current, previous, DepthUtils::getTemperature);
   }
   
-  private static boolean checkDigitRolloverField(Depth current, Depth previous, double threshold, GetVariableValue method) {
+  private static boolean checkDigitRolloverField(Depth current, Depth previous, GetVariableValue method) {
     return CoTeDeDigitRollover.checkDigitRollover(
         getValue(current, method),
         getValue(previous, method),
-        threshold
+        CoTeDeDigitRolloverCheck.TEMPERATURE_THRESHOLD
     );
   }
   
