@@ -59,6 +59,7 @@
     <module>wod-iquod-qc-check-cotede-gradient-gtspp</module>
     <module>wod-iquod-qc-check-cotede-global-range-gtspp</module>
     <module>wod-iquod-qc-check-wod-range</module>
+    <module>wod-iquod-qc-check-loose-location-at-sea</module>
   </modules>
 
   <dependencies>
