@@ -61,6 +61,7 @@
     <module>wod-iquod-qc-check-wod-range</module>
     <module>wod-iquod-qc-check-loose-location-at-sea</module>
     <module>wod-iquod-qc-check-profile-envelop-gtspp</module>
+    <module>wod-iquod-qc-check-argo-density-inversion</module>
   </modules>
 
   <dependencies>
