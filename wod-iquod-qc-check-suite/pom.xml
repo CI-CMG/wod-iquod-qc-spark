@@ -25,6 +25,7 @@
     <module>wod-iquod-qc-check-argo-pressure-increasing</module>
     <module>wod-iquod-qc-check-argo-regional-range</module>
     <module>wod-iquod-qc-check-argo-spike</module>
+    <module>wod-iquod-qc-check-codete-location-at-sea</module>
     <module>wod-iquod-qc-check-en-background-available</module>
     <module>wod-iquod-qc-check-en-background</module>
     <module>wod-iquod-qc-check-en-constant-value</module>

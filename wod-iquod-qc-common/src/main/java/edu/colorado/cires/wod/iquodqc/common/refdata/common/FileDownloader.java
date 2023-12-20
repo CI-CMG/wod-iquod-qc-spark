@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 public final class FileDownloader {
 
-  private final static String DATA_DIR_PROP = "data.dir";
+  public final static String DATA_DIR_PROP = "data.dir";
   private final static int CONNECT_TIMEOUT = 2000;
   private final static int READ_TIMEOUT = 1000 * 60 * 15;
 
@@ -28,38 +28,40 @@ public final class FileDownloader {
 
   public static <T> T loadParameters(Path dataDir, Properties properties, String propertyName, Function<Path, T> fileHandler) {
     String uri = properties.getProperty(propertyName);
-    try {
-      Files.createDirectories(dataDir);
-
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to create temp file", e);
-    }
     Path ncFile = dataDir.resolve(propertyName + ".dat");
-    if (!Files.exists(ncFile)) {
-      System.err.println("Downloading " + uri);
+    synchronized (FileDownloader.class) {
       try {
-        if (uri.startsWith("s3://")) {
-          //TODO make this more robust, region, creds, etc
-          S3Client s3 = S3Client.builder().build();
-          String bucket = uri.replaceAll("s3://", "").split("/")[0];
-          String key = uri.replaceAll("s3://", "").split("/", 2)[1];
-          try (InputStream in = new BufferedInputStream(s3.getObject(c -> c.bucket(bucket).key(key)));
-              OutputStream out = new BufferedOutputStream(Files.newOutputStream(ncFile))) {
-            IOUtils.copy(in, out);
-          }
-        } else if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("ftp://") || uri.startsWith("ftps://")) {
-          FileUtils.copyURLToFile(
-              new URL(uri),
-              ncFile.toFile(),
-              CONNECT_TIMEOUT,
-              READ_TIMEOUT);
-        } else {
-          FileUtils.copyFile(new File(uri), ncFile.toFile());
-        }
+        Files.createDirectories(dataDir);
+
       } catch (IOException e) {
-        throw new RuntimeException("Unable to download " + uri, e);
+        throw new RuntimeException("Unable to create temp file", e);
       }
-      System.err.println("Done downloading " + uri);
+      if (!Files.exists(ncFile)) {
+        System.err.println("Downloading " + uri);
+        try {
+          if (uri.startsWith("s3://")) {
+            //TODO make this more robust, region, creds, etc
+            S3Client s3 = S3Client.builder().build();
+            String bucket = uri.replaceAll("s3://", "").split("/")[0];
+            String key = uri.replaceAll("s3://", "").split("/", 2)[1];
+            try (InputStream in = new BufferedInputStream(s3.getObject(c -> c.bucket(bucket).key(key)));
+                OutputStream out = new BufferedOutputStream(Files.newOutputStream(ncFile))) {
+              IOUtils.copy(in, out);
+            }
+          } else if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("ftp://") || uri.startsWith("ftps://")) {
+            FileUtils.copyURLToFile(
+                new URL(uri),
+                ncFile.toFile(),
+                CONNECT_TIMEOUT,
+                READ_TIMEOUT);
+          } else {
+            FileUtils.copyFile(new File(uri), ncFile.toFile());
+          }
+        } catch (IOException e) {
+          throw new RuntimeException("Unable to download " + uri, e);
+        }
+        System.err.println("Done downloading " + uri);
+      }
     }
     return fileHandler.apply(ncFile);
   }

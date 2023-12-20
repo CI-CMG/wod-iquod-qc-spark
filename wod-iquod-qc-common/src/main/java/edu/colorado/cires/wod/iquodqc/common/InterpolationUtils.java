@@ -32,6 +32,20 @@ public final class InterpolationUtils {
     return minIndex;
   }
 
+  public static int closestIndex(double[] coordinateList, double point) {
+    int minIndex = -1;
+    double minDiff = -1;
+    for (int i = 0; i < coordinateList.length; i++) {
+      double value = coordinateList[i];
+      double diff = Math.abs(value - point);
+      if (minIndex == -1 || diff < minDiff) {
+        minIndex = i;
+        minDiff = diff;
+      }
+    }
+    return minIndex;
+  }
+
   public static int[] getIndexAndNext(float[] coordinateList, double point) {
     int index1 = closestIndex(coordinateList, point);
     if (index1 == 0) {

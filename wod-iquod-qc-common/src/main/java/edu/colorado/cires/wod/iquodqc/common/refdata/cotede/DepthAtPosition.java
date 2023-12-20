@@ -7,11 +7,11 @@ public class DepthAtPosition {
   private final int lonIndex;
   private final int latIndex;
   private final float depth;
-  private final float longitude;
-  private final float latitude;
+  private final double longitude;
+  private final double latitude;
   private double distanceM;
 
-  public DepthAtPosition(int lonIndex, int latIndex, float depth, float longitude, float latitude) {
+  public DepthAtPosition(int lonIndex, int latIndex, float depth, double longitude, double latitude) {
     this.lonIndex = lonIndex;
     this.latIndex = latIndex;
     this.depth = depth;
@@ -31,11 +31,11 @@ public class DepthAtPosition {
     return depth;
   }
 
-  public float getLongitude() {
+  public double getLongitude() {
     return longitude;
   }
 
-  public float getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
 
@@ -58,7 +58,7 @@ public class DepthAtPosition {
     }
     DepthAtPosition that = (DepthAtPosition) o;
     return lonIndex == that.lonIndex && latIndex == that.latIndex && Float.compare(that.depth, depth) == 0
-        && Float.compare(that.longitude, longitude) == 0 && Float.compare(that.latitude, latitude) == 0
+        && Double.compare(that.longitude, longitude) == 0 && Double.compare(that.latitude, latitude) == 0
         && Double.compare(that.distanceM, distanceM) == 0;
   }
 

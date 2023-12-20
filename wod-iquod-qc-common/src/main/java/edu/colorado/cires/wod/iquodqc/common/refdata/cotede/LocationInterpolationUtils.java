@@ -1,112 +1,135 @@
 package edu.colorado.cires.wod.iquodqc.common.refdata.cotede;
 
 import edu.colorado.cires.wod.iquodqc.common.InterpolationUtils;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.OptionalDouble;
-import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
-import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.locationtech.spatial4j.distance.DistanceUtils;
-import ucar.ma2.Array;
-import ucar.ma2.IndexIterator;
-import ucar.ma2.InvalidRangeException;
-import ucar.nc2.NetcdfFile;
+import java.util.Map;
+import org.apache.commons.math3.analysis.interpolation.PiecewiseBicubicSplineInterpolatingFunction;
+import org.apache.commons.math3.analysis.interpolation.PiecewiseBicubicSplineInterpolator;
 
-final class LocationInterpolationUtils {
+public final class LocationInterpolationUtils {
 
-  private static void getDepths(List<DepthAtPosition> positionTemps, NetcdfFile netFile, EtopoDataHolder dataHolder, int minIndexLat, int maxIndexLat,
-      int minIndexLon, int maxIndexLon) {
-    Array oceanDepthData;
-    try {
-      oceanDepthData = Objects.requireNonNull(netFile.findVariable("ROSE"))
-          .read(new int[]{minIndexLon, minIndexLat}, new int[]{maxIndexLon - minIndexLon + 1, maxIndexLat - minIndexLat + 1});
-    } catch (InvalidRangeException | IOException e) {
-      throw new RuntimeException("Unable to read NetCdf data", e);
-    }
+  private static final int MIN_NUM_POINTS = 5;
 
-    IndexIterator it = oceanDepthData.getIndexIterator();
-    while (it.hasNext()) {
-      float depth = it.getFloatNext();
-      if (!Float.isNaN(depth)) {
-        int realLonIndex = minIndexLon + it.getCurrentCounter()[1];
-        int realLatIndex = minIndexLat + it.getCurrentCounter()[2];
+  private static List<DepthAtPosition> getDepths(
+      EtopoDataAccessor dataHolder,
+      int minIndexLat,
+      int maxIndexLat,
+      int minIndexLon,
+      int maxIndexLon) {
+
+    List<DepthAtPosition> positionDepths = new ArrayList<>();
+
+    double[] latitudes = dataHolder.getLatitudes();
+    double[] longitudes = dataHolder.getLongitudes();
+    float[][] oceanDepthData = dataHolder.getDepths(minIndexLat, maxIndexLat, minIndexLon, maxIndexLon);
+
+    for (int lonI = 0; lonI < maxIndexLon - minIndexLon; lonI++) {
+      for (int latI = 0; latI < maxIndexLat - minIndexLat; latI++) {
+        float depth = oceanDepthData[lonI][latI];
+        int latIndex = minIndexLat + latI;
+        int lonIndex = minIndexLon + lonI;
+        if (lonIndex < 0) {
+          lonIndex = longitudes.length + lonIndex;
+        } else if (lonIndex >= longitudes.length) {
+          lonIndex = lonIndex - longitudes.length;
+        }
+
+        double lon = longitudes[lonIndex];
+        double lat = latitudes[latIndex];
+
         DepthAtPosition dap = new DepthAtPosition(
-            realLonIndex,
-            realLatIndex,
+            lonIndex,
+            latIndex,
             depth,
-            dataHolder.getLongitudes()[realLonIndex],
-            dataHolder.getLatitudes()[realLatIndex]);
-        positionTemps.add(dap);
+            lon,
+            lat
+        );
+        positionDepths.add(dap);
       }
     }
-  }
 
-  private static DepthAtPosition getDepthAtLocationIndex(NetcdfFile netFile, EtopoDataHolder dataHolder, int lonIndex, int latIndex) {
-    Array oceanDepthData;
-    try {
-      oceanDepthData = Objects.requireNonNull(netFile.findVariable("ROSE")).read(new int[]{lonIndex, latIndex}, new int[]{1});
-    } catch (InvalidRangeException | IOException e) {
-      throw new RuntimeException("Unable to read NetCdf data", e);
-    }
-
-    float depth = oceanDepthData.getFloat(0);
-
-    return new DepthAtPosition(
-        lonIndex,
-        latIndex,
-        depth,
-        dataHolder.getLongitudes()[lonIndex],
-        dataHolder.getLatitudes()[latIndex]);
+    return positionDepths;
   }
 
 
-  static OptionalDouble depthInterpolationProcess(NetcdfFile netFile, EtopoDataHolder dataHolder, double longitude, double latitude) {
+  public static double depthInterpolation(EtopoDataAccessor dataHolder, double longitude, double latitude) {
 
-    int minIndexLat = InterpolationUtils.closestIndex(dataHolder.getLatitudes(), latitude - 1f);
-    int maxIndexLat = InterpolationUtils.closestIndex(dataHolder.getLatitudes(), latitude + 1f);
-    int minIndexLon = InterpolationUtils.closestIndex(dataHolder.getLongitudes(), longitude - 1f);
-    int maxIndexLon = InterpolationUtils.closestIndex(dataHolder.getLongitudes(), longitude + 1f);
+    double[] latitudes = dataHolder.getLatitudes();
+    double[] longitudes = dataHolder.getLongitudes();
 
-    List<DepthAtPosition> positionTemps = new ArrayList<>();
+    int closestLatIndex = InterpolationUtils.closestIndex(latitudes, latitude);
+    int closestLonIndex = InterpolationUtils.closestIndex(longitudes, longitude);
 
-    getDepths(positionTemps, netFile, dataHolder, minIndexLat, maxIndexLat, minIndexLon, maxIndexLon);
+    int minIndexLat = Math.max(0, closestLatIndex - MIN_NUM_POINTS);
+    int maxIndexLat = Math.min(latitudes.length - 1, closestLatIndex + MIN_NUM_POINTS);
+    int minIndexLon = closestLonIndex - MIN_NUM_POINTS;
+    int maxIndexLon = closestLonIndex + MIN_NUM_POINTS;
 
-    // near antimeridian
-    if (minIndexLon == 0) {
-      getDepths(positionTemps, netFile, dataHolder, minIndexLat, maxIndexLat, dataHolder.getLongitudes().length - maxIndexLon - 1,
-          dataHolder.getLongitudes().length - 1);
+    List<DepthAtPosition> positionDepths = getDepths(dataHolder, minIndexLat, maxIndexLat, minIndexLon, maxIndexLon);
+
+    InterpolatorArrays interpolatorArrays = prepareInterpolator(positionDepths);
+    return -1D * interpolate(interpolatorArrays, longitude, latitude);
+  }
+
+  private static double interpolate(InterpolatorArrays interpolatorArrays, double lon, double lat) {
+    PiecewiseBicubicSplineInterpolatingFunction intFunc = new PiecewiseBicubicSplineInterpolator()
+        .interpolate(interpolatorArrays.x, interpolatorArrays.y, interpolatorArrays.values);
+    return intFunc.value(lon, lat);
+  }
+
+  private static InterpolatorArrays prepareInterpolator(List<DepthAtPosition> positionDepths) {
+
+    Map<List<Integer>, DepthAtPosition> lookup = new HashMap<>();
+    positionDepths.sort(Comparator.comparingDouble(DepthAtPosition::getLongitude));
+    LinkedHashSet<Integer> xIndexes = new LinkedHashSet<>();
+    for (int i = 0; i < positionDepths.size(); i++) {
+      DepthAtPosition dap = positionDepths.get(i);
+      xIndexes.add(dap.getLonIndex());
+      lookup.put(Arrays.asList(dap.getLonIndex(), dap.getLatIndex()), dap);
     }
-    if (maxIndexLon == dataHolder.getLongitudes().length - 1) {
-      getDepths(positionTemps, netFile, dataHolder, minIndexLat, maxIndexLat, 0, dataHolder.getLongitudes().length - 1 - minIndexLon);
+
+    LinkedHashSet<Integer> yIndexes = new LinkedHashSet<>();
+    positionDepths.sort(Comparator.comparingDouble(DepthAtPosition::getLatitude));
+    for (int i = 0; i < positionDepths.size(); i++) {
+      DepthAtPosition dap = positionDepths.get(i);
+      yIndexes.add(dap.getLatIndex());
     }
 
-    DepthAtPosition nearest = positionTemps.stream().reduce(null, (dap1, dap2) -> {
-      dap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, dap2.getLongitude(), dap2.getLatitude()));
-      if (dap1 == null) {
-        return dap2;
+    double[] x = new double[xIndexes.size()];
+    double[] y = new double[yIndexes.size()];
+    double[][] values = new double[x.length][y.length];
+
+    int xi = 0;
+    for (int lonIndex : xIndexes) {
+      int yi = 0;
+      for (int latIndex : yIndexes) {
+        DepthAtPosition dap = lookup.get(Arrays.asList(lonIndex, latIndex));
+        x[xi] = dap.getLongitude();
+        y[yi] = dap.getLatitude();
+        values[xi][yi] = dap.getDepth();
+        yi++;
       }
-      if (dap2.getDistanceM() < dap1.getDistanceM()) {
-        return dap2;
-      }
-      return dap1;
-    });
-
-    double rad = DistanceUtils.distHaversineRAD(latitude, longitude, nearest.getLatitude(), nearest.getLongitude());
-    if (rad > 0.25) {
-      return OptionalDouble.empty();
+      xi++;
     }
+    return new InterpolatorArrays(x, y, values);
+  }
 
-    //TODO
-    return null;
+  private static class InterpolatorArrays {
 
-//    DepthAtPosition knot = getDepthAtLocationIndex(netFile, dataHolder, nearest.getLonIndex(), nearest.getLatIndex());
-//
-//    PolynomialSplineFunction intFunc = new LinearInterpolator().interpolate(
-//        knots.stream().mapToDouble(tap -> clipZero ? Math.max(0d, tap.getDepth()) : tap.getDepth()).toArray(),
-//        knots.stream().mapToDouble(TempAtPosition::getTemperature).toArray());
-//    return interpolate(depth, intFunc);
+    public final double[] x;
+    public final double[] y;
+    public final double[][] values;
+
+    private InterpolatorArrays(double[] x, double[] y, double[][] values) {
+      this.x = x;
+      this.y = y;
+      this.values = values;
+    }
   }
 
   private LocationInterpolationUtils() {
