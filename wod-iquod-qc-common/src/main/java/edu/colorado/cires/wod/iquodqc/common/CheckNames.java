@@ -12,6 +12,7 @@ public enum CheckNames {
   ARGO_IMPOSSIBLE_LOCATION_TEST("Argo_impossible_location_test"),
   ARGO_REGIONAL_RANGE_TEST("Argo_regional_range_test"),
   COTEDE_LOCATION_AT_SEA_TEST("CoTeDe_location_at_sea_test"),
+  COTEDE_GTSPP_WOA_NORMBIAS("CoTeDe_GTSPP_WOA_normbias"),
   CSIRO_CONSTANT_BOTTOM("CSIRO_constant_bottom"),
   CSIRO_DEPTH("CSIRO_depth"),
   CSIRO_LONG_GRADIENT("CSIRO_long_gradient"),

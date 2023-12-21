@@ -25,7 +25,7 @@
     <module>wod-iquod-qc-check-argo-pressure-increasing</module>
     <module>wod-iquod-qc-check-argo-regional-range</module>
     <module>wod-iquod-qc-check-argo-spike</module>
-    <module>wod-iquod-qc-check-codete-location-at-sea</module>
+
     <module>wod-iquod-qc-check-en-background-available</module>
     <module>wod-iquod-qc-check-en-background</module>
     <module>wod-iquod-qc-check-en-constant-value</module>
@@ -51,9 +51,11 @@
     <module>wod-iquod-qc-check-iquod-gross-range</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-cotede-digit-rollover</module>
+    <module>wod-iquod-qc-check-cotede-location-at-sea</module>
     <module>wod-iquod-qc-check-cotede-tukey-53H</module>
     <module>wod-iquod-qc-check-cotede-tukey-53H-norm</module>
     <module>wod-iquod-qc-check-cotede-gradient</module>
+    <module>wod-iquod-qc-check-cotede-gtspp-woa-normbias</module>
     <module>wod-iquod-qc-check-cotede-rate-of-change</module>
     <module>wod-iquod-qc-check-cotede-spike</module>
     <module>wod-iquod-qc-check-cotede-spike-gtspp</module>

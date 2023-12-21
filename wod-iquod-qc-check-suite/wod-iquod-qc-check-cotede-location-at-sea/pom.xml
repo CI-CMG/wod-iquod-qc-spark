@@ -9,6 +9,6 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>wod-iquod-qc-check-codete-location-at-sea</artifactId>
+  <artifactId>wod-iquod-qc-check-cotede-location-at-sea</artifactId>
 
 </project>
