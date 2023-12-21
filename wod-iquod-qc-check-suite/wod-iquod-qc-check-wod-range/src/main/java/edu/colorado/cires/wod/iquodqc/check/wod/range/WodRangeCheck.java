@@ -2,18 +2,17 @@ package edu.colorado.cires.wod.iquodqc.check.wod.range;
 
 import static edu.colorado.cires.wod.iquodqc.check.wod.range.WodRange.getMinMax;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.wod.range.WodRange.RegionMinMax;
+import edu.colorado.cires.wod.iquodqc.check.wod.range.refdata.JsonParametersReader;
 import edu.colorado.cires.wod.parquet.model.Cast;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.io.FileUtils;
+import java.util.Properties;
+import org.apache.spark.sql.Row;
 
 public class WodRangeCheck extends CommonCastCheck {
 
@@ -48,27 +47,26 @@ public class WodRangeCheck extends CommonCastCheck {
     CELL_CODE_TO_REGION_NAME.put(27,"Sulu_Sea");
   }
 
-  private static final RegionMinMax REGION_MIN_MAX;
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  static {
-    try {
-      String json = FileUtils.readFileToString(new File("src/main/resources/data/WOD_ranges_Temperature.json"), StandardCharsets.UTF_8);
-      REGION_MIN_MAX = OBJECT_MAPPER.readValue(json, RegionMinMax.class);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+  private static RegionMinMax REGION_MIN_MAX;
+  private static Map<String, Map<String, Integer>> RANGE_AREA;
+  private Properties properties;
+
+  @Override
+  public void initialize(CastCheckInitializationContext initContext) {
+    properties = initContext.getProperties();
+    if (REGION_MIN_MAX == null) {
+      REGION_MIN_MAX = JsonParametersReader.openRangesTemperature(properties);
+    }
+    if (RANGE_AREA == null) {
+      RANGE_AREA = JsonParametersReader.openRangeArea(properties);
     }
   }
 
-  private static final Map<String, Map<String, Integer>> RANGE_AREA;
-
-  static {
-    try {
-      String json = FileUtils.readFileToString(new File("src/main/resources/data/range_area.json"), StandardCharsets.UTF_8);
-      RANGE_AREA = OBJECT_MAPPER.readValue(json, new TypeReference<>() {});
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @Override
+  protected Row checkUdf(Row row) {
+    return super.checkUdf(row);
   }
 
   @Override

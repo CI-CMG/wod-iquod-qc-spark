@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.wod.range.refdata.JsonParametersReader;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
@@ -33,7 +35,7 @@ public class WodRangeCheckSparkTest {
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
-  private final WodRangeCheck check = (WodRangeCheck) ServiceLoader.load(CastCheck.class).iterator().next();
+  private static final WodRangeCheck check = (WodRangeCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
   private static SparkSession spark;
   private static CastCheckContext context;
@@ -45,6 +47,12 @@ public class WodRangeCheckSparkTest {
         .appName("test")
         .master("local[*]")
         .getOrCreate();
+    Properties properties = new Properties();
+    properties.put(JsonParametersReader.WOD_RANGE_AREA_PROP,
+        "https://auto-qc-data.s3.us-west-2.amazonaws.com/range_area.json");
+    properties.put(JsonParametersReader.WOD_RANGES_TEMPERATURE_PROP,
+        "https://auto-qc-data.s3.us-west-2.amazonaws.com/WOD_ranges_Temperature.json");
+    properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -60,7 +68,14 @@ public class WodRangeCheckSparkTest {
       public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
         throw new UnsupportedOperationException("not implemented for test");
       }
+
+      @Override
+      public Properties getProperties() {
+        return properties;
+      }
     };
+    
+    check.initialize(() -> properties);
   }
 
   @AfterAll

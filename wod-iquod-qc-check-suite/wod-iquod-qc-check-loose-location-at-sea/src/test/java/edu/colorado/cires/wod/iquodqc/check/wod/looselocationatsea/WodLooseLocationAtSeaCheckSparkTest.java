@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.EtopoParametersReader;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.nio.file.Files;
@@ -45,6 +46,8 @@ public class WodLooseLocationAtSeaCheckSparkTest {
     properties.put("etopo5.netcdf.uri",
         "https://pae-paha.pacioos.hawaii.edu/thredds/ncss/etopo5?var=ROSE&disableLLSubset=on&disableProjSubset=on&horizStride=1&addLatLon=true");
     properties.put("data.dir", "../../test-data");
+    
+    EtopoParametersReader.loadParameters(properties);
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {

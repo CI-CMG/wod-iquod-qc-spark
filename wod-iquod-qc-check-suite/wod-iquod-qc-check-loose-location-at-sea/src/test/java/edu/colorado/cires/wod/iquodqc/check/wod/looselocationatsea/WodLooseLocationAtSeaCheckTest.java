@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.EtopoParametersReader;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class WodLooseLocationAtSeaCheckTest {
     CastCheckInitializationContext context = mock(CastCheckInitializationContext.class);
     when(context.getProperties()).thenReturn(properties);
     check.initialize(context);
+    EtopoParametersReader.loadParameters(properties);
   }
   
   @Test void testPass() {
