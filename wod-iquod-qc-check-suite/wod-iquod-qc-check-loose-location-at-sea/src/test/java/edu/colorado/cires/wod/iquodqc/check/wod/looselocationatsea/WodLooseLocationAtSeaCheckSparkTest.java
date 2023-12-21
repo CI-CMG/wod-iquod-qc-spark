@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
@@ -28,7 +29,7 @@ public class WodLooseLocationAtSeaCheckSparkTest {
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
-  private final WodLooseLocationAtSeaCheck check = (WodLooseLocationAtSeaCheck) ServiceLoader.load(CastCheck.class).iterator().next();
+  private static final WodLooseLocationAtSeaCheck check = (WodLooseLocationAtSeaCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
   private static SparkSession spark;
   private static CastCheckContext context;
@@ -40,6 +41,10 @@ public class WodLooseLocationAtSeaCheckSparkTest {
         .appName("test")
         .master("local[*]")
         .getOrCreate();
+    Properties properties = new Properties();
+    properties.put("etopo5.netcdf.uri",
+        "https://pae-paha.pacioos.hawaii.edu/thredds/ncss/etopo5?var=ROSE&disableLLSubset=on&disableProjSubset=on&horizStride=1&addLatLon=true");
+    properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -55,11 +60,17 @@ public class WodLooseLocationAtSeaCheckSparkTest {
       public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
         throw new UnsupportedOperationException("not implemented for test");
       }
+
+      @Override
+      public Properties getProperties() {
+        return properties;
+      }
     };
+    check.initialize(() -> properties);
   }
 
   @AfterAll
-  public static void afterAll() throws Exception {
+  public static void afterAll() {
     spark.sparkContext().stop(0);
   }
 
@@ -71,7 +82,7 @@ public class WodLooseLocationAtSeaCheckSparkTest {
   }
 
   @AfterEach
-  public void after() throws Exception {
+  public void after() {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
   
