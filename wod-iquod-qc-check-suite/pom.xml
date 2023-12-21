@@ -48,6 +48,7 @@
     <module>wod-iquod-qc-check-icdc-aqc-06-n-temperature-extrema</module>
     <module>wod-iquod-qc-check-icdc-aqc-07-spike-check</module>
     <module>wod-iquod-qc-check-icdc-aqc-08-gradient-check</module>
+    <module>wod-iquod-qc-check-iquod-bottom</module>
     <module>wod-iquod-qc-check-iquod-gross-range</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-cotede-digit-rollover</module>

@@ -28,7 +28,8 @@ public enum CheckNames {
   EN_SPIKE_AND_STEP_SUSPECT("EN_spike_and_step_suspect"),
   EN_STABILITY_CHECK("EN_stability_check"),
   EN_STD_LEV_BKG_AND_BUDDY_CHECK("EN_std_lev_bkg_and_buddy_check"),
-  ICDC_AQC_01_LEVEL_ORDER("ICDC_aqc_01_level_order");
+  ICDC_AQC_01_LEVEL_ORDER("ICDC_aqc_01_level_order"),
+  IQUOD_BOTTOM("IQUOD_bottom");
 
   private final String name;
 
