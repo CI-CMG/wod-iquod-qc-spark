@@ -1,13 +1,19 @@
 package edu.colorado.cires.wod.iquodqc.check.argo.impossibledate;
 
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,9 +29,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ArgoImpossibleDateCheckTest {
+
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
@@ -86,11 +94,23 @@ public class ArgoImpossibleDateCheckTest {
         .withDay((short) 1)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(true);
@@ -110,6 +130,7 @@ public class ArgoImpossibleDateCheckTest {
     assertEquals(expected, result);
   }
 
+  @Disabled //This test is impossible with the global test filter
   @Test
   public void testArgoImpossibleDateTestMonth() throws Exception {
     Cast cast = Cast.builder()
@@ -120,11 +141,23 @@ public class ArgoImpossibleDateCheckTest {
         .withDay((short) 1)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(true);
@@ -154,11 +187,23 @@ public class ArgoImpossibleDateCheckTest {
         .withDay((short) 29)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(true);
@@ -188,11 +233,34 @@ public class ArgoImpossibleDateCheckTest {
         .withDay((short) 29)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(10D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(-200D)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(20D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(3D).build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(false);
@@ -221,11 +289,23 @@ public class ArgoImpossibleDateCheckTest {
         .withDay((short) 29)
         .withTime(24D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(true);
@@ -254,11 +334,34 @@ public class ArgoImpossibleDateCheckTest {
         .withMonth((short) 1)
         .withDay((short) 29)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(1D)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(10D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(-200D)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(20D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(3D).build()))
+                .build()
+        ))
         .build();
 
 //    List<Boolean> expected = Collections.singletonList(false);

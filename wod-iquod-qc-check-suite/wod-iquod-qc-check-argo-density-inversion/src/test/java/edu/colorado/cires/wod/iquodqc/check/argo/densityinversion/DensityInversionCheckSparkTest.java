@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.argo.densityinversion;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
@@ -17,6 +18,7 @@ import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -33,6 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DensityInversionCheckSparkTest {
+
 
   private static final double[] P = {2, 6, 10, 21, 44, 79, 100, 150,
       200, 400, 410, 650, 1000, 2000, 5000};
@@ -102,10 +105,16 @@ public class DensityInversionCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(PROBE_TYPE)
+                    .withValue(XBT)
+                    .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -113,6 +122,7 @@ public class DensityInversionCheckSparkTest {
             IntStream.range(0, P.length).boxed()
                 .map(i ->
                     Depth.builder()
+                        .withDepth(P[i])
                         .withData(
                             List.of(
                                 ProfileData.builder()

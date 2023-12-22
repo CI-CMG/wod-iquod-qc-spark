@@ -5,6 +5,7 @@ import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -67,8 +68,7 @@ public class ArgoImpossibleDateCheck extends CommonCastCheck {
   private boolean isInvalidDate(Cast cast) {
     try {
 
-      //TODO can this be null?
-//      if (cast.getTime() != null) {
+      if (cast.getTime() != null) {
         HourMin hourMin = getTime(cast);
         LocalDateTime.of(
             cast.getYear(),
@@ -77,13 +77,13 @@ public class ArgoImpossibleDateCheck extends CommonCastCheck {
             hourMin.getHour(),
             hourMin.getMin()
         );
-//      } else {
-//        LocalDate.of(
-//            cast.getYear(),
-//            cast.getMonth(),
-//            cast.getDay() == null ? 1 : cast.getDay()
-//        );
-//      }
+      } else {
+        LocalDate.of(
+            cast.getYear(),
+            cast.getMonth(),
+            cast.getDay()
+        );
+      }
     } catch (DateTimeException e) {
       return true;
     }

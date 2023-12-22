@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.csiro.shortgradient;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
@@ -93,10 +94,16 @@ class CsiroShortGradientCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -144,10 +151,16 @@ class CsiroShortGradientCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(1)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -195,10 +208,16 @@ class CsiroShortGradientCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)

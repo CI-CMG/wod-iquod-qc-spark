@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.argo.globalrange;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
@@ -94,10 +95,16 @@ class ArgoGlobalRangeCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -145,10 +152,16 @@ class ArgoGlobalRangeCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -197,10 +210,16 @@ class ArgoGlobalRangeCheckTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -211,7 +230,7 @@ class ArgoGlobalRangeCheckTest {
                     .withVariableCode(TEMPERATURE).withValue(0)
                     .build()))
                 .build(),
-            Depth.builder().withDepth(ObsUtils.pressureToDepth(-5.00,lat))
+            Depth.builder().withDepth(ObsUtils.pressureToDepth(1.00,lat))
                 .withData(Collections.singletonList(ProfileData.builder()
                     .withOriginatorsFlag(0).withQcFlag(0)
                     .withVariableCode(TEMPERATURE).withValue(0)

@@ -81,7 +81,9 @@ public class WodLooseLocationAtSea {
       VariableMetadata lonMetadata,
       Variable variable
   ) {
-    assert variable.getShape().length == 2 : "Variable is not a 2D array";
+    if (variable.getShape().length == 2) {
+      throw new IllegalStateException("Variable is not a 2D array");
+    }
     try {
       Section section = Section.builder()
           .appendRange(start.lat.actual, end.lat.actual)
@@ -158,8 +160,9 @@ public class WodLooseLocationAtSea {
   
   private static VariableMetadata computeVariableMetadataForExpected1DArray(Variable variable, double sourceCoordinateValue) {
     int[] variableShape = variable.getShape();
-    assert variableShape.length == 1 : String.format("%s variable is not a 1D array", variable);
-    
+    if (variableShape.length == 1) {
+      throw new IllegalStateException(String.format("%s variable is not a 1D array", variable));
+    }
     int variableLength = variableShape[0];
     int minIndex = Integer.MIN_VALUE;
     for (int i = 0; i < variableLength; i++) {

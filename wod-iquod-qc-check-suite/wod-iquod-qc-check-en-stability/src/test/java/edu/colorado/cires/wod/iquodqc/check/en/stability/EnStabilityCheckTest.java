@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.en.stability;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
@@ -90,6 +91,13 @@ class EnStabilityCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Arrays.asList(
@@ -177,6 +185,13 @@ class EnStabilityCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Arrays.asList(
@@ -236,6 +251,12 @@ class EnStabilityCheckTest {
         .withMonth((short) 1)
         .withDay((short) 15)
         .withTime(12D)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
@@ -323,6 +344,12 @@ class EnStabilityCheckTest {
         .withDay((short) 10)
         .withTime(0D)
         .withCruiseNumber(2)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.4200).build())).build(),
             Depth.builder().withDepth(10).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.1300).build())).build(),
@@ -403,6 +430,12 @@ class EnStabilityCheckTest {
         .withDay((short) 10)
         .withTime(0.1895833)
         .withCruiseNumber(3)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.9400).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.8800).build())).build(),

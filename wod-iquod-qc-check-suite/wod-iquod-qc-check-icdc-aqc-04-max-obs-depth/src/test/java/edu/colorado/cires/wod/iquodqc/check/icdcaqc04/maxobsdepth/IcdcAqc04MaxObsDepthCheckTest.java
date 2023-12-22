@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.icdcaqc04.maxobsdepth;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -116,15 +118,20 @@ class IcdcAqc04MaxObsDepthCheckTest {
         .withDay(data.getDay())
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(data.getCastnumber())
         .withCountry(data.getCountry())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(data.getProbeType())
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(data.getProbeType())
+                .build()
+        ))
         .withDepths(data.getDepths())
         .build();
   }

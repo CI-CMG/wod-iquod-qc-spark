@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.en.increasingdepth;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class EnIncreasingDepthCheckTest {
@@ -104,6 +106,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(-1D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -179,6 +188,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -254,6 +270,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -329,6 +352,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -404,6 +434,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(100D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -472,6 +509,7 @@ public class EnIncreasingDepthCheckTest {
     assertEquals(expected, result);
   }
 
+  @Disabled // This case is impossible as the global filter catches it
   @Test
   public void testEnIncreasingDepthAllZero() throws Exception {
 
@@ -479,6 +517,13 @@ public class EnIncreasingDepthCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -559,6 +604,12 @@ public class EnIncreasingDepthCheckTest {
         .withMonth((short) 1)
         .withDay((short) 15)
         .withTime(12D)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
@@ -656,6 +707,12 @@ public class EnIncreasingDepthCheckTest {
         .withDay((short) 10)
         .withTime(0D)
         .withCruiseNumber(2)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.4200).build())).build(),
             Depth.builder().withDepth(10).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.1300).build())).build(),
@@ -736,6 +793,12 @@ public class EnIncreasingDepthCheckTest {
         .withDay((short) 10)
         .withTime(0.1895833)
         .withCruiseNumber(3)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.9400).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.8800).build())).build(),

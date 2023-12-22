@@ -1,11 +1,13 @@
 package edu.colorado.cires.wod.iquodqc.check.icdcaqc02.cruderange;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -111,6 +113,13 @@ example1 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(1)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(28.600).build())).build(),
@@ -204,6 +213,13 @@ example2 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(30.310).build())).build(),
@@ -330,6 +346,13 @@ example3 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(6.9)
                 .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.700).build())).build(),
@@ -497,6 +520,13 @@ example4 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5.2)
                 .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(32.370).build())).build(),
@@ -592,6 +622,13 @@ example5 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(.0)
                 .withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(26.000).build())).build(),
@@ -702,6 +739,13 @@ example6 = np.array([
         .withDataset("TEST")
         .withGeohash("TEST")
         .withCastNumber(8888)
+        .withMonth(1)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
 
             Depth.builder().withDepth(.0)

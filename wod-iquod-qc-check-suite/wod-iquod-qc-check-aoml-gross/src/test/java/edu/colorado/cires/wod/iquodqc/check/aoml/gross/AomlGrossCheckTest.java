@@ -1,12 +1,14 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.gross;
 
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -87,10 +89,16 @@ public class AomlGrossCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
+        .withMonth(1)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()

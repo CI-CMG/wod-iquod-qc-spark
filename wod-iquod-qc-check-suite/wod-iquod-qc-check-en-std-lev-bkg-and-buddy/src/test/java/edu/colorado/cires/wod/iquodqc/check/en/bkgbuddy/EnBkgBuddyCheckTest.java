@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy;
 
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -151,6 +152,12 @@ public class EnBkgBuddyCheckTest {
             .withTime(0D)
             .withCastNumber(1)
             .withCruiseNumber(100)
+            .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(ORIGINATORS_FLAGS)
+                    .withValue(1)
+                    .build()
+            ))
             .withDepths(Arrays.asList(
                 Depth.builder().withDepth(0.0)
                     .withData(Collections.singletonList(ProfileData.builder()
@@ -172,6 +179,12 @@ public class EnBkgBuddyCheckTest {
             .withTime(0D)
             .withCastNumber(2)
             .withCruiseNumber(100)
+            .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(ORIGINATORS_FLAGS)
+                    .withValue(1)
+                    .build()
+            ))
             .withDepths(Arrays.asList(
                 Depth.builder().withDepth(0.0)
                     .withData(Collections.singletonList(ProfileData.builder()
@@ -193,6 +206,12 @@ public class EnBkgBuddyCheckTest {
             .withTime(0D)
             .withCastNumber(3)
             .withCruiseNumber(200)
+            .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(ORIGINATORS_FLAGS)
+                    .withValue(1)
+                    .build()
+            ))
             .withDepths(Arrays.asList(
                 Depth.builder().withDepth(0.0)
                     .withData(Collections.singletonList(ProfileData.builder()
@@ -214,6 +233,12 @@ public class EnBkgBuddyCheckTest {
             .withTime(0D)
             .withCastNumber(4)
             .withCruiseNumber(200)
+            .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(ORIGINATORS_FLAGS)
+                    .withValue(1)
+                    .build()
+            ))
             .withDepths(Arrays.asList(
                 Depth.builder().withDepth(0.0)
                     .withData(Collections.singletonList(ProfileData.builder()
@@ -235,6 +260,12 @@ public class EnBkgBuddyCheckTest {
             .withTime(0D)
             .withCastNumber(5)
             .withCruiseNumber(200)
+            .withAttributes(Arrays.asList(
+                Attribute.builder()
+                    .withCode(ORIGINATORS_FLAGS)
+                    .withValue(1)
+                    .build()
+            ))
             .withDepths(Arrays.asList(
                 Depth.builder().withDepth(0.0)
                     .withData(Collections.singletonList(ProfileData.builder()
@@ -361,7 +392,13 @@ public class EnBkgBuddyCheckTest {
         .withTime(0D)
         .withCruiseNumber(1234)
         .withCastNumber(8888)
-        .withAttributes(Collections.singletonList(Attribute.builder().withCode(PROBE_TYPE).withValue(7D).build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder().withCode(PROBE_TYPE).withValue(7D).build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0.0)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -395,7 +432,13 @@ public class EnBkgBuddyCheckTest {
         .withTime(23.99)
         .withCruiseNumber(1234)
         .withCastNumber(1)
-        .withAttributes(Collections.singletonList(Attribute.builder().withCode(PROBE_TYPE).withValue(7D).build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder().withCode(PROBE_TYPE).withValue(7D).build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0.0)
                 .withData(Collections.singletonList(ProfileData.builder()
@@ -483,6 +526,12 @@ public class EnBkgBuddyCheckTest {
         .withMonth((short) 1)
         .withDay((short) 15)
         .withTime(12D)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
@@ -605,6 +654,12 @@ public class EnBkgBuddyCheckTest {
         .withDay((short) 10)
         .withTime(0D)
         .withCruiseNumber(2)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.4200).build())).build(),
             Depth.builder().withDepth(10).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.1300).build())).build(),
@@ -686,6 +741,12 @@ public class EnBkgBuddyCheckTest {
         .withDay((short) 10)
         .withTime(0.1895833)
         .withCruiseNumber(3)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.9400).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.8800).build())).build(),
@@ -816,6 +877,12 @@ public class EnBkgBuddyCheckTest {
         .withDay((short) 10)
         .withTime(0D)
         .withCruiseNumber(2)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.4200).build())).build(),
             Depth.builder().withDepth(10).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.1300).build())).build(),
@@ -897,6 +964,12 @@ public class EnBkgBuddyCheckTest {
         .withDay((short) 10)
         .withTime(0.1895833)
         .withCruiseNumber(3)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(22.9400).build())).build(),
             Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.8800).build())).build(),

@@ -13,6 +13,7 @@
     <module>wod-iquod-qc-common</module>
     <module>wod-iquod-qc-check-api</module>
     <module>wod-iquod-qc-check-suite</module>
+    <module>wod-iquod-qc-flag</module>
     <module>wod-iquod-qc-spark</module>
   </modules>
 

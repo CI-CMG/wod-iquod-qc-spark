@@ -88,7 +88,12 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         otherTestResults.put(otherTestName, otherTestResult);
       }
     }
-    return checkCast(filterFlags(Cast.builder(castRow).build()), otherTestResults).asRow();
+    Cast cast = filterFlags(Cast.builder(castRow).build());
+    CastCheckResult filter = filterCast(cast);
+    if (filter != null) {
+      return filter.asRow();
+    }
+    return checkCast(cast, otherTestResults).asRow();
   }
 
 
@@ -102,6 +107,19 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         .withDepths(cast.getDepths().stream()
             .map(depth -> Depth.builder(depth).withData(filterProfileData(depth)).build())
             .collect(Collectors.toList())).build();
+  }
+
+  protected CastCheckResult filterCast(Cast cast) {
+    String filterReason = ProfileFilter.getFilterReason(cast);
+    if (filterReason != null) {
+      return CastCheckResult.builder()
+          .withCastNumber(cast.getCastNumber())
+          .withFiltered(true)
+          .withFilterReason(filterReason)
+          .withPassed(true)
+          .build();
+    }
+    return null;
   }
 
   private static List<ProfileData> filterProfileData(Depth depth) {

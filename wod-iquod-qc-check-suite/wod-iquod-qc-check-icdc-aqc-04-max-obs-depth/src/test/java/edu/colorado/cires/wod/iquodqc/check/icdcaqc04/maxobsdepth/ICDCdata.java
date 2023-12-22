@@ -1,5 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.icdcaqc04.maxobsdepth;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
+
 import com.google.common.collect.ImmutableMap;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -92,6 +94,7 @@ public class ICDCdata {
     }
     depths.add(Depth.builder().withDepth(Double.parseDouble(data[0]))
         .withData(Collections.singletonList(ProfileData.builder()
+            .withVariableCode(TEMPERATURE).withValue(24.800)
             .withOriginatorsFlag(0).withQcFlag(0)
             .build()))
         .build());

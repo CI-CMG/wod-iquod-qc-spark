@@ -20,23 +20,27 @@ public class CastCheckResult implements Serializable {
     return new StructType(new StructField[]{
         new StructField("castNumber", DataTypes.IntegerType, false, Metadata.empty()),
         new StructField("passed", DataTypes.BooleanType, false, Metadata.empty()),
+        new StructField("filtered", DataTypes.BooleanType, false, Metadata.empty()),
+        new StructField("filterReason", DataTypes.StringType, true, Metadata.empty()),
         new StructField("failedDepths", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
     });
   }
 
-  ;
-
   public Row asRow() {
-    return new GenericRowWithSchema(new Object[]{castNumber, passed, failedDepths}, structType());
+    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, failedDepths}, structType());
   }
 
   private int castNumber;
   private boolean passed;
+  private boolean filtered;
+  private String filterReason;
   private List<Integer> failedDepths;
 
-  private CastCheckResult(int castNumber, boolean passed, List<Integer> failedDepths) {
+  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, List<Integer> failedDepths) {
     this.castNumber = castNumber;
     this.passed = passed;
+    this.filtered = filtered;
+    this.filterReason = filterReason;
     this.failedDepths = Collections.unmodifiableList(failedDepths);
   }
 
@@ -63,6 +67,24 @@ public class CastCheckResult implements Serializable {
     this.passed = passed;
   }
 
+  public boolean isFiltered() {
+    return filtered;
+  }
+
+  @Deprecated
+  public void setFiltered(boolean filtered) {
+    this.filtered = filtered;
+  }
+
+  public String getFilterReason() {
+    return filterReason;
+  }
+
+  @Deprecated
+  public void setFilterReason(String filterReason) {
+    this.filterReason = filterReason;
+  }
+
   public List<Integer> getFailedDepths() {
     return failedDepths;
   }
@@ -84,12 +106,13 @@ public class CastCheckResult implements Serializable {
       return false;
     }
     CastCheckResult result = (CastCheckResult) o;
-    return castNumber == result.castNumber && passed == result.passed && Objects.equals(failedDepths, result.failedDepths);
+    return castNumber == result.castNumber && passed == result.passed && filtered == result.filtered && Objects.equals(filterReason,
+        result.filterReason) && Objects.equals(failedDepths, result.failedDepths);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(castNumber, passed, failedDepths);
+    return Objects.hash(castNumber, passed, filtered, filterReason, failedDepths);
   }
 
   @Override
@@ -97,6 +120,8 @@ public class CastCheckResult implements Serializable {
     return "CastCheckResult{" +
         "castNumber=" + castNumber +
         ", passed=" + passed +
+        ", filtered=" + filtered +
+        ", filterReason='" + filterReason + '\'' +
         ", failedDepths=" + failedDepths +
         '}';
   }
@@ -117,6 +142,8 @@ public class CastCheckResult implements Serializable {
 
     private int castNumber;
     private boolean passed;
+    private boolean filtered;
+    private String filterReason;
     private List<Integer> failedDepths = new ArrayList<>(0);
 
     private Builder() {
@@ -126,12 +153,16 @@ public class CastCheckResult implements Serializable {
     private Builder(CastCheckResult orig) {
       castNumber = orig.castNumber;
       passed = orig.passed;
+      filtered = orig.filtered;
+      filterReason = orig.filterReason;
       failedDepths = new ArrayList<>(orig.failedDepths);
     }
 
     private Builder(Row row) {
       this.castNumber = row.getAs("castNumber");
       this.passed = row.getAs("passed");
+      this.filtered = row.getAs("filtered");
+      this.filterReason = row.getAs("filterReason");
       this.failedDepths = row.getList(row.fieldIndex("failedDepths"));
     }
 
@@ -145,13 +176,23 @@ public class CastCheckResult implements Serializable {
       return this;
     }
 
+    public Builder withFiltered(boolean filtered) {
+      this.filtered = filtered;
+      return this;
+    }
+
+    public Builder withFilterReason(String filterReason) {
+      this.filterReason = filterReason;
+      return this;
+    }
+
     public Builder withFailedDepths(List<Integer> failedDepths) {
       this.failedDepths = failedDepths == null ? new ArrayList<>(0) : new ArrayList<>(failedDepths);
       return this;
     }
 
     public CastCheckResult build() {
-      return new CastCheckResult(castNumber, passed, failedDepths);
+      return new CastCheckResult(castNumber, passed, filtered, filterReason, failedDepths);
     }
   }
 }

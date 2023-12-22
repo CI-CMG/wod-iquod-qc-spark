@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.gradient;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
@@ -99,10 +100,16 @@ public class CoTeDeGradientGTSPPCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -151,10 +158,16 @@ public class CoTeDeGradientGTSPPCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build(),
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)

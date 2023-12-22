@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.wod.range;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
@@ -16,6 +17,7 @@ import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -107,10 +109,16 @@ public class WodRangeCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -160,10 +168,16 @@ public class WodRangeCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.singletonList(Attribute.builder()
-            .withCode(PROBE_TYPE)
-            .withValue(XBT)
-            .build()))
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build(),
+            Attribute.builder()
+                .withCode(PROBE_TYPE)
+                .withValue(XBT)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)

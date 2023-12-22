@@ -183,7 +183,9 @@ public class MinMax {
       }
     }
 
-    assert resultIndex != null : String.format("Grid box index not found for coordinate pair: (%s, %s)", longitude, latitude);
+    if (resultIndex != null) {
+      throw new IllegalStateException(String.format("Grid box index not found for coordinate pair: (%s, %s)", longitude, latitude));
+    }
     return resultIndex;
   }
 

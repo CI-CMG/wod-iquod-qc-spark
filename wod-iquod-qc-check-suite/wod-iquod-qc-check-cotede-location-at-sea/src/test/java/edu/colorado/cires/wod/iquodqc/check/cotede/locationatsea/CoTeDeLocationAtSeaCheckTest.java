@@ -1,12 +1,16 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.locationatsea;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,11 +109,24 @@ public class CoTeDeLocationAtSeaCheckTest {
         .withLongitude(lon)
         .withLatitude(lat)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
-        .withDepths(Collections.singletonList(Depth.builder().withDepth(0D).build()))
+        .withMonth(6)
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(10D)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(21.6)
+                    .build()))
+                .build()
+        ))
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));

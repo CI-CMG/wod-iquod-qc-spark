@@ -1,13 +1,9 @@
-package edu.colorado.cires.wod.iquodqc.check.codete.woanormbias;
+package edu.colorado.cires.wod.iquodqc.common.refdata.cotede;
 
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
-import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.Woa;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaGetter;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParametersReader;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -17,17 +13,16 @@ import java.util.Properties;
 import java.util.Set;
 import org.apache.spark.sql.Row;
 
-public class CoTeDeWoaNormbiasCheck extends CommonCastCheck {
+public abstract class BaseCoTeDeWoaNormbiasCheck extends CommonCastCheck {
 
-  private static final double THRESHOLD = 3D;
-  private static final int MIN_SAMPLES = 3;
+  private final double threshold;
+  private final int MIN_SAMPLES = 3;
 
   private Properties properties;
   private static WoaGetter woaGetter;
 
-  @Override
-  public String getName() {
-    return CheckNames.COTEDE_GTSPP_WOA_NORMBIAS.getName();
+  protected BaseCoTeDeWoaNormbiasCheck(double threshold){
+    this.threshold = threshold;
   }
 
   @Override
@@ -59,7 +54,7 @@ public class CoTeDeWoaNormbiasCheck extends CommonCastCheck {
               double woaBias = temp - mean;
               double woaNormBias = woaBias / stdDev;
               double woaNormBiasAbs = Math.abs(woaNormBias);
-              if (nSamples >= MIN_SAMPLES && woaNormBiasAbs > THRESHOLD) {
+              if (nSamples >= MIN_SAMPLES && woaNormBiasAbs > threshold) {
                 failed.add(index);
               }
             });
@@ -71,7 +66,7 @@ public class CoTeDeWoaNormbiasCheck extends CommonCastCheck {
   }
 
   private static void loadParameters(Properties properties) {
-    synchronized (CoTeDeWoaNormbiasCheck.class) {
+    synchronized (BaseCoTeDeWoaNormbiasCheck.class) {
       if (woaGetter == null) {
         woaGetter = new WoaGetter(WoaParametersReader.loadParameters(properties));
       }

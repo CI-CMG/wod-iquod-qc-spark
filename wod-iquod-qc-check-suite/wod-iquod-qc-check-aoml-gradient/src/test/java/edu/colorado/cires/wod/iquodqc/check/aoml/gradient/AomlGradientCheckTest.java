@@ -1,11 +1,15 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.gradient;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -85,7 +89,13 @@ public class AomlGradientCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withMonth(1)
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -134,7 +144,13 @@ public class AomlGradientCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withMonth(1)
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
@@ -183,7 +199,13 @@ public class AomlGradientCheckTest {
         .withDataset("TEST")
         .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withMonth(1)
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
