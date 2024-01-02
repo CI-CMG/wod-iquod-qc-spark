@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.minmax;
 
 import static edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader.WOD_INFO_DGG4H6_PROP;
 import static edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader.WOD_TEMP_MIN_MAX_PROP;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
@@ -10,12 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -103,15 +106,22 @@ public class MinMaxCheckSparkTest {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
+        .withMonth(1)
         .withLongitude(FLAG_LONGITUDE)
         .withLatitude(FLAG_LATITUDE)
         .withPrincipalInvestigators(Collections.emptyList())
-        .withAttributes(Collections.emptyList())
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withBiologicalAttributes(Collections.emptyList())
         .withTaxonomicDatasets(Collections.emptyList())
         .withCastNumber(123)
         .withDepths(IntStream.range(0, FLAG_PSAL.length).boxed().map(
             i -> Depth.builder()
+                .withDepth(i * 2D)
                 .withData(List.of(
                     ProfileData.builder()
                         .withVariableCode(TEMPERATURE)

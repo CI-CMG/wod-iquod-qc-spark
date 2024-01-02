@@ -1,16 +1,23 @@
 package edu.colorado.cires.wod.iquodqc.check.wod.looselocationatsea;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
+import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.EtopoParametersReader;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -100,10 +107,20 @@ public class WodLooseLocationAtSeaCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withCastNumber(123)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(
             Collections.singletonList(
                 Depth.builder()
                     .withDepth(100D)
+                    .withData(Collections.singletonList(ProfileData.builder()
+                        .withOriginatorsFlag(0).withQcFlag(0)
+                        .withVariableCode(TEMPERATURE).withValue(0.0)
+                        .build()))
                     .build()
             )
         ).build();
@@ -134,13 +151,27 @@ public class WodLooseLocationAtSeaCheckSparkTest {
         .withDay((short) 15)
         .withTime(0D)
         .withCastNumber(123)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withDepths(
             List.of(
                 Depth.builder()
                     .withDepth(100D)
+                    .withData(Collections.singletonList(ProfileData.builder()
+                        .withOriginatorsFlag(0).withQcFlag(0)
+                        .withVariableCode(TEMPERATURE).withValue(0.0)
+                        .build()))
                     .build(),
                 Depth.builder()
                     .withDepth(200D)
+                    .withData(Collections.singletonList(ProfileData.builder()
+                        .withOriginatorsFlag(0).withQcFlag(0)
+                        .withVariableCode(TEMPERATURE).withValue(0.0)
+                        .build()))
                     .build()
             )
         ).build();

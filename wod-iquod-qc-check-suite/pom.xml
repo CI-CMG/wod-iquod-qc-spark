@@ -23,8 +23,6 @@
   TestInfo('CoTeDe_Morello2014', CoTeDe_Morello2014, {}),  # Memory leak mitigated
   TestInfo('ICDC_aqc_09_local_climatology_check', ICDC_aqc_09_local_climatology_check, {HTPR}), # No detected memory issues
   TestInfo('ICDC_aqc_10_local_climatology_check', ICDC_aqc_10_local_climatology_check, {HTPR}), # No detected memory issues
-<module>wod-iquod-qc-check-loose-location-at-sea</module>
-<module>wod-iquod-qc-check-min-max</module>
    -->
 
 
@@ -78,8 +76,8 @@
     <module>wod-iquod-qc-check-icdc-aqc-08-gradient-check</module>
     <module>wod-iquod-qc-check-iquod-bottom</module>
     <module>wod-iquod-qc-check-iquod-gross-range</module>
-<!--    <module>wod-iquod-qc-check-loose-location-at-sea</module>-->
-<!--    <module>wod-iquod-qc-check-min-max</module>-->
+    <module>wod-iquod-qc-check-loose-location-at-sea</module>
+    <module>wod-iquod-qc-check-min-max</module>
     <module>wod-iquod-qc-check-profile-envelop-gtspp</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-wod-range</module>

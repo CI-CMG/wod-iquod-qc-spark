@@ -81,7 +81,7 @@ public class WodLooseLocationAtSea {
       VariableMetadata lonMetadata,
       Variable variable
   ) {
-    if (variable.getShape().length == 2) {
+    if (variable.getShape().length != 2) {
       throw new IllegalStateException("Variable is not a 2D array");
     }
     try {
@@ -160,7 +160,7 @@ public class WodLooseLocationAtSea {
   
   private static VariableMetadata computeVariableMetadataForExpected1DArray(Variable variable, double sourceCoordinateValue) {
     int[] variableShape = variable.getShape();
-    if (variableShape.length == 1) {
+    if (variableShape.length != 1) {
       throw new IllegalStateException(String.format("%s variable is not a 1D array", variable));
     }
     int variableLength = variableShape[0];

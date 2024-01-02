@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.minmax;
 
 import static edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader.WOD_INFO_DGG4H6_PROP;
 import static edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader.WOD_TEMP_MIN_MAX_PROP;
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
@@ -11,9 +12,11 @@ import static org.mockito.Mockito.when;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -50,6 +53,12 @@ public class MinMaxCheckTest {
   
   @Test void testFlagResult() {
     Cast cast = Cast.builder()
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
         .withLatitude(FLAG_LATITUDE)
         .withLongitude(FLAG_LONGITUDE)
         .withDepths(IntStream.range(0, FLAG_PSAL.length).boxed().map(
