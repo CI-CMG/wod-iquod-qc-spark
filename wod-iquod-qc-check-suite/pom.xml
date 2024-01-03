@@ -18,11 +18,11 @@
   Left To Do
 
   TestInfo('CoTeDe_anomaly_detection', CoTeDe_anomaly_detection, {HTPR}),  # Memory leak mitigated
-  TestInfo('CoTeDe_fuzzy_logic', CoTeDe_fuzzy_logic, {}), # Memory leak mitigated
-  TestInfo('CoTeDe_GTSPP_profile_envelop', CoTeDe_GTSPP_profile_envelop, {}),  # Memory leak mitigated
-  TestInfo('CoTeDe_Morello2014', CoTeDe_Morello2014, {}),  # Memory leak mitigated
   TestInfo('ICDC_aqc_09_local_climatology_check', ICDC_aqc_09_local_climatology_check, {HTPR}), # No detected memory issues
   TestInfo('ICDC_aqc_10_local_climatology_check', ICDC_aqc_10_local_climatology_check, {HTPR}), # No detected memory issues
+  
+  TestInfo('CoTeDe_fuzzy_logic', CoTeDe_fuzzy_logic, {}), # Memory leak mitigated
+  TestInfo('CoTeDe_Morello2014', CoTeDe_Morello2014, {}),  # Memory leak mitigated
    -->
 
 
