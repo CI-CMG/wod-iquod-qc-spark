@@ -81,6 +81,8 @@
     <module>wod-iquod-qc-check-profile-envelop-gtspp</module>
     <module>wod-iquod-qc-check-wod-gradient</module>
     <module>wod-iquod-qc-check-wod-range</module>
+    <module>wod-iquod-qc-check-icdc-aqc-09-climatology</module>
+    <module>wod-iquod-qc-check-icdc-aqc-10-climatology</module>
     <module>wod-iquod-qc-check-cotede-constant-cluster-size</module>
     <module>wod-iquod-qc-check-cotede-anomaly-detection</module>
     <module>wod-iquod-qc-check-cotede-cars-normbias</module>
