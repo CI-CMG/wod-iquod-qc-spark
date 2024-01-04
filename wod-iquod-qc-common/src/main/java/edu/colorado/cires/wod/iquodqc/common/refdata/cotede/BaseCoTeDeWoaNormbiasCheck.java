@@ -47,10 +47,10 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends CommonCastCheck {
       final int index = i;
       DepthUtils.getTemperature(depth).ifPresent(pd -> {
         double temp = pd.getValue();
-        Woa woa = woaGetter.getWoa(cast.getTimestamp(), depth.getDepth(), cast.getLongitude(), cast.getLatitude());
-        woa.getMean().ifPresent(mean -> {
-          woa.getStandardDeviation().ifPresent(stdDev -> {
-            woa.getNumberOfObservations().ifPresent(nSamples -> {
+        WoaStats stats = woaGetter.getStats(cast.getTimestamp(), depth.getDepth(), cast.getLongitude(), cast.getLatitude());
+        stats.getMean().ifPresent(mean -> {
+          stats.getStandardDeviation().ifPresent(stdDev -> {
+            stats.getNumberOfObservations().ifPresent(nSamples -> {
               double woaBias = temp - mean;
               double woaNormBias = woaBias / stdDev;
               double woaNormBiasAbs = Math.abs(woaNormBias);

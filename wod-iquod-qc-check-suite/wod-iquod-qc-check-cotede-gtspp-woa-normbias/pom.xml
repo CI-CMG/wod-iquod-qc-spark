@@ -9,6 +9,6 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>wod-iquod-qc-check-cotede-gtspp-woa-normbias</artifactId>
+  <artifactId>wod-iquod-qc-check-cotede-gtspp-normbias</artifactId>
 
 </project>

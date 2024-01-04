@@ -8,6 +8,26 @@ import org.apache.commons.math3.linear.MatrixUtils;
 
 public class CoTeDeGradient {
   public static List<Integer> checkGradient(double[] input, double threshold) {
+    double[] gradient = computeGradient(input);
+
+    return IntStream.range(0, input.length)
+        .filter(i -> {
+          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
+          if (i == 0 || i == input.length - 1) {
+            return inputWasInvalid;
+          }
+          if (inputWasInvalid) {
+            return true;
+          }
+          double gradientValue = gradient[i];
+          if (Double.isNaN(gradientValue) || !Double.isFinite(gradientValue)) {
+            return false; // could not be evaluated because of nearby invalid value
+          }
+          return Math.abs(gradientValue) > threshold;
+        }).boxed().collect(Collectors.toList());
+  }
+  
+  public static double[] computeGradient(double[] input) {
     int inputLength = input.length;
     double[] output = new double[inputLength];
     Arrays.fill(output, Double.NaN);
@@ -27,21 +47,7 @@ public class CoTeDeGradient {
     IntStream.range(0, outputVector.length).forEach(
         i -> output[i + 1] = outputVector[i]
     );
-
-    return IntStream.range(0, input.length)
-        .filter(i -> {
-          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-          if (i == 0 || i == input.length - 1) {
-            return inputWasInvalid;
-          }
-          if (inputWasInvalid) {
-            return true;
-          }
-          double gradientValue = output[i];
-          if (Double.isNaN(gradientValue) || !Double.isFinite(gradientValue)) {
-            return false; // could not be evaluated because of nearby invalid value
-          }
-          return Math.abs(gradientValue) > threshold;
-        }).boxed().collect(Collectors.toList());
+    
+    return output;
   }
 }

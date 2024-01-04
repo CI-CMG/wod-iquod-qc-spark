@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class WoaGetterTest {
+class StatsGetterTest {
 
   private static final Path DIR = Paths.get("target/nctest");
   private WoaParameters parameters;
@@ -59,7 +59,7 @@ class WoaGetterTest {
   public void test(int month, int day, double depth, double lat, double lon, double expected) throws Exception {
     WoaGetter woaGetter = new WoaGetter(parameters);
     LocalDate date = LocalDate.of(2023, month, day);
-    assertEquals(expected, woaGetter.getWoa(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat).getMean().getAsDouble(),
+    assertEquals(expected, woaGetter.getStats(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat).getMean().getAsDouble(),
         0.000001);
   }
 
@@ -88,7 +88,7 @@ class WoaGetterTest {
   public void testInvalidMissing(int month, int day, double depth, double lat, double lon) throws Exception {
     WoaGetter woaGetter = new WoaGetter(parameters);
     LocalDate date = LocalDate.of(2023, month, day);
-    assertTrue(woaGetter.getWoa(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat).getMean().isEmpty());
+    assertTrue(woaGetter.getStats(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat).getMean().isEmpty());
   }
 
   @ParameterizedTest
@@ -99,10 +99,10 @@ class WoaGetterTest {
   public void test(int month, int day, double depth, double lat, double lon, double mean, double error, double sd, int obs) throws Exception {
     WoaGetter woaGetter = new WoaGetter(parameters);
     LocalDate date = LocalDate.of(2023, month, day);
-    Woa woa = woaGetter.getWoa(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat);
-    assertEquals(mean, woa.getMean().getAsDouble(), 0.000001);
-    assertEquals(error, woa.getStandardError().getAsDouble(), 0.000001);
-    assertEquals(sd, woa.getStandardDeviation().getAsDouble(), 0.000001);
-    assertEquals(obs, woa.getNumberOfObservations().getAsInt());
+    WoaStats stats = woaGetter.getStats(date.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli(), depth, lon, lat);
+    assertEquals(mean, stats.getMean().getAsDouble(), 0.000001);
+    assertEquals(error, stats.getStandardError().getAsDouble(), 0.000001);
+    assertEquals(sd, stats.getStandardDeviation().getAsDouble(), 0.000001);
+    assertEquals(obs, stats.getNumberOfObservations().getAsInt());
   }
 }

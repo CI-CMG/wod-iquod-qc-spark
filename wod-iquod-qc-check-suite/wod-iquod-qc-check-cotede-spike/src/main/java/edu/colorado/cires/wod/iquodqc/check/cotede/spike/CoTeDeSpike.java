@@ -9,6 +9,25 @@ import org.apache.commons.math3.linear.MatrixUtils;
 public class CoTeDeSpike {
 
   public static List<Integer> checkSpike(double[] input, double threshold) {
+    double[] spikes = computeSpikes(input);
+    return IntStream.range(0, input.length).boxed()
+        .filter(i -> {
+          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
+          if (i == 0) {
+            return inputWasInvalid;
+          }
+          if (inputWasInvalid) {
+            return true;
+          }
+          double value = spikes[i];
+          if (Double.isNaN(value) || !Double.isFinite(value)) {
+            return false;
+          }
+          return Math.abs(value) > threshold;
+        }).collect(Collectors.toList());
+  }
+
+  public static double[] computeSpikes(double[] input) {
     int inputLength = input.length;
     double[] output = new double[inputLength];
     Arrays.fill(output, Double.NaN);
@@ -38,21 +57,7 @@ public class CoTeDeSpike {
     ).toArray();
 
     IntStream.range(0, result.length).forEach(i -> output[i + 1] = result[i]);
-    return IntStream.range(0, input.length).boxed()
-        .filter(i -> {
-          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-          if (i == 0) {
-            return inputWasInvalid;
-          }
-          if (inputWasInvalid) {
-            return true;
-          }
-          double value = output[i];
-          if (Double.isNaN(value) || !Double.isFinite(value)) {
-            return false;
-          }
-          return Math.abs(value) > threshold;
-        }).collect(Collectors.toList());
+    
+    return output;
   }
-
 }
