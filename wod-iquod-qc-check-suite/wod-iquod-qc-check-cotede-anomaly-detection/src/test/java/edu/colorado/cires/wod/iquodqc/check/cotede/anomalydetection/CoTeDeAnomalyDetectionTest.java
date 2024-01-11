@@ -49,7 +49,7 @@ public class CoTeDeAnomalyDetectionTest {
     properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
     properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
     properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
-    properties.put(CarsParametersReader.CARS_NC_PROP, "https://www.marine.csiro.au/atlas/export/temperature_cars2009a.nc.gz");
+    properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
     properties.put("data.dir", "../../test-data");
 
     WoaParameters woaParameters = WoaParametersReader.loadParameters(properties);

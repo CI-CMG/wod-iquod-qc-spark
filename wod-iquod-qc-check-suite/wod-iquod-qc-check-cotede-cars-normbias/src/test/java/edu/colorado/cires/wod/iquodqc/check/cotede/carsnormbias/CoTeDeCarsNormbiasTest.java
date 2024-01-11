@@ -47,7 +47,7 @@ public class CoTeDeCarsNormbiasTest {
   
   @BeforeAll static void beforeAll() {
     Properties properties = new Properties();
-    properties.put(CarsParametersReader.CARS_NC_PROP, "https://www.marine.csiro.au/atlas/export/temperature_cars2009a.nc.gz");
+    properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
     properties.put("data.dir", "../../test-data");
 
     CarsParameters carsParameters = CarsParametersReader.loadParameters(properties);
