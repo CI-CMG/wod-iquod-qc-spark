@@ -16,8 +16,6 @@ import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.apache.spark.sql.Row;
 
 public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
@@ -30,7 +28,7 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_ANOMALY_DETECTION_CHECK";
+    return "";
   }
 
   @Override

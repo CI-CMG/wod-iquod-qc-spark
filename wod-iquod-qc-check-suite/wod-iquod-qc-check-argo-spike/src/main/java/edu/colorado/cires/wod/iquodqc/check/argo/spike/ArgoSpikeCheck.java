@@ -3,24 +3,21 @@ package edu.colorado.cires.wod.iquodqc.check.argo.spike;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
-import edu.colorado.cires.wod.iquodqc.common.ArrayUtils;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ObsUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.commons.math3.util.Precision;
 
 public class ArgoSpikeCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "Argo_spike_test";
+    return CheckNames.ARGO_SPIKE_CHECK.getName();
   }
 
 

@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.cotede.tukey53H;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
@@ -14,7 +15,7 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_TUKEY_53_CHECK";
+    return CheckNames.COTEDE_TUKEY_53H_CHECK.getName();
   }
 
   @Override

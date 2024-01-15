@@ -5,6 +5,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.icdcaqc10.climatology.refdata.GlobalMedianQuartilesMedcoupleSmoothedParametersReader;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -35,7 +36,7 @@ public class ICDCAqc10ClimatologyCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ICDC_AQC_10_CLIMATOLOGY_CHECK";
+    return CheckNames.ICDC_AQC_10_CLIMATOLOGY_CHECK.getName();
   }
 
   @Override

@@ -30,7 +30,23 @@ public enum CheckNames {
   EN_STABILITY_CHECK("EN_stability_check"),
   EN_STD_LEV_BKG_AND_BUDDY_CHECK("EN_std_lev_bkg_and_buddy_check"),
   ICDC_AQC_01_LEVEL_ORDER("ICDC_aqc_01_level_order"),
-  IQUOD_BOTTOM("IQUOD_bottom");
+  IQUOD_BOTTOM("IQUOD_bottom"),
+  HIGH_TRUE_POSITIVE_RATE_GROUP("HTPR_check"),
+  LOW_TRUE_POSITIVE_RATE_GROUP("LTPR_check"),
+  COMPROMISE_GROUP("COMP_check"),
+  IQUOD_GROSS_RANGE("IQuOD_gross_range_check"),
+  ICDC_AQC_09_CLIMATOLOGY_CHECK("ICDC_aqc_09_climatology_check"),
+  ICDC_AQC_10_CLIMATOLOGY_CHECK("ICDC_aqc_10_climatology_check"),
+  ARGO_SPIKE_CHECK("Argo_spike_test"),
+  ICDC_AQC_06_N_TEMPERATURE_EXTREMA("ICDC_aqc_06_n_temperature_extrema"),
+  COTEDE_TUKEY_53H_CHECK("CoTeDe_tukey_53H_check"),
+  ICDC_AQC_07_SPIKE_CHECK("ICDC_aqc_07_spike_check"),
+  ICDC_AQC_08_GRADIENT_CHECK("ICDC_aqc_08_gradient_check"),
+  COTEDE_ANOMALY_DETECTION_CHECK("CoTeDe_anomaly_detection_check"),
+  WOD_RANGE_CHECK("wod_range_check"),
+  WOD_LOOSE_LOCATION_AT_SEA_CHECK("wod_loose_location_at_sea_check"),
+  ICDC_AQC_02_CRUDE_RANGE("ICDC_aqc_02_crude_range"),
+  ICDC_AQC_05_STUCK_VALUE("ICDC_aqc_05_stuck_value");
 
   private final String name;
 

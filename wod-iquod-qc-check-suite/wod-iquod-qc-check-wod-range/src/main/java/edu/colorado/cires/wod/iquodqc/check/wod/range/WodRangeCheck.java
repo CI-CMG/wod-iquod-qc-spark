@@ -7,6 +7,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.wod.range.WodRange.RegionMinMax;
 import edu.colorado.cires.wod.iquodqc.check.wod.range.refdata.JsonParametersReader;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public class WodRangeCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "WOD_RANGE_CHECK";
+    return CheckNames.WOD_RANGE_CHECK.getName();
   }
 
   @Override

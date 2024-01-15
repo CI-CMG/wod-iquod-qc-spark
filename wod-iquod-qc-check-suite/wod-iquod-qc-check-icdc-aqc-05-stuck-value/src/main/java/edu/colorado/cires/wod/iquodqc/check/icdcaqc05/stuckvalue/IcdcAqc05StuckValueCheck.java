@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.icdcaqc05.stuckvalue;
 import static edu.colorado.cires.wod.iquodqc.common.CastUtils.getProbeTypeValue;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants;
 import edu.colorado.cires.wod.iquodqc.common.icdc.DepthData;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -18,7 +19,7 @@ public class IcdcAqc05StuckValueCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ICDC_aqc_05_stuck_value";
+    return CheckNames.ICDC_AQC_05_STUCK_VALUE.getName();
   }
 /*
       '''Return quality control decisions.

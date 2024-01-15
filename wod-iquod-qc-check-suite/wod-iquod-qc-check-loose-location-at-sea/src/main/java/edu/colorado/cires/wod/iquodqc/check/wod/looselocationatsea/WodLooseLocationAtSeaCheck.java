@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.wod.looselocationatsea;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.EtopoParametersReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.NetCdfEtopoParameters;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -26,7 +27,7 @@ public class WodLooseLocationAtSeaCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "WOD_LOOSE_LOCATION_AT_SEA_CHECK";
+    return CheckNames.WOD_LOOSE_LOCATION_AT_SEA_CHECK.getName();
   }
 
   @Override

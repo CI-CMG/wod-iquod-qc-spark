@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.icdcaqc09.climatology;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.icdcaqc09.climatology.refdata.ClimatologicalTMedianAndAmdForAqcParametersReader;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.icdc.DepthData;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
   
   @Override
   public String getName() {
-    return "ICDC_AQC_09_CLIMATOLOGY_CHECK";
+    return CheckNames.ICDC_AQC_09_CLIMATOLOGY_CHECK.getName();
   }
 
   @Override

@@ -82,6 +82,9 @@
     <module>wod-iquod-qc-check-cotede-constant-cluster-size</module>
     <module>wod-iquod-qc-check-cotede-anomaly-detection</module>
     <module>wod-iquod-qc-check-cotede-cars-normbias</module>
+    <module>wod-iquod-qc-check-htpr-group</module>
+    <module>wod-iquod-qc-check-lfpr-group</module>
+    <module>wod-iquod-qc-check-compromise-group</module>
   </modules>
 
   <dependencies>

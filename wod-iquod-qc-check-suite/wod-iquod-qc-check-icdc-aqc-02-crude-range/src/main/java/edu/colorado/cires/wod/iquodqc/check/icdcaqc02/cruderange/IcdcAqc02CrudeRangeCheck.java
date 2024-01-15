@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.icdcaqc02.cruderange;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.icdc.DepthData;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class IcdcAqc02CrudeRangeCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ICDC_aqc_02_crude_range";
+    return CheckNames.ICDC_AQC_02_CRUDE_RANGE.getName();
   }
 /*
      def test(p, parameters, data_store):

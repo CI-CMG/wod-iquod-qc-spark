@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.icdcaqc08.gradientcheck;
 import static edu.colorado.cires.wod.iquodqc.common.CastUtils.getProbeTypeValue;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants;
 import edu.colorado.cires.wod.iquodqc.common.icdc.DepthData;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -20,7 +21,7 @@ public class IcdcAqc08GradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ICDC_aqc_08_gradient_check";
+    return CheckNames.ICDC_AQC_08_GRADIENT_CHECK.getName();
   }
 /*
    # Global ranges - data outside these bounds are ignored.
