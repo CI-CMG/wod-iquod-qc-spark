@@ -145,6 +145,15 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         .withCastNumber(cast.getCastNumber())
         .withPassed(failed.isEmpty())
         .withFailedDepths(new ArrayList<>(failed))
+        .withDependsOn(
+            otherTestResults.entrySet().stream()
+                .collect(
+                    Collectors.toMap(
+                        Map.Entry<String, CastCheckResult>::getKey,
+                        entry -> entry.getValue().getFailedDepths()
+                    )
+                )
+        )
         .build();
   }
 

@@ -19,8 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -192,6 +194,16 @@ public class IquodFlagsCheckTest {
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
         .withIquodFlags(expectedIquodFlags)
+        .withDependsOn(Map.of(
+            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
+            failingTest.equals(CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName()) ? failedDepths : new ArrayList<>(0),
+
+            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
+            failingTest.equals(CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName()) ? failedDepths : new ArrayList<>(0),
+
+            CheckNames.COMPROMISE_GROUP.getName(),
+            failingTest.equals(CheckNames.COMPROMISE_GROUP.getName()) ? failedDepths : new ArrayList<>(0)
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -294,6 +306,16 @@ public class IquodFlagsCheckTest {
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
         .withIquodFlags(expectedIquodFlags)
+        .withDependsOn(Map.of(
+            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
+            failingTest.equals(CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName()) ? failedDepths : new ArrayList<>(0),
+
+            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
+            failingTest.equals(CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName()) ? failedDepths : new ArrayList<>(0),
+
+            CheckNames.COMPROMISE_GROUP.getName(),
+            failingTest.equals(CheckNames.COMPROMISE_GROUP.getName()) ? failedDepths : new ArrayList<>(0)
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -383,9 +405,17 @@ public class IquodFlagsCheckTest {
         .withPassed(false)
         .withFailedDepths(List.of(
             1, 2, 4, 5, 10, 11, 12
-        ))
-        .withIquodFlags(List.of(
+        )).withIquodFlags(List.of(
             1, 4, 3, 1, 2, 4, 1, 1, 1, 1, 2, 4, 4, 1, 1
+        )).withDependsOn(Map.of(
+            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
+            List.of(4, 10, 11),
+
+            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
+            List.of(1, 5, 11, 12),
+
+            CheckNames.COMPROMISE_GROUP.getName(),
+            List.of(2, 5, 11)
         ))
         .build();
 
@@ -480,9 +510,17 @@ public class IquodFlagsCheckTest {
         .withPassed(false)
         .withFailedDepths(List.of(
             4, 7, 11, 12
-        ))
-        .withIquodFlags(List.of(
+        )).withIquodFlags(List.of(
             1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4
+        )).withDependsOn(Map.of(
+            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
+            List.of(4, 7, 11, 12),
+
+            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
+            List.of(11, 12),
+
+            CheckNames.COMPROMISE_GROUP.getName(),
+            List.of(7, 11, 12)
         ))
         .build();
 
