@@ -85,6 +85,7 @@
     <module>wod-iquod-qc-check-htpr-group</module>
     <module>wod-iquod-qc-check-lfpr-group</module>
     <module>wod-iquod-qc-check-compromise-group</module>
+    <module>wod-iquod-qc-check-iquod-flags</module>
   </modules>
 
   <dependencies>

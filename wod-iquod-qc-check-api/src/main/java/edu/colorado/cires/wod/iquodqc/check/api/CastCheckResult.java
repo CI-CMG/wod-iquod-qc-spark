@@ -23,11 +23,12 @@ public class CastCheckResult implements Serializable {
         new StructField("filtered", DataTypes.BooleanType, false, Metadata.empty()),
         new StructField("filterReason", DataTypes.StringType, true, Metadata.empty()),
         new StructField("failedDepths", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
+        new StructField("iquodFlags", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
     });
   }
 
   public Row asRow() {
-    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, failedDepths}, structType());
+    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, failedDepths, iquodFlags}, structType());
   }
 
   private int castNumber;
@@ -35,13 +36,15 @@ public class CastCheckResult implements Serializable {
   private boolean filtered;
   private String filterReason;
   private List<Integer> failedDepths;
+  private List<Integer> iquodFlags;
 
-  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, List<Integer> failedDepths) {
+  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, List<Integer> failedDepths, List<Integer> iquodFlags) {
     this.castNumber = castNumber;
     this.passed = passed;
     this.filtered = filtered;
     this.filterReason = filterReason;
     this.failedDepths = Collections.unmodifiableList(failedDepths);
+    this.iquodFlags = Collections.unmodifiableList(iquodFlags);
   }
 
   @Deprecated
@@ -97,6 +100,15 @@ public class CastCheckResult implements Serializable {
     this.failedDepths = failedDepths;
   }
 
+  public List<Integer> getIquodFlags() {
+    return iquodFlags;
+  }
+
+  @Deprecated
+  public void setIquodFlags(List<Integer> iquodFlags) {
+    this.iquodFlags = iquodFlags;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -107,12 +119,12 @@ public class CastCheckResult implements Serializable {
     }
     CastCheckResult result = (CastCheckResult) o;
     return castNumber == result.castNumber && passed == result.passed && filtered == result.filtered && Objects.equals(filterReason,
-        result.filterReason) && Objects.equals(failedDepths, result.failedDepths);
+        result.filterReason) && Objects.equals(failedDepths, result.failedDepths) && Objects.equals(iquodFlags, result.iquodFlags);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(castNumber, passed, filtered, filterReason, failedDepths);
+    return Objects.hash(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags);
   }
 
   @Override
@@ -122,7 +134,8 @@ public class CastCheckResult implements Serializable {
         ", passed=" + passed +
         ", filtered=" + filtered +
         ", filterReason='" + filterReason + '\'' +
-        ", failedDepths=" + failedDepths +
+        ", failedDepths=" + failedDepths + '\'' +
+        ", iquodFlags=" + iquodFlags +
         '}';
   }
 
@@ -145,6 +158,7 @@ public class CastCheckResult implements Serializable {
     private boolean filtered;
     private String filterReason;
     private List<Integer> failedDepths = new ArrayList<>(0);
+    private List<Integer> iquodFlags = new ArrayList<>(0);
 
     private Builder() {
 
@@ -156,6 +170,7 @@ public class CastCheckResult implements Serializable {
       filtered = orig.filtered;
       filterReason = orig.filterReason;
       failedDepths = new ArrayList<>(orig.failedDepths);
+      iquodFlags = new ArrayList<>(orig.iquodFlags);
     }
 
     private Builder(Row row) {
@@ -164,6 +179,7 @@ public class CastCheckResult implements Serializable {
       this.filtered = row.getAs("filtered");
       this.filterReason = row.getAs("filterReason");
       this.failedDepths = row.getList(row.fieldIndex("failedDepths"));
+      this.iquodFlags = row.getList(row.fieldIndex("iquodFlags"));
     }
 
     public Builder withCastNumber(int castNumber) {
@@ -191,8 +207,13 @@ public class CastCheckResult implements Serializable {
       return this;
     }
 
+    public Builder withIquodFlags(List<Integer> iquodFlags) {
+      this.iquodFlags = iquodFlags;
+      return this;
+    }
+
     public CastCheckResult build() {
-      return new CastCheckResult(castNumber, passed, filtered, filterReason, failedDepths);
+      return new CastCheckResult(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags);
     }
   }
 }

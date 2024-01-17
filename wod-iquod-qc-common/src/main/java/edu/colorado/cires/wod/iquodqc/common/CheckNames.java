@@ -46,7 +46,8 @@ public enum CheckNames {
   WOD_RANGE_CHECK("wod_range_check"),
   WOD_LOOSE_LOCATION_AT_SEA_CHECK("wod_loose_location_at_sea_check"),
   ICDC_AQC_02_CRUDE_RANGE("ICDC_aqc_02_crude_range"),
-  ICDC_AQC_05_STUCK_VALUE("ICDC_aqc_05_stuck_value");
+  ICDC_AQC_05_STUCK_VALUE("ICDC_aqc_05_stuck_value"),
+  IQUOD_FLAGS_CHECK("IQuOD_flags_check");
 
   private final String name;
 

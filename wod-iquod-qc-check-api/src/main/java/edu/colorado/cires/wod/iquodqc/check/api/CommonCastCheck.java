@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
@@ -45,7 +44,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
     Column[] columns = new Column[otherResultDatasets.size() + 1];
     columns[0] = struct(castDataset.col("*")).as("cast");
     int i = 1;
-    for (Entry<String, Dataset<CastCheckResult>> entry : otherResultDatasets.entrySet()) {
+    for (Map.Entry<String, Dataset<CastCheckResult>> entry : otherResultDatasets.entrySet()) {
       columns[i++] = struct(entry.getValue().col("*")).as(entry.getKey());
     }
     return columns;
