@@ -27,10 +27,19 @@ public class CastCheckResult implements Serializable {
         new StructField("failedDepths", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
         new StructField("iquodFlags", DataTypes.createArrayType(DataTypes.IntegerType), true, Metadata.empty()),
         new StructField(
-            "dependsOn",
+            "dependsOnFailedDepths",
             DataTypes.createMapType(
                 DataTypes.StringType,
                 DataTypes.createArrayType(DataTypes.IntegerType)
+            ),
+            true,
+            Metadata.empty()
+        ),
+        new StructField(
+            "dependsOnFailedChecks",
+            DataTypes.createMapType(
+                DataTypes.StringType,
+                DataTypes.createArrayType(DataTypes.StringType)
             ),
             true,
             Metadata.empty()
@@ -39,7 +48,7 @@ public class CastCheckResult implements Serializable {
   }
 
   public Row asRow() {
-    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOn}, structType());
+    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks}, structType());
   }
 
   private int castNumber;
@@ -48,16 +57,18 @@ public class CastCheckResult implements Serializable {
   private String filterReason;
   private List<Integer> failedDepths;
   private List<Integer> iquodFlags;
-  private Map<String, List<Integer>> dependsOn;
+  private Map<String, List<Integer>> dependsOnFailedDepths;
+  private Map<String, List<String>> dependsOnFailedChecks;
 
-  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, List<Integer> failedDepths, List<Integer> iquodFlags, Map<String, List<Integer>> dependsOn) {
+  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, List<Integer> failedDepths, List<Integer> iquodFlags, Map<String, List<Integer>> dependsOnFailedDepths, Map<String, List<String>> dependsOnFailedChecks) {
     this.castNumber = castNumber;
     this.passed = passed;
     this.filtered = filtered;
     this.filterReason = filterReason;
     this.failedDepths = Collections.unmodifiableList(failedDepths);
     this.iquodFlags = Collections.unmodifiableList(iquodFlags);
-    this.dependsOn = Collections.unmodifiableMap(dependsOn);
+    this.dependsOnFailedDepths = Collections.unmodifiableMap(dependsOnFailedDepths);
+    this.dependsOnFailedChecks = Collections.unmodifiableMap(dependsOnFailedChecks);
   }
 
   @Deprecated
@@ -122,13 +133,22 @@ public class CastCheckResult implements Serializable {
     this.iquodFlags = iquodFlags;
   }
 
-  public Map<String, List<Integer>> getDependsOn() {
-    return dependsOn;
+  public Map<String, List<Integer>> getDependsOnFailedDepths() {
+    return dependsOnFailedDepths;
   }
 
   @Deprecated
-  public void setDependsOn(Map<String, List<Integer>> dependsOn) {
-    this.dependsOn = dependsOn;
+  public void setDependsOnFailedDepths(Map<String, List<Integer>> dependsOn) {
+    this.dependsOnFailedDepths = dependsOn;
+  }
+
+  public Map<String, List<String>> getDependsOnFailedChecks() {
+    return dependsOnFailedChecks;
+  }
+
+  @Deprecated
+  public void setDependsOnFailedChecks(Map<String, List<String>> dependsOnFailedChecks) {
+    this.dependsOnFailedChecks = dependsOnFailedChecks;
   }
 
   @Override
@@ -142,12 +162,12 @@ public class CastCheckResult implements Serializable {
     CastCheckResult result = (CastCheckResult) o;
     return castNumber == result.castNumber && passed == result.passed && filtered == result.filtered && Objects.equals(filterReason,
         result.filterReason) && Objects.equals(failedDepths, result.failedDepths) && Objects.equals(iquodFlags, result.iquodFlags) &&
-        Objects.equals(dependsOn, result.dependsOn);
+        Objects.equals(dependsOnFailedDepths, result.dependsOnFailedDepths) && Objects.equals(dependsOnFailedChecks, result.dependsOnFailedChecks);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOn);
+    return Objects.hash(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks);
   }
 
   @Override
@@ -159,7 +179,8 @@ public class CastCheckResult implements Serializable {
         ", filterReason='" + filterReason + '\'' +
         ", failedDepths=" + failedDepths +
         ", iquodFlags=" + iquodFlags +
-        ", dependsOn=" + dependsOn +
+        ", dependsOnFailedDepths=" + dependsOnFailedDepths +
+        ", dependsOnFailedChecks=" + dependsOnFailedChecks +
         '}';
   }
 
@@ -183,7 +204,8 @@ public class CastCheckResult implements Serializable {
     private String filterReason;
     private List<Integer> failedDepths = new ArrayList<>(0);
     private List<Integer> iquodFlags = new ArrayList<>(0);
-    private Map<String, List<Integer>> dependsOn = new HashMap<>(0);
+    private Map<String, List<Integer>> dependsOnFailedDepths = new HashMap<>(0);
+    private Map<String, List<String>> dependsOnFailedChecks = new HashMap<>(0);
 
     private Builder() {
 
@@ -196,7 +218,8 @@ public class CastCheckResult implements Serializable {
       filterReason = orig.filterReason;
       failedDepths = new ArrayList<>(orig.failedDepths);
       iquodFlags = new ArrayList<>(orig.iquodFlags);
-      dependsOn = new HashMap<>(orig.dependsOn);
+      dependsOnFailedDepths = new HashMap<>(orig.dependsOnFailedDepths);
+      dependsOnFailedChecks = new HashMap<>(orig.dependsOnFailedChecks);
     }
 
     private Builder(Row row) {
@@ -206,7 +229,8 @@ public class CastCheckResult implements Serializable {
       this.filterReason = row.getAs("filterReason");
       this.failedDepths = row.getList(row.fieldIndex("failedDepths"));
       this.iquodFlags = row.getList(row.fieldIndex("iquodFlags"));
-      this.dependsOn = row.getJavaMap(row.fieldIndex("dependsOn"));
+      this.dependsOnFailedDepths = row.getJavaMap(row.fieldIndex("dependsOnFailedDepths"));
+      this.dependsOnFailedChecks = row.getJavaMap(row.fieldIndex("dependsOnFailedChecks"));
     }
 
     public Builder withCastNumber(int castNumber) {
@@ -239,13 +263,18 @@ public class CastCheckResult implements Serializable {
       return this;
     }
 
-    public Builder withDependsOn(Map<String, List<Integer>> dependsOn) {
-      this.dependsOn = dependsOn;
+    public Builder withDependsOnFailedDepths(Map<String, List<Integer>> dependsOnFailedDepths) {
+      this.dependsOnFailedDepths = dependsOnFailedDepths;
+      return this;
+    }
+
+    public Builder withDependsOnFailedChecks(Map<String, List<String>> dependsOnFailedChecks) {
+      this.dependsOnFailedChecks = dependsOnFailedChecks;
       return this;
     }
 
     public CastCheckResult build() {
-      return new CastCheckResult(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOn);
+      return new CastCheckResult(castNumber, passed, filtered, filterReason, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks);
     }
   }
 }
