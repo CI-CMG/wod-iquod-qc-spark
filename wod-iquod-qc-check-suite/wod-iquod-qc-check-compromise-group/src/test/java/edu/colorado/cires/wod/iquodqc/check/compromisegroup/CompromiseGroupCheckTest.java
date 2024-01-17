@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -184,6 +185,10 @@ public class CompromiseGroupCheckTest {
         .withCastNumber(123)
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
+        .withDependsOnFailedDepths(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
+            failingTest,
+            failedDepths
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

@@ -15,7 +15,6 @@
     <module>wod-iquod-qc-check-suite</module>
     <module>wod-iquod-qc-flag</module>
     <module>wod-iquod-qc-spark</module>
-    <module>wod-iquod-qc-check-suite/wod-iquod-qc-check-lfpr-group</module>
   </modules>
 
   <properties>

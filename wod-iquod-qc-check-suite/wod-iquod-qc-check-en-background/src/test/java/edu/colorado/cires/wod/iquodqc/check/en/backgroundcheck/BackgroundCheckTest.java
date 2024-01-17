@@ -11,6 +11,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
@@ -75,12 +77,7 @@ public class BackgroundCheckTest {
         return properties;
       }
     };
-    check.initialize(new CastCheckInitializationContext() {
-      @Override
-      public Properties getProperties() {
-        return properties;
-      }
-    });
+    check.initialize(() -> properties);
   }
 
   @AfterAll
@@ -175,6 +172,10 @@ public class BackgroundCheckTest {
         .withCastNumber(8888)
         .withPassed(false)
         .withFailedDepths(Arrays.asList(3))
+        .withDependsOnFailedDepths(Map.of(
+            CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName(),
+            Collections.singletonList(3)
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

@@ -28,10 +28,10 @@ public class CoTeDeWoaNormbiasTest {
     properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
     properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
     properties.put("data.dir", "../../test-data");
-    
+
     woaGetter = new WoaGetter(WoaParametersReader.loadParameters(properties));
   }
-  
+
   @Test void testComputeNormbias() {
     assertArrayEquals(
         EXPECTED_WOA_NORMBIAS,
@@ -46,6 +46,10 @@ public class CoTeDeWoaNormbiasTest {
             TEMPERATURES,
             woaGetter
         ),
+        /* TODO: See if we can reduce this delta given the current interpolation method. 
+            The sampling distance for lat/lons in this reference data is 5 degrees, which changes interpolated values
+            much more than cars normbias (sampling distance = 0.5 degrees) if not using linear interpolation (we are 
+            currently using a tricubic interpolation).*/
         1e+1
     );
   }
