@@ -61,7 +61,7 @@ public class CoTeDeAnomalyDetectionTest {
   @Test void testComputeAnomaly() {
     assertArrayEquals(
         EXPECTED_COMBINED_PROBABILITIES,
-        CoTeDeAnomalyDetection.computeAnomallyProbabilities(TEMPERATURES, DEPTHS, TIMESTAMP, LATITUDE, LONGITUDE, woaGetter, carsGetter),
+        CoTeDeAnomalyDetection.computeAnomalyProbabilities(TEMPERATURES, DEPTHS, TIMESTAMP, LATITUDE, LONGITUDE, woaGetter, carsGetter),
         1e-1
     );
   }
