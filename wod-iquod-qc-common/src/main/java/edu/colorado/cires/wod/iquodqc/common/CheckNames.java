@@ -67,7 +67,8 @@ public enum CheckNames {
   COTEDE_GRADIENT_CHECK("CoTeDe_Gradient_check"),
   COTEDE_SPIKE_CHECK("CoTeDe_Spike_check"),
   COTEDE_GTSPP_SPIKE_CHECK("CoTeDe_GTSPP_Spike_check"),
-  COTEDE_RATE_OF_CHANGE("CoTeDe_Rate_of_Change_check");
+  COTEDE_RATE_OF_CHANGE("CoTeDe_Rate_of_Change_check"),
+  COTEDE_CONSTANT_CLUSTER_SIZE_CHECK("CoTeDe_Constant_Cluster_Size_check");
 
   private final String name;
 
