@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.cotede.gradient;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PRESSURE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.SALINITY;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
+import static edu.colorado.cires.wod.iquodqc.common.CastUtils.getTemperatures;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -10,6 +11,7 @@ import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -42,7 +44,13 @@ public class CoTeDeGradientCheckTest {
         )
         .build();
 
-    Collection<Integer> results = new CoTeDeGradientCheck().getFailedDepths(cast);
+    Collection<Integer> results = new CoTeDeGradientCheck().getFailedDepths(
+        cast,
+        Arrays.stream(CoTeDeGradient.computeGradient(
+            getTemperatures(cast)
+        )).boxed().collect(Collectors.toList()),
+        new HashMap<>(0)
+    );
     assertEquals(3, results.size());
     assertEquals(List.of(10, 11, 14), results);
   }
@@ -68,7 +76,13 @@ public class CoTeDeGradientCheckTest {
         )
         .build();
 
-    Collection<Integer> results = new CoTeDeGradientCheck().getFailedDepths(cast);
+    Collection<Integer> results = new CoTeDeGradientCheck().getFailedDepths(
+        cast,
+        Arrays.stream(CoTeDeGradient.computeGradient(
+            getTemperatures(cast)
+        )).boxed().collect(Collectors.toList()),
+        new HashMap<>(0)
+    );
     assertEquals(0, results.size());
   }
 

@@ -18,7 +18,7 @@ public class CoTeDeGradientTest {
       15.39, 11.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
   
   @Test void testGradientFlags() {
-    assertEquals(FAILED_FLAGS, CoTeDeGradient.checkGradient(VALUES, THRESHOLD));
+    assertEquals(FAILED_FLAGS, CoTeDeGradient.getFlags(VALUES, CoTeDeGradient.computeGradient(VALUES), THRESHOLD));
   }
   
   @Test void testComputeGradient() {
