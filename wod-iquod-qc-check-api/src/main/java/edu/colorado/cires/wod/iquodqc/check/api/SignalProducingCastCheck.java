@@ -12,7 +12,7 @@ public abstract class SignalProducingCastCheck extends CommonCastCheck {
 
   private static final long serialVersionUID = 0L;
 
-  abstract List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults);
+  protected abstract List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults);
 
   protected abstract Collection<Integer> getFailedDepths(
       Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults

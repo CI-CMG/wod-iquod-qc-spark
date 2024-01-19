@@ -88,7 +88,7 @@ public class CoTeDeTukey53HNormCheckSparkTest {
   }
 
   @Test
-  void testDigitRolloverFromCastTemperatureFailure() {
+  void testTemperatureFailure() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -138,6 +138,11 @@ public class CoTeDeTukey53HNormCheckSparkTest {
         .withCastNumber(123)
         .withPassed(false)
         .withFailedDepths(List.of(0, 5, 14))
+        .withSignal(List.of(
+            Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, 27.594261401686353,
+            0.025429415139180025, -0.04483607406118565, 0.058554574333637824, -0.03881331784401148, Double.NaN,
+            Double.NaN, Double.NaN, Double.NaN, Double.NaN
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -146,7 +151,7 @@ public class CoTeDeTukey53HNormCheckSparkTest {
     assertEquals(expected, result);
   }
 
-  @Test void testDigitRolloverFromCastPass() {
+  @Test void testPass() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -196,6 +201,10 @@ public class CoTeDeTukey53HNormCheckSparkTest {
         .withCastNumber(123)
         .withPassed(true)
         .withFailedDepths(Collections.emptyList())
+        .withSignal(
+            List.of(Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN,
+                Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN)
+        )
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

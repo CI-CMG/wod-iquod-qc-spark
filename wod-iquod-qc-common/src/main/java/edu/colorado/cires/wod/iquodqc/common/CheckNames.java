@@ -61,7 +61,8 @@ public enum CheckNames {
   ICDC_AQC_02_CRUDE_RANGE("ICDC_aqc_02_crude_range"),
   ICDC_AQC_04_MAX_OBS_DEPTH("ICDC_aqc_04_max_obs_depth"),
   ICDC_AQC_05_STUCK_VALUE("ICDC_aqc_05_stuck_value"),
-  IQUOD_FLAGS_CHECK("IQuOD_flags_check");
+  IQUOD_FLAGS_CHECK("IQuOD_flags_check"),
+  COTEDE_TUKEY_53_NORM_CHECK("CoTeDe_Tukey_53_Norm_check");
 
   private final String name;
 
