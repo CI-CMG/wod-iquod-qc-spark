@@ -89,7 +89,7 @@ public class CoTeDeSpikeGTSPPCheckSparkTest {
   }
 
   @Test
-  void testDigitRolloverFromCastTemperatureFailure() {
+  void testTemperatureFailure() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -139,6 +139,23 @@ public class CoTeDeSpikeGTSPPCheckSparkTest {
         .withCastNumber(123)
         .withPassed(false)
         .withFailedDepths(List.of(2, 12, 14))
+        .withSignal(List.of(
+            Double.NaN,
+            Double.NaN,
+            Double.NaN,
+            Double.NaN,
+            -0.3199999999999985,
+            -1.5299999999999994,
+            -0.9000000000000039,
+            -0.9000000000000021,
+            0.7299999999999986,
+            0.7299999999999969,
+            1.0,
+            0.9999999999999996,
+            -2.13,
+            Double.NaN,
+            Double.NaN
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -147,7 +164,7 @@ public class CoTeDeSpikeGTSPPCheckSparkTest {
     assertEquals(expected, result);
   }
 
-  @Test void testDigitRolloverFromCastPass() {
+  @Test void testPass() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -176,13 +193,13 @@ public class CoTeDeSpikeGTSPPCheckSparkTest {
                 .mapToObj(v -> Depth.builder().withDepth(100D)
                     .withData(List.of(
                         ProfileData.builder()
-                            .withVariableCode(TEMPERATURE).withValue(1)
+                            .withVariableCode(TEMPERATURE).withValue(1.0D)
                             .build(),
                         ProfileData.builder()
-                            .withVariableCode(PRESSURE).withValue(1)
+                            .withVariableCode(PRESSURE).withValue(1.1D)
                             .build(),
                         ProfileData.builder()
-                            .withVariableCode(SALINITY).withValue(1)
+                            .withVariableCode(SALINITY).withValue(1.2D)
                             .build()
                     ))
                     .build())
@@ -197,6 +214,23 @@ public class CoTeDeSpikeGTSPPCheckSparkTest {
         .withCastNumber(123)
         .withPassed(true)
         .withFailedDepths(Collections.emptyList())
+        .withSignal(List.of(
+            Double.NaN,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            Double.NaN
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

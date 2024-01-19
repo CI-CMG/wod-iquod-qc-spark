@@ -64,7 +64,9 @@ public enum CheckNames {
   IQUOD_FLAGS_CHECK("IQuOD_flags_check"),
   COTEDE_TUKEY_53_NORM_CHECK("CoTeDe_Tukey_53_Norm_check"),
   COTEDE_GRADIENT_GTSPP_CHECK("CoTeDe_Gradient_GTSPP_check"),
-  COTEDE_GRADIENT_CHECK("CoTeDe_Gradient_check");
+  COTEDE_GRADIENT_CHECK("CoTeDe_Gradient_check"),
+  COTEDE_SPIKE_CHECK("CoTeDe_Spike_check"),
+  COTEDE_GTSPP_SPIKE_CHECK("CoTeDe_GTSPP_Spike_check");
 
   private final String name;
 

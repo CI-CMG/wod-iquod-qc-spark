@@ -4,6 +4,11 @@ import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 
 public class CoTeDeSpikeGTSPPCheck extends CoTeDeSpikeCheck {
 
+  @Override
+  public String getName() {
+    return CheckNames.COTEDE_GTSPP_SPIKE_CHECK.getName();
+  }
+
   private static final double TEMPERATURE_THRESHOLD = 2.;
 
   @Override
