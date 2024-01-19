@@ -25,6 +25,8 @@ import org.apache.spark.sql.api.java.UDF1;
 
 public abstract class CommonCastCheck implements CastCheck, Serializable {
 
+  private static final long serialVersionUID = 0L;
+
   private static final int TEMPERATURE = 1;
 
   @Override
@@ -172,7 +174,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         ).build();
   }
 
-  private static Map<String, List<Integer>> getDependsOnFailedDepths(Map<String, CastCheckResult> otherTestResults) {
+  static Map<String, List<Integer>> getDependsOnFailedDepths(Map<String, CastCheckResult> otherTestResults) {
     Map<String, List<Integer>> doFailedDepths = new HashMap<>(0);
 
     for (Map.Entry<String, CastCheckResult> entry : otherTestResults.entrySet()) {
@@ -189,7 +191,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
     return doFailedDepths;
   }
 
-  private static Map<String, List<String>> getDependsOnFailedChecks(Map<String, CastCheckResult> otherTestResults) {
+  static Map<String, List<String>> getDependsOnFailedChecks(Map<String, CastCheckResult> otherTestResults) {
     Map<String, List<String>> doFailedChecks = new HashMap<>(0);
 
     for (Map.Entry<String, CastCheckResult> entry : otherTestResults.entrySet()) {

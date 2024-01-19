@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +46,28 @@ public class CastCheckResult implements Serializable {
             ),
             true,
             Metadata.empty()
-        )
+        ),
+        new StructField("signal", DataTypes.createArrayType(DataTypes.DoubleType), true, Metadata.empty())
     });
   }
 
   public Row asRow() {
-    return new GenericRowWithSchema(new Object[]{castNumber, passed, filtered, filterReason, error, errorMessage, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks}, structType());
+    return new GenericRowWithSchema(
+        new Object[]{
+            castNumber,
+            passed,
+            filtered,
+            filterReason,
+            error,
+            errorMessage,
+            failedDepths,
+            iquodFlags,
+            dependsOnFailedDepths,
+            dependsOnFailedChecks,
+            signal
+        },
+        structType()
+    );
   }
 
   private int castNumber;
@@ -63,8 +80,9 @@ public class CastCheckResult implements Serializable {
   private List<Integer> iquodFlags;
   private Map<String, List<Integer>> dependsOnFailedDepths;
   private Map<String, List<String>> dependsOnFailedChecks;
+  private List<Double> signal;
 
-  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, boolean error, String errorMessage, List<Integer> failedDepths, List<Integer> iquodFlags, Map<String, List<Integer>> dependsOnFailedDepths, Map<String, List<String>> dependsOnFailedChecks) {
+  private CastCheckResult(int castNumber, boolean passed, boolean filtered, String filterReason, boolean error, String errorMessage, List<Integer> failedDepths, List<Integer> iquodFlags, Map<String, List<Integer>> dependsOnFailedDepths, Map<String, List<String>> dependsOnFailedChecks, List<Double> signal) {
     this.castNumber = castNumber;
     this.passed = passed;
     this.filtered = filtered;
@@ -75,6 +93,7 @@ public class CastCheckResult implements Serializable {
     this.iquodFlags = Collections.unmodifiableList(iquodFlags);
     this.dependsOnFailedDepths = Collections.unmodifiableMap(dependsOnFailedDepths);
     this.dependsOnFailedChecks = Collections.unmodifiableMap(dependsOnFailedChecks);
+    this.signal = Collections.unmodifiableList(signal);
   }
 
   @Deprecated
@@ -175,6 +194,18 @@ public class CastCheckResult implements Serializable {
     this.dependsOnFailedChecks = dependsOnFailedChecks;
   }
 
+  public List<Double> getSignal() {
+    return signal;
+  }
+
+  @Deprecated
+  public void setSignal(List<Double> signal) {
+    if (signal == null) {
+      signal = new ArrayList<>(0);
+    }
+    this.signal = signal;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -188,13 +219,13 @@ public class CastCheckResult implements Serializable {
         && Objects.equals(filterReason, result.filterReason) && Objects.equals(errorMessage, result.errorMessage)
         && Objects.equals(failedDepths, result.failedDepths) && Objects.equals(iquodFlags, result.iquodFlags)
         && Objects.equals(dependsOnFailedDepths, result.dependsOnFailedDepths) && Objects.equals(dependsOnFailedChecks,
-        result.dependsOnFailedChecks);
+        result.dependsOnFailedChecks) && Objects.equals(signal, result.signal);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(castNumber, passed, filtered, filterReason, error, errorMessage, failedDepths, iquodFlags, dependsOnFailedDepths,
-        dependsOnFailedChecks);
+        dependsOnFailedChecks, signal);
   }
 
   @Override
@@ -210,6 +241,7 @@ public class CastCheckResult implements Serializable {
         ", iquodFlags=" + iquodFlags +
         ", dependsOnFailedDepths=" + dependsOnFailedDepths +
         ", dependsOnFailedChecks=" + dependsOnFailedChecks +
+        ", signal=" + signal +
         '}';
   }
 
@@ -237,6 +269,7 @@ public class CastCheckResult implements Serializable {
     private List<Integer> iquodFlags = new ArrayList<>(0);
     private Map<String, List<Integer>> dependsOnFailedDepths = new HashMap<>(0);
     private Map<String, List<String>> dependsOnFailedChecks = new HashMap<>(0);
+    private List<Double> signal = new ArrayList<>(0);
 
     private Builder() {
 
@@ -253,19 +286,21 @@ public class CastCheckResult implements Serializable {
       iquodFlags = new ArrayList<>(orig.iquodFlags);
       dependsOnFailedDepths = new HashMap<>(orig.dependsOnFailedDepths);
       dependsOnFailedChecks = new HashMap<>(orig.dependsOnFailedChecks);
+      signal = new ArrayList<>(orig.signal);
     }
 
     private Builder(Row row) {
-      this.castNumber = row.getAs("castNumber");
-      this.passed = row.getAs("passed");
-      this.filtered = row.getAs("filtered");
-      this.filterReason = row.getAs("filterReason");
-      this.error = row.getAs("error");
-      this.errorMessage = row.getAs("errorMessage");
-      this.failedDepths = row.getList(row.fieldIndex("failedDepths"));
-      this.iquodFlags = row.getList(row.fieldIndex("iquodFlags"));
-      this.dependsOnFailedDepths = row.getJavaMap(row.fieldIndex("dependsOnFailedDepths"));
-      this.dependsOnFailedChecks = row.getJavaMap(row.fieldIndex("dependsOnFailedChecks"));
+      castNumber = row.getAs("castNumber");
+      passed = row.getAs("passed");
+      filtered = row.getAs("filtered");
+      filterReason = row.getAs("filterReason");
+      error = row.getAs("error");
+      errorMessage = row.getAs("errorMessage");
+      failedDepths = row.getList(row.fieldIndex("failedDepths"));
+      iquodFlags = row.getList(row.fieldIndex("iquodFlags"));
+      dependsOnFailedDepths = row.getJavaMap(row.fieldIndex("dependsOnFailedDepths"));
+      dependsOnFailedChecks = row.getJavaMap(row.fieldIndex("dependsOnFailedChecks"));
+      signal = row.getList(row.fieldIndex("signal"));
     }
 
     public Builder withCastNumber(int castNumber) {
@@ -318,8 +353,16 @@ public class CastCheckResult implements Serializable {
       return this;
     }
 
+    public Builder withSignal(List<Double> signal) {
+      if (signal == null) {
+        signal = Collections.emptyList();
+      }
+      this.signal = signal;
+      return this;
+    }
+
     public CastCheckResult build() {
-      return new CastCheckResult(castNumber, passed, filtered, filterReason, error, errorMessage, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks);
+      return new CastCheckResult(castNumber, passed, filtered, filterReason, error, errorMessage, failedDepths, iquodFlags, dependsOnFailedDepths, dependsOnFailedChecks, signal);
     }
   }
 }
