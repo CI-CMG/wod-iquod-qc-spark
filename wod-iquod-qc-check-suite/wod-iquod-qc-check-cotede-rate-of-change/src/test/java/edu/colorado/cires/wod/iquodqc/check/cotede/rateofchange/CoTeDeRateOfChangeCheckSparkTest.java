@@ -89,7 +89,7 @@ public class CoTeDeRateOfChangeCheckSparkTest {
   }
 
   @Test
-  void testDigitRolloverFromCastTemperatureFailure() {
+  void testTemperatureFailure() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -139,6 +139,23 @@ public class CoTeDeRateOfChangeCheckSparkTest {
         .withCastNumber(123)
         .withPassed(false)
         .withFailedDepths(List.of(9, 10, 14))
+        .withSignal(List.of(
+            Double.NaN,
+            0.019999999999999574,
+            0.0,
+            -0.030000000000001137,
+            -0.3200000000000003,
+            -1.5299999999999976,
+            -1.6099999999999994,
+            -3.900000000000002,
+            -2.5599999999999987,
+            -4.3100000000000005,
+            -4.15,
+            1.0,
+            -2.2199999999999998,
+            -2.13,
+            Double.NaN
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -147,7 +164,7 @@ public class CoTeDeRateOfChangeCheckSparkTest {
     assertEquals(expected, result);
   }
 
-  @Test void testDigitRolloverFromCastPass() {
+  @Test void testPass() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -176,13 +193,13 @@ public class CoTeDeRateOfChangeCheckSparkTest {
                 .mapToObj(v -> Depth.builder().withDepth(100D)
                     .withData(List.of(
                         ProfileData.builder()
-                            .withVariableCode(TEMPERATURE).withValue(ThreadLocalRandom.current().nextDouble(0, 4))
+                            .withVariableCode(TEMPERATURE).withValue(1.0D)
                             .build(),
                         ProfileData.builder()
-                            .withVariableCode(PRESSURE).withValue(ThreadLocalRandom.current().nextDouble(0, 4))
+                            .withVariableCode(PRESSURE).withValue(1.1D)
                             .build(),
                         ProfileData.builder()
-                            .withVariableCode(SALINITY).withValue(ThreadLocalRandom.current().nextDouble(0, 4))
+                            .withVariableCode(SALINITY).withValue(1.2D)
                             .build()
                     ))
                     .build())
@@ -197,6 +214,23 @@ public class CoTeDeRateOfChangeCheckSparkTest {
         .withCastNumber(123)
         .withPassed(true)
         .withFailedDepths(Collections.emptyList())
+        .withSignal(List.of(
+            Double.NaN,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

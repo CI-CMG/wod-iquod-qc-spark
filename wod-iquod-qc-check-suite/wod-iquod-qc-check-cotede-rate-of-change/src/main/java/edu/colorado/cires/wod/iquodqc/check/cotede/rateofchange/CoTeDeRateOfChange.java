@@ -1,13 +1,27 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.rateofchange;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CoTeDeRateOfChange {
-  public static List<Integer> checkRateOfChange(double[] input, double threshold) {
-    double[] rateOfChange = computeRateOfChange(input);
+
+  public static double[] computeRateOfChange(double[] input) {
+    int inputLength = input.length;
+
+    double[] output = new double[inputLength];
+    Arrays.fill(output, Double.NaN);
+
+    for (int i = 1; i < inputLength; i++) {
+      output[i] = input[i] - input[i - 1];
+    }
+    
+    return output;
+  }
+  
+  public static Collection<Integer> getFlags(double[] input, double[] rateOfChange, double threshold) {
     return IntStream.range(0, input.length).boxed()
         .filter(i -> {
           boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
@@ -23,18 +37,5 @@ public class CoTeDeRateOfChange {
           }
           return Math.abs(value) > threshold;
         }).collect(Collectors.toList());
-  }
-
-  public static double[] computeRateOfChange(double[] input) {
-    int inputLength = input.length;
-
-    double[] output = new double[inputLength];
-    Arrays.fill(output, Double.NaN);
-
-    for (int i = 1; i < inputLength; i++) {
-      output[i] = input[i] - input[i - 1];
-    }
-    
-    return output;
   }
 }
