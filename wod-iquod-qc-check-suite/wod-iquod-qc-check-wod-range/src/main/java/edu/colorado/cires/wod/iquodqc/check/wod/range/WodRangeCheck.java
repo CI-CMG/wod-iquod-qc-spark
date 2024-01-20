@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.wod.range;
 import static edu.colorado.cires.wod.iquodqc.check.wod.range.WodRange.getMinMax;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.VisibleForTesting;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.wod.range.WodRange.RegionMinMax;
@@ -57,16 +58,29 @@ public class WodRangeCheck extends CommonCastCheck {
   @Override
   public void initialize(CastCheckInitializationContext initContext) {
     properties = initContext.getProperties();
+  }
+
+  @VisibleForTesting
+  void setup() {
     if (REGION_MIN_MAX == null) {
-      REGION_MIN_MAX = JsonParametersReader.openRangesTemperature(properties);
+      synchronized (WodRangeCheck.class) {
+        if (REGION_MIN_MAX == null) {
+          REGION_MIN_MAX = JsonParametersReader.openRangesTemperature(properties);
+        }
+      }
     }
     if (RANGE_AREA == null) {
-      RANGE_AREA = JsonParametersReader.openRangeArea(properties);
+      synchronized (WodRangeCheck.class) {
+        if (RANGE_AREA == null) {
+          RANGE_AREA = JsonParametersReader.openRangeArea(properties);
+        }
+      }
     }
   }
 
   @Override
   protected Row checkUdf(Row row) {
+    setup();
     return super.checkUdf(row);
   }
 

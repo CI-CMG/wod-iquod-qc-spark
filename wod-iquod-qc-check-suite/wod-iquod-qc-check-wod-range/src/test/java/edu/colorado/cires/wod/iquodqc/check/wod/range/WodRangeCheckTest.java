@@ -33,6 +33,7 @@ public class WodRangeCheckTest {
     when(context.getProperties()).thenReturn(properties);
     
     check.initialize(context);
+    check.setup();
   }
   
   @Test void testTemperaturePass() {
@@ -58,7 +59,7 @@ public class WodRangeCheckTest {
             )
         ).build();
     
-    assertEquals(0, new WodRangeCheck().getFailedDepths(cast).size());
+    assertEquals(0, check.getFailedDepths(cast).size());
   }
   
   @Test void testTemperatureFailure() {
@@ -84,7 +85,7 @@ public class WodRangeCheckTest {
             )
         ).build();
 
-    Collection<Integer> failedCasts = new WodRangeCheck().getFailedDepths(cast);
+    Collection<Integer> failedCasts = check.getFailedDepths(cast);
     assertEquals(1, failedCasts.size());
     assertEquals(List.of(1), failedCasts);
   }

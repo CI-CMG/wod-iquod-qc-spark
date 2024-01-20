@@ -25,7 +25,7 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
   
   private static WoaGetter woaGetter;
   private static CarsGetter carsGetter;
-  private static Properties properties;
+  private Properties properties;
 
   @Override
   public String getName() {
@@ -40,10 +40,10 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
   @Override
   protected Row checkUdf(Row row) {
     if (woaGetter == null) {
-      loadWoa();
+      loadWoa(properties);
     }
     if (carsGetter == null) {
-      loadCars();
+      loadCars(properties);
     }
     return super.checkUdf(row);
   }
@@ -74,13 +74,21 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
     );
   }
   
-  protected static void loadWoa() {
-    WoaParameters woaParameters = WoaParametersReader.loadParameters(properties);
-    woaGetter = new WoaGetter(woaParameters);
+  protected static void loadWoa(Properties properties) {
+    synchronized (CoTeDeAnomalyDetectionCheck.class) {
+      if (woaGetter == null) {
+        WoaParameters woaParameters = WoaParametersReader.loadParameters(properties);
+        woaGetter = new WoaGetter(woaParameters);
+      }
+    }
   }
   
-  protected static void loadCars() {
-    CarsParameters carsParameters = CarsParametersReader.loadParameters(properties);
-    carsGetter = new CarsGetter(carsParameters);
+  protected static void loadCars(Properties properties) {
+    synchronized (CoTeDeAnomalyDetectionCheck.class) {
+      if (carsGetter == null) {
+        CarsParameters carsParameters = CarsParametersReader.loadParameters(properties);
+        carsGetter = new CarsGetter(carsParameters);
+      }
+    }
   }
 }
