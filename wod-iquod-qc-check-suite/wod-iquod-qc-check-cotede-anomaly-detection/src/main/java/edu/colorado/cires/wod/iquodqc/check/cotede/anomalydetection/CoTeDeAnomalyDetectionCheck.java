@@ -7,6 +7,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaGetter;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParameters;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParametersReader;
@@ -28,7 +29,7 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "";
+    return CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName();
   }
 
   @Override
