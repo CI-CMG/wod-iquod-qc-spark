@@ -119,6 +119,20 @@ final class AomlClimatologyUtils {
       return tap1;
     });
 
+
+    if (nearest == null) {
+      StringBuilder sb = new StringBuilder("nearest is null: ")
+          .append("\nlatitude: ").append(latitude)
+          .append("\nlongitude: ").append(longitude)
+          .append("\ndepth: ").append(depth)
+          .append("\npositionTemps: ").append(positionTemps)
+          .append("\nminIndexLat: ").append(minIndexLat)
+          .append("\nmaxIndexLat: ").append(maxIndexLat)
+          .append("\nminIndexLon: ").append(minIndexLon)
+          .append("\nmaxIndexLon: ").append(maxIndexLon);
+      throw new RuntimeException(sb.toString());
+    }
+
     double rad = DistanceUtils.distHaversineRAD(latitude, longitude, nearest.getLatitude(), nearest.getLongitude());
     if (rad > 0.25) {
       return OptionalDouble.empty();

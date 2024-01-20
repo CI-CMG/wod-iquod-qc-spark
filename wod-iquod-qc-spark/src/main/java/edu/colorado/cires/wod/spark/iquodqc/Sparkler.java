@@ -25,13 +25,13 @@ public class Sparkler implements Serializable, Runnable {
 
   private static final long serialVersionUID = 0L;
 
-  @Option(names = {"-ib", "--input-bucket"}, required = true, description = "The input S3 bucket containing compressed ASCII WOD files")
+  @Option(names = {"-ib", "--input-bucket"}, required = true, description = "The input S3 bucket WOD Parquet files")
   private String inputBucket;
 
   @Option(names = {"-ibr", "--input-bucket-region"}, required = true, description = "The input S3 bucket region")
   private String inputBucketRegion;
 
-  @Option(names = {"-ob", "--output-bucket"}, required = true, description = "The output S3 bucket where to put converted Parquet files")
+  @Option(names = {"-ob", "--output-bucket"}, required = true, description = "The output S3 bucket where to put QC results")
   private String outputBucket;
 
   @Option(names = {"-obr", "--output-bucket-region"}, required = true, description = "The output S3 bucket region")
@@ -79,6 +79,9 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-os", "--output-secret"}, description = "An optional secret key for the output bucket")
   private String outputSecretKey;
 
+  @Option(names = {"-emr", "--emr"}, description = "Optimize S3 access for EMR")
+  private boolean emr = false;
+
   @Override
   public void run() {
     SparkSession.Builder sparkBuilder = SparkSession.builder()
@@ -119,8 +122,8 @@ public class Sparkler implements Serializable, Runnable {
         outputPrefix,
         concurrency,
         new HashSet<>(checksToRun),
-        properties
-    );
+        properties,
+        emr);
     executor.run();
   }
 

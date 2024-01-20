@@ -157,8 +157,8 @@ public class SparklerExecutorTest {
           outputPrefix,
           2,
           new HashSet<>(),
-          properties
-      );
+          properties,
+          false);
       executor.run();
 
       for (String name : CHECK_NAMES) {

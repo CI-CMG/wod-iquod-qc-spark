@@ -36,6 +36,7 @@ public class SparklerExecutor implements Runnable {
   private final Properties properties;
   private final ExecutorService executor;
   private final Set<CheckRunner> runningChecks = new HashSet<>();
+  private final boolean emr;
 
   private boolean complete = false;
 
@@ -49,8 +50,8 @@ public class SparklerExecutor implements Runnable {
       String outputPrefix,
       int concurrency,
       Set<String> checksToRun,
-      Properties properties
-  ) {
+      Properties properties,
+      boolean emr) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
@@ -61,6 +62,7 @@ public class SparklerExecutor implements Runnable {
     this.checksToRun = Collections.unmodifiableSet(new LinkedHashSet<>(checksToRun));
     this.properties = properties;
     executor = Executors.newFixedThreadPool(concurrency);
+    this.emr = emr;
   }
 
   @Override
@@ -165,7 +167,7 @@ public class SparklerExecutor implements Runnable {
     }
 
     private String getInputUri() {
-      StringBuilder sb = new StringBuilder("s3a://").append(inputBucket).append("/");
+      StringBuilder sb = new StringBuilder(emr ? "s3://" : "s3a://").append(inputBucket).append("/");
       if (inputPrefix != null) {
         sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
       }
@@ -175,7 +177,7 @@ public class SparklerExecutor implements Runnable {
     }
 
     private String getOutputUri(String checkName) {
-      StringBuilder parquetUri = new StringBuilder("s3a://").append(outputBucket).append("/");
+      StringBuilder parquetUri = new StringBuilder(emr ? "s3://" : "s3a://").append(outputBucket).append("/");
       if (outputPrefix != null) {
         parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
       }

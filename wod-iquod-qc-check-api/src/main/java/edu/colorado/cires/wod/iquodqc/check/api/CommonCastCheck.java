@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -140,17 +141,28 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
   protected abstract Collection<Integer> getFailedDepths(Cast cast);
 
   protected CastCheckResult checkCast(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    Collection<Integer> failed = getFailedDepths(cast, otherTestResults);
-    return CastCheckResult.builder()
-        .withCastNumber(cast.getCastNumber())
-        .withPassed(failed.isEmpty())
-        .withFailedDepths(new ArrayList<>(failed))
-        .withDependsOnFailedDepths(
-            getDependsOnFailedDepths(otherTestResults)
-        ).withDependsOnFailedChecks(
-            getDependsOnFailedChecks(otherTestResults)
-        )
-        .build();
+    try {
+      Collection<Integer> failed = getFailedDepths(cast, otherTestResults);
+      return CastCheckResult.builder()
+          .withCastNumber(cast.getCastNumber())
+          .withPassed(failed.isEmpty())
+          .withFailedDepths(new ArrayList<>(failed))
+          .withDependsOnFailedDepths(
+              getDependsOnFailedDepths(otherTestResults)
+          ).withDependsOnFailedChecks(
+              getDependsOnFailedChecks(otherTestResults)
+          )
+          .build();
+    } catch (Exception e) {
+      String message = ExceptionUtils.getStackTrace(e);
+      System.err.println(message);
+      return CastCheckResult.builder()
+          .withCastNumber(cast.getCastNumber())
+          .withError(true)
+          .withErrorMessage(message)
+          .withPassed(false)
+          .build();
+    }
   }
 
   private static Map<String, List<Integer>> getDependsOnFailedDepths(Map<String, CastCheckResult> otherTestResults) {
