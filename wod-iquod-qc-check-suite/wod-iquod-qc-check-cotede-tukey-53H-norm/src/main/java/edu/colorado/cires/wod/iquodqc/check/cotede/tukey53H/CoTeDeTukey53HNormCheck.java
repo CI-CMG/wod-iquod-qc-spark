@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.tukey53H;
 
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import java.util.List;
 
 public class CoTeDeTukey53HNormCheck extends CoTeDeTukey53HCheck {
@@ -8,7 +9,7 @@ public class CoTeDeTukey53HNormCheck extends CoTeDeTukey53HCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_TUKEY_53_NORM_CHECK";
+    return CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName();
   }
 
   @Override

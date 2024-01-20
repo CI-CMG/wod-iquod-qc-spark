@@ -5,6 +5,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static java.lang.Math.max;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.Collection;
@@ -17,7 +18,7 @@ public class WodGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "WOD_gradient_check";
+    return CheckNames.WOD_GRADIENT_CHECK.getName();
   }
 
   @Override

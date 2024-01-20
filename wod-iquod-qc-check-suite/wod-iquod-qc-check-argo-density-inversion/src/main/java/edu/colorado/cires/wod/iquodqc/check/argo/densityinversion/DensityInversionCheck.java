@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.argo.densityinversion;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.argo.densityinversion.DensityInversion.InsituDensityComputation;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -17,7 +18,7 @@ public class DensityInversionCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ARGO_DENSITY_INVERSION_CHECK";
+    return CheckNames.COTEDE_ARGO_DENSITY_INVERSION_CHECK.getName();
   }
 
   @Override

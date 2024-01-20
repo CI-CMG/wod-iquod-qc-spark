@@ -48,9 +48,6 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-ip", "--input-prefix"}, description = "An optional key prefix of where the dataset directory starts for the input file")
   private String inputPrefix;
 
-  @Option(names = {"-c", "--concurrency"}, required = true, defaultValue = "2", description = "The number of checks to run at a time")
-  private int concurrency;
-
   @Option(names = {"-op", "--output-prefix"}, description = "An optional key prefix of where to write output files if not in the root of the output bucket")
   private String outputPrefix;
 
@@ -120,7 +117,6 @@ public class Sparkler implements Serializable, Runnable {
         datasets,
         processingLevels,
         outputPrefix,
-        concurrency,
         new HashSet<>(checksToRun),
         properties,
         emr);

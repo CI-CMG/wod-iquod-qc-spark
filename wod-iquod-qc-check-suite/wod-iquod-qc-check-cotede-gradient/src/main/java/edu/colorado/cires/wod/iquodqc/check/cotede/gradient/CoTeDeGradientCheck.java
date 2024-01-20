@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.cotede.gradient;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Collection;
@@ -13,7 +14,7 @@ public class CoTeDeGradientCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_GRADIENT_CHECK";
+    return CheckNames.COTEDE_GRADIENT_CHECK.getName();
   }
 
   @Override

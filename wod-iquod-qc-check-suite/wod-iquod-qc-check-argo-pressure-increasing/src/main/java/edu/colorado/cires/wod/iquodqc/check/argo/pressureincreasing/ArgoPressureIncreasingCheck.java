@@ -4,6 +4,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import static edu.colorado.cires.wod.iquodqc.common.DoubleUtils.doubleEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ObsUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -17,7 +18,7 @@ public class ArgoPressureIncreasingCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "Argo_pressure_increasing_test";
+    return CheckNames.ARGO_PRESSURE_INCREASING_TEST.getName();
   }
 
   @Override

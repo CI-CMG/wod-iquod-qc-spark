@@ -155,7 +155,6 @@ public class SparklerExecutorTest {
           datasets,
           processingLevels,
           outputPrefix,
-          2,
           new HashSet<>(),
           properties,
           false);

@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.digitrollover;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -22,7 +23,7 @@ public class CoTeDeDigitRolloverCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_DIGIT_ROLLOVER";
+    return CheckNames.COTEDE_DIGIT_ROLLOVER.getName();
   }
 
   @Override

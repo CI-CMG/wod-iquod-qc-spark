@@ -8,6 +8,7 @@ import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -52,7 +53,7 @@ public class MinMaxCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "MIN_MAX_CHECK";
+    return CheckNames.MIN_MAX_CHECK.getName();
   }
 
   @Override

@@ -1,6 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.globalrange;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.DepthUtils;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
@@ -13,7 +14,7 @@ public class CoTeDeGlobalRangeGTSPPCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "COTEDE_GLOBAL_RANGE_GTSPP_CHECK";
+    return CheckNames.COTEDE_GLOBAL_RANGE_GTSPP_CHECK.getName();
   }
 
   @Override

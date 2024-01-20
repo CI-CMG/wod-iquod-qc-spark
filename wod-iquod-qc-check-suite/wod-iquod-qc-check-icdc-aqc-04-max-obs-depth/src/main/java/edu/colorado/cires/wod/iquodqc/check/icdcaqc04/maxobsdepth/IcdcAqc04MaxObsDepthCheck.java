@@ -4,6 +4,7 @@ import static edu.colorado.cires.wod.iquodqc.common.CastUtils.getProbeTypeValue;
 import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -18,7 +19,7 @@ public class IcdcAqc04MaxObsDepthCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "ICDC_aqc_04_max_obs_depth";
+    return CheckNames.ICDC_AQC_04_MAX_OBS_DEPTH.getName();
   }
 /*
       '''Return quality control decisions.

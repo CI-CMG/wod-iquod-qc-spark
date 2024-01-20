@@ -2,6 +2,7 @@ package edu.colorado.cires.wod.iquodqc.check.profileenvelop;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.profileenvelop.ProfileEnvelop.ProfileThresholds;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,7 @@ public class GTSPPProfileEnvelopCheck extends CommonCastCheck {
 
   @Override
   public String getName() {
-    return "GTSPP_PROFILE_ENVELOP_CHECK";
+    return CheckNames.GTSPP_PROFILE_ENVELOP_CHECK.getName();
   }
 
   @Override
