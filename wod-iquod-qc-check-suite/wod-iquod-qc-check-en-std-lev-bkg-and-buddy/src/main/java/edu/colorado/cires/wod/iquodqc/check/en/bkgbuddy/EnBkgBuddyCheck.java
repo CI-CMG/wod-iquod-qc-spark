@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -110,7 +111,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
             + "  (select struct(B.*) as result, " + DISTANCE + "(A.cast.longitude, A.cast.latitude, B.cast.longitude, B.cast.latitude) as distance "
             + "      from " + TEMP_T + " B "
             + "      where array_contains(" + GEOHASH + "(A.cast.longitude, A.cast.latitude), B.cast.geohash) "
-            + "        and A.cast.year == B.cast.year "
+//            + "        and A.cast.year == B.cast.year "
             + "        and A.cast.month = B.cast.month "
             + "        and A.cast.cruiseNumber != B.cast.cruiseNumber "
             + "        and A.cast.castNumber != B.cast.castNumber "
@@ -129,13 +130,19 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   private double getDistanceUdf(double lon1, double lat1, double lon2, double lat2) {
     try {
       return JTS.orthodromicDistance(new Coordinate(lon1, lat1), new Coordinate(lon2, lat2), EPSG_4326);
-    } catch (TransformException e) {
-      throw new RuntimeException("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ")", e);
+    } catch (Exception e) {
+      System.out.println("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ") " + ExceptionUtils.getStackTrace(e));
+      return MAX_DISTANCE_M + 1;
     }
   }
 
   private List<String> getGeoHashesUdf(double lon, double lat) {
-    return new ArrayList<>(GeoHashFinder.getNeighborsInDistance(lon, lat, MAX_DISTANCE_M));
+    try {
+      return new ArrayList<>(GeoHashFinder.getNeighborsInDistance(lon, lat, MAX_DISTANCE_M));
+    } catch (Exception e) {
+      System.out.println("Unable to calculate geohash for " + lon + " lon, " + lat + " lat " + ExceptionUtils.getStackTrace(e));
+      return Collections.emptyList();
+    }
   }
 
   @Override

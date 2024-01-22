@@ -38,7 +38,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
 
   protected void registerUdf(CastCheckContext context) {
     SparkSession spark = context.getSparkSession();
-    spark.udf().register(getName(), udf((UDF1<Row, Row>) this::checkUdf, CastCheckResult.structType()));
+    spark.udf().register(getName(), udf((UDF1<Row, Row>) this::checkUdfAndHandleException, CastCheckResult.structType()));
   }
 
   protected static Column[] resolveColumns(Dataset<Cast> castDataset, Map<String, Dataset<CastCheckResult>> otherResultDatasets) {
@@ -77,6 +77,25 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
 
   protected Dataset<CastCheckResult> convertResultToDataset(Dataset<Row> rows) {
     return rows.select("result.*").as(Encoders.bean(CastCheckResult.class));
+  }
+
+  private Row checkUdfAndHandleException(Row row) {
+    try {
+      return checkUdf(row);
+    } catch (Exception e) {
+      Row castRow = row.getStruct(row.fieldIndex("cast"));
+      Cast cast = filterFlags(Cast.builder(castRow).build());
+      String message = ExceptionUtils.getStackTrace(e);
+      System.err.println(message);
+      System.out.println(message);
+      return CastCheckResult.builder()
+          .withCastNumber(cast.getCastNumber())
+          .withError(true)
+          .withErrorMessage(message)
+          .withPassed(false)
+          .build()
+          .asRow();
+    }
   }
 
   protected Row checkUdf(Row row) {
@@ -141,28 +160,16 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
   protected abstract Collection<Integer> getFailedDepths(Cast cast);
 
   protected CastCheckResult checkCast(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    try {
-      Collection<Integer> failed = getFailedDepths(cast, otherTestResults);
-      return CastCheckResult.builder()
-          .withCastNumber(cast.getCastNumber())
-          .withPassed(failed.isEmpty())
-          .withFailedDepths(new ArrayList<>(failed))
-          .withDependsOnFailedDepths(
-              getDependsOnFailedDepths(otherTestResults)
-          ).withDependsOnFailedChecks(
-              getDependsOnFailedChecks(otherTestResults)
-          )
-          .build();
-    } catch (Exception e) {
-      String message = ExceptionUtils.getStackTrace(e);
-      System.err.println(message);
-      return CastCheckResult.builder()
-          .withCastNumber(cast.getCastNumber())
-          .withError(true)
-          .withErrorMessage(message)
-          .withPassed(false)
-          .build();
-    }
+    Collection<Integer> failed = getFailedDepths(cast, otherTestResults);
+    return CastCheckResult.builder()
+        .withCastNumber(cast.getCastNumber())
+        .withPassed(failed.isEmpty())
+        .withFailedDepths(new ArrayList<>(failed))
+        .withDependsOnFailedDepths(
+            getDependsOnFailedDepths(otherTestResults)
+        ).withDependsOnFailedChecks(
+            getDependsOnFailedChecks(otherTestResults)
+        ).build();
   }
 
   private static Map<String, List<Integer>> getDependsOnFailedDepths(Map<String, CastCheckResult> otherTestResults) {

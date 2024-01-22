@@ -17,7 +17,13 @@ import java.util.stream.IntStream;
 public class CoTeDeAnomalyDetection {
 
   public static List<Integer> checkFlags(
-      double[] temperature, double[] depths, long timestamp, double latitude, double longitude, WoaGetter woaGetter, CarsGetter carsGetter, double threshold
+      double[] temperature,
+      double[] depths,
+      long timestamp, double latitude,
+      double longitude,
+      WoaGetter woaGetter,
+      CarsGetter carsGetter,
+      double threshold
   ) {
     double[] probabilities = computeAnomallyProbabilities(
         temperature, depths, timestamp, latitude, longitude, woaGetter, carsGetter
@@ -30,7 +36,13 @@ public class CoTeDeAnomalyDetection {
   }
   
   protected static double[] computeAnomallyProbabilities(
-      double[] temperature, double[] depths, long timestamp, double latitude, double longitude, WoaGetter woaGetter, CarsGetter carsGetter
+      double[] temperature,
+      double[] depths,
+      long timestamp,
+      double latitude,
+      double longitude,
+      WoaGetter woaGetter,
+      CarsGetter carsGetter
   ) {
     double[] gradientProb = processGradient(temperature);
     double[] spikeProb = processSpike(temperature);

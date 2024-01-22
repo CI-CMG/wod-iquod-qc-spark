@@ -13,6 +13,8 @@ import org.apache.spark.sql.SparkSession;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 
 
 @Command(
@@ -44,6 +46,9 @@ public class Sparkler implements Serializable, Runnable {
 
   @Option(names = {"-p", "--processing-level"}, required = true, split = ",", defaultValue = "OBS", description = "A comma separated list of processing levels - Default: ${DEFAULT-VALUE}")
   private List<String> processingLevels;
+
+  @Option(names = {"-y", "--year"}, required = false, split = ",", description = "A comma separated list of years")
+  private List<Integer> years = new ArrayList<>(0);
 
   @Option(names = {"-ip", "--input-prefix"}, description = "An optional key prefix of where the dataset directory starts for the input file")
   private String inputPrefix;
@@ -109,6 +114,15 @@ public class Sparkler implements Serializable, Runnable {
     Properties properties = new S3PropertiesReader(propertiesBucket, propertiesKey, propertiesBucketRegion, propertiesAccessKey, propertiesSecretKey)
         .readProperties();
 
+          S3ClientBuilder s3Builder = S3Client.builder();
+//      if (sourceAccessKey != null) {
+//        s3Builder.credentialsProvider(StaticCredentialsProvider.create(
+//            AwsBasicCredentials.create(sourceAccessKey, sourceSecretKey)
+//        ));
+//      }
+//      s3Builder.region(Region.of(sourceBucketRegion));
+      S3Client s3 = s3Builder.build();
+
     SparklerExecutor executor = new SparklerExecutor(
         spark,
         inputBucket,
@@ -119,7 +133,7 @@ public class Sparkler implements Serializable, Runnable {
         outputPrefix,
         new HashSet<>(checksToRun),
         properties,
-        emr);
+        emr, years, s3);
     executor.run();
   }
 

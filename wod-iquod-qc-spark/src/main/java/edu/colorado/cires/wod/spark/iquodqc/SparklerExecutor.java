@@ -14,6 +14,9 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 
 public class SparklerExecutor implements Runnable {
@@ -30,6 +33,8 @@ public class SparklerExecutor implements Runnable {
   private final Set<String> checksToRun;
   private final Properties properties;
   private final boolean emr;
+  private final List<Integer> years;
+  private final S3Client s3;
 
   public SparklerExecutor(
       SparkSession spark,
@@ -41,7 +46,7 @@ public class SparklerExecutor implements Runnable {
       String outputPrefix,
       Set<String> checksToRun,
       Properties properties,
-      boolean emr) {
+      boolean emr, List<Integer> years, S3Client s3) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
@@ -52,6 +57,8 @@ public class SparklerExecutor implements Runnable {
     this.checksToRun = Collections.unmodifiableSet(new LinkedHashSet<>(checksToRun));
     this.properties = properties;
     this.emr = emr;
+    this.years = years;
+    this.s3 = s3;
   }
 
   @Override
@@ -59,9 +66,12 @@ public class SparklerExecutor implements Runnable {
     List<CastCheck> checks = CheckResolver.getChecks(checksToRun, properties);
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
+        List<Integer> resolvedYears = YearResolver.resolveYears(years, s3, inputBucket, inputPrefix, dataset, processingLevel);
         for (CastCheck check : checks) {
-          CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties);
-          runner.run();
+          for (int year : resolvedYears) {
+            CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties, year);
+            runner.run();
+          }
         }
       }
     }
@@ -75,14 +85,18 @@ public class SparklerExecutor implements Runnable {
     private final Properties properties;
     private final String inputUri;
     private final String outputUri;
+    private final int year;
+    private final String prefix;
 
-    private CheckRunner(String dataset, String processingLevel, CastCheck check, Properties properties) {
+    private CheckRunner(String dataset, String processingLevel, CastCheck check, Properties properties, int year) {
       this.dataset = dataset;
       this.processingLevel = processingLevel;
       this.check = check;
       this.properties = properties;
+      this.year = year;
       inputUri = getInputUri();
       outputUri = getOutputUri(this.check.getName());
+      prefix = outputUri.replaceFirst("s3a://" + outputBucket + "/", "").replaceFirst("s3://" + outputBucket + "/", "");
     }
 
     private String getInputUri() {
@@ -90,8 +104,9 @@ public class SparklerExecutor implements Runnable {
       if (inputPrefix != null) {
         sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
       }
-      sb.append(processingLevel).append("/")
-          .append("WOD_").append(dataset).append("_").append(processingLevel).append(".parquet");
+      sb.append(dataset).append("/")
+          .append(processingLevel).append("/")
+          .append(dataset).append(processingLevel.charAt(0)).append(year).append(".parquet");
       return sb.toString();
     }
 
@@ -101,6 +116,7 @@ public class SparklerExecutor implements Runnable {
         parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
       }
       parquetUri.append(dataset).append("/").append(processingLevel).append("/")
+          .append(year).append("/")
           .append(checkName).append(".parquet");
       return parquetUri.toString();
     }
@@ -109,39 +125,61 @@ public class SparklerExecutor implements Runnable {
     public void run() {
       long start = System.currentTimeMillis();
       System.err.println("Running " + check.getName());
+      System.out.println("Running " + check.getName());
 
-      CastCheckContext context = new CastCheckContext() {
-        @Override
-        public SparkSession getSparkSession() {
-          return spark;
-        }
+//      S3ClientBuilder s3Builder = S3Client.builder();
+//      if (sourceAccessKey != null) {
+//        s3Builder.credentialsProvider(StaticCredentialsProvider.create(
+//            AwsBasicCredentials.create(sourceAccessKey, sourceSecretKey)
+//        ));
+//      }
+//      s3Builder.region(Region.of(sourceBucketRegion));
+//      S3Client s3 = s3Builder.build();
 
-        @Override
-        public Dataset<Cast> readCastDataset() {
-          return spark.read().parquet(inputUri).as(Encoders.bean(Cast.class));
-        }
+      if (exists(s3, outputBucket, prefix + "/_SUCCESS")) {
+        System.out.println("Skipping existing " + check.getName());
+      } else {
+        CastCheckContext context = new CastCheckContext() {
+          @Override
+          public SparkSession getSparkSession() {
+            return spark;
+          }
 
-        @Override
-        public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
-          return spark.read().parquet(getOutputUri(checkName)).as(Encoders.bean(CastCheckResult.class));
-        }
+          @Override
+          public Dataset<Cast> readCastDataset() {
+            return spark.read().parquet(inputUri).as(Encoders.bean(Cast.class));
+          }
 
-        @Override
-        public Properties getProperties() {
-          return properties;
-        }
-      };
+          @Override
+          public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
+            return spark.read().parquet(getOutputUri(checkName)).as(Encoders.bean(CastCheckResult.class));
+          }
 
-      Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
+          @Override
+          public Properties getProperties() {
+            return properties;
+          }
+        };
 
-      System.err.println("Writing " + outputUri);
+        Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
 
-      resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
-      long end = System.currentTimeMillis();
-      Duration duration = Duration.ofMillis(end - start);
-      System.err.println("Finished " + check.getName() + " in " + duration);
+        System.err.println("Writing " + outputUri);
+        System.out.println("Writing " + outputUri);
+        resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
+        long end = System.currentTimeMillis();
+        Duration duration = Duration.ofMillis(end - start);
+        System.err.println("Finished " + check.getName() + " in " + duration);
+        System.out.println("Finished " + check.getName() + " in " + duration);
+      }
     }
   }
-
+  private static boolean exists(S3Client s3, String bucket, String key) {
+    try {
+      s3.headObject(c -> c.bucket(bucket).key(key));
+    } catch (NoSuchKeyException e) {
+      return false;
+    }
+    return true;
+  }
 
 }

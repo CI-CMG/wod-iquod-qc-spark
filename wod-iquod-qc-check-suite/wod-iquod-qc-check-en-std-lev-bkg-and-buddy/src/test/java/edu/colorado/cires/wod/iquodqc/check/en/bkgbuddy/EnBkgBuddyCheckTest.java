@@ -5,6 +5,7 @@ import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FL
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1083,5 +1084,128 @@ public class EnBkgBuddyCheckTest {
 
   }
 
+  @Test
+  public void testEnStdLevelBkgAndBuddyFailedDistance() throws Exception {
+    Cast realProfile1 = Cast.builder()
+        .withDataset("TEST")
+        .withGeohash("TEST")
+        .withCastNumber(1)
+        .withLatitude(124.0)
+        .withLongitude(17.650000)
+        .withYear((short) 2000)
+        .withMonth((short) 1)
+        .withDay((short) 15)
+        .withTime(12D)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(9).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(15).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(21).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(27).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(33).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(39).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(45).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(51).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6900).build())).build(),
+            Depth.builder().withDepth(57).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.6600).build())).build(),
+            Depth.builder().withDepth(63).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.4300).build())).build(),
+            Depth.builder().withDepth(68).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.9100).build())).build(),
+            Depth.builder().withDepth(74).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.6600).build())).build(),
+            Depth.builder().withDepth(80).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.5300).build())).build(),
+            Depth.builder().withDepth(86).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.3000).build())).build(),
+            Depth.builder().withDepth(92).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.2200).build())).build(),
+            Depth.builder().withDepth(98).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.1300).build())).build(),
+            Depth.builder().withDepth(104).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.0400).build())).build(),
+            Depth.builder().withDepth(110).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.9600).build())).build(),
+            Depth.builder().withDepth(116).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.8200).build())).build(),
+            Depth.builder().withDepth(122).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.7400).build())).build(),
+            Depth.builder().withDepth(140).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.4300).build())).build(),
+            Depth.builder().withDepth(170).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.0900).build())).build(),
+            Depth.builder().withDepth(199).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(17.6900).build())).build(),
+            Depth.builder().withDepth(229).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(17.2300).build())).build(),
+            Depth.builder().withDepth(259).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.8300).build())).build(),
+            Depth.builder().withDepth(289).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.4200).build())).build(),
+            Depth.builder().withDepth(318).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.9900).build())).build(),
+            Depth.builder().withDepth(348).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.4600).build())).build(),
+            Depth.builder().withDepth(378).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.9400).build())).build(),
+            Depth.builder().withDepth(407).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.6400).build())).build(),
+            Depth.builder().withDepth(437).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.1800).build())).build(),
+            Depth.builder().withDepth(467).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.7500).build())).build(),
+            Depth.builder().withDepth(511).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.2200).build())).build(),
+            Depth.builder().withDepth(571).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(12.7000).build())).build(),
+            Depth.builder().withDepth(630).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(12.0100).build())).build(),
+            Depth.builder().withDepth(690).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(11.3000).build())).build(),
+            Depth.builder().withDepth(749).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.6400).build())).build(),
+            Depth.builder().withDepth(808).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.0000).build())).build(),
+            Depth.builder().withDepth(867).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(9.36000).build())).build(),
+            Depth.builder().withDepth(927).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(8.66000).build())).build(),
+            Depth.builder().withDepth(986).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(8.37000).build())).build(),
+            Depth.builder().withDepth(1045).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(7.58000).build())).build(),
+            Depth.builder().withDepth(1104).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.86000).build())).build(),
+            Depth.builder().withDepth(1164).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.46000).build())).build(),
+            Depth.builder().withDepth(1223).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.03000).build())).build(),
+            Depth.builder().withDepth(1282).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.79000).build())).build(),
+            Depth.builder().withDepth(1341).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.42000).build())).build(),
+            Depth.builder().withDepth(1400).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.10000).build())).build(),
+            Depth.builder().withDepth(1460).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.66000).build())).build(),
+            Depth.builder().withDepth(1519).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.53000).build())).build(),
+            Depth.builder().withDepth(1578).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.42000).build())).build(),
+            Depth.builder().withDepth(1637).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.17000).build())).build(),
+            Depth.builder().withDepth(1696).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.05000).build())).build(),
+            Depth.builder().withDepth(1755).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(3.02000).build())).build(),
+            Depth.builder().withDepth(1814).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(2.93000).build())).build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Arrays.asList(realProfile1), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_background_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_constant_value_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_increasing_depth_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_range_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_spike_and_step_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_spike_and_step_suspect.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_stability_check.parquet").toString());
+
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    results.sort(Comparator.comparingInt(CastCheckResult::getCastNumber));
+    assertEquals(1, results.size());
+    assertFalse(results.get(0).isPassed());
+
+  }
 
 }

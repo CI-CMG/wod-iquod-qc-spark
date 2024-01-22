@@ -25,9 +25,9 @@ public class HighTruePositiveRateGroupCheck extends GroupCastCheck {
         CheckNames.IQUOD_GROSS_RANGE.getName(),
         CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName(),
         CheckNames.EN_RANGE_CHECK.getName(),
-        CheckNames.ICDC_AQC_09_CLIMATOLOGY_CHECK.getName(),
+//        CheckNames.ICDC_AQC_09_CLIMATOLOGY_CHECK.getName(),
         CheckNames.ICDC_AQC_10_CLIMATOLOGY_CHECK.getName(),
-        CheckNames.COTEDE_GTSPP_WOA_NORMBIAS.getName(),
+//        CheckNames.COTEDE_GTSPP_WOA_NORMBIAS.getName(),
         CheckNames.AOML_CLIMATOLOGY.getName(),
         CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName(),
         CheckNames.EN_CONSTANT_VALUE_CHECK.getName(),
@@ -42,8 +42,8 @@ public class HighTruePositiveRateGroupCheck extends GroupCastCheck {
         CheckNames.CSIRO_LONG_GRADIENT.getName(),
         CheckNames.AOML_GRADIENT.getName(),
         CheckNames.ICDC_AQC_08_GRADIENT_CHECK.getName(),
-        CheckNames.CSIRO_SHORT_GRADIENT.getName(),
-        CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName()
+        CheckNames.CSIRO_SHORT_GRADIENT.getName()
+//        CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName()
     );
   }
 }
