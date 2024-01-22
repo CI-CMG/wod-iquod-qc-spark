@@ -110,7 +110,7 @@ public class CompromiseGroupCheckTest {
       "IQuOD_gross_range_check",
       "wod_range_check",
       "AOML_climatology_test",
-      "CoTeDe_GTSPP_WOA_normbias",
+//      "CoTeDe_GTSPP_WOA_normbias",
       "EN_increasing_depth_check",
       "EN_constant_value_check",
       "EN_spike_and_step_check",
