@@ -62,12 +62,6 @@ public enum CheckNames {
   ICDC_AQC_04_MAX_OBS_DEPTH("ICDC_aqc_04_max_obs_depth"),
   ICDC_AQC_05_STUCK_VALUE("ICDC_aqc_05_stuck_value"),
   IQUOD_FLAGS_CHECK("IQuOD_flags_check"),
-  COTEDE_TUKEY_53_NORM_CHECK("CoTeDe_Tukey_53_Norm_check"),
-  COTEDE_GRADIENT_GTSPP_CHECK("CoTeDe_Gradient_GTSPP_check"),
-  COTEDE_GRADIENT_CHECK("CoTeDe_Gradient_check"),
-  COTEDE_SPIKE_CHECK("CoTeDe_Spike_check"),
-  COTEDE_GTSPP_SPIKE_CHECK("CoTeDe_GTSPP_Spike_check"),
-  COTEDE_RATE_OF_CHANGE("CoTeDe_Rate_of_Change_check"),
   COTEDE_CONSTANT_CLUSTER_SIZE_CHECK("CoTeDe_Constant_Cluster_Size_check"),
   COTEDE_CARS_NORMBIAS_CHECK("CoTeDe_Cars_Normbias_check");
 

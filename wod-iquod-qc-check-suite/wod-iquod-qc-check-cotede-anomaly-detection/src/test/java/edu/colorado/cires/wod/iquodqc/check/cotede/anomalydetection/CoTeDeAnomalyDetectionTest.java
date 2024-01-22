@@ -208,8 +208,18 @@ public class CoTeDeAnomalyDetectionTest {
     long timestamp = 766349340000L;
     double latitude = 1.333;
     double longitude = -110.333;
-    CoTeDeAnomalyDetection.checkFlags(
-        temperatures, depths, timestamp, latitude, longitude, woaGetter, carsGetter, -18.0
+    CoTeDeAnomalyDetection.getFlags(
+        CoTeDeGradient.computeGradient(temperatures),
+        CoTeDeSpike.computeSpikes(temperatures),
+        CoTeDeTukey53H.computeTukey53H(temperatures, true),
+        CoTeDeRateOfChange.computeRateOfChange(temperatures),
+        CoTeDeWoaNormbias.computeNormBiases(timestamp, longitude, latitude, depths, temperatures, woaGetter),
+        CoTeDeCarsNormbias.computeCarsNormbiases(
+            temperatures, depths, latitude, longitude, carsGetter
+        ),
+        Arrays.stream(ConstantClusterSize.computeClusterSizes(temperatures, 0.0D))
+            .asDoubleStream().toArray(),
+        -16
     );
   }
 
