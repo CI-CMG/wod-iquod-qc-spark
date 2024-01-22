@@ -16,31 +16,37 @@
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-gradient</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-spike</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-tukey-53H</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-rate-of-change</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-constant-cluster-size</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-cars-normbias</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

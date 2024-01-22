@@ -7,7 +7,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.CoTeDeCarsNormbias;
+import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
+import edu.colorado.cires.wod.iquodqc.check.cotede.constantclustersize.ConstantClusterSize;
+import edu.colorado.cires.wod.iquodqc.check.cotede.gradient.CoTeDeGradient;
+import edu.colorado.cires.wod.iquodqc.check.cotede.rateofchange.CoTeDeRateOfChange;
+import edu.colorado.cires.wod.iquodqc.check.cotede.spike.CoTeDeSpike;
+import edu.colorado.cires.wod.iquodqc.check.cotede.tukey53H.CoTeDeTukey53H;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.CoTeDeWoaNormbias;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaGetter;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParametersReader;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -17,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -50,6 +62,9 @@ public class CoTeDeAnomalyDetectionCheckTest {
 
   private static SparkSession spark;
   private static CastCheckContext context;
+  
+  private static WoaGetter woaGetter;
+  private static CarsGetter carsGetter;
 
   @BeforeAll
   public static void beforeAll() {
@@ -78,7 +93,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
 
       @Override
       public Dataset<CastCheckResult> readCastCheckResultDataset(String checkName) {
-        throw new UnsupportedOperationException("not implemented for test");
+        return spark.read().parquet(TEMP_DIR.resolve(checkName + ".parquet").toString()).as(Encoders.bean(CastCheckResult.class));
       }
 
       @Override
@@ -87,6 +102,9 @@ public class CoTeDeAnomalyDetectionCheckTest {
       }
     };
     check.initialize(() -> properties);
+
+    carsGetter = new CarsGetter(CarsParametersReader.loadParameters(properties));
+    woaGetter = new WoaGetter(WoaParametersReader.loadParameters(properties));
   }
 
   @AfterAll
@@ -133,6 +151,46 @@ public class CoTeDeAnomalyDetectionCheckTest {
         )
         .build();
 
+    for (String checkName : check.dependsOn()) {
+      List<Double> signal;
+      if (checkName.equals(CheckNames.COTEDE_GRADIENT_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeGradient.computeGradient(TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_SPIKE_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeSpike.computeSpikes(TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeTukey53H.computeTukey53H(TEMPERATURES, true))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_RATE_OF_CHANGE.getName())) {
+        signal = Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_WOA_NORMBIAS.getName())) {
+        signal = Arrays.stream(CoTeDeWoaNormbias.computeNormBiases(
+            TIMESTAMP, LONGITUDE, LATITUDE, DEPTHS, TEMPERATURES, woaGetter
+        )).boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
+            TEMPERATURES, DEPTHS, LATITUDE, LONGITUDE, carsGetter
+        )).boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName())) {
+        signal = Arrays.stream(ConstantClusterSize.computeClusterSizes(TEMPERATURES, 0.0D))
+            .mapToDouble(v -> v)
+            .boxed().collect(Collectors.toList());
+      } else {
+        throw new IllegalStateException("Invalid check");
+      }
+      Dataset<CastCheckResult> otherResult = spark.createDataset(
+          Arrays.asList(
+              CastCheckResult.builder().withCastNumber(123)
+                  .withPassed(true)
+                  .withSignal(signal)
+                  .build()
+          ),
+          Encoders.bean(CastCheckResult.class));
+      otherResult.write().parquet(TEMP_DIR.resolve(checkName + ".parquet").toString());
+    }
+
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
     dataset.write().parquet(TEST_PARQUET);
 
@@ -175,6 +233,46 @@ public class CoTeDeAnomalyDetectionCheckTest {
                 .collect(Collectors.toList())
         )
         .build();
+
+    for (String checkName : check.dependsOn()) {
+      List<Double> signal;
+      if (checkName.equals(CheckNames.COTEDE_GRADIENT_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeGradient.computeGradient(FAILING_TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_SPIKE_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeSpike.computeSpikes(FAILING_TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeTukey53H.computeTukey53H(FAILING_TEMPERATURES, true))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_RATE_OF_CHANGE.getName())) {
+        signal = Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(FAILING_TEMPERATURES))
+            .boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_WOA_NORMBIAS.getName())) {
+        signal = Arrays.stream(CoTeDeWoaNormbias.computeNormBiases(
+            TIMESTAMP, LONGITUDE, LATITUDE, DEPTHS, FAILING_TEMPERATURES, woaGetter
+        )).boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName())) {
+        signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
+            FAILING_TEMPERATURES, DEPTHS, LATITUDE, LONGITUDE, carsGetter
+        )).boxed().collect(Collectors.toList());
+      } else if (checkName.equals(CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName())) {
+        signal = Arrays.stream(ConstantClusterSize.computeClusterSizes(FAILING_TEMPERATURES, 0.0D))
+            .mapToDouble(v -> v)
+            .boxed().collect(Collectors.toList());
+      } else {
+        throw new IllegalStateException("Invalid check");
+      }
+      Dataset<CastCheckResult> otherResult = spark.createDataset(
+          Arrays.asList(
+              CastCheckResult.builder().withCastNumber(123)
+                  .withPassed(true)
+                  .withSignal(signal)
+                  .build()
+          ),
+          Encoders.bean(CastCheckResult.class));
+      otherResult.write().parquet(TEMP_DIR.resolve(checkName + ".parquet").toString());
+    }
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
     dataset.write().parquet(TEST_PARQUET);

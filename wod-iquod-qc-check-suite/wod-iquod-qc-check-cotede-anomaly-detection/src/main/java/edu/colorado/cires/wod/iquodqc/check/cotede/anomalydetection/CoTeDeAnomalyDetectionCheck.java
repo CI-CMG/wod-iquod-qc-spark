@@ -1,32 +1,18 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.anomalydetection;
 
-import static edu.colorado.cires.wod.iquodqc.common.DepthUtils.getTemperature;
-
-import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
-import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
+import edu.colorado.cires.wod.iquodqc.check.api.DependsOnSignalCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaGetter;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParameters;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParametersReader;
 import edu.colorado.cires.wod.parquet.model.Cast;
-import edu.colorado.cires.wod.parquet.model.Depth;
-import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
-import org.apache.spark.sql.Row;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
+public class CoTeDeAnomalyDetectionCheck extends DependsOnSignalCastCheck {
 
   private static final double THRESHOLD = -18.0;
-
-  private static WoaGetter woaGetter;
-  private static CarsGetter carsGetter;
-  private Properties properties;
 
   @Override
   public String getName() {
@@ -34,66 +20,43 @@ public class CoTeDeAnomalyDetectionCheck extends CommonCastCheck {
   }
 
   @Override
-  public void initialize(CastCheckInitializationContext initContext) {
-    properties = initContext.getProperties();
-  }
-
-  @Override
-  protected Row checkUdf(Row row) {
-    synchronized (CoTeDeAnomalyDetectionCheck.class) {
-      if (woaGetter == null) {
-        loadWoa(properties);
-      }
-      if (carsGetter == null) {
-        loadCars(properties);
-      }
-    }
-    return super.checkUdf(row);
-  }
-
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast) {
-    List<Depth> depths = cast.getDepths();
-
-    double[] depthValues = new double[depths.size()];
-    double[] temperatureValues = new double[depths.size()];
-
-    for (int i = 0; i < depths.size(); i++) {
-      Depth depth = depths.get(i);
-      depthValues[i] = depth.getDepth();
-      temperatureValues[i] = getTemperature(depth).map(ProfileData::getValue)
-          .orElse(Double.NaN);
-    }
-
-//    StringBuilder message = new StringBuilder("CoTeDeAnomalyDetection.checkFlags(");
-//    message.append(" temperatureValues: ").append(Arrays.toString(temperatureValues));
-//    message.append(" depthValues: ").append(Arrays.toString(depthValues));
-//    message.append(" timestamp: ").append(cast.getTimestamp());
-//    message.append(" latitude: ").append(cast.getLatitude());
-//    message.append(" longitude: ").append(cast.getLongitude()).append(" )");
-//
-//    System.err.println(message);
-//    System.out.println(message);
-
-    return CoTeDeAnomalyDetection.checkFlags(
-        temperatureValues,
-        depthValues,
-        cast.getTimestamp(),
-        cast.getLatitude(),
-        cast.getLongitude(),
-        woaGetter,
-        carsGetter,
-        THRESHOLD
+  public Collection<String> dependsOn() {
+    return List.of(
+        CheckNames.COTEDE_GRADIENT_CHECK.getName(),
+        CheckNames.COTEDE_SPIKE_CHECK.getName(),
+        CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(),
+        CheckNames.COTEDE_RATE_OF_CHANGE.getName(),
+        CheckNames.COTEDE_WOA_NORMBIAS.getName(),
+        CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName(),
+        CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName()
     );
   }
 
-  private static void loadWoa(Properties properties) {
-    WoaParameters woaParameters = WoaParametersReader.loadParameters(properties);
-    woaGetter = new WoaGetter(woaParameters);
+  @Override
+  protected Collection<Integer> getFailedDepthsFromSignals(Cast cast, Map<String, List<Double>> signals) {
+    return Arrays.stream(CoTeDeAnomalyDetection.getFlags(
+        getSignal(CheckNames.COTEDE_GRADIENT_CHECK.getName(), signals),
+        getSignal(CheckNames.COTEDE_SPIKE_CHECK.getName(), signals),
+        getSignal(CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(), signals),
+        getSignal(CheckNames.COTEDE_RATE_OF_CHANGE.getName(), signals),
+        getSignal(CheckNames.COTEDE_WOA_NORMBIAS.getName(), signals),
+        getSignal(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName(), signals),
+        getSignal(CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName(), signals),
+        THRESHOLD
+    )).boxed().collect(Collectors.toList());
   }
 
-  private static void loadCars(Properties properties) {
-    CarsParameters carsParameters = CarsParametersReader.loadParameters(properties);
-    carsGetter = new CarsGetter(carsParameters);
+  private static double[] getSignal(String checkName, Map<String, List<Double>> signals) {
+    List<Double> signal = Objects.requireNonNull(
+        signals.get(checkName),
+        String.format(
+            "Signal not set for check: %s",
+            checkName
+        )
+    );
+
+    return signal.stream()
+        .mapToDouble(Double::doubleValue)
+        .toArray();
   }
 }
