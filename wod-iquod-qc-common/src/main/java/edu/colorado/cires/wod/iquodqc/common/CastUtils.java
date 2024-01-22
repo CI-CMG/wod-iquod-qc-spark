@@ -6,6 +6,7 @@ import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
+import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -31,6 +32,13 @@ public final class CastUtils {
                 .map(ProfileData::getValue)
                 .orElse(Double.NaN)
         ).mapToDouble(Double::doubleValue)
+        .toArray();
+  }
+
+  public static double[] getDepths(Cast cast) {
+    return cast.getDepths().stream()
+        .map(Depth::getDepth)
+        .mapToDouble(Double::doubleValue)
         .toArray();
   }
 
