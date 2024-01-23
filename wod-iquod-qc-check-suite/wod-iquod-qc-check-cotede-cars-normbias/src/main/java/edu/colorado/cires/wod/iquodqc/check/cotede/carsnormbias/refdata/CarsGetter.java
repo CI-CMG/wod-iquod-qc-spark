@@ -6,14 +6,15 @@ import java.util.Objects;
 import ucar.nc2.Variable;
 
 public class CarsGetter extends StatsGetter<Stats> {
+
   private final Index index;
-  
+
   private static final CarsGetterProperties STATS_GETTER_PROPERTIES = new CarsGetterProperties(
-  "mean",
-  "std_dev",
-  "lat",
-  "lon",
-  "depth",
+      "mean",
+      "std_dev",
+      "lat",
+      "lon",
+      "depth",
       "add_offset",
       "scale_factor"
   );
@@ -36,10 +37,11 @@ public class CarsGetter extends StatsGetter<Stats> {
   }
 
   @Override
-  protected Stats processAdditionalFields(Index index, double depth, double longitude, double latitude, int[] latIndices, int[] lonIndices,
-      int[] depthIndices, Stats baseStats) {
+  protected Stats processAdditionalFields(Index index, double depth, double longitude, double latitude, int minIndexLat, int maxIndexLat,
+      int minIndexLon, int maxIndexLon, Stats baseStats) {
     return baseStats;
   }
+
 
   private static double getAttributeValue(Variable variable, String attributeName) {
     return (double) Objects.requireNonNull(Objects.requireNonNull(variable.findAttribute(attributeName)).getValue(0));

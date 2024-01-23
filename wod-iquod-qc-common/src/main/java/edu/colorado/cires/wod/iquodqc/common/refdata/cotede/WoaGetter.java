@@ -3,9 +3,15 @@ package edu.colorado.cires.wod.iquodqc.common.refdata.cotede;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
+import org.apache.commons.math3.analysis.interpolation.TricubicInterpolatingFunction;
+import org.apache.commons.math3.analysis.interpolation.TricubicInterpolator;
 import ucar.nc2.Variable;
 
 public class WoaGetter extends StatsGetter<WoaStats> {
+
+  private TricubicInterpolatingFunction nObservationsInterpolator = null;
+  private TricubicInterpolatingFunction standardErrorInterpolator = null;
 
   @Override
   protected float transformValue(float value, Variable variable) {
@@ -18,30 +24,62 @@ public class WoaGetter extends StatsGetter<WoaStats> {
   }
 
   @Override
-  protected WoaStats processAdditionalFields(Index index, double depth, double longitude, double latitude, int[] latIndices, int[] lonIndices,
-      int[] depthIndices, Stats baseStats) {
+  protected WoaStats processAdditionalFields(
+      Index index,
+      double depth,
+      double longitude,
+      double latitude,
+      int minIndexLat,
+      int maxIndexLat,
+      int minIndexLon,
+      int maxIndexLon,
+      Stats baseStats
+  ) {
+    if (nObservationsInterpolator == null) {
+      nObservationsInterpolator = prepareInterpolator(
+          getValues(
+              STATS_GETTER_PROPERTIES.getNumberOfObservations(),
+              index,
+              0,
+              index.getDepths().length - 1,
+              minIndexLat,
+              maxIndexLat,
+              minIndexLon,
+              maxIndexLon
+          )
+      );
+    }
+
+    if (standardErrorInterpolator == null) {
+      standardErrorInterpolator = prepareInterpolator(
+          getValues(
+              STATS_GETTER_PROPERTIES.getStandardError(),
+              index,
+              0,
+              index.getDepths().length - 1,
+              minIndexLat,
+              maxIndexLat,
+              minIndexLon,
+              maxIndexLon
+          )
+
+      );
+    }
+
     return new WoaStats(
         baseStats.getMean().isEmpty() ? Double.NaN : baseStats.getMean().getAsDouble(),
         baseStats.getStandardDeviation().isEmpty() ? Double.NaN : baseStats.getStandardDeviation().getAsDouble(),
         getStatField(
-            STATS_GETTER_PROPERTIES.getNumberOfObservations(), 
-            index,
             depth,
             longitude,
             latitude,
-            latIndices,
-            lonIndices,
-            depthIndices
+            nObservationsInterpolator
         ),
         getStatField(
-            STATS_GETTER_PROPERTIES.getStandardError(), 
-            index,
             depth,
             longitude,
             latitude,
-            latIndices,
-            lonIndices,
-            depthIndices
+            standardErrorInterpolator
         )
     );
   }
@@ -57,15 +95,15 @@ public class WoaGetter extends StatsGetter<WoaStats> {
   private final Index springIndex;
   private final Index summerIndex;
   private final Index fallIndex;
-  
+
   private static final WoaGetterProperties STATS_GETTER_PROPERTIES = new WoaGetterProperties(
-  "t_mn",
-  "t_sd",
-  "lat",
-  "lon",
-  "depth",
-  "t_dd",
-  "t_se"
+      "t_mn",
+      "t_sd",
+      "lat",
+      "lon",
+      "depth",
+      "t_dd",
+      "t_se"
   );
 
   public WoaGetter(WoaParameters parameters) {

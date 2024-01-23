@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 import org.apache.commons.math3.util.FastMath;
 
 public class CoTeDeWoaNormbias {
-  
+
   public static List<NormBias> computeNormBiases(Cast cast, WoaGetter woaGetter) {
     return cast.getDepths().stream()
         .map(d -> computeNormBias(
@@ -26,23 +26,24 @@ public class CoTeDeWoaNormbias {
         ))
         .collect(Collectors.toList());
   }
-  
-  public static double[] computeNormBiases(long timestamp, double longitude, double latitude, double[] depths, double[] temperatures, WoaGetter woaGetter) {
+
+  public static double[] computeNormBiases(long timestamp, double longitude, double latitude, double[] depths, double[] temperatures,
+      WoaGetter woaGetter) {
     return IntStream.range(0, depths.length)
         .mapToDouble(i -> {
           WoaStats stats = woaGetter.getStats(timestamp, depths[i], longitude, latitude);
-          
+
           OptionalDouble maybeMean = stats.getMean();
           OptionalDouble maybeStandardDeviation = stats.getStandardDeviation();
           OptionalInt maybeNumberOfObservations = stats.getNumberOfObservations();
           if (maybeMean.isEmpty() || maybeStandardDeviation.isEmpty() || maybeNumberOfObservations.isEmpty()) {
             return Double.NaN;
           }
-          
+
           return (temperatures[i] - maybeMean.getAsDouble()) / maybeStandardDeviation.getAsDouble();
         }).toArray();
   }
-  
+
   private static NormBias computeNormBias(long timestamp, double longitude, double latitude, Depth depth, WoaGetter woaGetter) {
     WoaStats stats = woaGetter.getStats(timestamp, depth.getDepth(), longitude, latitude);
     OptionalDouble maybeMean = stats.getMean();
@@ -60,8 +61,9 @@ public class CoTeDeWoaNormbias {
     )).orElseGet(() -> new NormBias(Double.NaN, false, 0));
 
   }
-  
+
   public static class NormBias {
+
     private final double value;
     private final boolean valid;
     private final int numberOfObservations;

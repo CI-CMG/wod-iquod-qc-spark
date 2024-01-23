@@ -50,7 +50,7 @@ public class CoTeDeWoaNormbiasTest {
             The sampling distance for lat/lons in this reference data is 5 degrees, which changes interpolated values
             much more than cars normbias (sampling distance = 0.5 degrees) if not using linear interpolation (we are 
             currently using a tricubic interpolation).*/
-        1e+1
+        1e-1
     );
   }
 

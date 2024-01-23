@@ -13,12 +13,24 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import org.apache.spark.sql.Row;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.nc2.NetcdfFile;
 
 public class AomlClimatologyCheck extends CommonCastCheck {
 
   private static WoaDataHolder parameters;
   private Properties properties;
+  private static final CoordinateReferenceSystem EPSG_4326;
+
+  static {
+    try {
+      EPSG_4326 = CRS.decode("EPSG:4326");
+    } catch (FactoryException e) {
+      throw new RuntimeException("Unable to determine CRS", e);
+    }
+  }
 
   @Override
   public String getName() {
@@ -48,9 +60,9 @@ public class AomlClimatologyCheck extends CommonCastCheck {
         Depth depth = cast.getDepths().get(depthIndex);
         DepthUtils.getTemperature(depth).ifPresent(tpd -> {
           double temperature = tpd.getValue();
-          OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", parameters, cast.getLongitude(), cast.getLatitude(), depth.getDepth(), false);
+          OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", parameters, cast.getLongitude(), cast.getLatitude(), depth.getDepth(), false, EPSG_4326);
           analyzedMean.ifPresent(interpTemp -> {
-            OptionalDouble standardDeviation = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", parameters, cast.getLongitude(), cast.getLatitude(), depth.getDepth(), true);
+            OptionalDouble standardDeviation = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", parameters, cast.getLongitude(), cast.getLatitude(), depth.getDepth(), true, EPSG_4326);
             standardDeviation.ifPresent(interpTempSd -> {
               if (interpTempSd > 0d && Math.abs(temperature - interpTemp ) / interpTempSd > 5d) {
                 failed.add(i);

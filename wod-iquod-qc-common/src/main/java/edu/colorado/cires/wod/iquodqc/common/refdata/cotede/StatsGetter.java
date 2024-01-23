@@ -21,9 +21,16 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 
 public abstract class StatsGetter<T extends Stats> {
-  
-  private static final int MIN_NUM_POINTS = 5;
-  
+
+  private static final int MIN_NUM_POINTS = 2;
+
+  private TricubicInterpolatingFunction meanInterpolator = null;
+  private TricubicInterpolatingFunction stdInterpolator = null;
+  private Integer minIndexLat = null;
+  private Integer maxIndexLat = null;
+  private Integer minIndexLon = null;
+  private Integer maxIndexLon = null;
+
   private final StatsGetterProperties statsGetterProperties;
 
   protected StatsGetter(StatsGetterProperties statsGetterProperties) {
@@ -53,7 +60,7 @@ public abstract class StatsGetter<T extends Stats> {
     throw new IllegalStateException("Nearest indices not found");
   }
 
-  private List<ValueAtPosition> getValues(
+  List<ValueAtPosition> getValues(
       String variableName,
       Index index,
       int minIndexDepth,
@@ -87,7 +94,7 @@ public abstract class StatsGetter<T extends Stats> {
             } else {
               netCdfLon = lonI;
             }
-            
+
             float value;
             if (variable.getShape().length == 3) {
               value = variable.read(new int[]{netCdfDepth, netCdfLat, netCdfLon}, new int[]{1, 1, 1}).getFloat(0);
@@ -100,7 +107,7 @@ public abstract class StatsGetter<T extends Stats> {
             if (Precision.equals(value, fill, 0.000001d)) {
               value = Float.NaN;
             }
-            
+
             value = transformValue(value, variable);
 
             ValueAtPosition vap = new ValueAtPosition(
@@ -121,7 +128,7 @@ public abstract class StatsGetter<T extends Stats> {
 
   protected abstract float transformValue(float value, Variable variable);
 
-  private static InterpolatorArrays prepareInterpolator(List<ValueAtPosition> vaps) {
+  protected static TricubicInterpolatingFunction prepareInterpolator(List<ValueAtPosition> vaps) {
 
     Map<List<Integer>, ValueAtPosition> lookup = new HashMap<>();
 
@@ -190,86 +197,108 @@ public abstract class StatsGetter<T extends Stats> {
       }
       depthI++;
     }
-    return new InterpolatorArrays(depth, lat, lon, values);
+
+    return new TricubicInterpolator()
+        .interpolate(depth, lat, lon, values);
   }
 
-  private static double interpolate(InterpolatorArrays interpolatorArrays, double depth, double lat, double lon) {
+  private static double interpolate(TricubicInterpolatingFunction intFunc, double depth, double lat, double lon) {
     try {
-      TricubicInterpolatingFunction intFunc = new TricubicInterpolator()
-          .interpolate(interpolatorArrays.depth, interpolatorArrays.lat, interpolatorArrays.lon, interpolatorArrays.values);
       return intFunc.value(depth, lat, lon);
     } catch (OutOfRangeException e) {
       return Double.NaN;
     }
   }
-  
+
   protected abstract Index getNcFile(long epochMillisTimestamp);
 
   public T getStats(long epochMillisTimestamp, double depth, double longitude, double latitude) {
     Index index = getNcFile(epochMillisTimestamp);
 
-    int closestLatIndex = InterpolationUtils.closestIndex(index.getLatitudes(), latitude);
-    int closestLonIndex = InterpolationUtils.closestIndex(index.getLongitudes(), longitude);
-    int closestDepthIndex = InterpolationUtils.closestIndex(index.getDepths(), depth);
+    if (minIndexLat == null || maxIndexLat == null) {
+      int closestLatIndex = InterpolationUtils.closestIndexAssumeSorted(index.getLatitudes(), latitude);
+      minIndexLat = Math.max(0, closestLatIndex - MIN_NUM_POINTS);
+      maxIndexLat = Math.min(index.getLatitudes().length - 1, closestLatIndex + MIN_NUM_POINTS);
+    }
 
-    int minIndexLat = Math.max(0, closestLatIndex - MIN_NUM_POINTS);
-    int maxIndexLat = Math.min(index.getLatitudes().length - 1, closestLatIndex + MIN_NUM_POINTS);
-    int minIndexLon = closestLonIndex - MIN_NUM_POINTS;
-    int maxIndexLon = closestLonIndex + MIN_NUM_POINTS;
-    int minIndexDepth = Math.max(0, closestDepthIndex - MIN_NUM_POINTS);
-    int maxIndexDepth = Math.min(index.getDepths().length - 1, closestDepthIndex + MIN_NUM_POINTS);
-    
-    int[] latIndices = new int[] { minIndexLat, maxIndexLat };
-    int[] lonIndices = new int[] { minIndexLon, maxIndexLon };
-    int[] depthIndices = new int[] { minIndexDepth, maxIndexDepth };
-    
+    if (minIndexLon == null || maxIndexLon == null) {
+      int closestLonIndex = InterpolationUtils.closestIndexAssumeSorted(index.getLongitudes(), longitude);
+      minIndexLon = closestLonIndex - MIN_NUM_POINTS;
+      maxIndexLon = closestLonIndex + MIN_NUM_POINTS;
+    }
+
+    if (meanInterpolator == null) {
+      meanInterpolator = prepareInterpolator(
+          getValues(
+              statsGetterProperties.getMean(),
+              index,
+              0,
+              index.getDepths().length - 1,
+              minIndexLat,
+              maxIndexLat,
+              minIndexLon,
+              maxIndexLon
+          )
+      );
+    }
+
+    if (stdInterpolator == null) {
+      stdInterpolator = prepareInterpolator(
+          getValues(
+              statsGetterProperties.getMean(),
+              index,
+              0,
+              index.getDepths().length - 1,
+              minIndexLat,
+              maxIndexLat,
+              minIndexLon,
+              maxIndexLon
+          )
+      );
+    }
+
     Stats stats = new Stats(
         getStatField(
-            statsGetterProperties.getMean(),
-            index,
             depth,
             longitude,
             latitude,
-            latIndices,
-            lonIndices,
-            depthIndices
+            meanInterpolator
         ),
         getStatField(
-            statsGetterProperties.getStandardDeviation(),
-            index,
             depth,
             longitude,
             latitude,
-            latIndices,
-            lonIndices,
-            depthIndices
+            stdInterpolator
         )
     );
-    
+
     return processAdditionalFields(
         index,
         depth,
         longitude,
         latitude,
-        latIndices,
-        lonIndices,
-        depthIndices,
+        minIndexLat,
+        maxIndexLat,
+        minIndexLon,
+        maxIndexLon,
         stats
     );
   }
-  
-  protected abstract T processAdditionalFields(
-      Index index, double depth, double longitude, double latitude, int[] latIndices, int[] lonIndices, int[] depthIndices, Stats baseStats
-  );
-  
-  protected double getStatField(String fieldName, Index index, double depth, double longitude, double latitude, int[] latIndices, int[] lonIndices, int[] depthIndices) {
-    List<ValueAtPosition> values = this.getValues(
-        fieldName, index, depthIndices[0], depthIndices[depthIndices.length - 1], latIndices[0],
-        latIndices[latIndices.length - 1], lonIndices[0], lonIndices[lonIndices.length - 1]
-    );
 
-    InterpolatorArrays interpolator = StatsGetter.prepareInterpolator(values);
-    return StatsGetter.interpolate(interpolator, depth, latitude, longitude);
+  protected abstract T processAdditionalFields(
+      Index index,
+      double depth,
+      double longitude,
+      double latitude,
+      int minIndexLat,
+      int maxIndexLat,
+      int minIndexLon,
+      int maxIndexLon,
+      Stats baseStats
+  );
+
+  protected double getStatField(double depth, double longitude, double latitude, TricubicInterpolatingFunction intFunc) {
+    return StatsGetter.interpolate(intFunc, depth, latitude, longitude);
   }
 
   protected static class Index {
@@ -307,22 +336,7 @@ public abstract class StatsGetter<T extends Stats> {
     }
   }
 
-  private static class InterpolatorArrays {
-
-    public final double[] depth;
-    public final double[] lat;
-    public final double[] lon;
-    public final double[][][] values;
-
-    private InterpolatorArrays(double[] depth, double[] lat, double[] lon, double[][][] values) {
-      this.depth = depth;
-      this.lat = lat;
-      this.lon = lon;
-      this.values = values;
-    }
-  }
-
-  private static class ValueAtPosition {
+  static class ValueAtPosition {
 
     private final int lonIndex;
     private final int latIndex;

@@ -9,6 +9,7 @@ import java.util.OptionalDouble;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.locationtech.spatial4j.distance.DistanceUtils;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
@@ -80,7 +81,7 @@ final class AomlClimatologyUtils {
   }
 
   static OptionalDouble temperatureInterpolationProcess(NetcdfFile netFile, String tType, WoaDataHolder dataHolder, double longitude, double latitude,
-      double depth, boolean clipZero) {
+      double depth, boolean clipZero, CoordinateReferenceSystem referenceSystem) {
     int[] depthIndexes = InterpolationUtils.getIndexAndNext(dataHolder.getDepths(), depth);
     if (depth > dataHolder.getDepths()[depthIndexes[1]]) {
       return OptionalDouble.empty();
@@ -109,7 +110,7 @@ final class AomlClimatologyUtils {
     }
 
     TempAtPosition nearest = positionTemps.stream().reduce(null, (tap1, tap2) -> {
-      tap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, tap2.getLongitude(), tap2.getLatitude()));
+      tap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, tap2.getLongitude(), tap2.getLatitude(), referenceSystem));
       if (tap1 == null) {
         return tap2;
       }
