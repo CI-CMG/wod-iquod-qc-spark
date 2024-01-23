@@ -7,7 +7,8 @@ import ucar.nc2.Variable;
 
 public class CarsGetter extends StatsGetter<Stats> {
 
-  private final Index index;
+  private Index index = null;
+  private final CarsParameters carsParameters;
 
   private static final CarsGetterProperties STATS_GETTER_PROPERTIES = new CarsGetterProperties(
       "mean",
@@ -19,9 +20,9 @@ public class CarsGetter extends StatsGetter<Stats> {
       "scale_factor"
   );
 
-  public CarsGetter(CarsParameters carsParameters) {
+  public CarsGetter(CarsParameters parameters) {
     super(STATS_GETTER_PROPERTIES);
-    this.index = new Index(carsParameters.getDataFilePath(), STATS_GETTER_PROPERTIES);
+    carsParameters = parameters;
   }
 
   @Override
@@ -33,6 +34,9 @@ public class CarsGetter extends StatsGetter<Stats> {
 
   @Override
   protected Index getNcFile(long epochMillisTimestamp) {
+    if (index == null) {
+      index = new Index(carsParameters.getDataFilePath(), STATS_GETTER_PROPERTIES);
+    }
     return index;
   }
 
@@ -46,6 +50,6 @@ public class CarsGetter extends StatsGetter<Stats> {
   private static double getAttributeValue(Variable variable, String attributeName) {
     return (double) Objects.requireNonNull(Objects.requireNonNull(variable.findAttribute(attributeName)).getValue(0));
   }
-  
-  
+
+
 }

@@ -12,6 +12,7 @@ public class WoaGetter extends StatsGetter<WoaStats> {
 
   private TricubicInterpolatingFunction nObservationsInterpolator = null;
   private TricubicInterpolatingFunction standardErrorInterpolator = null;
+  private final WoaParameters woaParameters;
 
   @Override
   protected float transformValue(float value, Variable variable) {
@@ -91,10 +92,10 @@ public class WoaGetter extends StatsGetter<WoaStats> {
     FALL
   }
 
-  private final Index winterIndex;
-  private final Index springIndex;
-  private final Index summerIndex;
-  private final Index fallIndex;
+  private Index winterIndex = null;
+  private Index springIndex = null;
+  private Index summerIndex = null;
+  private Index fallIndex = null;
 
   private static final WoaGetterProperties STATS_GETTER_PROPERTIES = new WoaGetterProperties(
       "t_mn",
@@ -108,10 +109,7 @@ public class WoaGetter extends StatsGetter<WoaStats> {
 
   public WoaGetter(WoaParameters parameters) {
     super(STATS_GETTER_PROPERTIES);
-    winterIndex = new Index(parameters.getS1Path(), STATS_GETTER_PROPERTIES);
-    springIndex = new Index(parameters.getS2Path(), STATS_GETTER_PROPERTIES);
-    summerIndex = new Index(parameters.getS3Path(), STATS_GETTER_PROPERTIES);
-    fallIndex = new Index(parameters.getS4Path(), STATS_GETTER_PROPERTIES);
+    woaParameters = parameters;
   }
 
   private static Season getSeason(long epochMillisTimestamp) {
@@ -141,12 +139,24 @@ public class WoaGetter extends StatsGetter<WoaStats> {
   private Index getNcFile(Season season) {
     switch (season) {
       case WINTER:
+        if (winterIndex == null) {
+          winterIndex = new Index(woaParameters.getS1Path(), STATS_GETTER_PROPERTIES);
+        }
         return winterIndex;
       case SPRING:
+        if (springIndex == null) {
+          springIndex = new Index(woaParameters.getS2Path(), STATS_GETTER_PROPERTIES);
+        }
         return springIndex;
       case SUMMER:
+        if (summerIndex == null) {
+          summerIndex = new Index(woaParameters.getS3Path(), STATS_GETTER_PROPERTIES);
+        }
         return summerIndex;
       case FALL:
+        if (fallIndex == null) {
+          fallIndex = new Index(woaParameters.getS4Path(), STATS_GETTER_PROPERTIES);
+        }
         return fallIndex;
       default:
         throw new IllegalStateException("Unable to determine season file: " + season);
