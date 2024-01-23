@@ -29,11 +29,12 @@ public class ProfileFilter {
       return "all depths are less than 10 cm and there are at least two levels (ie not just a surface measurement)";
     }
 
-    int oFlag = cast.getAttributes().stream()
+    Optional<Integer> oFlag = cast.getAttributes().stream()
         .filter(attribute -> attribute.getCode() == Originator_Flags)
         .findFirst()
-        .map(Attribute::getValue).orElse(-1D).intValue();
-    if (oFlag < 1 || oFlag > 14) {
+        .map(Attribute::getValue)
+        .map(Double::intValue);
+    if (oFlag.isPresent() && (oFlag.get() < 1 || oFlag.get() > 14)) {
       return "no valid originator flag type";
     }
 

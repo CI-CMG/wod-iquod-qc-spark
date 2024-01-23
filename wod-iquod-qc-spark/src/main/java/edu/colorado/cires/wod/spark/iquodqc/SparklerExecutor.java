@@ -4,6 +4,8 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.parquet.model.Cast;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -32,7 +34,7 @@ public class SparklerExecutor implements Runnable {
   private final String outputPrefix;
   private final Set<String> checksToRun;
   private final Properties properties;
-  private final boolean emr;
+  private final FileSystemType fs;
   private final List<Integer> years;
   private final S3Client s3;
 
@@ -46,7 +48,7 @@ public class SparklerExecutor implements Runnable {
       String outputPrefix,
       Set<String> checksToRun,
       Properties properties,
-      boolean emr, List<Integer> years, S3Client s3) {
+      FileSystemType fs, List<Integer> years, S3Client s3) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
@@ -56,7 +58,7 @@ public class SparklerExecutor implements Runnable {
     this.outputPrefix = outputPrefix;
     this.checksToRun = Collections.unmodifiableSet(new LinkedHashSet<>(checksToRun));
     this.properties = properties;
-    this.emr = emr;
+    this.fs = fs;
     this.years = years;
     this.s3 = s3;
   }
@@ -96,11 +98,11 @@ public class SparklerExecutor implements Runnable {
       this.year = year;
       inputUri = getInputUri();
       outputUri = getOutputUri(this.check.getName());
-      prefix = outputUri.replaceFirst("s3a://" + outputBucket + "/", "").replaceFirst("s3://" + outputBucket + "/", "");
+      prefix = outputUri.replaceFirst("s3a://" + outputBucket + "/", "").replaceFirst("s3://" + outputBucket + "/", "").replaceFirst("file://" + outputBucket + "/", "");
     }
 
     private String getInputUri() {
-      StringBuilder sb = new StringBuilder(emr ? "s3://" : "s3a://").append(inputBucket).append("/");
+      StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(inputBucket).append("/");
       if (inputPrefix != null) {
         sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
       }
@@ -111,7 +113,7 @@ public class SparklerExecutor implements Runnable {
     }
 
     private String getOutputUri(String checkName) {
-      StringBuilder parquetUri = new StringBuilder(emr ? "s3://" : "s3a://").append(outputBucket).append("/");
+      StringBuilder parquetUri = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");
       if (outputPrefix != null) {
         parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
       }
@@ -126,15 +128,6 @@ public class SparklerExecutor implements Runnable {
       long start = System.currentTimeMillis();
       System.err.println("Running " + check.getName());
       System.out.println("Running " + check.getName());
-
-//      S3ClientBuilder s3Builder = S3Client.builder();
-//      if (sourceAccessKey != null) {
-//        s3Builder.credentialsProvider(StaticCredentialsProvider.create(
-//            AwsBasicCredentials.create(sourceAccessKey, sourceSecretKey)
-//        ));
-//      }
-//      s3Builder.region(Region.of(sourceBucketRegion));
-//      S3Client s3 = s3Builder.build();
 
       if (exists(s3, outputBucket, prefix + "/_SUCCESS")) {
         System.out.println("Skipping existing " + check.getName());
@@ -173,13 +166,17 @@ public class SparklerExecutor implements Runnable {
       }
     }
   }
-  private static boolean exists(S3Client s3, String bucket, String key) {
-    try {
-      s3.headObject(c -> c.bucket(bucket).key(key));
-    } catch (NoSuchKeyException e) {
-      return false;
+  private boolean exists(S3Client s3, String bucket, String key) {
+    if (fs == FileSystemType.s3 || fs == FileSystemType.emrS3) {
+      try {
+        s3.headObject(c -> c.bucket(bucket).key(key));
+      } catch (NoSuchKeyException e) {
+        return false;
+      }
+      return true;
+    } else {
+      return Files.exists(Paths.get(bucket).resolve(key));
     }
-    return true;
   }
 
 }

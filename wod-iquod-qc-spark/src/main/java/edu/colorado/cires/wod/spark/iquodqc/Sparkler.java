@@ -1,6 +1,10 @@
 package edu.colorado.cires.wod.spark.iquodqc;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,13 +34,13 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-ib", "--input-bucket"}, required = true, description = "The input S3 bucket WOD Parquet files")
   private String inputBucket;
 
-  @Option(names = {"-ibr", "--input-bucket-region"}, required = true, description = "The input S3 bucket region")
+  @Option(names = {"-ibr", "--input-bucket-region"}, required = false, description = "The input S3 bucket region")
   private String inputBucketRegion;
 
   @Option(names = {"-ob", "--output-bucket"}, required = true, description = "The output S3 bucket where to put QC results")
   private String outputBucket;
 
-  @Option(names = {"-obr", "--output-bucket-region"}, required = true, description = "The output S3 bucket region")
+  @Option(names = {"-obr", "--output-bucket-region"}, required = false, description = "The output S3 bucket region")
   private String outputBucketRegion;
 
   @Option(names = {"-qc", "--checks"}, split = ",", description = "A comma separated list of tests to run. If not provided, all tests will run")
@@ -59,7 +63,7 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-pb", "--properties-bucket"}, required = true, description = "The bucket containing the properties file for this job")
   private String propertiesBucket;
 
-  @Option(names = {"-pbr", "--properties-bucket-region"}, required = true, description = "The properties S3 bucket region")
+  @Option(names = {"-pbr", "--properties-bucket-region"}, required = false, description = "The properties S3 bucket region")
   private String propertiesBucketRegion;
 
   @Option(names = {"-pk", "--properties-key"}, required = true, description = "The key to the properties file")
@@ -81,20 +85,26 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-os", "--output-secret"}, description = "An optional secret key for the output bucket")
   private String outputSecretKey;
 
-  @Option(names = {"-emr", "--emr"}, description = "Optimize S3 access for EMR")
-  private boolean emr = false;
+  @Option(names = {"-fs", "--file-system"}, description = "Optimize S3 access for EMR")
+  private FileSystemType fs = FileSystemType.local;
 
   @Override
   public void run() {
-    SparkSession.Builder sparkBuilder = SparkSession.builder()
-        .config(String.format("spark.hadoop.fs.s3a.bucket.%s.endpoint.region", outputBucket), outputBucketRegion);
-    if (outputAccessKey != null) {
-      sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.access.key", outputBucket), outputAccessKey);
-      sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.secret.key", outputBucket), outputSecretKey);
-    }
-    if (inputAccessKey != null) {
-      sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.access.key", inputBucket), inputAccessKey);
-      sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.secret.key", inputBucket), inputSecretKey);
+    SparkSession.Builder sparkBuilder = SparkSession.builder();
+
+    S3Client s3 = null;
+    if (fs == FileSystemType.s3 || fs == FileSystemType.emrS3) {
+      sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.endpoint.region", outputBucket), outputBucketRegion);
+      if (outputAccessKey != null) {
+        sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.access.key", outputBucket), outputAccessKey);
+        sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.secret.key", outputBucket), outputSecretKey);
+      }
+      if (inputAccessKey != null) {
+        sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.access.key", inputBucket), inputAccessKey);
+        sparkBuilder.config(String.format("spark.hadoop.fs.s3a.bucket.%s.secret.key", inputBucket), inputSecretKey);
+      }
+      S3ClientBuilder s3Builder = S3Client.builder();
+      s3 = s3Builder.build();
     }
 
     SparkSession spark = sparkBuilder.getOrCreate();
@@ -111,17 +121,27 @@ public class Sparkler implements Serializable, Runnable {
       }
     });
 
-    Properties properties = new S3PropertiesReader(propertiesBucket, propertiesKey, propertiesBucketRegion, propertiesAccessKey, propertiesSecretKey)
-        .readProperties();
+    Properties properties;
+    switch (fs) {
+      case local:
+        properties = new Properties();
+        try (InputStream in = Files.newInputStream(Paths.get(propertiesBucket).resolve(propertiesKey))) {
+          properties.load(in);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+        break;
+      case emrS3:
+      case s3:
+        properties = new S3PropertiesReader(propertiesBucket, propertiesKey, propertiesBucketRegion, propertiesAccessKey, propertiesSecretKey).readProperties();
+        break;
+      default:
+        throw new IllegalStateException("Unsupported file system type " + fs);
+    }
 
-          S3ClientBuilder s3Builder = S3Client.builder();
-//      if (sourceAccessKey != null) {
-//        s3Builder.credentialsProvider(StaticCredentialsProvider.create(
-//            AwsBasicCredentials.create(sourceAccessKey, sourceSecretKey)
-//        ));
-//      }
-//      s3Builder.region(Region.of(sourceBucketRegion));
-      S3Client s3 = s3Builder.build();
+
+
+
 
     SparklerExecutor executor = new SparklerExecutor(
         spark,
@@ -133,7 +153,7 @@ public class Sparkler implements Serializable, Runnable {
         outputPrefix,
         new HashSet<>(checksToRun),
         properties,
-        emr, years, s3);
+        fs, years, s3);
     executor.run();
   }
 
