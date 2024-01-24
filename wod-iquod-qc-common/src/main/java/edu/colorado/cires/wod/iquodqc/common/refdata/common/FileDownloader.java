@@ -41,9 +41,13 @@ public final class FileDownloader {
       if (!Files.exists(ncFile)) {
 
         System.err.println("Downloading " + uri);
+        Path tmp;
         try {
-          Path tmp = Files.createTempFile(dataDir, propertyName, ".dat.dl");
-
+          tmp = Files.createTempFile(dataDir, propertyName, ".dat.dl");
+        } catch (IOException e) {
+          throw new RuntimeException("Unable to download " + uri, e);
+        }
+        try {
           if (uri.startsWith("s3://")) {
             //TODO make this more robust, region, creds, etc
             S3Client s3 = S3Client.builder().build();
@@ -59,8 +63,10 @@ public final class FileDownloader {
                 tmp.toFile(),
                 CONNECT_TIMEOUT,
                 READ_TIMEOUT);
+          } else if (uri.startsWith("file://")){
+            FileUtils.copyFile(new File(uri.replaceFirst("file://", "")), tmp.toFile());
           } else {
-            FileUtils.copyFile(new File(uri), tmp.toFile());
+            throw new IllegalStateException("Unsupported URI " + uri);
           }
           if (!Files.exists(ncFile)) {
             Files.move(tmp, ncFile, StandardCopyOption.REPLACE_EXISTING);
@@ -69,6 +75,8 @@ public final class FileDownloader {
           }
         } catch (IOException e) {
           throw new RuntimeException("Unable to download " + uri, e);
+        } finally {
+          FileUtils.deleteQuietly(tmp.toFile());
         }
         System.err.println("Done downloading " + uri);
       }

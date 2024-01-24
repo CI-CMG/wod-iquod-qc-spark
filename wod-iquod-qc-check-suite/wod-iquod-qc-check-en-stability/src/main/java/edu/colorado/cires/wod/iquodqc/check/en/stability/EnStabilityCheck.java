@@ -64,20 +64,22 @@ public class EnStabilityCheck extends CommonCastCheck {
       });
     }
 
-    // check bottom of profile
-    final int i = depths.size() - 1;
-    getTemperature(depths.get(i)).map(ProfileData::getValue).ifPresent(t -> {
-      getTemperature(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(t1 -> {
-        getPressure(depths.get(i)).map(ProfileData::getValue).ifPresent(p -> {
-          getPressure(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(p1 -> {
-            getSalinity(depths.get(i)).map(ProfileData::getValue).ifPresent(s -> {
-              getSalinity(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(s1 -> {
-                Optional.ofNullable(potTemps.get(i)).ifPresent(potT -> {
-                  Optional.ofNullable(potTemps.get(i - 1)).ifPresent(potT1 -> {
-                    double deltaRhoK = mcdougallEOS(s, potT, p) - mcdougallEOS(s1, potT1, p);
-                    if (deltaRhoK < -0.03) {
-                      failures.add(i);
-                    }
+    if (depths.size() > 1) {
+      // check bottom of profile
+      final int i = depths.size() - 1;
+      getTemperature(depths.get(i)).map(ProfileData::getValue).ifPresent(t -> {
+        getTemperature(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(t1 -> {
+          getPressure(depths.get(i)).map(ProfileData::getValue).ifPresent(p -> {
+            getPressure(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(p1 -> {
+              getSalinity(depths.get(i)).map(ProfileData::getValue).ifPresent(s -> {
+                getSalinity(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(s1 -> {
+                  Optional.ofNullable(potTemps.get(i)).ifPresent(potT -> {
+                    Optional.ofNullable(potTemps.get(i - 1)).ifPresent(potT1 -> {
+                      double deltaRhoK = mcdougallEOS(s, potT, p) - mcdougallEOS(s1, potT1, p);
+                      if (deltaRhoK < -0.03) {
+                        failures.add(i);
+                      }
+                    });
                   });
                 });
               });
@@ -85,7 +87,8 @@ public class EnStabilityCheck extends CommonCastCheck {
           });
         });
       });
-    });
+    }
+
 
     // check for critical number of flags, flag all if so:
     if ((double)failures.size() >= Math.max(2D, (double) depths.size() / 4D)) {

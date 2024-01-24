@@ -23,8 +23,8 @@ class EnSpikeAndStepInitializer {
     dt = new ArrayList<>(depths.size());
     gt = new ArrayList<>(depths.size());
     for (int i = 0; i < depths.size(); i++) {
-      dt.add(null);
-      gt.add(null);
+      dt.add(0D);
+      gt.add(0D);
     }
     composeDT(t, z, depths.size(), dt, gt);
   }

@@ -79,6 +79,12 @@ public class CoTeDeTukey53H {
   private static double[] computeWindowedMedian(double[] input, int windowSize) {
     int inputLength = input.length;
     double[] output = new double[inputLength];
+
+    if (input.length == 1) {
+      output[0] = input[0];
+      return output;
+    }
+
     int halfWindowSizeFloor = (int) Math.floor((double) windowSize / 2);
 
     List<Double> queue = new ArrayList<>();
