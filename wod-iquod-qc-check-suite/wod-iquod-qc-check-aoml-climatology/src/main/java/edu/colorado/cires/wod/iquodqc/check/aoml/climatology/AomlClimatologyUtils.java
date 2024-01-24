@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.iquodqc.check.aoml.climatology;
 import edu.colorado.cires.wod.iquodqc.common.InterpolationUtils;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalDouble;
@@ -109,6 +110,11 @@ final class AomlClimatologyUtils {
           minIndexDepth, maxIndexDepth);
     }
 
+    // could be caused by NaNs in the NC file
+    if (positionTemps.isEmpty()) {
+      return OptionalDouble.empty();
+    }
+
     TempAtPosition nearest = positionTemps.stream().reduce(null, (tap1, tap2) -> {
       tap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, tap2.getLongitude(), tap2.getLatitude(), referenceSystem));
       if (tap1 == null) {
@@ -130,7 +136,8 @@ final class AomlClimatologyUtils {
           .append("\nminIndexLat: ").append(minIndexLat)
           .append("\nmaxIndexLat: ").append(maxIndexLat)
           .append("\nminIndexLon: ").append(minIndexLon)
-          .append("\nmaxIndexLon: ").append(maxIndexLon);
+          .append("\nmaxIndexLon: ").append(maxIndexLon)
+          .append("\ndepthIndexes").append(Arrays.toString(depthIndexes));
       throw new RuntimeException(sb.toString());
     }
 
@@ -141,9 +148,14 @@ final class AomlClimatologyUtils {
 
     List<TempAtPosition> knots = getTempsAtLocationIndex(netFile, dataHolder, tType, nearest.getLonIndex(), nearest.getLatIndex());
 
-    PolynomialSplineFunction intFunc = new LinearInterpolator().interpolate(
-        knots.stream().mapToDouble(tap -> clipZero ? Math.max(0d, tap.getDepth()) : tap.getDepth()).toArray(),
-        knots.stream().mapToDouble(TempAtPosition::getTemperature).toArray());
+    double[] depths = knots.stream().mapToDouble(tap -> clipZero ? Math.max(0d, tap.getDepth()) : tap.getDepth()).toArray();
+    double[] temps = knots.stream().mapToDouble(TempAtPosition::getTemperature).toArray();
+
+    if (depths.length == 1) {
+      return OptionalDouble.empty();
+    }
+
+    PolynomialSplineFunction intFunc = new LinearInterpolator().interpolate(depths, temps);
     return InterpolationUtils.interpolate(depth, intFunc);
   }
 

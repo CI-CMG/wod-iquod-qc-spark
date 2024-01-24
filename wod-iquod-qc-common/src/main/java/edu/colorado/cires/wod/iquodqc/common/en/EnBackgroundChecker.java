@@ -83,6 +83,10 @@ public class EnBackgroundChecker {
 
     ArrayWrapper parameterData = getParameterData(cast);
 
+    if (parameterData.depths.length == 1) {
+      return enBackgroundCheckerResult;
+    }
+
     double[] pressures = levels.stream()
         .mapToDouble(Depth::getDepth)
         .map(depth -> TeosGsw10.INSTANCE.gsw_p_from_z(-depth, cast.getLatitude(), 0D, 0D))

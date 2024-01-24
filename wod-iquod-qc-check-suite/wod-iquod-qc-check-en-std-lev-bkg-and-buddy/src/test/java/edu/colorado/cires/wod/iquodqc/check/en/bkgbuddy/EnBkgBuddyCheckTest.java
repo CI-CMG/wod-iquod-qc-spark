@@ -18,7 +18,9 @@ import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.Metadata;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import edu.colorado.cires.wod.parquet.model.Variable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1205,6 +1207,277 @@ public class EnBkgBuddyCheckTest {
     results.sort(Comparator.comparingInt(CastCheckResult::getCastNumber));
     assertEquals(1, results.size());
     assertFalse(results.get(0).isPassed());
+
+  }
+
+  @Test
+  public void testEnStdLevelBkgAndBuddySingleLevel() throws Exception {
+
+
+    Cast cast = Cast.builder()
+        .withDataset("CTD")
+        .withCastNumber(13334306)
+        .withCruiseNumber(0)
+        .withTimestamp(50893200000L)
+        .withYear(1971)
+        .withMonth(8)
+        .withDay(13)
+        .withTime(1D)
+        .withLongitude(-75.1667)
+        .withLatitude(19.3)
+        .withProfileType(0)
+        .withGeohash("d76")
+        .withVariables(Arrays.asList(
+            Variable.builder()
+                .withCode(1)
+                .withMetadata(Arrays.asList(
+                    Metadata.builder().withCode(5).withValue(4D).build()
+                ))
+                .build(),
+            Variable.builder()
+                .withCode(2)
+                .withMetadata(Arrays.asList(
+                    Metadata.builder().withCode(5).withValue(4D).build()
+                ))
+                .build()
+        ))
+        .withAttributes(Arrays.asList(
+            Attribute.builder().withCode(1).withValue(64432D).build(),
+            Attribute.builder().withCode(4).withValue(1449D).build(),
+            Attribute.builder().withCode(8).withValue(2D).build(),
+            Attribute.builder().withCode(29).withValue(4D).build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(29.889).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.062).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(9.1).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(29.333).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.013).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(27.4).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(28.889).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(48.8).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(28.611).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(61.0).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(27.778).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(91.4).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(25.556).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(121.9).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(24.056).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(152.4).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(23.333).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(173.7).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(23.222).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(182.9).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(22.778).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.031).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(234.7).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(22.5).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(35.531).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(301.8).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(21.167).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(35.161).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(335.3).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(21.111).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(34.889).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(350.5).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(20.833).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(34.923).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(365.8).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(21.444).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(34.96).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(390.1).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(20.611).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(34.991).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(420.6).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(21.111).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(457.2).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(19.889).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build()
+        ))
+        .build();
+
+
+    Cast buddy = Cast.builder()
+        .withDataset("CTD")
+        .withCastNumber(13334296)
+        .withCruiseNumber(41690)
+        .withTimestamp(50180400000L)
+        .withYear(1971)
+        .withMonth(8)
+        .withDay(4)
+        .withTime(19D)
+        .withLongitude(-75.1833)
+        .withLatitude(19.7667)
+        .withProfileType(0)
+        .withGeohash("d7d")
+        .withVariables(Arrays.asList(
+            Variable.builder()
+                .withCode(1)
+                .withMetadata(Arrays.asList(
+                    Metadata.builder().withCode(5).withValue(4D).build()
+                ))
+                .build(),
+            Variable.builder()
+                .withCode(2)
+                .withMetadata(Arrays.asList(
+                    Metadata.builder().withCode(5).withValue(4D).build()
+                ))
+                .build()
+        ))
+        .withAttributes(Arrays.asList(
+            Attribute.builder().withCode(1).withValue(64432D).build(),
+            Attribute.builder().withCode(3).withValue(1814D).build(),
+            Attribute.builder().withCode(4).withValue(1449D).build(),
+            Attribute.builder().withCode(8).withValue(2D).build(),
+            Attribute.builder().withCode(29).withValue(4D).build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0D).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(28.333).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(35.572).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(54.9).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(28.333).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.675).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(61.0).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(26.667).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.655).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(76.2).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(24.556).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.379).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(121.9).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(23.611).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.314).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(152.4).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(22.222).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.034).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(182.9).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(21.278).withQcFlag(0).withOriginatorsFlag(0).build(),
+                    ProfileData.builder().withVariableCode(2).withValue(36.174).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(213.4).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(20.167).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(274.3).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(17.944).withQcFlag(0).withOriginatorsFlag(0).build()))
+                .build(),
+            Depth.builder().withDepth(335.3).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(16.667).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(396.2).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(15.556).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build(),
+            Depth.builder().withDepth(457.2).withDepthErrorFlag(0).withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withVariableCode(1).withValue(14.444).withQcFlag(0).withOriginatorsFlag(0).build()
+                )).build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Arrays.asList(cast, buddy), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(false).withFiltered(false).withError(false).withFailedDepths(Arrays.asList(16, 17)).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_background_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_constant_value_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_range_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_increasing_depth_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_spike_and_step_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_stability_check.parquet").toString());
+
+    otherResult = spark.createDataset(Arrays.asList(
+        CastCheckResult.builder().withCastNumber(13334306).withPassed(true).withFiltered(false).withError(false).build(),
+        CastCheckResult.builder().withCastNumber(13334296).withPassed(true).withFiltered(false).withError(false).build()
+    ), Encoders.bean(CastCheckResult.class));
+    otherResult.write().parquet(TEMP_DIR.resolve("EN_spike_and_step_suspect.parquet").toString());
+
+
+
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    results.sort(Comparator.comparingInt(CastCheckResult::getCastNumber));
+    assertEquals(2, results.size());
+    assertEquals(CastCheckResult.builder().withCastNumber(13334296).withPassed(true).build(), results.get(0));
 
   }
 

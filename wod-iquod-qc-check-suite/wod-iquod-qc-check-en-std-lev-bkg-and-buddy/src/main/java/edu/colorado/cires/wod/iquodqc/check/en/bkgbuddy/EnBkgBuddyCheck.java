@@ -129,7 +129,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
 
   private double getDistanceUdf(double lon1, double lat1, double lon2, double lat2) {
     try {
-      return JTS.orthodromicDistance(new Coordinate(lon1, lat1), new Coordinate(lon2, lat2), EPSG_4326);
+      return JTS.orthodromicDistance(new Coordinate(lat1, lon1), new Coordinate(lat2, lon2), EPSG_4326);
     } catch (Exception e) {
       System.out.println("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ") " + ExceptionUtils.getStackTrace(e));
       return MAX_DISTANCE_M + 1;
@@ -217,23 +217,23 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     return stdLevels;
   }
 
-  private Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults, @Nullable Cast buddy,
-      Map<String, CastCheckResult> buddyOtherTestResults, double distance) {
+  private Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults, @Nullable Cast buddy, Map<String, CastCheckResult> buddyOtherTestResults, double distance) {
 
-    Set<Integer> failures = new TreeSet<>();
+//    try {
+      Set<Integer> failures = new TreeSet<>();
 
-    TreeMap<Integer, StdLevel> pgeLevels = new TreeMap<>();
+      TreeMap<Integer, StdLevel> pgeLevels = new TreeMap<>();
 
-    CastParameterDataReader parameterData = new CastParameterDataReader(cast, parameters);
-    List<StdLevel> stdLevels = getStdLevels(cast, otherTestResults, parameterData);
-    for (StdLevel stdLevel : stdLevels) {
-      pgeLevels.put(stdLevel.getStdLevelIndex(), stdLevel);
-    }
+      CastParameterDataReader parameterData = new CastParameterDataReader(cast, parameters);
+      List<StdLevel> stdLevels = getStdLevels(cast, otherTestResults, parameterData);
+      for (StdLevel stdLevel : stdLevels) {
+        pgeLevels.put(stdLevel.getStdLevelIndex(), stdLevel);
+      }
 
-    if (!stdLevels.isEmpty()) {
-      if (buddy != null) {
-        // buddy vetos
-        if (hasTemperature(buddy)) {
+      if (!stdLevels.isEmpty()) {
+        if (buddy != null) {
+          // buddy vetos
+          if (hasTemperature(buddy)) {
             CastParameterDataReader buddyParameterData = new CastParameterDataReader(buddy, parameters);
             // not sure why we are passing the levels from the main cast.  This is what the Python test did.
             List<StdLevel> buddyStdLevels = getStdLevels(stdLevels, buddy, buddyParameterData);
@@ -254,21 +254,32 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
                     obev.get(stdLevel.getStdLevelIndex())));
               }
             }
+          }
         }
+
+        reinstateLevels(cast, pgeLevels, parameterData.getClim(), slev);
+
+        pgeLevels.values().forEach(stdLevel -> {
+          if (stdLevel.getPge() >= 0.5) {
+            stdLevel.getLevelWrappers().forEach(lw -> {
+              failures.add(lw.getLevel().getOrigLevel());
+            });
+          }
+        });
       }
 
-      reinstateLevels(cast, pgeLevels, parameterData.getClim(), slev);
+      return failures;
+//    } catch (RuntimeException e) {
+//      StringBuilder stringBuilder = new StringBuilder();
+//      stringBuilder.append("cast: ").append(cast);
+//      stringBuilder.append("\notherTestResults: ").append(otherTestResults);
+//      stringBuilder.append("\nbuddy: ").append(buddy);
+//      stringBuilder.append("\nbuddyOtherTestResults: ").append(buddyOtherTestResults);
+//      stringBuilder.append("\ndistance: ").append(distance);
+//      System.out.println(stringBuilder);
+//      throw e;
+//    }
 
-      pgeLevels.values().forEach(stdLevel -> {
-        if (stdLevel.getPge() >= 0.5) {
-          stdLevel.getLevelWrappers().forEach(lw -> {
-            failures.add(lw.getLevel().getOrigLevel());
-          });
-        }
-      });
-    }
-
-    return failures;
   }
 
   protected void reinstateLevels(Cast cast, TreeMap<Integer, StdLevel> pgeLevels, List<Double> bgsl, List<Double> slev) {
@@ -279,13 +290,13 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
         int i = stdLevel.getStdLevelIndex();
         boolean okBelow = false;
         if (i > 0) {
-          if ((pgeLevels.get(i - 1) == null || pgeLevels.get(i - 1).getPge() < 0.5) && bgsl.get(i - 1) != null) {
+          if(pgeLevels.get(i - 1) != null && bgsl.get(i - 1) != null && pgeLevels.get(i - 1).getPge() < 0.5){
             okBelow = true;
           }
         }
         boolean okAbove = false;
         if (i < nsl - 1) {
-          if ((pgeLevels.get(i + 1) == null || pgeLevels.get(i + 1).getPge() < 0.5) && bgsl.get(i + 1) != null) {
+          if(pgeLevels.get(i + 1) != null && bgsl.get(i + 1) != null && pgeLevels.get(i + 1).getPge() < 0.5){
             okAbove = true;
           }
         }
