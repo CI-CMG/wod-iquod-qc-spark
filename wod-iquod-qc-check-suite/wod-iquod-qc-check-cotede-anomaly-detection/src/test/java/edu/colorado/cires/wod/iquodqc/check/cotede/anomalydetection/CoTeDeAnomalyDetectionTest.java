@@ -31,7 +31,7 @@ public class CoTeDeAnomalyDetectionTest {
       400, 410, 650, 1000, 2000, 5000};
 
   private static final double[] EXPECTED_COMBINED_PROBABILITIES = {0.0, 0.0, -0.23157947207232124, -2.6488964615385746, -9.473933624327975,
-      -1.6923874035379025, -12.330604621573432, 0.0, -11.060933449655789, 0.0, -4.533801180117476, -16.039987990243688, 0.0, 0.0, 0.0};
+      -1.6923874035379025, -12.330604621573432, 0.0, -11.060933449655789, 0.0, -11.944071864368553, -16.039987990243688, 0.0, 0.0, 0.0};
   private static final double[] EXPECTED_GRADIENT_PROB = {Double.NaN, 0.0, -0.23157947207232124, -2.6488964615385746, -4.916622075070896,
       -1.1530672299030673, -6.205209584292135, 0.0, -5.6379292141032, 0.0, 0.0, -6.97884790313254, 0.0, Double.NaN, Double.NaN};
 
@@ -44,10 +44,10 @@ public class CoTeDeAnomalyDetectionTest {
   private static final double[] EXPECTED_RATE_OF_CHANGE_PROB = {Double.NaN, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.55889978468112, 0.0,
       0.0, Double.NaN};
 
-  private static final double[] EXPECTED_WOA_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  private static final double[] EXPECTED_WOA_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -2.6185526839834155, 0.0, 0.0, 0.0,
       Double.NaN};
 
-  private static final double[] EXPECTED_CARS_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  private static final double[] EXPECTED_CARS_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.823278877955112, 0.0, 0.0, 0.0,
       Double.NaN};
 
   private static final double[] EXPECTED_CONSTANT_CLUSTER_SIZE_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};

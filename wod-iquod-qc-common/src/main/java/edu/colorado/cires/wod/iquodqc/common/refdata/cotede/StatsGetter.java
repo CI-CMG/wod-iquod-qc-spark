@@ -245,7 +245,7 @@ public abstract class StatsGetter<T extends Stats> {
     if (stdInterpolator == null) {
       stdInterpolator = prepareInterpolator(
           getValues(
-              statsGetterProperties.getMean(),
+              statsGetterProperties.getStandardDeviation(),
               index,
               0,
               index.getDepths().length - 1,
