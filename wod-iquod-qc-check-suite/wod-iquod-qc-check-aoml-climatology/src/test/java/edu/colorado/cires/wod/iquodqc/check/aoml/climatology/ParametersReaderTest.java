@@ -1,14 +1,24 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.climatology;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.OptionalDouble;
 import java.util.Properties;
+import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.nc2.NetcdfFile;
 
 public class ParametersReaderTest {
+
+  private static final CoordinateReferenceSystem EPSG_4326;
+
+  static {
+    try {
+      EPSG_4326 = CRS.decode("EPSG:4326");
+    } catch (FactoryException e) {
+      throw new RuntimeException("Unable to determine CRS", e);
+    }
+  }
 
 
   @Test
@@ -22,7 +32,7 @@ public class ParametersReaderTest {
     double depth = 100d;
     NetcdfFile ncFile = ParametersReader.open(properties);
     try {
-      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false);
+      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false, EPSG_4326);
     } finally {
       ncFile.close();
     }
@@ -40,8 +50,8 @@ public class ParametersReaderTest {
 
     NetcdfFile ncFile = ParametersReader.open(properties);
     try {
-      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false);
-      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true);
+      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false, EPSG_4326);
+      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true, EPSG_4326);
     } finally {
       ncFile.close();
     }
@@ -59,8 +69,8 @@ public class ParametersReaderTest {
 
     NetcdfFile ncFile = ParametersReader.open(properties);
     try {
-      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false);
-      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true);
+      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false, EPSG_4326);
+      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true, EPSG_4326);
     } finally {
       ncFile.close();
     }
@@ -78,8 +88,8 @@ public class ParametersReaderTest {
 
     NetcdfFile ncFile = ParametersReader.open(properties);
     try {
-      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false);
-      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true);
+      OptionalDouble analyzedMean = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_an", dataHolder, longitude, latitude, depth, false, EPSG_4326);
+      OptionalDouble analyzedSd = AomlClimatologyUtils.temperatureInterpolationProcess(ncFile, "t_sd", dataHolder, longitude, latitude, depth, true, EPSG_4326);
     } finally {
       ncFile.close();
     }

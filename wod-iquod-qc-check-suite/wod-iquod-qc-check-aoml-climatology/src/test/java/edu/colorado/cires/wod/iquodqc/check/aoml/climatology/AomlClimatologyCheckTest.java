@@ -1,5 +1,6 @@
 package edu.colorado.cires.wod.iquodqc.check.aoml.climatology;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.ascii.reader.BufferedCharReader;
@@ -8,11 +9,13 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -95,7 +98,6 @@ class AomlClimatologyCheckTest {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
 
-  //TODO missing originator flag and is being filtered
   @Disabled
   @Test
   public void testRealFailure() throws Exception {
@@ -104,6 +106,17 @@ class AomlClimatologyCheckTest {
     try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get("src/test/resources/APBO2020-19827232.ascii"))) {
       CastFileReader reader = new CastFileReader(new BufferedCharReader(bufferedReader), "APB");
       cast = AsciiToSparkModelTransformer.fromAsciiModel(reader.next());
+      List<Attribute> attributes = new ArrayList<>(0);
+      attributes.addAll(cast.getAttributes());
+      attributes.add(
+          Attribute.builder()
+              .withCode(ORIGINATORS_FLAGS)
+              .withValue(1)
+              .build()
+      );
+      cast = Cast.builder(cast)
+          .withAttributes(attributes)
+          .build();
     }
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
