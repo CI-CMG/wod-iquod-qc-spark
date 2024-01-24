@@ -103,7 +103,6 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
     double fillValue = (double) Objects.requireNonNull(Objects.requireNonNull(file.findGlobalAttribute("fillValue")).getValue(0));
 
     int nLevels = depthData.getnLevels();
-    MinMax[] output = new MinMax[nLevels];
     double[] tMin = new double[nLevels];
     double[] tMax = new double[nLevels];
 
@@ -120,13 +119,15 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       return null;
     }
 
+    int month = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("UTC")).getMonthValue();
+
     Variable tamdM = Objects.requireNonNull(file.findVariable("tamdM"));
     double scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tamdM.findAttribute("scale_factor")).getValue(0));
     int[][] tamdMData = ((int[][][][]) tamdM.read(Section.builder()
         .appendRange(ix, ix)
         .appendRange(iy, iy)
         .appendRange(0, tamdM.getShape(2) - 1)
-        .appendRange(0, tamdM.getShape(3) - 1)
+        .appendRange(month - 1, month - 1)
         .build()).copyToNDJavaArray())[0][0];
 
     Variable tmedM = Objects.requireNonNull(file.findVariable("tmedM"));
@@ -134,7 +135,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
         .appendRange(ix, ix)
         .appendRange(iy, iy)
         .appendRange(0, tmedM.getShape(2) - 1)
-        .appendRange(0, tmedM.getShape(3) - 1)
+        .appendRange(month - 1, month - 1)
         .build()).copyToNDJavaArray())[0][0];
 
     Variable tamdA = Objects.requireNonNull(file.findVariable("tamdA"));
@@ -181,18 +182,16 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       Double amd = null;
       Double median = null;
       if (!useAnnual) {
-        int month = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("UTC")).getMonthValue();
-
         try {
 
-          amd = tamdMData[idx][month - 1] * scaleFactor;
+          amd = tamdMData[idx][0] * scaleFactor;
 
           if (amd < 0) {
             useAnnual = true;
           } else {
             scaleFactor = (double) Objects.requireNonNull(
                 Objects.requireNonNull(tmedM.findAttribute("scale_factor")).getValue(0));
-            median = tmedMData[idx][month - 1] * scaleFactor;
+            median = tmedMData[idx][0] * scaleFactor;
 
             if (median < parMinOver) {
               useAnnual = true;
