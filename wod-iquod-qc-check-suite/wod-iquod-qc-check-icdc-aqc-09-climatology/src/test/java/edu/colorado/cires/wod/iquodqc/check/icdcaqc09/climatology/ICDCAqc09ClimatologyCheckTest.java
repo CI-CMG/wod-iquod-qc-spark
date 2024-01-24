@@ -33,7 +33,8 @@ public class ICDCAqc09ClimatologyCheckTest {
   @BeforeAll
   static void beforeAll() {
     Properties properties = new Properties();
-    properties.put(ClimatologicalTMedianAndAmdForAqcParametersReader.CLIMATOLOGICAL_T_MEDIAN_AND_AMD_FOR_AQC_NC_PROP, "https://s3-us-west-2.amazonaws.com/autoqc/climatological_t_median_and_amd_for_aqc.nc");
+    properties.put(ClimatologicalTMedianAndAmdForAqcParametersReader.CLIMATOLOGICAL_T_MEDIAN_AND_AMD_FOR_AQC_NC_PROP,
+        "https://s3-us-west-2.amazonaws.com/autoqc/climatological_t_median_and_amd_for_aqc.nc");
     properties.put("data.dir", "../../test-data");
 
     CastCheckInitializationContext context = mock(CastCheckInitializationContext.class);
@@ -94,10 +95,11 @@ public class ICDCAqc09ClimatologyCheckTest {
         .withDepths(data.getDepths())
         .build();
   }
-  
-  @Test void testCheck() {
+
+  @Test
+  void testCheck() {
     List<ICDCdata> testData = getTestData();
-    
+
     testData.forEach(d -> {
       Cast cast = buildCast(d);
       Collection<Integer> failed = CHECK.getFailedDepths(cast);

@@ -29,11 +29,11 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 
 public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
-  
+
   private static String climatologicalTMedianAndAmdForAqc;
-  
+
   private Properties properties;
-  
+
   @Override
   public String getName() {
     return CheckNames.ICDC_AQC_09_CLIMATOLOGY_CHECK.getName();
@@ -51,7 +51,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
     }
     return super.checkUdf(row);
   }
-  
+
   protected static void load(Properties properties) {
     synchronized (ICDCAqc09ClimatologyCheck.class) {
       if (climatologicalTMedianAndAmdForAqc == null) {
@@ -74,7 +74,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       }
 
       List<MinMax> minMaxes = getClimatologyRange(depthData, file, latitude, longitude, cast.getTimestamp());
-      
+
       if (minMaxes == null) {
         return Collections.emptyList();
       }
@@ -93,14 +93,14 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       }
 
       return failedDepths;
-    } catch (IOException e) {
+    } catch (IOException | InvalidRangeException e) {
       throw new RuntimeException(e);
     }
   }
-  
-  private static @Nullable List<MinMax> getClimatologyRange(DepthData depthData, NetcdfFile file, double latitude, double longitude, long timestamp) {
+
+  private static @Nullable List<MinMax> getClimatologyRange(DepthData depthData, NetcdfFile file, double latitude, double longitude, long timestamp)
+      throws InvalidRangeException, IOException {
     double fillValue = (double) Objects.requireNonNull(Objects.requireNonNull(file.findGlobalAttribute("fillValue")).getValue(0));
-    
 
     int nLevels = depthData.getnLevels();
     MinMax[] output = new MinMax[nLevels];
@@ -120,6 +120,39 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       return null;
     }
 
+    Variable tamdM = Objects.requireNonNull(file.findVariable("tamdM"));
+    double scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tamdM.findAttribute("scale_factor")).getValue(0));
+    int[][] tamdMData = ((int[][][][]) tamdM.read(Section.builder()
+        .appendRange(ix, ix)
+        .appendRange(iy, iy)
+        .appendRange(0, tamdM.getShape(2) - 1)
+        .appendRange(0, tamdM.getShape(3) - 1)
+        .build()).copyToNDJavaArray())[0][0];
+
+    Variable tmedM = Objects.requireNonNull(file.findVariable("tmedM"));
+    int[][] tmedMData = ((int[][][][]) tmedM.read(Section.builder()
+        .appendRange(ix, ix)
+        .appendRange(iy, iy)
+        .appendRange(0, tmedM.getShape(2) - 1)
+        .appendRange(0, tmedM.getShape(3) - 1)
+        .build()).copyToNDJavaArray())[0][0];
+
+    Variable tamdA = Objects.requireNonNull(file.findVariable("tamdA"));
+    int[] tamdAData = ((int[][][]) tamdA.read(Section.builder()
+        .appendRange(ix, ix)
+        .appendRange(iy, iy)
+        .appendRange(0, tamdA.getShape(2) - 1)
+        .build()).copyToNDJavaArray())[0][0];
+
+    Variable tmedA = Objects.requireNonNull(file.findVariable("tmedA"));
+    int[] tmedAData = ((int[][][]) tmedA.read(
+        Section.builder()
+            .appendRange(ix, ix)
+            .appendRange(iy, iy)
+            .appendRange(0, tmedA.getShape(2) - 1)
+            .build()
+    ).copyToNDJavaArray())[0][0];
+
     for (int k = 0; k < nLevels; k++) {
       double depth = depthData.getDepths().get(k);
 
@@ -133,7 +166,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
                   .appendRange(i, i)
                   .build()
           ).getDouble(0) && depth < variable.read(Section.builder()
-                  .appendRange(i + 1, i + 1)
+              .appendRange(i + 1, i + 1)
               .build()).getDouble(0)) {
             idx = i;
             break;
@@ -142,7 +175,7 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
           throw new RuntimeException(e);
         }
       }
-      
+
       boolean useAnnual = idx > 15;
 
       Double amd = null;
@@ -151,78 +184,46 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
         int month = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("UTC")).getMonthValue();
 
         try {
-          Variable tamdM = Objects.requireNonNull(file.findVariable("tamdM"));
-          
-          double scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tamdM.findAttribute("scale_factor")).getValue(0));
-          
-          amd = Objects.requireNonNull(file.findVariable("tamdM")).read(
-              Section.builder()
-                  .appendRange(ix, ix)
-                  .appendRange(iy, iy)
-                  .appendRange(idx, idx)
-                  .appendRange(month - 1, month - 1)
-                  .build()
-          ).getDouble(0) * scaleFactor;
-          
+
+          amd = tamdMData[idx][month - 1] * scaleFactor;
+
           if (amd < 0) {
             useAnnual = true;
           } else {
             scaleFactor = (double) Objects.requireNonNull(
-                Objects.requireNonNull(Objects.requireNonNull(file.findVariable("tmedM")).findAttribute("scale_factor")).getValue(0));
-            median = Objects.requireNonNull(file.findVariable("tmedM")).read(
-                Section.builder()
-                    .appendRange(ix, ix)
-                    .appendRange(iy, iy)
-                    .appendRange(idx, idx)
-                    .appendRange(month - 1, month - 1)
-                    .build()
-            ).getDouble(0) * scaleFactor;
-            
+                Objects.requireNonNull(tmedM.findAttribute("scale_factor")).getValue(0));
+            median = tmedMData[idx][month - 1] * scaleFactor;
+
             if (median < parMinOver) {
               useAnnual = true;
             }
           }
-        } catch (IOException | InvalidRangeException e) {
+        } catch (Exception e) {
           throw new RuntimeException(e);
         }
       }
-      
+
       if (useAnnual) {
         try {
 
-          Variable tamdA = Objects.requireNonNull(file.findVariable("tamdA")); 
-          double scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tamdA.findAttribute("scale_factor")).getValue(0));
-          
-          amd = Objects.requireNonNull(file.findVariable("tamdA")).read(
-              Section.builder()
-                  .appendRange(ix, ix)
-                  .appendRange(iy, iy)
-                  .appendRange(idx, idx)
-                  .build()
-          ).getDouble(0) * scaleFactor;
+          scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tamdA.findAttribute("scale_factor")).getValue(0));
+          amd = tamdAData[idx] * scaleFactor;
 
           if (amd < 0) {
             continue;
           } else {
-            Variable tmedA = Objects.requireNonNull(file.findVariable("tmedA"));
             scaleFactor = (double) Objects.requireNonNull(Objects.requireNonNull(tmedA.findAttribute("scale_factor")).getValue(0));
-            median = tmedA.read(
-                Section.builder()
-                    .appendRange(ix, ix)
-                    .appendRange(iy, iy)
-                    .appendRange(idx, idx)
-                    .build()
-            ).getDouble(0) * scaleFactor;
+            median = tmedAData[idx] * scaleFactor;
 
             if (median < parMinOver) {
               continue;
             }
           }
-        } catch (IOException | InvalidRangeException e) {
+        } catch (Exception e) {
           throw new RuntimeException(e);
         }
       }
-      
+
       if (amd > 0 && amd < 0.05) {
         amd = 0.05;
       }
@@ -233,17 +234,17 @@ public class ICDCAqc09ClimatologyCheck extends CommonCastCheck {
       tMinA = Math.max(tMinA, parMinOver);
       tMaxA = Math.min(tMaxA, parMaxOver);
 
-      
       tMin[k] = tMinA;
       tMax[k] = tMaxA;
     }
-    
+
     return IntStream.range(0, nLevels).boxed()
         .map(i -> new MinMax(tMin[i], tMax[i]))
         .collect(Collectors.toList());
   }
-  
+
   private static class MinMax {
+
     private final double min;
     private final double max;
 
