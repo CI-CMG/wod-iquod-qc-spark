@@ -31,10 +31,7 @@ public class CoTeDeTukey53H {
 
   public static double[] computeTukey53H(double[] input, boolean isNorm) {
     double[] median5 = computeWindowedMedian(input, 5);
-    double[] median53H = computeWindowedMedian(
-        median5,
-        3
-    );
+    double[] median53H = computeWindowedMedian(median5, 3);
 
     double[] median53HLeft = Arrays.copyOf(median53H, median53H.length);
     shiftArray(median53HLeft, -1);
@@ -42,8 +39,7 @@ public class CoTeDeTukey53H {
     shiftArray(median53HRight, 1);
 
     RealVector vector1 = MatrixUtils.createRealVector(median53HLeft);
-    RealVector vector2 = MatrixUtils.createRealVector(median53H)
-        .mapMultiply(2);
+    RealVector vector2 = MatrixUtils.createRealVector(median53H).mapMultiply(2);
     RealVector vector3 = MatrixUtils.createRealVector(median53HRight);
 
     double[] tukey53H = MatrixUtils.createRealVector(input).subtract(

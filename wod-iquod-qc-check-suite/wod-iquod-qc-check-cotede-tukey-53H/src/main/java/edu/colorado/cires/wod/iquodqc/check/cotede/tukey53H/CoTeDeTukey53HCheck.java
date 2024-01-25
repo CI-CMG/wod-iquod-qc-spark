@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CoTeDeTukey53HCheck extends CommonCastCheck {
   
-  private static final double TEMPERATURE_THRESHOLD = 2.5;
+  private static final double TEMPERATURE_THRESHOLD = 6D;
 
   @Override
   public String getName() {
@@ -20,27 +20,16 @@ public class CoTeDeTukey53HCheck extends CommonCastCheck {
 
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast) {
-    return checkTukey53H(
-        cast.getDepths().stream()
-            .map(d ->
-                getTemperature(d)
-                    .map(ProfileData::getValue)
-                    .orElse(Double.NaN)
-            ).mapToDouble(Double::doubleValue)
-            .toArray(),
-        getTemperatureThreshold()
-    );
+    return checkTukey53H(getTemperatures(cast), TEMPERATURE_THRESHOLD);
+  }
+
+  private static double[] getTemperatures(Cast cast) {
+    return cast.getDepths().stream()
+        .map(d -> getTemperature(d).map(ProfileData::getValue).orElse(Double.NaN)).mapToDouble(Double::doubleValue)
+        .toArray();
   }
   
-  protected double getTemperatureThreshold() {
-    return TEMPERATURE_THRESHOLD;
-  }
-  
-  protected List<Integer> checkTukey53H(double[] input, double threshold) {
-    return CoTeDeTukey53H.checkTukey53H(
-        input,
-        threshold,
-        false
-    );
+  private List<Integer> checkTukey53H(double[] input, double threshold) {
+    return CoTeDeTukey53H.checkTukey53H(input, threshold, false);
   }
 }
