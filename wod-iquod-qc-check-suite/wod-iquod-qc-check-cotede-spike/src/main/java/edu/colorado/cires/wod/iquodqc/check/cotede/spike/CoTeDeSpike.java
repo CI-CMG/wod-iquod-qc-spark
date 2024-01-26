@@ -1,17 +1,22 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.spike;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.math3.linear.MatrixUtils;
 
 public class CoTeDeSpike {
+
   public static double[] computeSpikes(double[] input) {
     int inputLength = input.length;
     double[] output = new double[inputLength];
     Arrays.fill(output, Double.NaN);
+
+    if (inputLength == 1) {
+      return new double[]{Double.NaN};
+    }
 
     double[] vector1 = Arrays.stream(MatrixUtils.createRealVector(Arrays.copyOfRange(input, 1, inputLength - 1)).subtract(
         MatrixUtils.createRealVector(
@@ -43,20 +48,13 @@ public class CoTeDeSpike {
   }
 
   public static Collection<Integer> getFlags(double[] input, double[] spikes, double threshold) {
-    return IntStream.range(0, input.length).boxed()
-        .filter(i -> {
-          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-          if (i == 0) {
-            return inputWasInvalid;
-          }
-          if (inputWasInvalid) {
-            return true;
-          }
-          double value = spikes[i];
-          if (Double.isNaN(value) || !Double.isFinite(value)) {
-            return false;
-          }
-          return Math.abs(value) > threshold;
-        }).collect(Collectors.toList());
+    List<Integer> failedDepths = new ArrayList<>();
+    for (int i = 1; i < input.length - 1; i++) {
+      boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
+      if (!inputWasInvalid && Math.abs(spikes[i]) > threshold) {
+        failedDepths.add(i);
+      }
+    }
+    return failedDepths;
   }
 }

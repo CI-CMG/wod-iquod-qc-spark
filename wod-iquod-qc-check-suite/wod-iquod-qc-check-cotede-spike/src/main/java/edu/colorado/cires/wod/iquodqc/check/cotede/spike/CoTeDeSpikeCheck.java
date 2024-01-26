@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class CoTeDeSpikeCheck extends SignalProducingCastCheck {
 
-  private static final double TEMPERATURE_THRESHOLD = 4;
+  private static final double TEMPERATURE_THRESHOLD = 6;
 
   @Override
   public String getName() {
