@@ -647,7 +647,7 @@ class EnStabilityCheckTest {
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
     assertEquals(1, results.size());
-    assertEquals(CastCheckResult.builder().withCastNumber(7662759).withPassed(true).build(), results.get(0));
+    assertEquals(CastCheckResult.builder().withCastNumber(7662759).withPassed(false).withFailedDepths(Arrays.asList(3)).build(), results.get(0));
 
   }
 
