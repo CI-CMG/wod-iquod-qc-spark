@@ -46,7 +46,6 @@ public class EnStabilityCheck extends CommonCastCheck {
                             Optional.ofNullable(potTemps.get(i - 2)).ifPresent(potT2 -> {
                               calculateFailedDepths(
                                   failures, depths, potTemps, i,
-                                  t, t1, t2,
                                   p, p1, p2,
                                   s, s1, s2,
                                   potT, potT1, potT2);
@@ -75,7 +74,7 @@ public class EnStabilityCheck extends CommonCastCheck {
                 getSalinity(depths.get(i - 1)).map(ProfileData::getValue).ifPresent(s1 -> {
                   Optional.ofNullable(potTemps.get(i)).ifPresent(potT -> {
                     Optional.ofNullable(potTemps.get(i - 1)).ifPresent(potT1 -> {
-                      double deltaRhoK = mcdougallEOS(s, potT, p) - mcdougallEOS(s1, potT1, p);
+                      double deltaRhoK = mcdougallEOS(s, potT, p) - mcdougallEOS(s1, potT1, p1);
                       if (deltaRhoK < -0.03) {
                         failures.add(i);
                       }
@@ -89,9 +88,12 @@ public class EnStabilityCheck extends CommonCastCheck {
       });
     }
 
+    int failureCount = failures.size();
+    int tempCount = (int) depths.stream().filter(depth -> getTemperature(depth).isPresent()).count();
+    double threshold = Math.max(2D, (double) tempCount / 4D);
 
     // check for critical number of flags, flag all if so:
-    if ((double)failures.size() >= Math.max(2D, (double) depths.size() / 4D)) {
+    if ((double)failureCount >= threshold) {
       for (int j = 0; j < depths.size(); j++) {
         failures.add(j);
       }
@@ -120,7 +122,6 @@ public class EnStabilityCheck extends CommonCastCheck {
       List<Depth> depths,
       List<Double> potTemps,
       int i,
-      double t, double t1, double t2,
       double p, double p1, double p2,
       double s, double s1, double s2,
       double potT, double potT1, double potT2
@@ -135,8 +136,8 @@ public class EnStabilityCheck extends CommonCastCheck {
           getPressure(depths.get(i + 1)).map(ProfileData::getValue).ifPresent(pNext -> {
             getSalinity(depths.get(i + 1)).map(ProfileData::getValue).ifPresent(sNext -> {
               Optional.ofNullable(potTemps.get(i + 1)).ifPresent(potTNext -> {
-                double deltaRhoNext = mcdougallEOS(sNext, potTNext, pNext) - mcdougallEOS(s, potT, pNext);
-                if (Math.abs(deltaRhoK + deltaRhoNext) < 0.25 * Math.abs(deltaRhoK - deltaRhoNext)) {
+                double deltaRhoKNext = mcdougallEOS(sNext, potTNext, pNext) - mcdougallEOS(s, potT, pNext);
+                if (Math.abs(deltaRhoK + deltaRhoKNext) < 0.25 * Math.abs(deltaRhoK - deltaRhoKNext)) {
                   failures.add(i);
                 } else {
                   failures.add(i - 1);

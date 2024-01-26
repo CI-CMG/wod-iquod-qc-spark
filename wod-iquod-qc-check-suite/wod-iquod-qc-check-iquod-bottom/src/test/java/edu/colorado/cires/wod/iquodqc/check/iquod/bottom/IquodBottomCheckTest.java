@@ -11,7 +11,9 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
+import edu.colorado.cires.wod.parquet.model.Metadata;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import edu.colorado.cires.wod.parquet.model.Variable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -219,5 +221,144 @@ public class IquodBottomCheckTest {
     assertEquals(1, results.size());
     CastCheckResult result = results.get(0);
     assertEquals(expected, result);
+  }
+
+  @Test
+  public void testReal() {
+
+    Cast cast = Cast.builder()
+        .withDataset("CTD")
+        .withCastNumber(13333902)
+        .withCruiseNumber(0)
+        .withTimestamp(35017200000L)
+        .withYear(1971)
+        .withMonth(2)
+        .withDay(10)
+        .withTime(7D)
+        .withLongitude(-78.05)
+        .withLatitude(17.1)
+        .withProfileType(0)
+        .withGeohash("d70")
+        .withVariables(Arrays.asList(
+            Variable.builder().withCode(1).withMetadata(Arrays.asList(Metadata.builder().withCode(5).withValue(4D).build())).build()
+        ))
+        .withAttributes(Arrays.asList(
+            Attribute.builder().withCode(1).withValue(64432D).build(),
+            Attribute.builder().withCode(4).withValue(1449D).build(),
+            Attribute.builder().withCode(8).withValue(2D).build(),
+            Attribute.builder().withCode(29).withValue(4D).build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder()
+                .withDepth(0.0)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(26.389).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(91.4)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(26.389).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(109.7)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(25.556).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(121.9)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(24.444).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(146.3)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(23.333).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(158.5)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(22.222).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(182.9)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(21.111).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(195.1)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(20.0).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(219.5)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(18.889).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(231.6)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(17.778).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(283.5)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(16.667).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(335.3)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(15.0).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(396.2)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(12.778).build()
+                )).build(),
+            Depth.builder()
+                .withDepth(457.2)
+                .withDepthErrorFlag(0)
+                .withOriginatorsFlag(0)
+                .withData(Arrays.asList(
+                    ProfileData.builder().withOriginatorsFlag(0).withQcFlag(0).withVariableCode(1).withValue(10.833).build()
+                )).build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder().withCastNumber(13333902).withPassed(false).withFailedDepths(Arrays.asList(9, 10, 11, 12, 13)).build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    assertEquals(1, results.size());
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+
   }
 }
