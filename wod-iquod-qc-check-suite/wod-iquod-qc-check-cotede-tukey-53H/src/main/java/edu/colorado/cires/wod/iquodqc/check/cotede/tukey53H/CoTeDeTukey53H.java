@@ -18,15 +18,15 @@ public class CoTeDeTukey53H {
   }
   
   public static List<Integer> getFlags(double[] input, double[] result, double threshold) {
-    return IntStream.range(0, result.length).boxed()
-        .filter(i -> {
-          double value = result[i];
-          boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-          if (i < 2 || i >= input.length - 2) {
-            return inputWasInvalid;
-          }
-          return Math.abs(value) > threshold || inputWasInvalid;
-        }).collect(Collectors.toList());
+    List<Integer> results = new ArrayList<>();
+    for (int i = 2; i < input.length - 2; i++) {
+      double value = result[i];
+      boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
+      if(!inputWasInvalid && Math.abs(value) > threshold) {
+        results.add(i);
+      }
+    }
+    return results;
   }
 
   public static double[] computeTukey53H(double[] input, boolean isNorm) {
