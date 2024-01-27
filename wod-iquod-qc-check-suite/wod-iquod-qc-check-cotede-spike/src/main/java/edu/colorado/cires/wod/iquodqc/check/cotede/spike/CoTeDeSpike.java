@@ -49,7 +49,7 @@ public class CoTeDeSpike {
 
   public static Collection<Integer> getFlags(double[] input, double[] spikes, double threshold) {
     List<Integer> failedDepths = new ArrayList<>();
-    for (int i = 1; i < input.length - 1; i++) {
+    for (int i = 1; i < input.length - 2; i++) {
       boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
       if (!inputWasInvalid && Math.abs(spikes[i]) > threshold) {
         failedDepths.add(i);
