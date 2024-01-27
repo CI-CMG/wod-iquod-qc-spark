@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class CoTeDeGradientCheck extends SignalProducingCastCheck {
   
-  private static final double TEMPERATURE_THRESHOLD = 1.5;
+  private static final double TEMPERATURE_THRESHOLD = 9.0;
 
   @Override
   public String getName() {
