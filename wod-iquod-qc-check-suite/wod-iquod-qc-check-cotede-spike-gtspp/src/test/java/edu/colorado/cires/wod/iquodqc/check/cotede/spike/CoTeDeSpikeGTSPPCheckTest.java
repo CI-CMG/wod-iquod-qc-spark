@@ -45,8 +45,6 @@ public class CoTeDeSpikeGTSPPCheckTest {
 
     Collection<Integer> results = new CoTeDeSpikeGTSPPCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeSpike.computeSpikes(getTemperatures(cast)))
-            .boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(3, results.size());
@@ -76,9 +74,6 @@ public class CoTeDeSpikeGTSPPCheckTest {
 
     Collection<Integer> results = new CoTeDeSpikeGTSPPCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeSpike.computeSpikes(
-            getTemperatures(cast)
-        )).boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(0, results.size());

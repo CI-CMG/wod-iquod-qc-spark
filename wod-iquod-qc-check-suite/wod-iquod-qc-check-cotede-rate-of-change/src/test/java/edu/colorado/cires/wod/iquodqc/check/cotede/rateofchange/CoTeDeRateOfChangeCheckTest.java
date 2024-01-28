@@ -46,8 +46,6 @@ public class CoTeDeRateOfChangeCheckTest {
 
     Collection<Integer> results = new CoTeDeRateOfChangeCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(getTemperatures(cast)))
-            .boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(3, results.size());
@@ -78,8 +76,6 @@ public class CoTeDeRateOfChangeCheckTest {
 
     Collection<Integer> results = new CoTeDeRateOfChangeCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(getTemperatures(cast)))
-            .boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(0, results.size());

@@ -51,10 +51,6 @@ public class CoTeDeTukey53HNormCheckTest {
 
     Collection<Integer> results = new CoTeDeTukey53HNormCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeTukey53H.computeTukey53H(
-            getTemperatures(cast),
-            true
-        )).boxed().collect(Collectors.toList()),
         Collections.emptyMap()
     );
     assertEquals(3, results.size());
@@ -84,8 +80,6 @@ public class CoTeDeTukey53HNormCheckTest {
 
     Collection<Integer> results = new CoTeDeTukey53HNormCheck().getFailedDepths(
         cast,
-        Arrays.stream(getTemperatures(cast))
-            .boxed().collect(Collectors.toList()),
         Collections.emptyMap()
     );
     assertEquals(0, results.size());

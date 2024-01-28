@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class CoTeDeTukey53HNormCheck extends SignalProducingCastCheck {
 
-  private static final double TEMPERATURE_THRESHOLD = 2.5;
+  private static final double TEMPERATURE_THRESHOLD = 1.5;
 
   @Override
   public String getName() {
@@ -24,20 +24,13 @@ public class CoTeDeTukey53HNormCheck extends SignalProducingCastCheck {
   }
 
   @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return Arrays.stream(computeTukey53H(
-        getTemperatures(cast),
-        true
-    )).boxed().collect(Collectors.toList());
-  }
-
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    double[] temperatures = getTemperatures(cast);
+    double[] tukeyNorm = computeTukey53H(temperatures, true);
+    signal = Arrays.stream(tukeyNorm).boxed().collect(Collectors.toList());
     return getFlags(
-        getTemperatures(cast),
-        signal.stream()
-            .mapToDouble(Double::doubleValue)
-            .toArray(),
+        temperatures,
+        tukeyNorm,
         TEMPERATURE_THRESHOLD
     );
   }

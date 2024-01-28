@@ -11,12 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 public abstract class SignalProducingCastCheck extends CommonCastCheck {
 
   private static final long serialVersionUID = 0L;
-
-  protected abstract List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults);
-
-  protected abstract Collection<Integer> getFailedDepths(
-      Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults
-  );
+  protected List<Double> signal;
 
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast) {
@@ -27,12 +22,13 @@ public abstract class SignalProducingCastCheck extends CommonCastCheck {
 
   @Override
   protected CastCheckResult checkCast(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    List<Double> signal = Objects.requireNonNull(
-        produceSignal(cast, otherTestResults),
+
+    Collection<Integer> failed = getFailedDepths(cast, otherTestResults);
+
+    Objects.requireNonNull(
+        signal,
         String.format("signal result must not be null for check %s", getName())
     );
-
-    Collection<Integer> failed = getFailedDepths(cast, signal, otherTestResults);
 
     return CastCheckResult.builder()
         .withCastNumber(cast.getCastNumber())

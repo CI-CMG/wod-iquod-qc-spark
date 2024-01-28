@@ -21,7 +21,6 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
 
   private final double threshold;
   private final int MIN_SAMPLES = 3;
-  private int[] nObservations;
   private Properties properties;
   private static WoaGetter woaGetter;
 
@@ -43,13 +42,12 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
   }
 
   @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
     List<Depth> depths = cast.getDepths();
-    List<Double> signal = new ArrayList<>(depths.size());
-    nObservations = new int[depths.size()];
+    List<Integer> failed = new ArrayList<>(0);
+    signal = new ArrayList<>(0);
     for (int i = 0; i < depths.size(); i++) {
       Depth depth = depths.get(i);
-      AtomicReference<Double> normBiasValue = new AtomicReference<>(Double.NaN);
       int index = i;
       DepthUtils.getTemperature(depth).ifPresent(pd -> {
         double temp = pd.getValue();
@@ -59,27 +57,16 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
             stats.getNumberOfObservations().ifPresent(nSamples -> {
               double woaBias = temp - mean;
               double woaNormBias = woaBias / stdDev;
-              normBiasValue.set(woaNormBias);
-              nObservations[index] = nSamples;
+              signal.add(woaNormBias);
+              if (nSamples >= MIN_SAMPLES && woaNormBias > threshold) {
+                failed.add(index);
+              }
             });
           });
         });
       });
-      signal.add(normBiasValue.get());
-    }
-    return signal;
-  }
-
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
-    Set<Integer> failed = new LinkedHashSet<>();
-    for (int i = 0; i < signal.size(); i++) {
-      Double signalValue = signal.get(i);
-      if (signalValue != null) {
-        double woaNormBiasAbs = Math.abs(signalValue);
-        if (nObservations[i] >= MIN_SAMPLES && woaNormBiasAbs > threshold) {
-          failed.add(i);
-        }
+      if (signal.size() == i) {
+        signal.add(Double.NaN);
       }
     }
     return failed;

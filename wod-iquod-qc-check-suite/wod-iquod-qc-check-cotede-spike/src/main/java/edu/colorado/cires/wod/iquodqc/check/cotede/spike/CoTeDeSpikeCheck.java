@@ -22,18 +22,13 @@ public class CoTeDeSpikeCheck extends SignalProducingCastCheck {
   }
 
   @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return Arrays.stream(CoTeDeSpike.computeSpikes(getTemperatures(cast)))
-        .boxed().collect(Collectors.toList());
-  }
-
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    double[] temperatures = getTemperatures(cast);
+    double[] spikes = CoTeDeSpike.computeSpikes(temperatures);
+    signal = Arrays.stream(spikes).boxed().collect(Collectors.toList());
     return CoTeDeSpike.getFlags(
         getTemperatures(cast),
-        signal.stream()
-            .mapToDouble(Double::doubleValue)
-            .toArray(),
+        spikes,
         getTemperatureThreshold()
     );
   }

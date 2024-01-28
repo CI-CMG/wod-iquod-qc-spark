@@ -42,22 +42,18 @@ public class CoTeDeCarsNormbiasCheck extends SignalProducingCastCheck {
     return super.checkUdf(row);
   }
 
+  /*
+  Not intended to contribute to IQUoD flags. This check should only be generating a signal for use in further QC tests 
+   */
   @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
         getTemperatures(cast),
         getDepths(cast),
         cast.getLatitude(),
         cast.getLongitude(),
         carsGetter
     )).boxed().collect(Collectors.toList());
-  }
-
-  /*
-  Not intended to contribute to IQUoD flags. This check should only be generating a signal for use in further QC tests 
-   */
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
     return Collections.emptyList();
   }
 

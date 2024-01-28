@@ -25,18 +25,13 @@ public class CoTeDeRateOfChangeCheck extends SignalProducingCastCheck {
   }
 
   @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(getTemperatures(cast)))
-        .boxed().collect(Collectors.toList());
-  }
-
-  @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    double[] temperatures = getTemperatures(cast);
+    double[] rateOfChange = CoTeDeRateOfChange.computeRateOfChange(temperatures);
+    signal = Arrays.stream(rateOfChange).boxed().collect(Collectors.toList());
     return CoTeDeRateOfChange.getFlags(
-        getTemperatures(cast),
-        signal.stream()
-            .mapToDouble(Double::doubleValue)
-            .toArray(),
+        temperatures,
+        rateOfChange,
         TEMPERATURE_THRESHOLD
     );
   }

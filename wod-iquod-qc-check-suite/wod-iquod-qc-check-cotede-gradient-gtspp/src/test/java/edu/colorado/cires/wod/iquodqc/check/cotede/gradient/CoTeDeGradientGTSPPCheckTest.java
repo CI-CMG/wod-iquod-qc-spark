@@ -46,8 +46,6 @@ public class CoTeDeGradientGTSPPCheckTest {
 
     Collection<Integer> results = new CoTeDeGradientGTSPPCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeGradient.computeGradient(getTemperatures(cast)))
-            .boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(3, results.size());
@@ -77,8 +75,6 @@ public class CoTeDeGradientGTSPPCheckTest {
 
     Collection<Integer> results = new CoTeDeGradientGTSPPCheck().getFailedDepths(
         cast,
-        Arrays.stream(CoTeDeGradient.computeGradient(getTemperatures(cast)))
-            .boxed().collect(Collectors.toList()),
         new HashMap<>(0)
     );
     assertEquals(0, results.size());

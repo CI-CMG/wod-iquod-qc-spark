@@ -9,7 +9,6 @@ import edu.colorado.cires.wod.parquet.model.Cast;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,19 +19,15 @@ public class CoTeDeConstantClusterSizeCheck extends SignalProducingCastCheck {
     return CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName();
   }
 
-  @Override
-  protected List<Double> produceSignal(Cast cast, Map<String, CastCheckResult> otherTestResults) {
-    return Arrays.stream(ConstantClusterSize.computeClusterSizes(getTemperatures(cast), 0.0))
-        .mapToDouble(v -> v)
-        .boxed().collect(Collectors.toList());
-  }
-
   /*
   This test is not intended to contribute to IQUoD flags, this value should remain empty. This test is only intended to provide
   a signal to tests that depend on it
    */
   @Override
-  protected Collection<Integer> getFailedDepths(Cast cast, List<Double> signal, Map<String, CastCheckResult> otherTestResults) {
+  protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    signal = Arrays.stream(ConstantClusterSize.computeClusterSizes(getTemperatures(cast), 0)).boxed()
+        .map(v -> (double) v)
+        .collect(Collectors.toList());
     return Collections.emptyList();
   }
 }
