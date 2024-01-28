@@ -9,12 +9,9 @@ import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import org.apache.spark.sql.Row;
 
 public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastCheck {
@@ -22,7 +19,7 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
   private final double threshold;
   private final int MIN_SAMPLES = 3;
   private Properties properties;
-  private static WoaGetter woaGetter;
+  private static WoaParameters woaParameters;
 
   protected BaseCoTeDeWoaNormbiasCheck(double threshold){
     this.threshold = threshold;
@@ -35,7 +32,7 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
 
   @Override
   protected Row checkUdf(Row row) {
-    if (woaGetter == null) {
+    if (woaParameters == null) {
       loadParameters(properties);
     }
     return super.checkUdf(row);
@@ -43,6 +40,7 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
 
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    WoaGetter woaGetter = new WoaGetter(woaParameters);
     List<Depth> depths = cast.getDepths();
     List<Integer> failed = new ArrayList<>(0);
     signal = new ArrayList<>(0);
@@ -74,8 +72,8 @@ public abstract class BaseCoTeDeWoaNormbiasCheck extends SignalProducingCastChec
 
   private static void loadParameters(Properties properties) {
     synchronized (BaseCoTeDeWoaNormbiasCheck.class) {
-      if (woaGetter == null) {
-        woaGetter = new WoaGetter(WoaParametersReader.loadParameters(properties));
+      if (woaParameters == null) {
+        woaParameters = WoaParametersReader.loadParameters(properties);
       }
     }
   }

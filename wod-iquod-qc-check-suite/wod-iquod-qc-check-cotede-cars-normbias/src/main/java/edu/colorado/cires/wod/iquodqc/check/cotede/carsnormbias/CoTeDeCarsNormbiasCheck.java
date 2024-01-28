@@ -7,6 +7,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.iquodqc.check.api.SignalProducingCastCheck;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
+import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -22,7 +23,7 @@ import org.apache.spark.sql.Row;
 public class CoTeDeCarsNormbiasCheck extends SignalProducingCastCheck {
 
   private Properties properties;
-  private static CarsGetter carsGetter;
+  private static CarsParameters carsParameters;
 
   @Override
   public String getName() {
@@ -36,7 +37,7 @@ public class CoTeDeCarsNormbiasCheck extends SignalProducingCastCheck {
 
   @Override
   protected Row checkUdf(Row row) {
-    if (carsGetter == null) {
+    if (carsParameters == null) {
       loadParameters(properties);
     }
     return super.checkUdf(row);
@@ -47,6 +48,7 @@ public class CoTeDeCarsNormbiasCheck extends SignalProducingCastCheck {
    */
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
+    CarsGetter carsGetter = new CarsGetter(carsParameters);
     signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
         getTemperatures(cast),
         getDepths(cast),
@@ -59,8 +61,8 @@ public class CoTeDeCarsNormbiasCheck extends SignalProducingCastCheck {
 
   private static void loadParameters(Properties properties) {
     synchronized (CoTeDeCarsNormbiasCheck.class) {
-      if (carsGetter == null) {
-        carsGetter = new CarsGetter(CarsParametersReader.loadParameters(properties));
+      if (carsParameters == null) {
+        carsParameters = CarsParametersReader.loadParameters(properties);
       }
     }
   }
