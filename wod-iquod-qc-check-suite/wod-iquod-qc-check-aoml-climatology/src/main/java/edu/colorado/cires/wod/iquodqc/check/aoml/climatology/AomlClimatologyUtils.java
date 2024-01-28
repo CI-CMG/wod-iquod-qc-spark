@@ -82,7 +82,7 @@ final class AomlClimatologyUtils {
   }
 
   static OptionalDouble temperatureInterpolationProcess(NetcdfFile netFile, String tType, WoaDataHolder dataHolder, double longitude, double latitude,
-      double depth, boolean clipZero, CoordinateReferenceSystem referenceSystem) {
+      double depth, boolean clipZero) {
     int[] depthIndexes = InterpolationUtils.getIndexAndNext(dataHolder.getDepths(), depth);
     if (depth > dataHolder.getDepths()[depthIndexes[1]]) {
       return OptionalDouble.empty();
@@ -116,7 +116,7 @@ final class AomlClimatologyUtils {
     }
 
     TempAtPosition nearest = positionTemps.stream().reduce(null, (tap1, tap2) -> {
-      tap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, tap2.getLongitude(), tap2.getLatitude(), referenceSystem));
+      tap2.setDistanceM(InterpolationUtils.distanceM(longitude, latitude, tap2.getLongitude(), tap2.getLatitude()));
       if (tap1 == null) {
         return tap2;
       }
@@ -125,7 +125,6 @@ final class AomlClimatologyUtils {
       }
       return tap1;
     });
-
 
     if (nearest == null) {
       StringBuilder sb = new StringBuilder("nearest is null: ")

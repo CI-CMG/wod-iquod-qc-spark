@@ -134,5 +134,14 @@ class AomlClimatologyCheckTest {
     assertEquals(expected, result);
   }
 
+  @Test
+  public void testStandardDataset() {
+    Dataset<Cast> dataset = spark.read().parquet("file:///Users/paytoncain/Desktop/spark-wod/wod-test-parquet/wod-parquet/yearly/CTD/OBS/CTDO1971.parquet").as(Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    String test = "";
+  }
+
 
 }

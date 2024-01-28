@@ -10,6 +10,16 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public final class InterpolationUtils {
 
+  private static final GeodeticCalculator gc;
+
+  static {
+    try {
+      gc = new GeodeticCalculator(CRS.decode("EPSG:4326"));
+    } catch (FactoryException e) {
+      throw new RuntimeException("Unable to determine CRS", e);
+    }
+  }
+
   public static int closestIndexAssumeSorted(float[] coordinateList, double point) {
     float minValue = coordinateList[0];
     float maxValue = coordinateList[coordinateList.length - 1];
@@ -79,8 +89,7 @@ public final class InterpolationUtils {
   }
 
 
-  public static double distanceM(double lon1, double lat1, double lon2, double lat2, CoordinateReferenceSystem referenceSystem) {
-    GeodeticCalculator gc = new GeodeticCalculator(referenceSystem);
+  public static double distanceM(double lon1, double lat1, double lon2, double lat2) {
     gc.setStartingGeographicPoint(lon1, lat1);
     gc.setDestinationGeographicPoint(lon2, lat2);
     return gc.getOrthodromicDistance();
