@@ -1,6 +1,5 @@
 package edu.colorado.cires.wod.iquodqc.common;
 
-import java.util.Arrays;
 import java.util.OptionalDouble;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.geotools.referencing.CRS;
@@ -10,11 +9,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public final class InterpolationUtils {
 
-  private static final GeodeticCalculator gc;
+  private static final CoordinateReferenceSystem EPSG_4326;
 
   static {
     try {
-      gc = new GeodeticCalculator(CRS.decode("EPSG:4326"));
+      EPSG_4326 = CRS.decode("EPSG:4326");
     } catch (FactoryException e) {
       throw new RuntimeException("Unable to determine CRS", e);
     }
@@ -90,9 +89,28 @@ public final class InterpolationUtils {
 
 
   public static double distanceM(double lon1, double lat1, double lon2, double lat2) {
-    gc.setStartingGeographicPoint(lon1, lat1);
-    gc.setDestinationGeographicPoint(lon2, lat2);
-    return gc.getOrthodromicDistance();
+    try {
+      GeodeticCalculator gc = new GeodeticCalculator(EPSG_4326);
+      gc.setStartingGeographicPoint(lon1, lat1);
+      gc.setDestinationGeographicPoint(lon2, lat2);
+      return gc.getOrthodromicDistance();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public static double distanceM(double lon1, double lat1, double lon2, double lat2, GeodeticCalculator gc) {
+    try {
+      gc.setStartingGeographicPoint(lon1, lat1);
+      gc.setDestinationGeographicPoint(lon2, lat2);
+      return gc.getOrthodromicDistance();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+  
+  public static GeodeticCalculator createCalculator() {
+    return new GeodeticCalculator(EPSG_4326);
   }
 
   private InterpolationUtils() {
