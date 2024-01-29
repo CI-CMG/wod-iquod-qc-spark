@@ -98,7 +98,7 @@ class AomlClimatologyCheckTest {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
 
-  @Disabled
+
   @Test
   public void testRealFailure() throws Exception {
 
