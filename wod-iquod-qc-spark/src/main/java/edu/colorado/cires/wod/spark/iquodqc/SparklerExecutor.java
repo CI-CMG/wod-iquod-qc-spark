@@ -3,13 +3,11 @@ package edu.colorado.cires.wod.spark.iquodqc;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
-import edu.colorado.cires.wod.iquodqc.check.api.Failures;
-import edu.colorado.cires.wod.iquodqc.check.api.Summary;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.postprocess.DatasetIO;
 import edu.colorado.cires.wod.postprocess.PostProcessorContext;
-import edu.colorado.cires.wod.postprocess.PostProcessorExecutor;
+import edu.colorado.cires.wod.postprocess.PostProcessorRunner;
 import edu.colorado.cires.wod.postprocess.addresulttocast.AddResultToCastPostProcessor;
 import edu.colorado.cires.wod.postprocess.failurereport.FailureReportPostProcessor;
 import edu.colorado.cires.wod.postprocess.summaryreport.CreateSummaryPostProcessor;
@@ -17,10 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.apache.spark.sql.Dataset;
@@ -81,83 +77,49 @@ public class SparklerExecutor implements Runnable {
   @Override
   public void run() {
     List<CastCheck> checks = CheckResolver.getChecks(checksToRun, properties);
-
-    Map<String, List<Integer>> resolvedYears = new HashMap<>(0); 
     
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
-        resolvedYears.put(
-            processingLevel,
-            YearResolver.resolveYears(years, s3, inputBucket, inputPrefix, dataset, processingLevel)
-        );
+        List<Integer> resolvedYears = YearResolver.resolveYears(years, s3, inputBucket, inputPrefix, dataset, processingLevel);
         for (CastCheck check : checks) {
-          for (int year : resolvedYears.get(processingLevel)) {
+          for (int year : resolvedYears) {
             CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties, year);
             runner.run();
           }
         }
-      }
-    }
-    
-    if (addFlagsToCast) {
-      if (checks.stream().map(CastCheck::getName).noneMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK))) {
-        System.out.printf(
-            "%s has not been run. Flags will not be added to casts.%n\n",
-            IQUOD_FLAG_PRODUCING_CHECK
-        );
-        System.err.printf(
-            "%s has not been run. Flags will not be added to casts.%n\n",
-            IQUOD_FLAG_PRODUCING_CHECK
-        );
-      } else {
-        PostProcessorExecutor<Cast> postProcessorExecutor = new PostProcessorExecutor<>(
-            new AddResultToCastPostProcessor()
-        );
-        for (String dataset : datasets) {
-          for (String processingLevel: processingLevels) {
-            for (int year : years) {
-              postProcessorExecutor.execute(
-                  getOutputCastURI(dataset, processingLevel, year),
-                  new PostProcessorContext() {
-                    @Override
-                    public Dataset<Cast> readCastDataset() {
-                      return DatasetIO.readDataset(
-                          new String[]{getCastURI(dataset, processingLevel, year)},
-                          spark,
-                          Cast.class
-                      );
-                    }
 
-                    @Override
-                    public Dataset<CastCheckResult> readCheckResultDataset() {
-                      return DatasetIO.readDataset(
-                          new String[]{getCheckResultURI(IQUOD_FLAG_PRODUCING_CHECK, dataset, processingLevel, year)},
-                          spark,
-                          CastCheckResult.class
-                      );
-                    }
-                  },
-                  SaveMode.Overwrite,
-                  MAX_RECORDS_PER_FILE
-              );
-            }
+        if (addFlagsToCast && checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK))) {
+          for (int year : resolvedYears) {
+            new PostProcessorRunner<>(
+                new AddResultToCastPostProcessor(),
+                getOutputCastURI(dataset, processingLevel, year),
+                new PostProcessorContext() {
+                  @Override
+                  public Dataset<Cast> readCastDataset() {
+                    return DatasetIO.readDataset(
+                        new String[]{getCastURI(dataset, processingLevel, year)},
+                        spark,
+                        Cast.class
+                    );
+                  }
+
+                  @Override
+                  public Dataset<CastCheckResult> readCheckResultDataset() {
+                    return DatasetIO.readDataset(
+                        new String[]{getCheckResultURI(IQUOD_FLAG_PRODUCING_CHECK, dataset, processingLevel, year)},
+                        spark,
+                        CastCheckResult.class
+                    );
+                  }
+                },
+                SaveMode.Overwrite,
+                MAX_RECORDS_PER_FILE
+            ).run();
           }
         }
-      }
-    }
-    
-    if (generateReports) {
-      PostProcessorExecutor<Summary> summaryExecutor = new PostProcessorExecutor<>(
-          new CreateSummaryPostProcessor()
-      );
-      
-      PostProcessorExecutor<Failures> failureExecutor = new PostProcessorExecutor<>(
-          new FailureReportPostProcessor()
-      );
-      
-      for (String dataset : datasets) {
-        for (String processingLevel : processingLevels) {
-          for (int year : resolvedYears.get(processingLevel)) {
+
+        if (generateReports) {
+          for (int year : resolvedYears) {
             PostProcessorContext context = new PostProcessorContext() {
               @Override
               public Dataset<Cast> readCastDataset() {
@@ -179,20 +141,22 @@ public class SparklerExecutor implements Runnable {
                 );
               }
             };
-            
-            summaryExecutor.execute(
+
+            new PostProcessorRunner<>(
+                new CreateSummaryPostProcessor(),
                 getOutputSummaryURI(dataset, processingLevel, year),
                 context,
                 SaveMode.Overwrite,
                 1
-            );
-            
-            failureExecutor.execute(
+            ).run();
+
+            new PostProcessorRunner<>(
+                new FailureReportPostProcessor(),
                 getOutputFailuresURI(dataset, processingLevel, year),
                 context,
                 SaveMode.Overwrite,
                 1
-            );
+            ).run();
           }
         }
       }
@@ -219,7 +183,7 @@ public class SparklerExecutor implements Runnable {
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append(".parquet");
+        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_flags").append(".parquet");
     return sb.toString();
   }
 

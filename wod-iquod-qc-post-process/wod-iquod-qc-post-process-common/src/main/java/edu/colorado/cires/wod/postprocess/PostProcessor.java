@@ -11,7 +11,7 @@ public abstract class PostProcessor<T extends Serializable> implements Serializa
   
   protected abstract Dataset<T> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset);
   
-  public Dataset<T> process(PostProcessorContext postProcessorContext) {
+  Dataset<T> process(PostProcessorContext postProcessorContext) {
     Dataset<Cast> castDataset = postProcessorContext.readCastDataset();
     Dataset<CastCheckResult> checkResultDataset = postProcessorContext.readCheckResultDataset();
     

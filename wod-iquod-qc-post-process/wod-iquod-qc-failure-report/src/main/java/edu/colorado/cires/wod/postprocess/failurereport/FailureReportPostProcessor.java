@@ -3,7 +3,6 @@ package edu.colorado.cires.wod.postprocess.failurereport;
 import static org.apache.spark.sql.functions.array_join;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.collect_list;
-import static org.apache.spark.sql.functions.collect_set;
 import static org.apache.spark.sql.functions.expr;
 import static org.apache.spark.sql.functions.flatten;
 import static org.apache.spark.sql.functions.map_from_arrays;
@@ -14,9 +13,11 @@ import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.postprocess.DatasetUtil;
 import edu.colorado.cires.wod.postprocess.PostProcessor;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -29,8 +30,7 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
   
   @Override
   protected Dataset<Failures> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
-    Dataset<Row> resultDataset = DatasetUtil.addCheckNameToCastCheckResultDataset(castCheckResultDataset)
-        .filter(col("passed").equalTo(false));
+    Dataset<Row> resultDataset = DatasetUtil.addCheckNameToCastCheckResultDataset(castCheckResultDataset);
 
     Dataset<Row> castRowDataset = castDataset.select(
         col("castNumber").as("castCastNumber"),
@@ -52,8 +52,7 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
             collect_list("checkName"),
             collect_list("failedDepths")
         ).as("failuresAtDepth"),
-        flatten(collect_list("iquodFlags")).as("iquodFlags"),
-        collect_set("checkName").as("profileFailures")
+        flatten(collect_list("iquodFlags")).as("iquodFlags")
     );
 
     return grouped.map((MapFunction<Row, Failures>) this::createFailuresFromRow, Encoders.bean(Failures.class));
@@ -64,15 +63,20 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
     int numberOfDepths = row.getInt(row.fieldIndex("numberOfDepths"));
 
     List<List<String>> depthFailures = new ArrayList<>();
+    Set<String> profileFailures = new HashSet<>(0);
     for (int i = 0; i < numberOfDepths; i++) {
       depthFailures.add(new ArrayList<>(0));
     }
 
     for (Entry<String, Seq<Integer>> entry : failuresAtDepthMap.entrySet()) {
       Seq<Integer> indices = entry.getValue();
-      for (int i = 0; i < indices.size(); i++) {
-        int index = indices.apply(i);
-        depthFailures.get(index).add(entry.getKey());
+      String checkName = entry.getKey();
+      if (!indices.isEmpty()) {
+        profileFailures.add(checkName);
+        for (int i = 0; i < indices.size(); i++) {
+          int index = indices.apply(i);
+          depthFailures.get(index).add(checkName);
+        }
       }
     }
 
@@ -80,7 +84,7 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
 
     return Failures.builder()
         .withException(exception != null && exception.isBlank() ? null : exception)
-        .withProfileFailures(row.getList(row.fieldIndex("profileFailures")))
+        .withProfileFailures(new ArrayList<>(profileFailures))
         .withIquodFlags(row.getList(row.fieldIndex("iquodFlags")))
         .withDepthFailures(depthFailures)
         .build();
