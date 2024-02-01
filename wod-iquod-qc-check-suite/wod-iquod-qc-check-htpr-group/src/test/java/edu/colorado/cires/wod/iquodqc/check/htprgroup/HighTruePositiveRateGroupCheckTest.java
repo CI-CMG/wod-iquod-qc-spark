@@ -110,9 +110,9 @@ public class HighTruePositiveRateGroupCheckTest {
       "IQuOD_gross_range_check",
       "Argo_global_range_check",
       "EN_range_check",
-//      "ICDC_aqc_09_climatology_check",
+      "ICDC_aqc_09_climatology_check",
       "ICDC_aqc_10_climatology_check",
-//      "CoTeDe_GTSPP_WOA_normbias",
+      "CoTeDe_GTSPP_WOA_normbias",
       "AOML_climatology_test",
       "EN_std_lev_bkg_and_buddy_check",
       "EN_constant_value_check",
@@ -128,7 +128,7 @@ public class HighTruePositiveRateGroupCheckTest {
       "AOML_gradient",
       "ICDC_aqc_08_gradient_check",
       "CSIRO_short_gradient",
-//      "CoTeDe_anomaly_detection_check",
+      "CoTeDe_anomaly_detection_check",
       ""
   })
   public void test(@NonNls String failingTest) {

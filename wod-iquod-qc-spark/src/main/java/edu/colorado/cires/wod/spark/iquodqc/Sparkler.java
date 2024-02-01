@@ -84,6 +84,12 @@ public class Sparkler implements Serializable, Runnable {
   private String outputAccessKey;
   @Option(names = {"-os", "--output-secret"}, description = "An optional secret key for the output bucket")
   private String outputSecretKey;
+  
+  @Option(names = {"-gr", "--generate-reports"}, description = "Create failure reports for each cast and a summary report for each dataset - Default: ${DEFAULT-VALUE}", defaultValue = "false")
+  private Boolean generateReports;
+  
+  @Option(names = {"-ftc", "--flags-to-cast"}, description = "Save new set of casts containing IQUOD flags (Requires that IQUOD flags are generated via IQUOD flags check) - ${DEFAULT-VALUE}", defaultValue = "false")
+  private Boolean flagsToCast;
 
   @Option(names = {"-fs", "--file-system"}, description = "Optimize S3 access for EMR")
   private FileSystemType fs = FileSystemType.local;
@@ -153,7 +159,10 @@ public class Sparkler implements Serializable, Runnable {
         outputPrefix,
         new HashSet<>(checksToRun),
         properties,
-        fs, years, s3);
+        fs, years, s3,
+        generateReports,
+        flagsToCast
+    );
     executor.run();
   }
 

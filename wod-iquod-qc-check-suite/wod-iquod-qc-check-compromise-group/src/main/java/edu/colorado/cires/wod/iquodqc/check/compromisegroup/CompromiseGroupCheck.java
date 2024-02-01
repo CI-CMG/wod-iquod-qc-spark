@@ -23,7 +23,7 @@ public class CompromiseGroupCheck extends GroupCastCheck {
         CheckNames.IQUOD_GROSS_RANGE.getName(),
         CheckNames.WOD_RANGE_CHECK.getName(),
         CheckNames.AOML_CLIMATOLOGY.getName(),
-//        CheckNames.COTEDE_GTSPP_WOA_NORMBIAS.getName(),
+        CheckNames.COTEDE_GTSPP_WOA_NORMBIAS.getName(),
         CheckNames.EN_INCREASING_DEPTH_CHECK.getName(),
         CheckNames.EN_CONSTANT_VALUE_CHECK.getName(),
         CheckNames.EN_SPIKE_AND_STEP_CHECK.getName(),

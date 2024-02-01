@@ -157,7 +157,9 @@ public class SparklerExecutorTest {
           outputPrefix,
           new HashSet<>(),
           properties,
-          FileSystemType.s3, null, s3);
+          FileSystemType.s3, null, s3,
+          false, false);
+      assert false;
       executor.run();
 
       for (String name : CHECK_NAMES) {
