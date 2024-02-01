@@ -167,45 +167,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
         .withCastNumber(cast.getCastNumber())
         .withPassed(failed.isEmpty())
         .withFailedDepths(new ArrayList<>(failed))
-        .withDependsOnFailedDepths(
-            getDependsOnFailedDepths(otherTestResults)
-        ).withDependsOnFailedChecks(
-            getDependsOnFailedChecks(otherTestResults)
-        ).build();
-  }
-
-  static Map<String, List<Integer>> getDependsOnFailedDepths(Map<String, CastCheckResult> otherTestResults) {
-    Map<String, List<Integer>> doFailedDepths = new HashMap<>(0);
-
-    for (Map.Entry<String, CastCheckResult> entry : otherTestResults.entrySet()) {
-      CastCheckResult castCheckResult = entry.getValue();
-
-      List<Integer> failedDepths = castCheckResult.getFailedDepths();
-      if (!failedDepths.isEmpty()) {
-        doFailedDepths.put(entry.getKey(), failedDepths);
-      }
-
-      doFailedDepths.putAll(castCheckResult.getDependsOnFailedDepths());
-    }
-
-    return doFailedDepths;
-  }
-
-  static Map<String, List<String>> getDependsOnFailedChecks(Map<String, CastCheckResult> otherTestResults) {
-    Map<String, List<String>> doFailedChecks = new HashMap<>(0);
-
-    for (Map.Entry<String, CastCheckResult> entry : otherTestResults.entrySet()) {
-      CastCheckResult castCheckResult = entry.getValue();
-      Map<String, List<Integer>> failedDepths = castCheckResult.getDependsOnFailedDepths();
-
-      if (!failedDepths.isEmpty()) {
-        doFailedChecks.put(entry.getKey(), new ArrayList<>(failedDepths.keySet()));
-      }
-
-      doFailedChecks.putAll(castCheckResult.getDependsOnFailedChecks());
-    }
-
-    return doFailedChecks;
+        .build();
   }
 
 }

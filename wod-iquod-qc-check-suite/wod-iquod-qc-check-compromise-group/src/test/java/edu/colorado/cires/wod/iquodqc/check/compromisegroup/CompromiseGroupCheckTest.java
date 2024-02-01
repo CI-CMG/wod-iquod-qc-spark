@@ -185,10 +185,6 @@ public class CompromiseGroupCheckTest {
         .withCastNumber(123)
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
-        .withDependsOnFailedDepths(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
-            failingTest,
-            failedDepths
-        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

@@ -34,11 +34,7 @@ public abstract class SignalProducingCastCheck extends CommonCastCheck {
         .withCastNumber(cast.getCastNumber())
         .withPassed(failed.isEmpty())
         .withFailedDepths(new ArrayList<>(failed))
-        .withDependsOnFailedDepths(
-            CommonCastCheck.getDependsOnFailedDepths(otherTestResults)
-        ).withDependsOnFailedChecks(
-            CommonCastCheck.getDependsOnFailedChecks(otherTestResults)
-        ).withSignal(signal)
+        .withSignal(signal)
         .build();
   }
 }

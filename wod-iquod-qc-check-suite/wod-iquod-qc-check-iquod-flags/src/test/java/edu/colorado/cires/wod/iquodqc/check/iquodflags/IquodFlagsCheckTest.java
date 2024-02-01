@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -152,16 +151,6 @@ public class IquodFlagsCheckTest {
                 CastCheckResult.builder()
                     .withCastNumber(123)
                     .withPassed(false)
-                    .withDependsOnFailedChecks(Map.of(
-                        failingTest,
-                        List.of(
-                            CheckNames.AOML_SPIKE.getName(),
-                            CheckNames.COTEDE_LOCATION_AT_SEA_TEST.getName()
-                        )
-                    )).withDependsOnFailedDepths(Map.of(
-                        failingTest,
-                        failedDepths
-                    ))
                     .withFailedDepths(failedDepths)
                     .build()
             ),
@@ -203,16 +192,6 @@ public class IquodFlagsCheckTest {
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
         .withIquodFlags(expectedIquodFlags)
-        .withDependsOnFailedDepths(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
-            failingTest,
-            failedDepths
-        )).withDependsOnFailedChecks(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
-            failingTest,
-            List.of(
-                CheckNames.AOML_SPIKE.getName(),
-                CheckNames.COTEDE_LOCATION_AT_SEA_TEST.getName()
-            )
-        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -275,16 +254,6 @@ public class IquodFlagsCheckTest {
                     .withCastNumber(123)
                     .withPassed(false)
                     .withFailedDepths(failedDepths)
-                    .withDependsOnFailedChecks(Map.of(
-                        failingTest,
-                        List.of(
-                            CheckNames.AOML_SPIKE.getName(),
-                            CheckNames.COTEDE_LOCATION_AT_SEA_TEST.getName()
-                        )
-                    )).withDependsOnFailedDepths(Map.of(
-                        failingTest,
-                        failedDepths
-                    ))
                     .build()
             ),
             Encoders.bean(CastCheckResult.class)
@@ -325,16 +294,6 @@ public class IquodFlagsCheckTest {
         .withPassed(failingTest.isBlank())
         .withFailedDepths(failingTest.isBlank() ? Collections.emptyList() : failedDepths)
         .withIquodFlags(expectedIquodFlags)
-        .withDependsOnFailedDepths(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
-            failingTest,
-            failedDepths
-        )).withDependsOnFailedChecks(failingTest.isBlank() ? Collections.emptyMap() : Map.of(
-            failingTest,
-            List.of(
-                CheckNames.AOML_SPIKE.getName(),
-                CheckNames.COTEDE_LOCATION_AT_SEA_TEST.getName()
-            )
-        ))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -381,11 +340,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     4, 10, 11
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName(), CheckNames.ICDC_AQC_05_STUCK_VALUE.getName(), CheckNames.ICDC_AQC_07_SPIKE_CHECK.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -399,11 +354,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     2, 5, 11
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.COMPROMISE_GROUP.getName(),
-                    List.of(CheckNames.COTEDE_TUKEY_53H_CHECK.getName(), CheckNames.AOML_CLIMATOLOGY.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -417,11 +368,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     1, 5, 11, 12
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName(), CheckNames.WOD_LOOSE_LOCATION_AT_SEA_CHECK.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -435,26 +382,7 @@ public class IquodFlagsCheckTest {
             1, 2, 4, 5, 10, 11, 12
         )).withIquodFlags(List.of(
             1, 4, 3, 1, 2, 4, 1, 1, 1, 1, 2, 4, 4, 1, 1
-        )).withDependsOnFailedDepths(Map.of(
-            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(4, 10, 11),
-
-            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(1, 5, 11, 12),
-
-            CheckNames.COMPROMISE_GROUP.getName(),
-            List.of(2, 5, 11)
-        )).withDependsOnFailedChecks(Map.of(
-            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName(), CheckNames.WOD_LOOSE_LOCATION_AT_SEA_CHECK.getName()),
-
-            CheckNames.COMPROMISE_GROUP.getName(),
-            List.of(CheckNames.COTEDE_TUKEY_53H_CHECK.getName(), CheckNames.AOML_CLIMATOLOGY.getName()),
-
-            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName(), CheckNames.ICDC_AQC_05_STUCK_VALUE.getName(), CheckNames.ICDC_AQC_07_SPIKE_CHECK.getName())
-        ))
-        .build();
+        )).build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
     assertEquals(1, results.size());
@@ -504,14 +432,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     4, 7, 11, 12
-                )).withDependsOnFailedDepths(Map.of(
-                    CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(4, 7, 11, 12)
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName(), CheckNames.ICDC_AQC_05_STUCK_VALUE.getName(), CheckNames.ICDC_AQC_07_SPIKE_CHECK.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -525,14 +446,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     7, 11, 12
-                )).withDependsOnFailedDepths(Map.of(
-                    CheckNames.COMPROMISE_GROUP.getName(),
-                    List.of(7, 11, 12)
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.COMPROMISE_GROUP.getName(),
-                    List.of(CheckNames.COTEDE_TUKEY_53H_CHECK.getName(), CheckNames.AOML_CLIMATOLOGY.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -546,14 +460,7 @@ public class IquodFlagsCheckTest {
                 .withPassed(false)
                 .withFailedDepths(List.of(
                     11, 12
-                )).withDependsOnFailedDepths(Map.of(
-                    CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(11, 12)
-                )).withDependsOnFailedChecks(Map.of(
-                    CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-                    List.of(CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName(), CheckNames.WOD_LOOSE_LOCATION_AT_SEA_CHECK.getName())
-                ))
-                .build()
+                )).build()
         ),
         Encoders.bean(CastCheckResult.class)
     );
@@ -567,26 +474,7 @@ public class IquodFlagsCheckTest {
             4, 7, 11, 12
         )).withIquodFlags(List.of(
             1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4
-        )).withDependsOnFailedDepths(Map.of(
-            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(4, 7, 11, 12),
-
-            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(11, 12),
-
-            CheckNames.COMPROMISE_GROUP.getName(),
-            List.of(7, 11, 12)
-        )).withDependsOnFailedChecks(Map.of(
-            CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(CheckNames.COTEDE_ANOMALY_DETECTION_CHECK.getName(), CheckNames.WOD_LOOSE_LOCATION_AT_SEA_CHECK.getName()),
-
-            CheckNames.COMPROMISE_GROUP.getName(),
-            List.of(CheckNames.COTEDE_TUKEY_53H_CHECK.getName(), CheckNames.AOML_CLIMATOLOGY.getName()),
-
-            CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
-            List.of(CheckNames.ARGO_GLOBAL_RANGE_CHECK.getName(), CheckNames.ICDC_AQC_05_STUCK_VALUE.getName(), CheckNames.ICDC_AQC_07_SPIKE_CHECK.getName())
-        ))
-        .build();
+        )).build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
     assertEquals(1, results.size());
