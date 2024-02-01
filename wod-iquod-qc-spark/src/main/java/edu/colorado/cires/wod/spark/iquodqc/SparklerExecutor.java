@@ -218,6 +218,7 @@ public class SparklerExecutor implements Runnable {
 
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
+        .append(year).append("/")
         .append(dataset).append(processingLevel.charAt(0)).append(year).append(".parquet");
     return sb.toString();
   }
@@ -230,6 +231,7 @@ public class SparklerExecutor implements Runnable {
 
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
+        .append(year).append("/")
         .append(dataset).append(processingLevel.charAt(0)).append(year).append("_summary").append(".json");
     return sb.toString();
   }
@@ -242,6 +244,7 @@ public class SparklerExecutor implements Runnable {
 
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
+        .append(year).append("/")
         .append(dataset).append(processingLevel.charAt(0)).append(year).append("_failures").append(".json");
     return sb.toString();
   }
