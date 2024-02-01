@@ -15,12 +15,9 @@ public class DatasetIO {
     if (Arrays.stream(uris).anyMatch(u -> !u.endsWith(PARQUET_EXT))) {
       throw new IllegalArgumentException("Reading is only supported for parquet format");
     }
-    System.out.println("Reading dataset from: " + Arrays.toString(uris));
     return DatasetConverter.convert(sparkSession.read().parquet(uris), tClass);
   }
   public static void writeDataset(String uri, Dataset<?> dataset, SaveMode saveMode, long maxRecordsPerFile) {
-    System.out.println("Writing dataset to: " + uri);
-    
     DataFrameWriter<?> dataFrameWriter = dataset.write()
         .mode(saveMode)
         .option("maxRecordsPerFile", maxRecordsPerFile);
