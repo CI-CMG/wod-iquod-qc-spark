@@ -1,10 +1,8 @@
 package edu.colorado.cires.wod.postprocess;
 
 import java.util.Arrays;
-import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.DataFrameWriter;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
 
@@ -30,7 +28,7 @@ public class DatasetIO {
     if (uri.endsWith(JSON_EXT)) {
       dataFrameWriter.json(uri);
     } else if (uri.endsWith(PARQUET_EXT)) {
-      dataFrameWriter.parquet(PARQUET_EXT);
+      dataFrameWriter.parquet(uri);
     } else {
       throw new IllegalArgumentException("Writing is only supported for json or parquet format");
     }
