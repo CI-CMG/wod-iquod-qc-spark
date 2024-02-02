@@ -80,6 +80,15 @@ public class SparklerExecutor implements Runnable {
   @Override
   public void run() {
     List<CastCheck> checks = CheckResolver.getChecks(checksToRun, properties);
+
+    boolean willGenerateIquodFlags = checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
+    if (generateReports && !willGenerateIquodFlags) {
+      LOGGER.warn("{} not run. Will not generate summary reports", IQUOD_FLAG_PRODUCING_CHECK);
+    }
+    
+    if (addFlagsToCast && !willGenerateIquodFlags) {
+      LOGGER.warn("{} not run. Will not add result flags to casts.", IQUOD_FLAG_PRODUCING_CHECK);
+    }
     
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
@@ -91,8 +100,9 @@ public class SparklerExecutor implements Runnable {
           }
         }
 
-        if (addFlagsToCast && checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK))) {
+        if (addFlagsToCast && willGenerateIquodFlags) {
           for (int year : resolvedYears) {
+            LOGGER.info("Adding result flags to casts: {}/{}/{}", dataset, processingLevel, year);
             new PostProcessorRunner<>(
                 new AddResultToCastPostProcessor(),
                 getOutputCastURI(dataset, processingLevel, year),
@@ -145,14 +155,18 @@ public class SparklerExecutor implements Runnable {
               }
             };
 
-            new PostProcessorRunner<>(
-                new CreateSummaryPostProcessor(),
-                getOutputSummaryURI(dataset, processingLevel, year),
-                context,
-                SaveMode.Overwrite,
-                1
-            ).run();
-
+            if (willGenerateIquodFlags) {
+              LOGGER.info("Generating summary report: {}/{}/{}", dataset, processingLevel, year);
+              new PostProcessorRunner<>(
+                  new CreateSummaryPostProcessor(),
+                  getOutputSummaryURI(dataset, processingLevel, year),
+                  context,
+                  SaveMode.Overwrite,
+                  1
+              ).run();
+            }
+            
+            LOGGER.info("Generating failure reports: {}/{}/{}", dataset, processingLevel, year);
             new PostProcessorRunner<>(
                 new FailureReportPostProcessor(),
                 getOutputFailuresURI(dataset, processingLevel, year),
@@ -274,11 +288,11 @@ public class SparklerExecutor implements Runnable {
     @Override
     public void run() {
       long start = System.currentTimeMillis();
-      LOGGER.info("Running " + check.getName());
 
       if (exists(s3, outputBucket, prefix + "/_SUCCESS")) {
-        LOGGER.info("Skipping existing " + check.getName());
+        LOGGER.info("Skipping existing {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
       } else {
+        LOGGER.info("Running {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
         CastCheckContext context = new CastCheckContext() {
           @Override
           public SparkSession getSparkSession() {
@@ -303,11 +317,11 @@ public class SparklerExecutor implements Runnable {
 
         Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
         
-        LOGGER.info("Writing " + outputUri);
+        LOGGER.info("Writing {} output for {}/{}/{}: {}", check.getName(), dataset, processingLevel, year, outputUri);
         resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
         long end = System.currentTimeMillis();
         Duration duration = Duration.ofMillis(end - start);
-        LOGGER.info("Finished " + check.getName() + " in " + duration);
+        LOGGER.info("Finished {} in {}: {}/{}/{}", check.getName(), duration, dataset, processingLevel, year);
       }
     }
   }
