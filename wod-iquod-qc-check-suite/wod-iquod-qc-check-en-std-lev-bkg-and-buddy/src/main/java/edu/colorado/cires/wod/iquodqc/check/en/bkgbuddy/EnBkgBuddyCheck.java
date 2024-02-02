@@ -86,8 +86,12 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   protected void registerUdf(CastCheckContext context) {
     super.registerUdf(context);
     SparkSession spark = context.getSparkSession();
-    spark.udf().register(DISTANCE, udf((UDF4<Double, Double, Double, Double, Double>) this::getDistanceUdf, DataTypes.DoubleType));
-    spark.udf().register(GEOHASH, udf((UDF2<Double, Double, List<String>>) this::getGeoHashesUdf, DataTypes.createArrayType(DataTypes.StringType)));
+    if (!spark.catalog().functionExists(DISTANCE)) {
+      spark.udf().register(DISTANCE, udf((UDF4<Double, Double, Double, Double, Double>) this::getDistanceUdf, DataTypes.DoubleType));
+    }
+    if (!spark.catalog().functionExists(GEOHASH)) {
+      spark.udf().register(GEOHASH, udf((UDF2<Double, Double, List<String>>) this::getGeoHashesUdf, DataTypes.createArrayType(DataTypes.StringType)));
+    }
   }
 
 

@@ -44,7 +44,9 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
 
   protected void registerUdf(CastCheckContext context) {
     SparkSession spark = context.getSparkSession();
-    spark.udf().register(getName(), udf((UDF1<Row, Row>) this::checkUdfAndHandleException, CastCheckResult.structType()));
+    if (!spark.catalog().functionExists(getName())) {
+      spark.udf().register(getName(), udf((UDF1<Row, Row>) this::checkUdfAndHandleException, CastCheckResult.structType()));
+    }
   }
 
   protected static Column[] resolveColumns(Dataset<Cast> castDataset, Map<String, Dataset<CastCheckResult>> otherResultDatasets) {
