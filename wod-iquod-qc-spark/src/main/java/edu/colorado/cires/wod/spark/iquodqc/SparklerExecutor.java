@@ -3,6 +3,7 @@ package edu.colorado.cires.wod.spark.iquodqc;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.api.Failures;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.postprocess.DatasetIO;
@@ -116,7 +117,7 @@ public class SparklerExecutor implements Runnable {
               LOGGER.warn("Found existing casts with IQUOD flags. Will not reprocess casts: {}/{}/{}", dataset, processingLevel, year);
             } else {
               LOGGER.info("Adding IQUOD flags to casts: {}/{}/{}", dataset, processingLevel, year);
-              new PostProcessorRunner<>(
+              PostProcessorRunner<Cast> postProcessorRunner = new PostProcessorRunner<>(
                   new AddResultToCastPostProcessor(),
                   outputURI,
                   new PostProcessorContext() {
@@ -140,7 +141,11 @@ public class SparklerExecutor implements Runnable {
                   },
                   SaveMode.Overwrite,
                   MAX_RECORDS_PER_FILE
-              ).run(); 
+              );
+              
+              postProcessorRunner.usePartitioningSaveMethod(new String[]{"geohash", "year"});
+              
+              postProcessorRunner.run();
             }
           }
         }
@@ -207,13 +212,16 @@ public class SparklerExecutor implements Runnable {
                 LOGGER.warn("Found existing failure reports. Will not regenerate failure reports: {}/{}/{}", dataset, processingLevel, year);
               } else {
                 LOGGER.info("Generating failure reports: {}/{}/{}", dataset, processingLevel, year);
-                new PostProcessorRunner<>(
+                PostProcessorRunner< Failures> processorRunner = new PostProcessorRunner<>(
                     new FailureReportPostProcessor(),
                     outputURI,
                     context,
                     SaveMode.Overwrite,
                     1
-                ).run();
+                );
+                processorRunner.usePartitioningSaveMethod(new String[]{"castNumber"});
+                
+                processorRunner.run();
               }
               
             }
@@ -256,7 +264,7 @@ public class SparklerExecutor implements Runnable {
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_summary").append(".parquet");
+        .append("summary").append(".json");
     return sb.toString();
   }
 
@@ -269,7 +277,7 @@ public class SparklerExecutor implements Runnable {
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_failures").append(".parquet");
+        .append("failures").append(".json");
     return sb.toString();
   }
 

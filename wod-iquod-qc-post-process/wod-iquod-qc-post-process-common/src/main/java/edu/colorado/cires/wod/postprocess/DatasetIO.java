@@ -17,18 +17,37 @@ public class DatasetIO {
     }
     return DatasetConverter.convert(sparkSession.read().parquet(uris), tClass);
   }
-  public static void writeDataset(String uri, Dataset<?> dataset, SaveMode saveMode, long maxRecordsPerFile) {
-    DataFrameWriter<?> dataFrameWriter = dataset.write()
+  public static boolean writeDataset(String uri, Dataset<?> dataset, SaveMode saveMode, long maxRecordsPerFile) {
+    return write(
+        getWriter(saveMode, maxRecordsPerFile, dataset),
+        uri
+    );
+  }
+
+  public static boolean writeDatasetInPartitions(String uri, Dataset<?> dataset, SaveMode saveMode, long maxRecordsPerFile, String[] partitionFields) {
+    return write(
+        getWriter(saveMode, maxRecordsPerFile, dataset)
+            .partitionBy(partitionFields),
+        uri
+    );
+  }
+  
+  private static DataFrameWriter<?> getWriter(SaveMode saveMode, long maxRecordsPerFile, Dataset<?> dataset) {
+    return dataset.write()
         .mode(saveMode)
         .option("maxRecordsPerFile", maxRecordsPerFile);
-    
+  }
+  
+  private static boolean write(DataFrameWriter<?> writer, String uri) {
     if (uri.endsWith(JSON_EXT)) {
-      dataFrameWriter.json(uri);
+      writer.json(uri);
     } else if (uri.endsWith(PARQUET_EXT)) {
-      dataFrameWriter.parquet(uri);
+      writer.parquet(uri);
     } else {
       throw new IllegalArgumentException("Writing is only supported for json or parquet format");
     }
+    
+    return true;
   }
 
 }
