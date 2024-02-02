@@ -204,7 +204,7 @@ public class SparklerExecutor implements Runnable {
                           "/_SUCCESS"
                   )
               ) {
-                LOGGER.warn("Found existing failure reports. Will not regenerate failure reports");
+                LOGGER.warn("Found existing failure reports. Will not regenerate failure reports: {}/{}/{}", dataset, processingLevel, year);
               } else {
                 LOGGER.info("Generating failure reports: {}/{}/{}", dataset, processingLevel, year);
                 new PostProcessorRunner<>(

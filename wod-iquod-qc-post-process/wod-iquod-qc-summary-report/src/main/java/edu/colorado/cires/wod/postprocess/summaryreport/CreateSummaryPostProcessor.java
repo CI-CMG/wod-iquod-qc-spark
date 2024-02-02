@@ -1,8 +1,10 @@
 package edu.colorado.cires.wod.postprocess.summaryreport;
 
+import static org.apache.spark.sql.functions.array;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.collect_list;
 import static org.apache.spark.sql.functions.count;
+import static org.apache.spark.sql.functions.expr;
 import static org.apache.spark.sql.functions.lit;
 import static org.apache.spark.sql.functions.map_from_arrays;
 
@@ -25,11 +27,38 @@ public class CreateSummaryPostProcessor extends PostProcessor<Summary> {
     long totalExceptions = castCheckResultDataset.filter(col("error").equalTo(true)).count();
     
     Dataset<Row> resultRowDataset = DatasetUtil.addCheckNameToCastCheckResultDataset(castCheckResultDataset);
+    Dataset<Row> castRowDataset = castDataset.select(
+        col("castNumber").as("castCastNumber"),
+        col("*")
+    ).drop("castNumber");
 
-    return resultRowDataset.filter(col("passed").equalTo(false))
+    resultRowDataset = resultRowDataset.join(
+        castRowDataset,
+        resultRowDataset.col("castNumber").equalTo(castRowDataset.col("castCastNumber"))
+    );
+
+    Dataset<Row> failedDataset = resultRowDataset.filter(col("passed").equalTo(false));
+    if (failedDataset.count() == 0) {
+      return resultRowDataset.groupBy(lit(1)).agg(
+              expr("any_value(dataset)").as("dataset"),
+              expr("any_value(year)").as("year"),
+              lit(totalExceptions).as("exceptionCount"),
+              lit(totalCasts).as("totalProfiles")
+          ).withColumn(
+              "failureCounts",
+              map_from_arrays(array(), array())
+          ).drop("1")
+          .as(Encoders.bean(Summary.class));
+    }
+
+    return failedDataset
         .groupBy("checkName").agg(
-            count(col("*")).as("failureCount")
+            count(col("*")).as("failureCount"),
+            expr("any_value(dataset)").as("dataset"),
+            expr("any_value(year)").as("year")
         ).groupBy(lit(1)).agg(
+            expr("any_value(dataset)").as("dataset"),
+            expr("any_value(year)").as("year"),
             collect_list("checkName").as("checks"),
             collect_list("failureCount").as("failures"),
             lit(totalExceptions).as("exceptionCount"),

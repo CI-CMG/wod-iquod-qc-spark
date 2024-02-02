@@ -18,6 +18,9 @@ public class Failures implements Serializable {
   
   public static StructType structType() {
     return new StructType(new StructField[]{
+        new StructField("castNumber", DataTypes.IntegerType, false, Metadata.empty()),
+        new StructField("dataset", DataTypes.StringType, false, Metadata.empty()),
+        new StructField("year", DataTypes.IntegerType, false, Metadata.empty()),
         new StructField("exception", DataTypes.StringType, true, Metadata.empty()),
         new StructField("iquodFlags", DataTypes.createArrayType(DataTypes.IntegerType), false, Metadata.empty()),
         new StructField("profileFailures", DataTypes.createArrayType(DataTypes.StringType), false, Metadata.empty()),
@@ -27,16 +30,22 @@ public class Failures implements Serializable {
   
   public Row asRow() {
     return new GenericRowWithSchema(new Object[]{
-        exception, iquodFlags, profileFailures, depthFailures
+        castNumber, dataset, year, exception, iquodFlags, profileFailures, depthFailures
     }, structType());
   }
   
+  private int castNumber;
+  private String dataset;
+  private int year;
   private String exception;
   private List<Integer> iquodFlags;
   private List<String> profileFailures;
   private List<List<String>> depthFailures;
 
-  private Failures(String exception, List<Integer> iquodFlags, List<String> profileFailures, List<List<String>> depthFailures) {
+  private Failures(int castNumber, String dataset, int year, String exception, List<Integer> iquodFlags, List<String> profileFailures, List<List<String>> depthFailures) {
+    this.castNumber = castNumber;
+    this.dataset = Objects.requireNonNull(dataset, "dataset must not be null");
+    this.year = year;
     this.exception = exception;
     this.iquodFlags = Collections.unmodifiableList(iquodFlags);
     this.profileFailures = Collections.unmodifiableList(Objects.requireNonNull(profileFailures, "profileFailures must not be null"));
@@ -83,6 +92,33 @@ public class Failures implements Serializable {
     this.depthFailures = depthFailures;
   }
 
+  public int getCastNumber() {
+    return castNumber;
+  }
+
+  @Deprecated
+  public void setCastNumber(int castNumber) {
+    this.castNumber = castNumber;
+  }
+
+  public String getDataset() {
+    return dataset;
+  }
+
+  @Deprecated
+  public void setDataset(String dataset) {
+    this.dataset = dataset;
+  }
+
+  public int getYear() {
+    return year;
+  }
+
+  @Deprecated
+  public void setYear(int year) {
+    this.year = year;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -92,25 +128,29 @@ public class Failures implements Serializable {
       return false;
     }
     Failures failures = (Failures) o;
-    return Objects.equals(exception, failures.exception) && Objects.equals(iquodFlags, failures.iquodFlags)
+    return castNumber == failures.castNumber && year == failures.year && Objects.equals(dataset, failures.dataset)
+        && Objects.equals(exception, failures.exception) && Objects.equals(iquodFlags, failures.iquodFlags)
         && Objects.equals(profileFailures, failures.profileFailures) && Objects.equals(depthFailures, failures.depthFailures);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(exception, iquodFlags, profileFailures, depthFailures);
+    return Objects.hash(castNumber, dataset, year, exception, iquodFlags, profileFailures, depthFailures);
   }
 
   @Override
   public String toString() {
     return "Failures{" +
-        "exception='" + exception + '\'' +
+        "castNumber=" + castNumber +
+        ", dataset='" + dataset + '\'' +
+        ", year=" + year +
+        ", exception='" + exception + '\'' +
         ", iquodFlags=" + iquodFlags +
         ", profileFailures=" + profileFailures +
         ", depthFailures=" + depthFailures +
         '}';
   }
-  
+
   public static Builder builder() {
     return new Builder();
   }
@@ -124,6 +164,9 @@ public class Failures implements Serializable {
   }
   
   public static class Builder {
+    private int castNumber;
+    private String dataset;
+    private int year;
     private String exception;
     private List<Integer> iquodFlags = new ArrayList<>(0);
     private List<String> profileFailures = new ArrayList<>(0);
@@ -131,16 +174,37 @@ public class Failures implements Serializable {
     
     private Builder() {}
     private Builder(Row row) {
+      castNumber = row.getInt(row.fieldIndex("castNumber"));
+      dataset = row.getString(row.fieldIndex("dataset"));
+      year = row.getInt(row.fieldIndex("year"));
       exception = row.getString(row.fieldIndex("exception"));
       iquodFlags = row.getList(row.fieldIndex("iquodFlags"));
       profileFailures = row.getList(row.fieldIndex("profileFailures"));
       depthFailures = row.getList(row.fieldIndex("depthFailures"));
     }
     private Builder(Failures failures) {
+      castNumber = failures.castNumber;
+      dataset = failures.dataset;
+      year = failures.year;
       exception = failures.exception;
       iquodFlags = new ArrayList<>(failures.iquodFlags);
       profileFailures = new ArrayList<>(failures.profileFailures);
       depthFailures = new ArrayList<>(failures.depthFailures);
+    }
+    
+    public Builder withCastNumber(int castNumber) {
+      this.castNumber = castNumber;
+      return this;
+    }
+    
+    public Builder withDataset(String dataset) {
+      this.dataset = dataset;
+      return this;
+    }
+    
+    public Builder withYear(int year) {
+      this.year = year;
+      return this;
     }
     
     public Builder withException(String exception) {
@@ -173,7 +237,7 @@ public class Failures implements Serializable {
     }
     
     public Failures build() {
-      return new Failures(exception, iquodFlags, profileFailures, depthFailures);
+      return new Failures(castNumber, dataset, year, exception, iquodFlags, profileFailures, depthFailures);
     }
   }
 }

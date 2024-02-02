@@ -44,6 +44,8 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
 
     Dataset<Row> grouped = castRowDataset.groupBy("castNumber").agg(
         expr("any_value(size(depths))").as("numberOfDepths"),
+        expr("any_value(dataset)").as("dataset"),
+        expr("any_value(year)").as("year"),
         array_join(
             collect_list("errorMessage"),
             ", "
@@ -83,6 +85,9 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
     String exception = row.getString(row.fieldIndex("exception"));
 
     return Failures.builder()
+        .withCastNumber(row.getInt(row.fieldIndex("castNumber")))
+        .withDataset(row.getString(row.fieldIndex("dataset")))
+        .withYear(row.getInt(row.fieldIndex("year")))
         .withException(exception != null && exception.isBlank() ? null : exception)
         .withProfileFailures(new ArrayList<>(profileFailures))
         .withIquodFlags(row.getList(row.fieldIndex("iquodFlags")))
