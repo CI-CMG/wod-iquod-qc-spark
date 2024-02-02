@@ -23,12 +23,15 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 
 public class SparklerExecutor implements Runnable {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(SparklerExecutor.class);
   private static final int MAX_RECORDS_PER_FILE = 500000;
   private static final String IQUOD_FLAG_PRODUCING_CHECK = CheckNames.IQUOD_FLAGS_CHECK.getName();
 
@@ -271,11 +274,10 @@ public class SparklerExecutor implements Runnable {
     @Override
     public void run() {
       long start = System.currentTimeMillis();
-      System.err.println("Running " + check.getName());
-      System.out.println("Running " + check.getName());
+      LOGGER.info("Running " + check.getName());
 
       if (exists(s3, outputBucket, prefix + "/_SUCCESS")) {
-        System.out.println("Skipping existing " + check.getName());
+        LOGGER.info("Skipping existing " + check.getName());
       } else {
         CastCheckContext context = new CastCheckContext() {
           @Override
@@ -300,14 +302,12 @@ public class SparklerExecutor implements Runnable {
         };
 
         Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
-
-        System.err.println("Writing " + outputUri);
-        System.out.println("Writing " + outputUri);
+        
+        LOGGER.info("Writing " + outputUri);
         resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
         long end = System.currentTimeMillis();
         Duration duration = Duration.ofMillis(end - start);
-        System.err.println("Finished " + check.getName() + " in " + duration);
-        System.out.println("Finished " + check.getName() + " in " + duration);
+        LOGGER.info("Finished " + check.getName() + " in " + duration);
       }
     }
   }

@@ -14,6 +14,8 @@ import org.apache.spark.scheduler.JobResult;
 import org.apache.spark.scheduler.SparkListener;
 import org.apache.spark.scheduler.SparkListenerJobEnd;
 import org.apache.spark.sql.SparkSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -28,6 +30,8 @@ import software.amazon.awssdk.services.s3.S3ClientBuilder;
     versionProvider = VersionProvider.class
 )
 public class Sparkler implements Serializable, Runnable {
+  
+  private static final Logger LOGGER = LoggerFactory.getLogger(Sparkler.class);
 
   private static final long serialVersionUID = 0L;
 
@@ -121,7 +125,7 @@ public class Sparkler implements Serializable, Runnable {
       public void onJobEnd(SparkListenerJobEnd jobEnd) {
         JobResult result = jobEnd.jobResult();
         if (result instanceof JobFailed) {
-          System.err.println("Failed job detected. Exiting.");
+          LOGGER.error("Failed job detected. Exiting.");
           spark.sparkContext().stop(1);
         }
       }

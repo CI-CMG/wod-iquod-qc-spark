@@ -9,20 +9,21 @@ import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.spark.sql.Row;
 import org.geotools.referencing.GeodeticCalculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ucar.nc2.NetcdfFile;
 
 public class AomlClimatologyCheck extends CommonCastCheck {
+  
+  private static final Logger LOGGER = LoggerFactory.getLogger(AomlClimatologyCheck.class);
 
   private static WoaDataHolder parameters;
   private Properties properties;
@@ -98,7 +99,7 @@ public class AomlClimatologyCheck extends CommonCastCheck {
       try {
         ncFile.close();
       } catch (IOException e) {
-        System.err.println("Unable to close NetCDF file: "+ e.getMessage());
+        LOGGER.error("{}: Unable to close NetCDF file: "+ e.getMessage(), getName());
       }
     }
 

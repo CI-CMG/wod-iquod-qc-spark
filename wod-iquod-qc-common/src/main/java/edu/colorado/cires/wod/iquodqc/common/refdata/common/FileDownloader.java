@@ -16,10 +16,13 @@ import java.util.Properties;
 import java.util.function.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.s3.S3Client;
 
 public final class FileDownloader {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloader.class);
   public final static String DATA_DIR_PROP = "data.dir";
   private final static int CONNECT_TIMEOUT = 2000;
   private final static int READ_TIMEOUT = 1000 * 60 * 15;
@@ -40,7 +43,7 @@ public final class FileDownloader {
       }
       if (!Files.exists(ncFile)) {
 
-        System.err.println("Downloading " + uri);
+        LOGGER.info("Downloading " + uri);
         Path tmp;
         try {
           tmp = Files.createTempFile(dataDir, propertyName, ".dat.dl");
@@ -78,7 +81,7 @@ public final class FileDownloader {
         } finally {
           FileUtils.deleteQuietly(tmp.toFile());
         }
-        System.err.println("Done downloading " + uri);
+        LOGGER.info("Done downloading " + uri);
       }
     }
     return fileHandler.apply(ncFile);

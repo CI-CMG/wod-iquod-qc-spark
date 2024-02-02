@@ -12,25 +12,18 @@ import edu.colorado.cires.wod.iquodqc.check.api.CommonCastCheck;
 import edu.colorado.cires.wod.iquodqc.common.CastUtils;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundChecker;
-import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundCheckerLevelResult;
-import edu.colorado.cires.wod.iquodqc.common.en.EnBackgroundCheckerResult;
-import edu.colorado.cires.wod.iquodqc.common.en.PgeEstimator;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.CastParameterDataReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParameters;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.EnBgCheckInfoParametersReader;
 import edu.colorado.cires.wod.iquodqc.common.refdata.en.ParameterDataReader;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
-import edu.colorado.cires.wod.parquet.model.Depth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
@@ -48,10 +41,12 @@ import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EnBkgBuddyCheck extends CommonCastCheck {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(EnBkgBuddyCheck.class);
   private static final int MAX_DISTANCE_M = 400000;
   private static final CoordinateReferenceSystem EPSG_4326;
   private static EnBgCheckInfoParameters parameters;
@@ -131,7 +126,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     try {
       return JTS.orthodromicDistance(new Coordinate(lat1, lon1), new Coordinate(lat2, lon2), EPSG_4326);
     } catch (Exception e) {
-      System.out.println("Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ") " + ExceptionUtils.getStackTrace(e));
+      LOGGER.warn("{}: Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ") " + ExceptionUtils.getStackTrace(e), getName());
       return MAX_DISTANCE_M + 1;
     }
   }
@@ -140,7 +135,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     try {
       return new ArrayList<>(GeoHashFinder.getNeighborsInDistance(lon, lat, MAX_DISTANCE_M));
     } catch (Exception e) {
-      System.out.println("Unable to calculate geohash for " + lon + " lon, " + lat + " lat " + ExceptionUtils.getStackTrace(e));
+      LOGGER.warn("{}: Unable to calculate geohash for " + lon + " lon, " + lat + " lat " + ExceptionUtils.getStackTrace(e), getName());
       return Collections.emptyList();
     }
   }

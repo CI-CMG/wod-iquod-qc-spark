@@ -22,8 +22,12 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.api.java.UDF1;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class CommonCastCheck implements CastCheck, Serializable {
+  
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommonCastCheck.class);
 
   private static final long serialVersionUID = 0L;
 
@@ -88,8 +92,7 @@ public abstract class CommonCastCheck implements CastCheck, Serializable {
       Row castRow = row.getStruct(row.fieldIndex("cast"));
       Cast cast = filterFlags(Cast.builder(castRow).build());
       String message = ExceptionUtils.getStackTrace(e);
-      System.err.println(message);
-      System.out.println(message);
+      LOGGER.error("{}: {}", getName(), message);
       return CastCheckResult.builder()
           .withCastNumber(cast.getCastNumber())
           .withError(true)
