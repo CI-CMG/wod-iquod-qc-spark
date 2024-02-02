@@ -9,7 +9,7 @@ public class LowFalsePositiveRateGroupCheck extends GroupCastCheck {
 
   @Override
   public String getName() {
-    return CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName();
+    return CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName();
   }
 
   @Override

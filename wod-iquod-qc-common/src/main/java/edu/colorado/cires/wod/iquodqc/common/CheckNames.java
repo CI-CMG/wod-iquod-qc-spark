@@ -37,7 +37,7 @@ public enum CheckNames {
   ICDC_AQC_01_LEVEL_ORDER("ICDC_aqc_01_level_order"),
   IQUOD_BOTTOM("IQUOD_bottom"),
   HIGH_TRUE_POSITIVE_RATE_GROUP("HTPR_check"),
-  LOW_TRUE_POSITIVE_RATE_GROUP("LTPR_check"),
+  LOW_FALSE_POSITIVE_RATE_GROUP("LFPR_check"),
   COMPROMISE_GROUP("COMP_check"),
   IQUOD_GROSS_RANGE("IQuOD_gross_range_check"),
   ICDC_AQC_09_CLIMATOLOGY_CHECK("ICDC_aqc_09_climatology_check"),

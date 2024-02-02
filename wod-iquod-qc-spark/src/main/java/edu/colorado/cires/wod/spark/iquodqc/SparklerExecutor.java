@@ -83,11 +83,11 @@ public class SparklerExecutor implements Runnable {
 
     boolean willGenerateIquodFlags = checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
     if (generateReports && !willGenerateIquodFlags) {
-      LOGGER.warn("{} not run. Will not generate summary reports", IQUOD_FLAG_PRODUCING_CHECK);
+      LOGGER.warn("{} not specified in --checks/-qc. Will not generate summary/failure reports.", IQUOD_FLAG_PRODUCING_CHECK);
     }
     
     if (addFlagsToCast && !willGenerateIquodFlags) {
-      LOGGER.warn("{} not run. Will not add result flags to casts.", IQUOD_FLAG_PRODUCING_CHECK);
+      LOGGER.warn("{} not specified in --checks/-qc. Will not generate IQUOD flags.", IQUOD_FLAG_PRODUCING_CHECK);
     }
     
     for (String dataset : datasets) {
@@ -102,32 +102,46 @@ public class SparklerExecutor implements Runnable {
 
         if (addFlagsToCast && willGenerateIquodFlags) {
           for (int year : resolvedYears) {
-            LOGGER.info("Adding result flags to casts: {}/{}/{}", dataset, processingLevel, year);
-            new PostProcessorRunner<>(
-                new AddResultToCastPostProcessor(),
-                getOutputCastURI(dataset, processingLevel, year),
-                new PostProcessorContext() {
-                  @Override
-                  public Dataset<Cast> readCastDataset() {
-                    return DatasetIO.readDataset(
-                        new String[]{getCastURI(dataset, processingLevel, year)},
-                        spark,
-                        Cast.class
-                    );
-                  }
+            String outputURI = getOutputCastURI(dataset, processingLevel, year);
+            if (
+                exists(
+                s3, 
+                outputBucket,
+                outputURI.replaceFirst("s3a://" + outputBucket + "/", "")
+                    .replaceFirst("s3://" + outputBucket + "/", "")
+                    .replaceFirst("file://" + outputBucket + "/", "") +
+                    "/_SUCCESS"
+                )
+            ) {
+              LOGGER.warn("Found existing casts with IQUOD flags. Will not reprocess casts: {}/{}/{}", dataset, processingLevel, year);
+            } else {
+              LOGGER.info("Adding IQUOD flags to casts: {}/{}/{}", dataset, processingLevel, year);
+              new PostProcessorRunner<>(
+                  new AddResultToCastPostProcessor(),
+                  outputURI,
+                  new PostProcessorContext() {
+                    @Override
+                    public Dataset<Cast> readCastDataset() {
+                      return DatasetIO.readDataset(
+                          new String[]{getCastURI(dataset, processingLevel, year)},
+                          spark,
+                          Cast.class
+                      );
+                    }
 
-                  @Override
-                  public Dataset<CastCheckResult> readCheckResultDataset() {
-                    return DatasetIO.readDataset(
-                        new String[]{getCheckResultURI(IQUOD_FLAG_PRODUCING_CHECK, dataset, processingLevel, year)},
-                        spark,
-                        CastCheckResult.class
-                    );
-                  }
-                },
-                SaveMode.Overwrite,
-                MAX_RECORDS_PER_FILE
-            ).run();
+                    @Override
+                    public Dataset<CastCheckResult> readCheckResultDataset() {
+                      return DatasetIO.readDataset(
+                          new String[]{getCheckResultURI(IQUOD_FLAG_PRODUCING_CHECK, dataset, processingLevel, year)},
+                          spark,
+                          CastCheckResult.class
+                      );
+                    }
+                  },
+                  SaveMode.Overwrite,
+                  MAX_RECORDS_PER_FILE
+              ).run(); 
+            }
           }
         }
 
@@ -156,24 +170,53 @@ public class SparklerExecutor implements Runnable {
             };
 
             if (willGenerateIquodFlags) {
-              LOGGER.info("Generating summary report: {}/{}/{}", dataset, processingLevel, year);
-              new PostProcessorRunner<>(
-                  new CreateSummaryPostProcessor(),
-                  getOutputSummaryURI(dataset, processingLevel, year),
-                  context,
-                  SaveMode.Overwrite,
-                  1
-              ).run();
+              String outputURI = getOutputSummaryURI(dataset, processingLevel, year);
+              if (
+                  exists(
+                      s3,
+                      outputBucket,
+                      outputURI.replaceFirst("s3a://" + outputBucket + "/", "")
+                          .replaceFirst("s3://" + outputBucket + "/", "")
+                          .replaceFirst("file://" + outputBucket + "/", "") +
+                          "/_SUCCESS"
+                  )
+              ) {
+                LOGGER.warn("Found existing summary report. Will not regenerate summary report: {}/{}/{}", dataset, processingLevel, year);
+              } else {
+                LOGGER.info("Generating summary report: {}/{}/{}", dataset, processingLevel, year);
+                new PostProcessorRunner<>(
+                    new CreateSummaryPostProcessor(),
+                    outputURI,
+                    context,
+                    SaveMode.Overwrite,
+                    1
+                ).run(); 
+              }
+
+              outputURI = getOutputFailuresURI(dataset, processingLevel, year);
+              if (
+                  exists(
+                      s3,
+                      outputBucket,
+                      outputURI.replaceFirst("s3a://" + outputBucket + "/", "")
+                          .replaceFirst("s3://" + outputBucket + "/", "")
+                          .replaceFirst("file://" + outputBucket + "/", "") +
+                          "/_SUCCESS"
+                  )
+              ) {
+                LOGGER.warn("Found existing failure reports. Will not regenerate failure reports");
+              } else {
+                LOGGER.info("Generating failure reports: {}/{}/{}", dataset, processingLevel, year);
+                new PostProcessorRunner<>(
+                    new FailureReportPostProcessor(),
+                    outputURI,
+                    context,
+                    SaveMode.Overwrite,
+                    1
+                ).run();
+              }
+              
             }
-            
-            LOGGER.info("Generating failure reports: {}/{}/{}", dataset, processingLevel, year);
-            new PostProcessorRunner<>(
-                new FailureReportPostProcessor(),
-                getOutputFailuresURI(dataset, processingLevel, year),
-                context,
-                SaveMode.Overwrite,
-                1
-            ).run();
           }
         }
       }
@@ -213,7 +256,7 @@ public class SparklerExecutor implements Runnable {
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_summary").append(".json");
+        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_summary").append(".parquet");
     return sb.toString();
   }
 
@@ -226,7 +269,7 @@ public class SparklerExecutor implements Runnable {
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_failures").append(".json");
+        .append(dataset).append(processingLevel.charAt(0)).append(year).append("_failures").append(".parquet");
     return sb.toString();
   }
 

@@ -1,13 +1,10 @@
 package edu.colorado.cires.wod.spark.iquodqc;
 
-import static edu.colorado.cires.wod.iquodqc.check.minmax.refdata.MinMaxParametersReader.WOD_INFO_DGG4H6_PROP;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
-import edu.colorado.cires.wod.iquodqc.check.wod.range.refdata.JsonParametersReader;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -65,7 +62,7 @@ public class CheckResolverTest {
     assertTrue(checks.size() > 4);
     List<String> names = checks.stream().map(CastCheck::getName).collect(Collectors.toList());
     assertTrue(names.contains(CheckNames.IQUOD_FLAGS_CHECK.getName()));
-    assertTrue(names.contains(CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName()));
+    assertTrue(names.contains(CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName()));
     assertTrue(names.contains(CheckNames.COMPROMISE_GROUP.getName()));
     assertTrue(names.contains(CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName()));
     assertFalse(names.contains(CheckNames.ICDC_AQC_04_MAX_OBS_DEPTH.getName()));

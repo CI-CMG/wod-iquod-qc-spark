@@ -177,7 +177,7 @@ public class IquodFlagsCheckTest {
       fillValue = 2;
     } else if (CheckNames.COMPROMISE_GROUP.getName().equals(failingTest)) {
       fillValue = 3;
-    } else if (CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName().equals(failingTest)) {
+    } else if (CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName().equals(failingTest)) {
       fillValue = 4;
     } else {
       fillValue = 1;
@@ -279,7 +279,7 @@ public class IquodFlagsCheckTest {
       fillValue = 2;
     } else if (CheckNames.COMPROMISE_GROUP.getName().equals(failingTest)) {
       fillValue = 3;
-    } else if (CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName().equals(failingTest)) {
+    } else if (CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName().equals(failingTest)) {
       fillValue = 4;
     } else {
       fillValue = 1;
@@ -373,7 +373,7 @@ public class IquodFlagsCheckTest {
         Encoders.bean(CastCheckResult.class)
     );
 
-    testDependencyResult.write().parquet(TEMP_DIR.resolve(String.format("%s.parquet", CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName())).toString());
+    testDependencyResult.write().parquet(TEMP_DIR.resolve(String.format("%s.parquet", CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName())).toString());
 
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
@@ -465,7 +465,7 @@ public class IquodFlagsCheckTest {
         Encoders.bean(CastCheckResult.class)
     );
 
-    testDependencyResult.write().parquet(TEMP_DIR.resolve(String.format("%s.parquet", CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName())).toString());
+    testDependencyResult.write().parquet(TEMP_DIR.resolve(String.format("%s.parquet", CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName())).toString());
 
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)

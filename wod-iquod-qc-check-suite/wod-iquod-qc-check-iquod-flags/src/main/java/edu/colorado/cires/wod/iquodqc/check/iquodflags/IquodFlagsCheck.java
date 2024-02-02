@@ -26,7 +26,7 @@ public class IquodFlagsCheck extends GroupCastCheck {
     return List.of(
         CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP.getName(),
         CheckNames.COMPROMISE_GROUP.getName(),
-        CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP.getName()
+        CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP.getName()
     );
   }
 
@@ -38,7 +38,7 @@ public class IquodFlagsCheck extends GroupCastCheck {
             getFlagValues(
                 cast,
                 getFailedDepths(CheckNames.HIGH_TRUE_POSITIVE_RATE_GROUP, otherTestResults),
-                getFailedDepths(CheckNames.LOW_TRUE_POSITIVE_RATE_GROUP, otherTestResults),
+                getFailedDepths(CheckNames.LOW_FALSE_POSITIVE_RATE_GROUP, otherTestResults),
                 getFailedDepths(CheckNames.COMPROMISE_GROUP, otherTestResults)
             )
         ).build();
