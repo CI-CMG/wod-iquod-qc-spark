@@ -343,7 +343,7 @@ public class SparklerExecutor implements Runnable {
       if (exists(s3, outputBucket, prefix + "/_SUCCESS")) {
         LOGGER.info("Skipping existing {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
       } else {
-        LOGGER.info("Running {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
+        LOGGER.debug("Initializing {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
         CastCheckContext context = new CastCheckContext() {
           @Override
           public SparkSession getSparkSession() {
@@ -368,7 +368,8 @@ public class SparklerExecutor implements Runnable {
 
         Dataset<CastCheckResult> resultDataset = check.joinResultDataset(context);
         
-        LOGGER.info("Writing {} output for {}/{}/{}: {}", check.getName(), dataset, processingLevel, year, outputUri);
+        LOGGER.info("Running {}: {}/{}/{}", check.getName(), dataset, processingLevel, year);
+        LOGGER.debug("{} output will be written to {}: {}/{}/{}", check.getName(), outputUri, dataset, processingLevel, year);
         resultDataset.write().mode(SaveMode.Overwrite).option("maxRecordsPerFile", MAX_RECORDS_PER_FILE).parquet(outputUri);
         long end = System.currentTimeMillis();
         Duration duration = Duration.ofMillis(end - start);
