@@ -19,10 +19,9 @@ public class CoTeDeTukey53H {
   
   public static List<Integer> getFlags(double[] input, double[] result, double threshold) {
     List<Integer> results = new ArrayList<>();
-    for (int i = 2; i < input.length - 2; i++) {
+    for (int i = 0; i < input.length; i++) {
       double value = result[i];
-      boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-      if(!inputWasInvalid && Math.abs(value) > threshold) {
+      if (Math.abs(value) > threshold) {
         results.add(i);
       }
     }

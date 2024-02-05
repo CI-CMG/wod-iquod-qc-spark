@@ -41,9 +41,8 @@ public class CoTeDeGradient {
 
   public static Collection<Integer> getFlags(double[] input, double[] gradient, double threshold) {
     List<Integer> failedDepths = new ArrayList<>(0);
-    for (int i = 1; i < input.length - 2; i++) {
-      boolean inputWasInvalid = Double.isNaN(input[i]) || !Double.isFinite(input[i]);
-      if (!inputWasInvalid && Math.abs(gradient[i]) > threshold) {
+    for (int i = 0; i < input.length; i++) {
+      if (Math.abs(gradient[i]) > threshold) {
         failedDepths.add(i);
       }
     }
