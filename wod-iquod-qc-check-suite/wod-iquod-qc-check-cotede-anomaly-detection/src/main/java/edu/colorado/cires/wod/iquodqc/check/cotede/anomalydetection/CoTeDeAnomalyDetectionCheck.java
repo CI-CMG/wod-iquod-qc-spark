@@ -1,6 +1,9 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.anomalydetection;
 
+import static edu.colorado.cires.wod.iquodqc.common.CastUtils.getTemperatures;
+
 import edu.colorado.cires.wod.iquodqc.check.api.DependsOnSignalCastCheck;
+import edu.colorado.cires.wod.iquodqc.check.cotede.tukey53H.CoTeDeTukey53H;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import java.util.Arrays;
@@ -24,7 +27,6 @@ public class CoTeDeAnomalyDetectionCheck extends DependsOnSignalCastCheck {
     return List.of(
         CheckNames.COTEDE_GRADIENT_CHECK.getName(),
         CheckNames.COTEDE_SPIKE_CHECK.getName(),
-        CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(),
         CheckNames.COTEDE_RATE_OF_CHANGE.getName(),
         CheckNames.COTEDE_WOA_NORMBIAS.getName(),
         CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName(),
@@ -37,7 +39,14 @@ public class CoTeDeAnomalyDetectionCheck extends DependsOnSignalCastCheck {
     return Arrays.stream(CoTeDeAnomalyDetection.getFlags(
         getSignal(CheckNames.COTEDE_GRADIENT_CHECK.getName(), signals),
         getSignal(CheckNames.COTEDE_SPIKE_CHECK.getName(), signals),
-        getSignal(CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(), signals),
+        getSignal(
+            CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(),
+            Map.of(
+                CheckNames.COTEDE_TUKEY_53_NORM_CHECK.getName(),
+                Arrays.stream(CoTeDeTukey53H.computeTukey53H(getTemperatures(cast), true))
+                    .boxed().collect(Collectors.toList())
+            )
+        ),
         getSignal(CheckNames.COTEDE_RATE_OF_CHANGE.getName(), signals),
         getSignal(CheckNames.COTEDE_WOA_NORMBIAS.getName(), signals),
         getSignal(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName(), signals),

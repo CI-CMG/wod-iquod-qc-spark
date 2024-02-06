@@ -28,7 +28,6 @@
       <groupId>edu.colorado.cires.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-tukey-53H</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.colorado.cires.wod</groupId>
