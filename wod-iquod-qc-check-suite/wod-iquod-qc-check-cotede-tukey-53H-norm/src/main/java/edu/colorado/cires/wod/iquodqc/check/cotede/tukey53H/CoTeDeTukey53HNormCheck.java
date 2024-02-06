@@ -25,7 +25,7 @@ public class CoTeDeTukey53HNormCheck extends SignalProducingCastCheck {
   @Override
   protected Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults) {
     double[] temperatures = getTemperatures(cast);
-    double[] tukeyNorm = computeTukey53H(temperatures, true);
+    double[] tukeyNorm = computeTukey53H(temperatures, false); // CoTeDe bug makes this test compute only the tukey signal (not a norm) at a lower threshold value. It is changed here for consistency with AutoQC
     signal = Arrays.stream(tukeyNorm).boxed().collect(Collectors.toList());
     return getFlags(
         temperatures,
