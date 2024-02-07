@@ -48,7 +48,7 @@ public class CoTeDeAnomalyDetection {
   protected static double[] processWoaNormBias(double[] input) {
     return computeWeibullSF(
         Arrays.stream(input)
-            .map(Math::abs)
+//            .map(Math::abs) // Another change made for AutoQC consistency. This should be converted to an absolute value here but AutoQC does not
             .toArray(),
         5.960434,
         0.336008,
