@@ -1,17 +1,16 @@
 package edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias;
 
-import static edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.CoTeDeCarsNormbias.computeCarsNormbiases;
+import static edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.CoTeDeCarsNormbias.computeNormbias;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
+import java.io.IOException;
 import java.util.Properties;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import ucar.ma2.InvalidRangeException;
 
 public class CoTeDeCarsNormbiasTest {
 
@@ -36,7 +35,7 @@ public class CoTeDeCarsNormbiasTest {
       Double.NaN
   };
 
-  private static CarsGetter carsGetter;
+  private static CarsParameters carsParameters;
 
   @BeforeAll
   static void beforeAll() {
@@ -44,8 +43,7 @@ public class CoTeDeCarsNormbiasTest {
     properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
     properties.put("data.dir", "../../test-data");
 
-    CarsParameters carsParameters = CarsParametersReader.loadParameters(properties);
-    carsGetter = new CarsGetter(carsParameters);
+    carsParameters = CarsParametersReader.loadParameters(properties);
   }
 
   @ParameterizedTest
@@ -55,13 +53,13 @@ public class CoTeDeCarsNormbiasTest {
       "15.00000001,-38",
       "15,-38.00000001",
   })
-  public void testComputeCarsNormbias(double latitude, double longitude) {
+  public void testComputeCarsNormbias(double latitude, double longitude) throws InvalidRangeException, IOException {
     assertArrayEquals(
         EXPECTED_NORMBIAS,
-        computeCarsNormbiases(
-            TEMPERATURES, DEPTHS, latitude, longitude, carsGetter
-        ),
-        1e-1
+        computeNormbias(
+            latitude, longitude, TEMPERATURES, DEPTHS, carsParameters
+        ).stream().mapToDouble(v -> v).toArray(),
+        1e-7
     );
   }
 }

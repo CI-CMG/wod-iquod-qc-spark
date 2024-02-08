@@ -8,7 +8,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.CoTeDeCarsNormbias;
-import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsGetter;
+import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
 import edu.colorado.cires.wod.iquodqc.check.cotede.constantclustersize.ConstantClusterSize;
 import edu.colorado.cires.wod.iquodqc.check.cotede.gradient.CoTeDeGradient;
@@ -17,12 +17,14 @@ import edu.colorado.cires.wod.iquodqc.check.cotede.spike.CoTeDeSpike;
 import edu.colorado.cires.wod.iquodqc.check.cotede.tukey53H.CoTeDeTukey53H;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.CoTeDeWoaNormbias;
-import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaGetter;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.CoTeDeWoaNormbias.WoaNormbias;
+import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParameters;
 import edu.colorado.cires.wod.iquodqc.common.refdata.cotede.WoaParametersReader;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,11 +41,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ucar.ma2.InvalidRangeException;
 
 public class CoTeDeAnomalyDetectionCheckTest {
 
@@ -63,8 +67,8 @@ public class CoTeDeAnomalyDetectionCheckTest {
   private static SparkSession spark;
   private static CastCheckContext context;
   
-  private static WoaGetter woaGetter;
-  private static CarsGetter carsGetter;
+  private static WoaParameters woaParameters;
+  private static CarsParameters carsParameters;
 
   @BeforeAll
   public static void beforeAll() {
@@ -73,13 +77,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
         .appName("test")
         .master("local[*]")
         .getOrCreate();
-    Properties properties = new Properties();
-    properties.put("woa_s1.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
-    properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
-    properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
-    properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
-    properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
-    properties.put("data.dir", "../../test-data");
+    Properties properties = getProperties();
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -103,8 +101,20 @@ public class CoTeDeAnomalyDetectionCheckTest {
     };
     check.initialize(() -> properties);
 
-    carsGetter = new CarsGetter(CarsParametersReader.loadParameters(properties));
-    woaGetter = new WoaGetter(WoaParametersReader.loadParameters(properties));
+    carsParameters = CarsParametersReader.loadParameters(properties);
+    woaParameters = WoaParametersReader.loadParameters(properties);
+  }
+
+  @NotNull
+  private static Properties getProperties() {
+    Properties properties = new Properties();
+    properties.put("woa_s1.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
+    properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
+    properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
+    properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
+    properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
+    properties.put("data.dir", "../../test-data");
+    return properties;
   }
 
   @AfterAll
@@ -124,7 +134,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
   }
 
   @Test
-  public void testStandardDatasetPass() {
+  public void testStandardDatasetPass() throws InvalidRangeException, IOException {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -166,13 +176,13 @@ public class CoTeDeAnomalyDetectionCheckTest {
         signal = Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(TEMPERATURES))
             .boxed().collect(Collectors.toList());
       } else if (checkName.equals(CheckNames.COTEDE_WOA_NORMBIAS.getName())) {
-        signal = Arrays.stream(CoTeDeWoaNormbias.computeNormBiases(
-            TIMESTAMP, LONGITUDE, LATITUDE, DEPTHS, TEMPERATURES, woaGetter
-        )).boxed().collect(Collectors.toList());
+        signal = CoTeDeWoaNormbias.computeNormbias(
+            LATITUDE, LONGITUDE, TEMPERATURES, DEPTHS, TIMESTAMP, woaParameters
+        ).stream().map(WoaNormbias::getValue).collect(Collectors.toList());
       } else if (checkName.equals(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName())) {
-        signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
-            TEMPERATURES, DEPTHS, LATITUDE, LONGITUDE, carsGetter
-        )).boxed().collect(Collectors.toList());
+        signal = CoTeDeCarsNormbias.computeNormbias(
+            LATITUDE, LONGITUDE, TEMPERATURES, DEPTHS, carsParameters
+        );
       } else if (checkName.equals(CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName())) {
         signal = Arrays.stream(ConstantClusterSize.computeClusterSizes(TEMPERATURES, 0.0D))
             .mapToDouble(v -> v)
@@ -181,7 +191,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
         throw new IllegalStateException("Invalid check");
       }
       Dataset<CastCheckResult> otherResult = spark.createDataset(
-          Arrays.asList(
+          Collections.singletonList(
               CastCheckResult.builder().withCastNumber(123)
                   .withPassed(true)
                   .withSignal(signal)
@@ -207,7 +217,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
   }
 
   @Test
-  public void testStandardDatasetFail() {
+  public void testStandardDatasetFail() throws InvalidRangeException, IOException {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -249,13 +259,13 @@ public class CoTeDeAnomalyDetectionCheckTest {
         signal = Arrays.stream(CoTeDeRateOfChange.computeRateOfChange(FAILING_TEMPERATURES))
             .boxed().collect(Collectors.toList());
       } else if (checkName.equals(CheckNames.COTEDE_WOA_NORMBIAS.getName())) {
-        signal = Arrays.stream(CoTeDeWoaNormbias.computeNormBiases(
-            TIMESTAMP, LONGITUDE, LATITUDE, DEPTHS, FAILING_TEMPERATURES, woaGetter
-        )).boxed().collect(Collectors.toList());
+        signal = CoTeDeWoaNormbias.computeNormbias(
+            LATITUDE, LONGITUDE, FAILING_TEMPERATURES, DEPTHS, TIMESTAMP, woaParameters
+        ).stream().map(WoaNormbias::getValue).collect(Collectors.toList());
       } else if (checkName.equals(CheckNames.COTEDE_CARS_NORMBIAS_CHECK.getName())) {
-        signal = Arrays.stream(CoTeDeCarsNormbias.computeCarsNormbiases(
-            FAILING_TEMPERATURES, DEPTHS, LATITUDE, LONGITUDE, carsGetter
-        )).boxed().collect(Collectors.toList());
+        signal = CoTeDeCarsNormbias.computeNormbias(
+            LATITUDE, LONGITUDE, FAILING_TEMPERATURES, DEPTHS, carsParameters
+        );
       } else if (checkName.equals(CheckNames.COTEDE_CONSTANT_CLUSTER_SIZE_CHECK.getName())) {
         signal = Arrays.stream(ConstantClusterSize.computeClusterSizes(FAILING_TEMPERATURES, 0.0D))
             .mapToDouble(v -> v)
@@ -264,7 +274,7 @@ public class CoTeDeAnomalyDetectionCheckTest {
         throw new IllegalStateException("Invalid check");
       }
       Dataset<CastCheckResult> otherResult = spark.createDataset(
-          Arrays.asList(
+          Collections.singletonList(
               CastCheckResult.builder().withCastNumber(123)
                   .withPassed(true)
                   .withSignal(signal)

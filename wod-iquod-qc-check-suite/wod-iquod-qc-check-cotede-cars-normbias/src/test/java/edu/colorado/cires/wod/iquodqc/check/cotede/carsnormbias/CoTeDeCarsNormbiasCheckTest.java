@@ -34,7 +34,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CoTeDeCarsNormbiasTestCheck {
+public class CoTeDeCarsNormbiasCheckTest {
 
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
@@ -133,20 +133,20 @@ public class CoTeDeCarsNormbiasTestCheck {
         .withPassed(true)
         .withFailedDepths(Collections.emptyList())
         .withSignal(List.of(
-            -0.3755207411415599,
-            -0.3992819035981976,
-            -0.3756556541231268,
-            -0.3800104462520952,
-            -0.49999956615563546,
-            0.05957937192485196,
-            0.07226606890532203,
-            0.0848320422684672,
-            0.12914816726466746,
-            1.308136596282899,
-            -8.697287447108117,
-            0.9686822541734523,
-            -0.42317719187139946,
-            0.9316753536524999,
+            -0.38019257069749013,
+            -0.39388567192177265,
+            -0.37565610075965755,
+            -0.3799254381742379,
+            -0.4762608025493148,
+            0.06060039754158271,
+            0.07226629854667979,
+            0.08483219688898401,
+            0.12914847336393787,
+            1.3081374269005843,
+            -8.640890659107448,
+            0.9686821986158043,
+            -0.4231785925487893,
+            0.931676201372987,
             Double.NaN
         ))
         .build();

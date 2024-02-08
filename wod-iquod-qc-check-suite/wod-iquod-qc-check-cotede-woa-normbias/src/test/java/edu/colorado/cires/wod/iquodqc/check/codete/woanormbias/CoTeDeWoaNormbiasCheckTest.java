@@ -1,9 +1,7 @@
 package edu.colorado.cires.wod.iquodqc.check.codete.woanormbias;
 
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.ORIGINATORS_FLAGS;
-import static edu.colorado.cires.wod.iquodqc.common.CastConstants.PROBE_TYPE;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
-import static edu.colorado.cires.wod.iquodqc.common.ProbeTypeConstants.XBT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
@@ -28,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,18 +44,13 @@ public class CoTeDeWoaNormbiasCheckTest {
   private static CastCheckContext context;
 
   @BeforeAll
-  public static void beforeAll() throws Exception {
+  public static void beforeAll() {
     spark = SparkSession
         .builder()
         .appName("test")
         .master("local[*]")
         .getOrCreate();
-    Properties properties = new Properties();
-    properties.put("woa_s1.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
-    properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
-    properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
-    properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
-    properties.put("data.dir", "../../test-data");
+    Properties properties = getProperties();
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -81,8 +75,19 @@ public class CoTeDeWoaNormbiasCheckTest {
     check.initialize(() -> properties);
   }
 
+  @NotNull
+  private static Properties getProperties() {
+    Properties properties = new Properties();
+    properties.put("woa_s1.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
+    properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
+    properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
+    properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
+    properties.put("data.dir", "../../test-data");
+    return properties;
+  }
+
   @AfterAll
-  public static void afterAll() throws Exception {
+  public static void afterAll() {
     spark.sparkContext().stop(0);
   }
 
@@ -93,12 +98,12 @@ public class CoTeDeWoaNormbiasCheckTest {
   }
 
   @AfterEach
-  public void after() throws Exception {
+  public void after() {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
 
   @Test
-  public void testInvalidPosition() throws Exception {
+  public void testInvalidPosition() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -107,13 +112,13 @@ public class CoTeDeWoaNormbiasCheckTest {
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())
         .withCastNumber(123)
         .withMonth(6)
-        .withAttributes(Arrays.asList(
+        .withAttributes(Collections.singletonList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
                 .withValue(1)
                 .build()
         ))
-        .withDepths(Arrays.asList(
+        .withDepths(Collections.singletonList(
             Depth.builder().withDepth(0D)
                 .withData(Collections.singletonList(ProfileData.builder()
                     .withOriginatorsFlag(0).withQcFlag(0)
@@ -142,7 +147,7 @@ public class CoTeDeWoaNormbiasCheckTest {
   }
 
   @Test
-  public void testStandardDataset() throws Exception {
+  public void testStandardDataset() {
     Cast cast = Cast.builder()
         .withDataset("TEST")
         .withGeohash("TEST")
@@ -151,7 +156,7 @@ public class CoTeDeWoaNormbiasCheckTest {
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())
         .withCastNumber(123)
         .withMonth(6)
-        .withAttributes(Arrays.asList(
+        .withAttributes(Collections.singletonList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
                 .withValue(1)
@@ -252,20 +257,20 @@ public class CoTeDeWoaNormbiasCheckTest {
         .withCastNumber(123)
         .withPassed(true)
         .withSignal(List.of(
-            0.45025003407245506,
-            0.5061250250727224,
-            0.4900165433272978,
-            0.48447533460094355,
-            0.3467310894280074,
-            -0.016745523800868065,
-            -0.0014712759957563638,
-            -0.01136694104027756,
-            -0.0309783850362738,
-            0.011471167226143936,
-            -5.149726369507143,
-            0.06433399160997574,
-            -0.2817472983554411,
-            -0.01527590149742825
+            0.0170755008399874,
+            0.04272566664546515,
+            0.032660694620077604,
+            0.04697188603222362,
+            0.11378466871759259,
+            0.21973130718802203,
+            0.18378288009772245,
+            0.06368034917899819,
+            -0.012417439811128205,
+            -0.04929516902953407,
+            -5.331450876195618,
+            -0.031357548742522716,
+            -0.22869667883215036,
+            -0.08657975849870081
         ))
         .build();
 

@@ -130,9 +130,7 @@ public class CoTeDeGtsppWoaNormbiasCheckTest {
         .withCastNumber(123)
         .withPassed(true)
         .withFailedDepths(new ArrayList<>(0))
-        .withSignal(Collections.singletonList(
-            Double.NaN
-        ))
+        .withSignal(Collections.emptyList())
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
@@ -252,22 +250,7 @@ public class CoTeDeGtsppWoaNormbiasCheckTest {
         .withCastNumber(123)
         .withPassed(false)
         .withFailedDepths(Arrays.asList(10))
-        .withSignal(List.of(
-            0.45025003407245506,
-            0.5061250250727224,
-            0.4900165433272978,
-            0.48447533460094355,
-            0.3467310894280074,
-            -0.016745523800868065,
-            -0.0014712759957563638,
-            -0.01136694104027756,
-            -0.0309783850362738,
-            0.011471167226143936,
-            -5.149726369507143,
-            0.06433399160997574,
-            -0.2817472983554411,
-            -0.01527590149742825
-        ))
+        .withSignal(Collections.emptyList())
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
