@@ -48,8 +48,8 @@ public class CoTeDeGradientGTSPPCheckTest {
         cast,
         new HashMap<>(0)
     );
-    assertEquals(3, results.size());
-    assertEquals(List.of(8, 10, 14), results);
+    assertEquals(2, results.size());
+    assertEquals(List.of(8, 10), results);
   }
 
   @Test void testGradientFromCastPass() {

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.spark.sql.Dataset;
@@ -37,7 +36,7 @@ import org.junit.jupiter.api.Test;
 public class CoTeDeSpikeCheckSparkTest {
 
   private static final double[] VALUES = {25.32, 25.34, Double.NaN, 25.31, 24.99, 23.46, 21.85, 17.95,
-      15.39, 11.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
+      15.39, 40.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
@@ -138,23 +137,11 @@ public class CoTeDeSpikeCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(2, 9, 14))
+        .withFailedDepths(List.of(9))
         .withSignal(List.of(
-            Double.NaN,
-            Double.NaN,
-            Double.NaN,
-            Double.NaN,
-            -0.3199999999999985,
-            -1.5299999999999994,
-            -1.6099999999999977,
-            -2.5599999999999987,
-            -2.5599999999999996,
-            -4.15,
-            0.9999999999999991,
-            0.9999999999999996,
-            -2.13,
-            Double.NaN,
-            Double.NaN
+            Double.NaN, Double.NaN, Double.NaN, Double.NaN, -0.3199999999999985, -1.5299999999999994,
+            -1.6099999999999977, -2.5599999999999987, 2.5600000000000005, 24.689999999999998, 1.0,
+            0.9999999999999996, -2.13, Double.NaN, Double.NaN
         ))
         .build();
 

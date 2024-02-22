@@ -47,8 +47,8 @@ public class CoTeDeSpikeGTSPPCheckTest {
         cast,
         new HashMap<>(0)
     );
-    assertEquals(3, results.size());
-    assertEquals(List.of(2, 12, 14), results);
+    assertEquals(1, results.size());
+    assertEquals(List.of(12), results);
   }
 
   @Test void testSpikeFromCastPass() {

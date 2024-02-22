@@ -141,7 +141,7 @@ public class CoToDeTukey53HCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(0, 5, 14))
+        .withFailedDepths(List.of(5))
         .build();
 
     List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();

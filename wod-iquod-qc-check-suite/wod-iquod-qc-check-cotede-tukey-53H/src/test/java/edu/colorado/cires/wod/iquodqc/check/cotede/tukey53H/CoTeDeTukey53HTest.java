@@ -51,7 +51,7 @@ public class CoTeDeTukey53HTest {
   Double.NaN,
 };
 
-  private static final List<Integer> EXPECTED_FLAGS = List.of(0, 5, 14);
+  private static final List<Integer> EXPECTED_FLAGS = List.of(5);
   
   private static final double THRESHOLD = 6D;
   

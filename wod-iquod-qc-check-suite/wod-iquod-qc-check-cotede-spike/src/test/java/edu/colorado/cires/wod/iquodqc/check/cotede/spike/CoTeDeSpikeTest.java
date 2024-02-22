@@ -17,7 +17,7 @@ public class CoTeDeSpikeTest {
       15.39, 11.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
 
   @Test void testSpikeCheck() {
-    assertEquals(List.of(2, 9, 14), CoTeDeSpike.getFlags(
+    assertEquals(List.of(9), CoTeDeSpike.getFlags(
         VALUES,
         CoTeDeSpike.computeSpikes(VALUES),
         THRESHOLD

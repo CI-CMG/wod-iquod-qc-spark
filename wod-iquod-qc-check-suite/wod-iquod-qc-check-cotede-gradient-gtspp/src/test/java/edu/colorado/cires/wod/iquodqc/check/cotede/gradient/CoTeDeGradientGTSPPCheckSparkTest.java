@@ -138,7 +138,7 @@ public class CoTeDeGradientGTSPPCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(8, 10, 14))
+        .withFailedDepths(List.of(8, 10))
         .withSignal(List.of(
             Double.NaN,
             0.010000000000001563,

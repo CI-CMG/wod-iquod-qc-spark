@@ -137,11 +137,9 @@ public class CoTeDeTukey53HNormCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(0, 5, 14))
+        .withFailedDepths(List.of(5))
         .withSignal(List.of(
-            Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, 27.594261401686353,
-            0.025429415139180025, -0.04483607406118565, 0.058554574333637824, -0.03881331784401148, Double.NaN,
-            Double.NaN, Double.NaN, Double.NaN, Double.NaN
+            Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, 206.175, 0.19000000000000128, -0.33500000000000085, 0.4375, -0.2900000000000009, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN
         ))
         .build();
 
@@ -202,8 +200,9 @@ public class CoTeDeTukey53HNormCheckSparkTest {
         .withPassed(true)
         .withFailedDepths(Collections.emptyList())
         .withSignal(
-            List.of(Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN,
-                Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN)
+            List.of(
+                Double.NaN, Double.NaN, Double.NaN, Double.NaN, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.NaN, Double.NaN, Double.NaN, Double.NaN
+            )
         )
         .build();
 

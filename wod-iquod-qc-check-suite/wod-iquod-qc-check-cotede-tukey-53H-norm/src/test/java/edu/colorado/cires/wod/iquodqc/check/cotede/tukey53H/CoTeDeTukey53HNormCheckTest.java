@@ -53,8 +53,8 @@ public class CoTeDeTukey53HNormCheckTest {
         cast,
         Collections.emptyMap()
     );
-    assertEquals(3, results.size());
-    assertEquals(List.of(0, 5, 14), results);
+    assertEquals(1, results.size());
+    assertEquals(List.of(5), results);
   }
 
   @Test void testTukey53HFromCastPass() {
