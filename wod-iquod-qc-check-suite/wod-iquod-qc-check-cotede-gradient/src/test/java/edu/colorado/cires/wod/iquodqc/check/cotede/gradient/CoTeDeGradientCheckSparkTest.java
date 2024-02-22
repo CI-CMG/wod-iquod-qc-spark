@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 public class CoTeDeGradientCheckSparkTest {
 
   private static final double[] VALUES = {25.32, 25.34, 25.34, 25.31, 24.99, 23.46, 21.85, 17.95,
-      15.39, 11.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
+      15.39, 1.08, 19.93, 7.93, 5.71, 3.58, Double.NaN};
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
 
@@ -138,7 +138,7 @@ public class CoTeDeGradientCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(10, 11, 14))
+        .withFailedDepths(List.of(9, 10))
         .withSignal(List.of(
             Double.NaN,
             0.010000000000001563,

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 public class CoTeDeGradientCheckTest {
 
   private static final double[] VALUES = {25.32, 25.34, 25.34, 25.31, 24.99, 23.46, 21.85, 17.95,
-      15.39, 11.08, 6.93, 7.93, 5.71, 3.58, Double.NaN};
+      15.39, 1.08, 19.93, 7.93, 5.71, 3.58, Double.NaN};
 
   @Test
   void testGradientFromCastTemperatureFailure() {
@@ -48,8 +48,8 @@ public class CoTeDeGradientCheckTest {
         cast,
         new HashMap<>(0)
     );
-    assertEquals(3, results.size());
-    assertEquals(List.of(10, 11, 14), results);
+    assertEquals(2, results.size());
+    assertEquals(List.of(9, 10), results);
   }
 
   @Test void testGradientFromCastPass() {
