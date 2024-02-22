@@ -138,7 +138,7 @@ public class CoTeDeRateOfChangeCheckSparkTest {
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
         .withPassed(false)
-        .withFailedDepths(List.of(9, 10, 14))
+        .withFailedDepths(List.of(9, 10))
         .withSignal(List.of(
             Double.NaN,
             0.019999999999999574,

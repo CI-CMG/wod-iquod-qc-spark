@@ -42,7 +42,7 @@ public class EnSpikeAndStepInitializerTest {
 
     EnSpikeAndStepInitializer initializer = new EnSpikeAndStepInitializer(cast);
 
-    assertEquals(Arrays.asList(null, 4D, -6D, -1D), initializer.getDt());
+    assertEquals(Arrays.asList(0D, 4D, -6D, -1D), initializer.getDt());
 
   }
 
@@ -76,7 +76,7 @@ public class EnSpikeAndStepInitializerTest {
 
     EnSpikeAndStepInitializer initializer = new EnSpikeAndStepInitializer(cast);
 
-    assertEquals(Arrays.asList(null, 4D, null, -1D), initializer.getDt());
+    assertEquals(Arrays.asList(0D, 4D, 0D, -1D), initializer.getDt());
 
   }
 

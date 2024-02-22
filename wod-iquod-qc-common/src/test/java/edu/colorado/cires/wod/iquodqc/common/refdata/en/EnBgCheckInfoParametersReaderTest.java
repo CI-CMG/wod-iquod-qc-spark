@@ -68,7 +68,7 @@ public class EnBgCheckInfoParametersReaderTest {
       writer.write("ob_err_var", Array.makeFromJavaArray(new float[1]));
     }
 
-    return ncFile.toString();
+    return "file://" + ncFile.toString();
   }
 
   @Test
