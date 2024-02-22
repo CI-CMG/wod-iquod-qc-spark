@@ -29,9 +29,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:CI-CMG/wod-ascii-to-parquet-spark.git</connection>
-    <developerConnection>scm:git:git@github.com:CI-CMG/wod-ascii-to-parquet-spark.git</developerConnection>
-    <url>https://github.com/CI-CMG/wod-ascii-to-parquet-spark</url>
+    <connection>scm:git:git@github.com:CI-CMG/wod-iquod-qc-spark.git</connection>
+    <developerConnection>scm:git:git@github.com:CI-CMG/wod-iquod-qc-spark.git</developerConnection>
+    <url>https://github.com/CI-CMG/wod-iquod-qc-spark</url>
     <tag>HEAD</tag>
   </scm>
 
