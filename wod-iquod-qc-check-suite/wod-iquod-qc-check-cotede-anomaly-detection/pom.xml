@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>edu.colorado.cires.wod</groupId>
+    <groupId>io.github.ci-cmg.wod</groupId>
     <artifactId>wod-iquod-qc-check-suite</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -13,36 +13,36 @@
   
   <dependencies>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-gradient</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-spike</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-tukey-53H</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-rate-of-change</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-constant-cluster-size</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-cars-normbias</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

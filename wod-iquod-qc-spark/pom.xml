@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>edu.colorado.cires.wod</groupId>
+    <groupId>io.github.ci-cmg.wod</groupId>
     <artifactId>wod-iquod-qc-spark-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -14,338 +14,338 @@
   <dependencies>
 
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-climatology</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-constant</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-gross</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-aoml-spike</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-density-inversion</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-global-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-impossible-date</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-impossible-location</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-pressure-increasing</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-regional-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-argo-spike</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-digit-rollover</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-global-range-gtspp</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-gradient-gtspp</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-gtspp-woa-normbias</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-location-at-sea</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-rate-of-change</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-spike</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-spike-gtspp</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-tukey-53H</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-tukey-53H-norm</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-woa-normbias</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-constant-bottom</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-depth</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-long-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-short-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-surface-spikes</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-csiro-wire-break</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-background</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-background-available</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-constant-value</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-increasing-depth</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-spike-and-step</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-spike-and-step-suspect</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-stability</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-en-std-lev-bkg-and-buddy</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-01-level-order</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-02-crude-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-04-max-obs-depth</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-05-stuck-value</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-06-n-temperature-extrema</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-07-spike-check</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-08-gradient-check</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-iquod-bottom</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-iquod-gross-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-loose-location-at-sea</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-min-max</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-profile-envelop-gtspp</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-wod-gradient</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-wod-range</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-09-climatology</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-icdc-aqc-10-climatology</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-constant-cluster-size</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-anomaly-detection</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-cotede-cars-normbias</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-htpr-group</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-lfpr-group</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-compromise-group</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-iquod-flags</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-add-result-to-cast</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-summary-report</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>edu.colorado.cires.wod</groupId>
+      <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-failure-report</artifactId>
       <version>${project.version}</version>
     </dependency>
