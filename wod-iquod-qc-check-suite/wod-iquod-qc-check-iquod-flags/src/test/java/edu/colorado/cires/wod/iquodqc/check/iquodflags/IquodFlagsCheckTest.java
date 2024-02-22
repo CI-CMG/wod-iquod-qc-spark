@@ -105,7 +105,7 @@ public class IquodFlagsCheckTest {
   @ParameterizedTest
   @ValueSource(strings = {
       "HTPR_check",
-      "LTPR_check",
+      "LFPR_check",
       "COMP_check",
       ""
   })
@@ -203,7 +203,7 @@ public class IquodFlagsCheckTest {
   @ParameterizedTest
   @ValueSource(strings = {
       "HTPR_check",
-      "LTPR_check",
+      "LFPR_check",
       "COMP_check",
       ""
   })
