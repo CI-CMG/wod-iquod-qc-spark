@@ -93,7 +93,7 @@ public class SparklerExecutor implements Runnable {
     
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
-        List<Integer> resolvedYears = YearResolver.resolveYears(years, s3, inputBucket, inputPrefix, dataset, processingLevel);
+        List<Integer> resolvedYears = YearResolver.resolveYears(years, s3, fs, inputBucket, inputPrefix, dataset, processingLevel);
         for (CastCheck check : checks) {
           for (int year : resolvedYears) {
             CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties, year);
