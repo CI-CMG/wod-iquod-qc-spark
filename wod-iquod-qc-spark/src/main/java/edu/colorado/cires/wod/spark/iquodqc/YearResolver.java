@@ -20,14 +20,16 @@ public class YearResolver {
 
   public static List<Integer> resolveYears(List<Integer> providedYears, S3Client s3, FileSystemType fs, String bucket, String keyPrefix, String dataset, String processingLevel) {
     if (providedYears == null || providedYears.isEmpty()) {
-      Pattern pattern = Pattern.compile(".*" + dataset + processingLevel.charAt(0) + "(\\d\\d\\d\\d)" + "\\.parquet/_SUCCESS$");
+      Pattern pattern;
       Set<String> set;
       if (fs == FileSystemType.local) {
+        pattern = Pattern.compile(".*" + dataset + processingLevel.charAt(0) + "(\\d\\d\\d\\d)" + "\\.parquet$");
         set = listFiles(bucket, keyPrefix == null ? "" : keyPrefix, (key) -> {
           Matcher matcher = pattern.matcher(key);
           return matcher.matches();
-        });
+        }, dataset, processingLevel);
       } else {
+        pattern = Pattern.compile(".*" + dataset + processingLevel.charAt(0) + "(\\d\\d\\d\\d)" + "\\.parquet/_SUCCESS$");
         set = listObjects(s3, bucket, keyPrefix == null ? "" : keyPrefix, (key) -> {
           Matcher matcher = pattern.matcher(key);
           return matcher.matches();
@@ -43,10 +45,10 @@ public class YearResolver {
     }
   }
 
-  private static Set<String> listFiles(String bucket, String keyPrefix, Predicate<String> filter) {
+  private static Set<String> listFiles(String bucket, String keyPrefix, Predicate<String> filter, String dataset, String processingLevel) {
     Set<String> keys = new TreeSet<>();
-    try (Stream<Path> stream = Files.walk(Paths.get(bucket).resolve(keyPrefix))) {
-      keys.addAll(stream.filter(Files::isRegularFile).map(Path::toString).filter(filter).collect(Collectors.toList()));
+    try (Stream<Path> stream = Files.list(Paths.get(bucket).resolve(keyPrefix).resolve(dataset).resolve(processingLevel))) {
+      keys.addAll(stream.filter(Files::isDirectory).map(Path::toString).filter(filter).collect(Collectors.toList()));
     } catch (IOException e) {
       throw new RuntimeException("Unable to list years", e);
     }

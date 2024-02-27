@@ -15,19 +15,19 @@ public class YearResolverTest {
   @Test
   public void testFile() throws Exception {
     Path dir = Paths.get("target/wod-test-parquet");
-    String path = "wod-parquet";
+    String path = "wod-parquet/yearly";
     String dataset = "CTD";
     String processingLevel = "OBS";
     FileUtils.deleteQuietly(dir.toFile());
-    Path parquetDir = dir.resolve(path).resolve("yearly").resolve(dataset).resolve(processingLevel).resolve("CTDO2022.parquet");
+    Path parquetDir = dir.resolve(path).resolve(dataset).resolve(processingLevel).resolve("CTDO2022.parquet");
     Files.createDirectories(parquetDir);
     Files.createFile(parquetDir.resolve("_SUCCESS"));
-    parquetDir = dir.resolve(path).resolve("yearly").resolve(dataset).resolve(processingLevel).resolve("CTDO2021.parquet");
+    parquetDir = dir.resolve(path).resolve(dataset).resolve(processingLevel).resolve("CTDO2021.parquet");
     Files.createDirectories(parquetDir);
     Files.createFile(parquetDir.resolve("_SUCCESS"));
-    parquetDir = dir.resolve(path).resolve("yearly").resolve(dataset).resolve(processingLevel).resolve("CTDO1900.parquet");
+    parquetDir = dir.resolve(path).resolve(dataset).resolve(processingLevel).resolve("CTDO1900.parquet");
     Files.createDirectories(parquetDir);
     Files.createFile(parquetDir.resolve("foo"));
-    assertEquals(Arrays.asList(2021, 2022) ,YearResolver.resolveYears(null, null, FileSystemType.local, dir.toString(), path, dataset, processingLevel));
+    assertEquals(Arrays.asList(1900, 2021, 2022) ,YearResolver.resolveYears(null, null, FileSystemType.local, dir.toString(), path, dataset, processingLevel));
   }
 }
