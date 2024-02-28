@@ -106,15 +106,14 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     joined.createOrReplaceTempView(TEMP_T);
     Dataset<Row> buddies = context.getSparkSession().sql(
         "select A.*, " +
-            "(select first(struct(C.*)) from "
+            "(select min_by(struct(C.*), distance) from "
             + "  (select struct(B.*) as result, " + DISTANCE + "(A.cast.longitude, A.cast.latitude, B.cast.longitude, B.cast.latitude) as distance "
             + "      from " + TEMP_T + " B "
             + "      where array_contains(" + GEOHASH + "(A.cast.longitude, A.cast.latitude), B.cast.geohash) "
-//            + "        and A.cast.year == B.cast.year "
+            + "        and A.cast.year == B.cast.year "
             + "        and A.cast.month = B.cast.month "
             + "        and A.cast.cruiseNumber != B.cast.cruiseNumber "
             + "        and A.cast.castNumber != B.cast.castNumber "
-            + "        order by distance asc"
             + "   ) C where C.distance <= " + MAX_DISTANCE_M + " "
             + " ) as buddy "
             + "from " + TEMP_T + " A");
