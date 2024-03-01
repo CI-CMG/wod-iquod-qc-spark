@@ -108,7 +108,7 @@ public class LowFalsePositiveRateGroupCheckTest {
       "IQuOD_gross_range_check",
       "ICDC_aqc_02_crude_range",
       "EN_background_check",
-//      "EN_std_lev_bkg_and_buddy_check",
+      "EN_std_lev_bkg_and_buddy_check",
       "EN_increasing_depth_check",
       "ICDC_aqc_05_stuck_value",
       "EN_spike_and_step_check",
