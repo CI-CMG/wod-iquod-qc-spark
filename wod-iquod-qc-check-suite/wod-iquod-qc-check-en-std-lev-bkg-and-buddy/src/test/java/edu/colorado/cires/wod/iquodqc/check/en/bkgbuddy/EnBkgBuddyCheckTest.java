@@ -305,9 +305,6 @@ public class EnBkgBuddyCheckTest {
       otherResult.write().parquet(TEMP_DIR.resolve(other + ".parquet").toString());
     }
 
-//    new EnBkgBuddyCheckTestWrapper(check).createQuery(context).explain();
-//    new EnBkgBuddyCheckTestWrapper(check).createQuery(context).show();
-
     List<Row> rows = new EnBkgBuddyCheckTestWrapper(check).createQuery(context).collectAsList();
     rows.sort(Comparator.comparingInt(o -> {
       Row cast = o.getStruct(o.fieldIndex("cast"));
@@ -340,21 +337,14 @@ public class EnBkgBuddyCheckTest {
     assertEquals(1, c1Ssc.getCastNumber());
     assertEquals(1, c1Sc.getCastNumber());
 
-//    Row c1Buddy = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
-//    Row c1Result = c1Buddy.getStruct(c1Buddy.fieldIndex("result"));
-//    Row c1Buddy = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
+
     Row c1Result = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
-//    double c1Distance = c1Buddy.getDouble(c1Buddy.fieldIndex("distance"));
     Cast c1b = Cast.builder(c1Result.getStruct(c1Result.fieldIndex("cast"))).build();
 
-//    Row c2Buddy = rows.get(1).getStruct(rows.get(1).fieldIndex("buddy"));
     Row c2Result = rows.get(1).getStruct(rows.get(1).fieldIndex("buddy"));
-//    double c2Distance = c2Buddy.getDouble(c2Buddy.fieldIndex("distance"));
     Cast c2b = Cast.builder(c2Result.getStruct(c2Result.fieldIndex("cast"))).build();
 
-//    Row c3Buddy = rows.get(2).getStruct(rows.get(2).fieldIndex("buddy"));
     Row c3Result = rows.get(2).getStruct(rows.get(2).fieldIndex("buddy"));
-//    double c3Distance = c3Buddy.getDouble(c3Buddy.fieldIndex("distance"));
     Cast c3b = Cast.builder(c3Result.getStruct(c3Result.fieldIndex("cast"))).build();
 
     Row c4Buddy= rows.get(3).getStruct(rows.get(3).fieldIndex("buddy"));
@@ -365,10 +355,6 @@ public class EnBkgBuddyCheckTest {
     assertTrue(Arrays.asList(1, 2).contains(c3b.getCastNumber()));
     assertNull(c4Buddy);
     assertNull(c5Buddy);
-
-//    assertTrue(c1Distance >= 0D);
-//    assertTrue(c2Distance >= 0D);
-//    assertTrue(c3Distance >= 0D);
 
     CastCheckResult c3Bg = CastCheckResult.builder(c2Result.getStruct(c2Result.fieldIndex(CheckNames.EN_BACKGROUND_CHECK.getName()))).build();
     CastCheckResult c3Cv = CastCheckResult.builder(c2Result.getStruct(c2Result.fieldIndex(CheckNames.EN_CONSTANT_VALUE_CHECK.getName()))).build();

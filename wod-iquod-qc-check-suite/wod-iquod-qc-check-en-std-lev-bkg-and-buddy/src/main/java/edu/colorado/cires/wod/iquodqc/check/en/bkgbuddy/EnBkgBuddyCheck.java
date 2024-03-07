@@ -153,21 +153,20 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
       CastCheckResult otherTestResult = CastCheckResult.builder(row.getStruct(row.fieldIndex(otherTestName))).build();
       otherTestResults.put(otherTestName, otherTestResult);
     }
+    Cast cast = filterFlags(Cast.builder(castRow).build());
     Cast buddy = null;
     double distance = -1D;
     Map<String, CastCheckResult> buddyOtherTestResults = new HashMap<>();
-    Row buddyRow = row.getStruct(row.fieldIndex("buddy"));
-    if (buddyRow != null) {
-      Row resultRow = buddyRow.getStruct(buddyRow.fieldIndex("result"));
-      distance = buddyRow.getDouble(buddyRow.fieldIndex("distance"));
+    Row resultRow = row.getStruct(row.fieldIndex("buddy"));
+    if (resultRow != null) {
       Row buddyCastRow = resultRow.getStruct(resultRow.fieldIndex("cast"));
       buddy = filterFlags(Cast.builder(buddyCastRow).build());
+      distance = getDistanceUdf(buddy.getLongitude(), buddy.getLatitude(), cast.getLongitude(), cast.getLatitude());
       for (String otherTestName : dependsOn()) {
         CastCheckResult otherTestResult = CastCheckResult.builder(resultRow.getStruct(resultRow.fieldIndex(otherTestName))).build();
         buddyOtherTestResults.put(otherTestName, otherTestResult);
       }
     }
-    Cast cast = filterFlags(Cast.builder(castRow).build());
     Collection<Integer> failed = getFailedDepths(cast, otherTestResults, buddy, buddyOtherTestResults, distance);
     return CastCheckResult.builder()
         .withCastNumber(cast.getCastNumber())
