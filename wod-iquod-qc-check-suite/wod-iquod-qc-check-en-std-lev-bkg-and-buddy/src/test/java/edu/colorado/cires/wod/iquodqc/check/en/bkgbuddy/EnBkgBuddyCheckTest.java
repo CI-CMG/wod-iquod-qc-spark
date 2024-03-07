@@ -86,6 +86,9 @@ public class EnBkgBuddyCheckTest {
         .builder()
         .appName("test")
         .master("local[*]")
+        .config("spark.sql.join.preferSortMergeJoin", false)
+        .config("spark.sql.autoBroadcastJoinThreshold", 2)
+//        .config("spark.sql.adaptive.maxShuffledHashJoinLocalMapThreshold", 1000)
         .getOrCreate();
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
@@ -337,19 +340,21 @@ public class EnBkgBuddyCheckTest {
     assertEquals(1, c1Ssc.getCastNumber());
     assertEquals(1, c1Sc.getCastNumber());
 
-    Row c1Buddy = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
-    Row c1Result = c1Buddy.getStruct(c1Buddy.fieldIndex("result"));
-    double c1Distance = c1Buddy.getDouble(c1Buddy.fieldIndex("distance"));
+//    Row c1Buddy = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
+//    Row c1Result = c1Buddy.getStruct(c1Buddy.fieldIndex("result"));
+//    Row c1Buddy = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
+    Row c1Result = rows.get(0).getStruct(rows.get(0).fieldIndex("buddy"));
+//    double c1Distance = c1Buddy.getDouble(c1Buddy.fieldIndex("distance"));
     Cast c1b = Cast.builder(c1Result.getStruct(c1Result.fieldIndex("cast"))).build();
 
-    Row c2Buddy = rows.get(1).getStruct(rows.get(1).fieldIndex("buddy"));
-    Row c2Result = c2Buddy.getStruct(c2Buddy.fieldIndex("result"));
-    double c2Distance = c2Buddy.getDouble(c2Buddy.fieldIndex("distance"));
+//    Row c2Buddy = rows.get(1).getStruct(rows.get(1).fieldIndex("buddy"));
+    Row c2Result = rows.get(1).getStruct(rows.get(1).fieldIndex("buddy"));
+//    double c2Distance = c2Buddy.getDouble(c2Buddy.fieldIndex("distance"));
     Cast c2b = Cast.builder(c2Result.getStruct(c2Result.fieldIndex("cast"))).build();
 
-    Row c3Buddy = rows.get(2).getStruct(rows.get(2).fieldIndex("buddy"));
-    Row c3Result = c3Buddy.getStruct(c3Buddy.fieldIndex("result"));
-    double c3Distance = c3Buddy.getDouble(c3Buddy.fieldIndex("distance"));
+//    Row c3Buddy = rows.get(2).getStruct(rows.get(2).fieldIndex("buddy"));
+    Row c3Result = rows.get(2).getStruct(rows.get(2).fieldIndex("buddy"));
+//    double c3Distance = c3Buddy.getDouble(c3Buddy.fieldIndex("distance"));
     Cast c3b = Cast.builder(c3Result.getStruct(c3Result.fieldIndex("cast"))).build();
 
     Row c4Buddy= rows.get(3).getStruct(rows.get(3).fieldIndex("buddy"));
@@ -361,9 +366,9 @@ public class EnBkgBuddyCheckTest {
     assertNull(c4Buddy);
     assertNull(c5Buddy);
 
-    assertTrue(c1Distance >= 0D);
-    assertTrue(c2Distance >= 0D);
-    assertTrue(c3Distance >= 0D);
+//    assertTrue(c1Distance >= 0D);
+//    assertTrue(c2Distance >= 0D);
+//    assertTrue(c3Distance >= 0D);
 
     CastCheckResult c3Bg = CastCheckResult.builder(c2Result.getStruct(c2Result.fieldIndex(CheckNames.EN_BACKGROUND_CHECK.getName()))).build();
     CastCheckResult c3Cv = CastCheckResult.builder(c2Result.getStruct(c2Result.fieldIndex(CheckNames.EN_CONSTANT_VALUE_CHECK.getName()))).build();
