@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.github.ci-cmg.wod</groupId>
     <artifactId>wod-iquod-qc-check-suite</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
   </parent>
 
   <artifactId>wod-iquod-qc-check-csiro-wire-break</artifactId>
