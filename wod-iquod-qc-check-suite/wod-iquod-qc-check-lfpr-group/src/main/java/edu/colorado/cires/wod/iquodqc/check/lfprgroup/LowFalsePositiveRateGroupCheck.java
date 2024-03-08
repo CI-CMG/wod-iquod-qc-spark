@@ -23,7 +23,7 @@ public class LowFalsePositiveRateGroupCheck extends GroupCastCheck {
         CheckNames.WOD_RANGE_CHECK.getName(),
         CheckNames.ICDC_AQC_02_CRUDE_RANGE.getName(),
         CheckNames.EN_BACKGROUND_CHECK.getName(),
-        CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName(),
+//        CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName(),
         CheckNames.EN_INCREASING_DEPTH_CHECK.getName(),
         CheckNames.ICDC_AQC_05_STUCK_VALUE.getName(),
         CheckNames.EN_SPIKE_AND_STEP_CHECK.getName(),
