@@ -114,7 +114,7 @@ public class HighTruePositiveRateGroupCheckTest {
       "ICDC_aqc_10_climatology_check",
       "CoTeDe_GTSPP_WOA_normbias",
       "AOML_climatology_test",
-//      "EN_std_lev_bkg_and_buddy_check",
+      "EN_std_lev_bkg_and_buddy_check",
       "EN_constant_value_check",
       "CSIRO_constant_bottom",
       "AOML_constant",

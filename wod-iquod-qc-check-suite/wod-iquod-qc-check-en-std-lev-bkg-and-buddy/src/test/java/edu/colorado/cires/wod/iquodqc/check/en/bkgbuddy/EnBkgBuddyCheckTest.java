@@ -7,7 +7,6 @@ import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
@@ -41,8 +41,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 
 public class EnBkgBuddyCheckTest {
+
+  GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
   private static class EnBkgBuddyCheckTestWrapper extends EnBkgBuddyCheck {
     private final EnBkgBuddyCheck check;
@@ -82,14 +87,10 @@ public class EnBkgBuddyCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .config("spark.sql.join.preferSortMergeJoin", false)
-        .config("spark.sql.autoBroadcastJoinThreshold", 2)
-//        .config("spark.sql.adaptive.maxShuffledHashJoinLocalMapThreshold", 1000)
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
     properties.put("data.dir", "../../test-data");
@@ -151,6 +152,7 @@ public class EnBkgBuddyCheckTest {
             .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(12.9)
+            .withLocation(geometryFactory.createPoint(new Coordinate(12.9, 55.6)))
             .withGeohash("u3c")
             .withYear((short) 1900)
             .withMonth((short) 1)
@@ -178,6 +180,7 @@ public class EnBkgBuddyCheckTest {
             .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15)
+            .withLocation(geometryFactory.createPoint(new Coordinate(15, 55.6)))
             .withGeohash("u3c")
             .withYear((short) 1900)
             .withMonth((short) 1)
@@ -205,6 +208,7 @@ public class EnBkgBuddyCheckTest {
             .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15.3)
+            .withLocation(geometryFactory.createPoint(new Coordinate(15.3, 55.6)))
             .withGeohash("u3c")
             .withYear((short) 1900)
             .withMonth((short) 1)
@@ -232,6 +236,7 @@ public class EnBkgBuddyCheckTest {
             .withGeohash("TEST")
             .withLatitude(55.6)
             .withLongitude(15.1)
+            .withLocation(geometryFactory.createPoint(new Coordinate(15.1, 55.6)))
             .withGeohash("u3c")
             .withYear((short) 1900)
             .withMonth((short) 2)
@@ -259,6 +264,7 @@ public class EnBkgBuddyCheckTest {
             .withGeohash("TEST")
             .withLatitude(56.3)
             .withLongitude(15.1)
+            .withLocation(geometryFactory.createPoint(new Coordinate(15.1, 56.3)))
             .withGeohash("u3c")
             .withYear((short) 1900)
             .withMonth((short) 2)
@@ -379,6 +385,7 @@ public class EnBkgBuddyCheckTest {
         .withGeohash("TEST")
         .withLatitude(55.6)
         .withLongitude(12.9)
+        .withLocation(geometryFactory.createPoint(new Coordinate(12.9, 55.6)))
         .withGeohash("u3c")
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -419,6 +426,7 @@ public class EnBkgBuddyCheckTest {
         .withGeohash("TEST")
         .withLatitude(0D)
         .withLongitude(0D)
+        .withLocation(geometryFactory.createPoint(new Coordinate(0, 0)))
         .withGeohash("s00")
         .withYear((short) 1999)
         .withMonth((short) 12)
@@ -516,6 +524,7 @@ public class EnBkgBuddyCheckTest {
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
+        .withLocation(geometryFactory.createPoint(new Coordinate(17.650000, -39.889)))
         .withYear((short) 2000)
         .withMonth((short) 1)
         .withDay((short) 15)
@@ -643,6 +652,7 @@ public class EnBkgBuddyCheckTest {
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
+        .withLocation(geometryFactory.createPoint(new Coordinate(2.658, -30.229)))
         .withGeohash("k49")
         .withYear((short) 2000)
         .withMonth((short) 1)
@@ -730,6 +740,7 @@ public class EnBkgBuddyCheckTest {
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)
+        .withLocation(geometryFactory.createPoint(new Coordinate(-0.752, -28.36)))
         .withGeohash("7fz")
         .withYear((short) 2000)
         .withMonth((short) 1)
@@ -863,6 +874,7 @@ public class EnBkgBuddyCheckTest {
         .withCastNumber(1)
         .withLatitude(124.0)
         .withLongitude(17.650000)
+        .withLocation(geometryFactory.createPoint(new Coordinate(17.650000, 124.0)))
         .withYear((short) 2000)
         .withMonth((short) 1)
         .withDay((short) 15)
@@ -994,6 +1006,7 @@ public class EnBkgBuddyCheckTest {
         .withTime(1D)
         .withLongitude(-75.1667)
         .withLatitude(19.3)
+        .withLocation(geometryFactory.createPoint(new Coordinate(-75.1667, 19.3)))
         .withProfileType(0)
         .withGeohash("d76")
         .withVariables(Arrays.asList(
@@ -1113,6 +1126,7 @@ public class EnBkgBuddyCheckTest {
         .withTime(19D)
         .withLongitude(-75.1833)
         .withLatitude(19.7667)
+        .withLocation(geometryFactory.createPoint(new Coordinate(-75.1833, 19.7667)))
         .withProfileType(0)
         .withGeohash("d7d")
         .withVariables(Arrays.asList(

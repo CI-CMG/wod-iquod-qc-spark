@@ -3,7 +3,6 @@ package edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy;
 import static edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy.BuddyCheckFunctions.buddyCovariance;
 import static edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy.BuddyCheckFunctions.determinePge;
 import static edu.colorado.cires.wod.iquodqc.common.CastConstants.TEMPERATURE;
-import static org.apache.spark.sql.functions.udf;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
@@ -29,26 +28,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.annotation.Nullable;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.api.java.UDF2;
-import org.apache.spark.sql.api.java.UDF4;
-import org.apache.spark.sql.types.DataTypes;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Coordinate;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EnBkgBuddyCheck extends CommonCastCheck {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(EnBkgBuddyCheck.class);
   private static final int MAX_DISTANCE_M = 400000;
-  private static final CoordinateReferenceSystem EPSG_4326;
   private static EnBgCheckInfoParameters parameters;
   private static ParameterDataReader parameterData;
   private static EnBackgroundChecker enBackgroundChecker;
@@ -56,24 +41,17 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   private static List<Double> slev;
   private static List<Double> obev;
   private static final String NAME = CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName();
-  private static final String DISTANCE = NAME + "_distance";
-  private static final String GEOHASH = NAME + "_geohash";
   private static final String TEMP_T = NAME + "_t";
-
+  private static final String TEMP_NEIGHBORS = NAME + "_neighbors";
+  private static final String TEMP_BUDDIES = NAME + "_buddies";
 
   private static final Collection<String> DEPENDS_ON;
 
   static {
-    try {
-      EPSG_4326 = CRS.decode("EPSG:4326");
-    } catch (FactoryException e) {
-      throw new RuntimeException("Unable to determine CRS", e);
-    }
     List<String> dependsOn = new ArrayList<>(StdLevelResolver.OTHER_TESTS);
     dependsOn.add(CheckNames.EN_SPIKE_AND_STEP_SUSPECT.getName());
     DEPENDS_ON = Collections.unmodifiableList(dependsOn);
   }
-
 
   private Properties properties;
 
@@ -81,19 +59,6 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   public String getName() {
     return NAME;
   }
-
-  @Override
-  protected void registerUdf(CastCheckContext context) {
-    super.registerUdf(context);
-    SparkSession spark = context.getSparkSession();
-    if (!spark.catalog().functionExists(DISTANCE)) {
-      spark.udf().register(DISTANCE, udf((UDF4<Double, Double, Double, Double, Double>) this::getDistanceUdf, DataTypes.DoubleType));
-    }
-    if (!spark.catalog().functionExists(GEOHASH)) {
-      spark.udf().register(GEOHASH, udf((UDF2<Double, Double, List<String>>) this::getGeoHashesUdf, DataTypes.createArrayType(DataTypes.StringType)));
-    }
-  }
-
 
   @Override
   public Collection<String> dependsOn() {
@@ -104,41 +69,34 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   protected Dataset<Row> createQuery(CastCheckContext context) {
     Dataset<Row> joined = super.createQuery(context);
     joined.createOrReplaceTempView(TEMP_T);
+
+    // Use distance join to find all pairs within a minimum distance (https://sedona.apache.org/1.5.2/api/sql/Optimizer/#distance-join)
+    Dataset<Row> neighbors = context.getSparkSession().sql(
+        "select struct(A.*) as source, struct(B.*) as buddy, ST_DistanceSphere(A.cast.location, B.cast.location) as distance "
+            + " from " + TEMP_T + " A, " + TEMP_T + " B"
+            + " where ST_DistanceSphere(A.cast.location, B.cast.location) < " + MAX_DISTANCE_M
+    );
+    neighbors.createOrReplaceTempView(TEMP_NEIGHBORS);
+
+    // Filter out non-relevant buddies
     Dataset<Row> buddies = context.getSparkSession().sql(
-        "select A.*, " +
-            "(select any_value(struct(B.*), false) "
-            + "      from " + TEMP_T + " B "
-            + "      where A.cast.geohash = B.cast.geohash "
-            + "        and A.cast.year == B.cast.year "
-            + "        and A.cast.month = B.cast.month "
-            + "        and A.cast.cruiseNumber != B.cast.cruiseNumber "
-            + "        and A.cast.castNumber != B.cast.castNumber "
-            + " ) as buddy "
-            + "from " + TEMP_T + " A");
-    return buddies;
+        "select source.cast.castNumber as castNumber, min_by(buddy, distance) as buddy, min(distance) as distance"
+            + " from " + TEMP_NEIGHBORS
+            + " where source.cast.year == buddy.cast.year"
+            + " and source.cast.month == buddy.cast.month"
+            + " and source.cast.cruiseNumber != buddy.cast.cruiseNumber group by source.cast.castNumber");
+    buddies.createOrReplaceTempView(TEMP_BUDDIES);
+
+    // Join buddies back to parent table
+    return context.getSparkSession().sql(
+        "select source.*, buds.buddy as buddy, buds.distance as distance"
+            + " from " + TEMP_T + " source"
+            + " left outer join " + TEMP_BUDDIES + " buds on source.cast.castNumber == buds.castNumber");
   }
 
   @Override
   public void initialize(CastCheckInitializationContext initContext) {
     properties = initContext.getProperties();
-  }
-
-  private double getDistanceUdf(double lon1, double lat1, double lon2, double lat2) {
-    try {
-      return JTS.orthodromicDistance(new Coordinate(lat1, lon1), new Coordinate(lat2, lon2), EPSG_4326);
-    } catch (Exception e) {
-      LOGGER.warn("{}: Unable to calculate distance: (" + lon1 + "," + lat1 + ") -> (" + lon2 + "," + lat2 + ") " + ExceptionUtils.getStackTrace(e), getName());
-      return MAX_DISTANCE_M + 1;
-    }
-  }
-
-  private List<String> getGeoHashesUdf(double lon, double lat) {
-    try {
-      return new ArrayList<>(GeoHashFinder.getNeighborsInDistance(lon, lat, MAX_DISTANCE_M));
-    } catch (Exception e) {
-      LOGGER.warn("{}: Unable to calculate geohash for " + lon + " lon, " + lat + " lat " + ExceptionUtils.getStackTrace(e), getName());
-      return Collections.emptyList();
-    }
   }
 
   @Override
@@ -161,7 +119,7 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     if (resultRow != null) {
       Row buddyCastRow = resultRow.getStruct(resultRow.fieldIndex("cast"));
       buddy = filterFlags(Cast.builder(buddyCastRow).build());
-      distance = getDistanceUdf(buddy.getLongitude(), buddy.getLatitude(), cast.getLongitude(), cast.getLatitude());
+      distance = row.getDouble(row.fieldIndex("distance"));
       for (String otherTestName : dependsOn()) {
         CastCheckResult otherTestResult = CastCheckResult.builder(resultRow.getStruct(resultRow.fieldIndex(otherTestName))).build();
         buddyOtherTestResults.put(otherTestName, otherTestResult);
@@ -214,7 +172,6 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
 
   private Collection<Integer> getFailedDepths(Cast cast, Map<String, CastCheckResult> otherTestResults, @Nullable Cast buddy, Map<String, CastCheckResult> buddyOtherTestResults, double distance) {
 
-//    try {
       Set<Integer> failures = new TreeSet<>();
 
       TreeMap<Integer, StdLevel> pgeLevels = new TreeMap<>();
@@ -264,17 +221,6 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
       }
 
       return failures;
-//    } catch (RuntimeException e) {
-//      StringBuilder stringBuilder = new StringBuilder();
-//      stringBuilder.append("cast: ").append(cast);
-//      stringBuilder.append("\notherTestResults: ").append(otherTestResults);
-//      stringBuilder.append("\nbuddy: ").append(buddy);
-//      stringBuilder.append("\nbuddyOtherTestResults: ").append(buddyOtherTestResults);
-//      stringBuilder.append("\ndistance: ").append(distance);
-//      System.out.println(stringBuilder);
-//      throw e;
-//    }
-
   }
 
   protected void reinstateLevels(Cast cast, TreeMap<Integer, StdLevel> pgeLevels, List<Double> bgsl, List<Double> slev) {
