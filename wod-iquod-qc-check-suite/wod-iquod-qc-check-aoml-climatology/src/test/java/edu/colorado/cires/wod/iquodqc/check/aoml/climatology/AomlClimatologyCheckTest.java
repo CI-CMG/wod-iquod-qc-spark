@@ -50,7 +50,7 @@ class AomlClimatologyCheckTest {
         .master("local[*]")
         .getOrCreate());
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "https://wod-test-resources.s3.amazonaws.com/2024-02/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override
