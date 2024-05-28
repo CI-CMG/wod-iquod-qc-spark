@@ -50,7 +50,7 @@ class AomlClimatologyCheckTest {
         .master("local[*]")
         .getOrCreate());
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "ftp://anonymous:anonymous@ftp.aoml.noaa.gov/phod/pub/bringas/XBT/AQC/AOML_AQC_2018/data_center/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override

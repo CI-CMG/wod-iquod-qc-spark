@@ -14,7 +14,7 @@ public class ParametersReaderTest {
   @Test
   public void testRead() throws Exception {
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "ftp://ftp.aoml.noaa.gov/phod/pub/bringas/XBT/AQC/AOML_AQC_2018/data_center/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     WoaDataHolder dataHolder = ParametersReader.loadParameters(properties);
     double longitude = 0d;
@@ -32,7 +32,7 @@ public class ParametersReaderTest {
   @Test
   public void testRead2() throws Exception {
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "ftp://ftp.aoml.noaa.gov/phod/pub/bringas/XBT/AQC/AOML_AQC_2018/data_center/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     WoaDataHolder dataHolder = ParametersReader.loadParameters(properties);
     double latitude = 88.7088;
@@ -53,7 +53,7 @@ public class ParametersReaderTest {
   @Test
   public void testRead3() throws Exception {
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "ftp://ftp.aoml.noaa.gov/phod/pub/bringas/XBT/AQC/AOML_AQC_2018/data_center/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     WoaDataHolder dataHolder = ParametersReader.loadParameters(properties);
     double latitude = 83.587;
@@ -77,7 +77,7 @@ public class ParametersReaderTest {
 
 
     Properties properties = new Properties();
-    properties.put("woa13_00_025.netcdf.uri", "ftp://ftp.aoml.noaa.gov/phod/pub/bringas/XBT/AQC/AOML_AQC_2018/data_center/woa13_00_025.nc");
+    properties.put("woa13_00_025.netcdf.uri", "s3://wod-test-parquet/resources/woa13_00_025.nc");
     properties.put("data.dir", "../../test-data");
     WoaDataHolder dataHolder = ParametersReader.loadParameters(properties);
     double latitude = 49.329;
