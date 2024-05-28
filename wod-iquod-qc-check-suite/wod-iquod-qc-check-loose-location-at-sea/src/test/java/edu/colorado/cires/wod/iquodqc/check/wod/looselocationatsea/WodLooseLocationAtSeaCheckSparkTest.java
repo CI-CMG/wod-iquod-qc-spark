@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -44,11 +45,10 @@ public class WodLooseLocationAtSeaCheckSparkTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put("etopo5.netcdf.uri",
         "https://pae-paha.pacioos.hawaii.edu/thredds/ncss/etopo5?var=ROSE&disableLLSubset=on&disableProjSubset=on&horizStride=1&addLatLon=true");
@@ -98,8 +98,9 @@ public class WodLooseLocationAtSeaCheckSparkTest {
   
   @Test void testPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(-4.1)
         .withLongitude(-38.15)
         .withYear((short) 1900)
@@ -142,8 +143,9 @@ public class WodLooseLocationAtSeaCheckSparkTest {
   
   @Test void testFail() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(-4.10566666667)
         .withLongitude(-39)
         .withYear((short) 1900)

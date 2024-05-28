@@ -26,6 +26,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -56,11 +57,10 @@ public class IquodFlagsCheckTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     context = new CastCheckContext() {
       @Override
@@ -111,9 +111,10 @@ public class IquodFlagsCheckTest {
   })
   public void testBasicProbeType(@NonNls String failingTest) {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
-        .withLongitude(LONGITUDE)
+                .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)
         .withCastNumber(123)
@@ -209,8 +210,9 @@ public class IquodFlagsCheckTest {
   })
   public void testXBTProbeType(@NonNls String failingTest) {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)
@@ -305,8 +307,9 @@ public class IquodFlagsCheckTest {
   @Test
   public void testBasicProbeTypeMixedFailures() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)
@@ -393,13 +396,16 @@ public class IquodFlagsCheckTest {
   @Test
   public void testXBTProbeTypeMixedFailures() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
-        .withLongitude(LONGITUDE)
+                .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)
         .withCastNumber(123)
+        .withYear(1970)
         .withMonth(6)
+        .withDay(1)
         .withAttributes(List.of(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)

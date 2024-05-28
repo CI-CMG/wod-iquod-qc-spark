@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class CsiroSurfaceSpikesCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,8 +85,10 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesFailed1() throws Exception{
     // failed to flag a collection of shallow profiles
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -148,8 +150,10 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesProbeType() throws Exception{
     // flagged shallow profiles for an inappropriate probe type
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -211,8 +215,10 @@ class CsiroSurfaceSpikesCheckTest {
   public void testCsiroSurfaceSpikesNoClusters() throws Exception{
     // flagged shallow profile without a cluster
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

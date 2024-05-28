@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class AomlConstantCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,8 +85,9 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckFailedConstantTemp() throws Exception{
     // failed to flag constant temperature
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -148,8 +149,9 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckFailedMissingTemp() throws Exception{
     // failed to ignore masked value correctly
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -210,8 +212,9 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckSingleDepth() throws Exception{
     // flagged single level profile
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -260,8 +263,9 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckOneTemp() throws Exception{
     // flagged profile with only a single unmasked level
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -316,8 +320,9 @@ class AomlConstantCheckTest {
   public void testAomlConstantCheckMultipleTemp() throws Exception{
     // flagged two different temperatures
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

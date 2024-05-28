@@ -54,6 +54,10 @@ class DepthDataTest {
   public void testLevelOrderSimple() {
     int castNumber = 888;
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withCastNumber(castNumber)
         .withYear((short) 1900)
         .withMonth((short) 1)

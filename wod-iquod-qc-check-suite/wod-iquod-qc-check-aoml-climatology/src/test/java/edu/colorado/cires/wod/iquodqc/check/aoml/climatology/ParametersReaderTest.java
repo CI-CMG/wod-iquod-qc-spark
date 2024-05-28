@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.OptionalDouble;
 import java.util.Properties;
-import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.nc2.NetcdfFile;
 
 public class ParametersReaderTest {

@@ -25,6 +25,12 @@ public class CoTeDeRateOfChangeCheckTest {
   @Test
   void testRateOfChangeFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(VALUES)
                 .mapToObj(t -> Depth.builder().withDepth(100D)
@@ -55,6 +61,12 @@ public class CoTeDeRateOfChangeCheckTest {
   @Test
   void testRateOfChangeFromCastPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(VALUES)
                 .mapToObj(v -> Depth.builder().withDepth(100D)

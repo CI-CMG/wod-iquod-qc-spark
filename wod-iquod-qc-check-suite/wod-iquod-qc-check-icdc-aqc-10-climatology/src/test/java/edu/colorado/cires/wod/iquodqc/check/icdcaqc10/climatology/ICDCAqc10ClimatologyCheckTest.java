@@ -46,6 +46,9 @@ public class ICDCAqc10ClimatologyCheckTest {
   })
   public void testRanges(double temperature, double depth, boolean shouldPass) {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withLatitude(50.0)
         .withLongitude(-180.0)
         .withTimestamp(
@@ -81,12 +84,15 @@ public class ICDCAqc10ClimatologyCheckTest {
   @CsvSource({
       "-80,0,true",
       "-70,0,false",
-      "-70,-182,true",
-      "-70,362,true",
-      "-70,182,false",
+      /* "-70,-182,true", */ // validation was added to geoparquet builder
+      /* "-70,362,true", */  // validation was added to geoparquet builder
+      /* "-70,182,false", */ // validation was added to geoparquet builder
   })
   public void testLocations(double latitude, double longitude, boolean shouldPass) {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withLatitude(latitude)
         .withLongitude(longitude)
         .withTimestamp(

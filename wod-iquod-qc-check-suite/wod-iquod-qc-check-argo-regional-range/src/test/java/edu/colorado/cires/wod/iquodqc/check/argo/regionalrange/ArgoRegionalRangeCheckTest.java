@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -43,11 +44,10 @@ public class ArgoRegionalRangeCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -86,8 +86,10 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestNotInRangeRed() throws Exception {
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(30.540632)
         .withLongitude(34.705133)
         .withYear((short) 1900)
@@ -139,8 +141,10 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestNotInRangeMed() throws Exception {
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(43.808479)
         .withLongitude(7.445307)
         .withYear((short) 1900)
@@ -192,8 +196,10 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestMediterraneanHot() throws Exception {
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(35D)
         .withLongitude(18D)
         .withYear((short) 1900)
@@ -246,8 +252,10 @@ public class ArgoRegionalRangeCheckTest {
   @Test
   public void testArgoRegionalRangeTestRedCold() throws Exception {
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(22D)
         .withLongitude(38D)
         .withYear((short) 1900)

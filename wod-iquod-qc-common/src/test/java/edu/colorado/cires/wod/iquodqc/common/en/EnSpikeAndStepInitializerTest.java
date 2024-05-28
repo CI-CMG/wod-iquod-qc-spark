@@ -15,7 +15,11 @@ public class EnSpikeAndStepInitializerTest {
   @Test
   public void testEnSpikeAndStepCheckComposeDtNominal() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -49,7 +53,11 @@ public class EnSpikeAndStepInitializerTest {
   @Test
   public void testEnSpikeAndStepCheckComposeDtGap() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)

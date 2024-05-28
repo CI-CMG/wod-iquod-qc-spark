@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -40,11 +41,10 @@ class IcdcAqc02CrudeRangeCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -110,10 +110,15 @@ example1 = np.array([
 [ 2027.0,    48.800,  1]])
      */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(1)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -210,10 +215,15 @@ example2 = np.array([
 [  356.0,    36.140,  1]])
      */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -343,10 +353,15 @@ example3 = np.array([
 [ 5021.8,     7.290,  2]])
      */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -517,10 +532,15 @@ example4 = np.array([
 [  610.2,     1.393,  0]])
      */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -619,10 +639,15 @@ example5 = np.array([
 [  140.0,    14.700,  0]])
     */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -736,10 +761,15 @@ example6 = np.array([
 [  326.0,    28.390,  2]])
     */
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)

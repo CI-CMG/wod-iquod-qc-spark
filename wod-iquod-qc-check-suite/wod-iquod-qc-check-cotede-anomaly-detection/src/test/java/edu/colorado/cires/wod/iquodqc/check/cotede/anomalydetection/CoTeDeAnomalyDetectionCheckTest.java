@@ -38,6 +38,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -72,11 +73,10 @@ public class CoTeDeAnomalyDetectionCheckTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = getProperties();
     context = new CastCheckContext() {
       @Override
@@ -136,8 +136,10 @@ public class CoTeDeAnomalyDetectionCheckTest {
   @Test
   public void testStandardDatasetPass() throws InvalidRangeException, IOException {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)
@@ -219,8 +221,10 @@ public class CoTeDeAnomalyDetectionCheckTest {
   @Test
   public void testStandardDatasetFail() throws InvalidRangeException, IOException {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)

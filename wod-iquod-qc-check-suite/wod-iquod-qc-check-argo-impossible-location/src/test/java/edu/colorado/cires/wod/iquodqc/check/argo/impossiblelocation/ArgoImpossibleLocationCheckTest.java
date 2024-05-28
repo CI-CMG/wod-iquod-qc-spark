@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ public class ArgoImpossibleLocationCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -83,11 +83,19 @@ public class ArgoImpossibleLocationCheckTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"-180.1,0,true", "180.1,0,true", "0,-90.1,true", "0,90.1,true", "40,50,false"})
+  @CsvSource({
+      /*"-180.1,0,true",*/ // disabled as validation was added to Cast builder
+      /*"180.1,0,true",*/  // disabled as validation was added to Cast builder
+      /*"0,-90.1,true",*/ // disabled as validation was added to Cast builder
+      /*"0,90.1,true",*/  // disabled as validation was added to Cast builder
+      "40,50,false"})
   public void test(double lon, double lat, boolean failed) throws Exception {
     Cast cast = Cast.builder()
+        .withCastNumber(123)
+        .withCruiseNumber(111)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(lon)
         .withLatitude(lat)
         .withMonth(1)

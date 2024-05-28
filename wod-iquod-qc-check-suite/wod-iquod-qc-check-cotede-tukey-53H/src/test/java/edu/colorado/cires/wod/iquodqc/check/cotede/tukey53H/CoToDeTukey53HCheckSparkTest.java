@@ -28,6 +28,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -51,11 +52,10 @@ public class CoToDeTukey53HCheckSparkTest {
 
   @BeforeAll
   static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -94,8 +94,10 @@ public class CoToDeTukey53HCheckSparkTest {
   @Test
   void testDigitRolloverFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -153,8 +155,10 @@ public class CoToDeTukey53HCheckSparkTest {
   @Test
   void testDigitRolloverFromCastPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -223,7 +227,6 @@ public class CoToDeTukey53HCheckSparkTest {
         .withLongitude(-145.1333)
         .withLatitude(49.9833)
         .withProfileType(0)
-        .withGeohash("bbb")
         .withVariables(Arrays.asList(
             Variable.builder().withCode(1).withMetadata(Arrays.asList(Metadata.builder().withValue(5).withValue(4D).build())).build(),
             Variable.builder().withCode(2).withMetadata(Arrays.asList(Metadata.builder().withValue(5).withValue(4D).build())).build()

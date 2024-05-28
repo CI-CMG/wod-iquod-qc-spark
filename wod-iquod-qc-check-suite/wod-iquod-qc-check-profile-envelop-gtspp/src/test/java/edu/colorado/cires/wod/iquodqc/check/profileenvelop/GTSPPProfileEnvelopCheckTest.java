@@ -15,6 +15,12 @@ public class GTSPPProfileEnvelopCheckTest {
   
   @Test void testPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             List.of(
                 Depth.builder()
@@ -68,6 +74,12 @@ public class GTSPPProfileEnvelopCheckTest {
   
   @Test void testFail() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             List.of(
                 Depth.builder()

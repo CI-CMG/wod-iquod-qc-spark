@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -44,11 +45,10 @@ public class WodRangeCheckSparkTest {
 
   @BeforeAll
   static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put(JsonParametersReader.WOD_RANGE_AREA_PROP,
         "https://auto-qc-data.s3.us-west-2.amazonaws.com/range_area.json");
@@ -100,8 +100,10 @@ public class WodRangeCheckSparkTest {
   @Test
   void testDigitRolloverFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(-89.5)
         .withLongitude(0.5)
         .withYear((short) 1900)
@@ -159,8 +161,10 @@ public class WodRangeCheckSparkTest {
 
   @Test void testDigitRolloverFromCastPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(-89.5)
         .withLongitude(0.5)
         .withYear((short) 1900)

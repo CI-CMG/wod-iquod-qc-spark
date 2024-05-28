@@ -38,6 +38,10 @@ public class WodRangeCheckTest {
   
   @Test void testTemperaturePass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withLatitude(-89.5)
         .withLongitude(0.5)
         .withDepths(
@@ -64,6 +68,10 @@ public class WodRangeCheckTest {
   
   @Test void testTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withLatitude(-89.5)
         .withLongitude(0.5)
         .withDepths(

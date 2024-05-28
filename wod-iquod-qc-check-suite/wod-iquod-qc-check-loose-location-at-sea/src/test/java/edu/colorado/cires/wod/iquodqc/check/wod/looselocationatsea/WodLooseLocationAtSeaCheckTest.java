@@ -39,9 +39,14 @@ public class WodLooseLocationAtSeaCheckTest {
   
   @Test void testPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withLatitude(-4.1)
         .withLongitude(-38.15)
+        .withYear(1970)
         .withMonth((short) 1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -64,9 +69,14 @@ public class WodLooseLocationAtSeaCheckTest {
 
   @Test void testFail() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withLatitude(-4.10566666667)
         .withLongitude(-39)
+        .withYear(1970)
         .withMonth((short) 1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)

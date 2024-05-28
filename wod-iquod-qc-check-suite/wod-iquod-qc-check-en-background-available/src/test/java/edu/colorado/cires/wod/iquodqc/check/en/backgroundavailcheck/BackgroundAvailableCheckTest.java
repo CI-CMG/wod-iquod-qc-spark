@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -43,11 +44,10 @@ public class BackgroundAvailableCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
     properties.put("data.dir", "../../test-data");
@@ -100,8 +100,10 @@ public class BackgroundAvailableCheckTest {
   @Test
   public void testEnBackgroundAvailableCheckDepth() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(55.6)
         .withLongitude(12.9)
         .withYear((short) 1900)
@@ -166,8 +168,10 @@ public class BackgroundAvailableCheckTest {
   @Test
   public void testEnBackgroundAvailableCheckLocation() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0D)
         .withLongitude(20D)
         .withYear((short) 1900)

@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -67,7 +68,7 @@ public class SparklerExecutorTest {
     final List<String> datasets = Collections.singletonList("APB");
     final List<String> processingLevels = Collections.singletonList("OBS");
 
-    SparkSession spark = SparkSession
+    SparkSession spark = SedonaContext.create(SedonaContext
         .builder()
         .appName("test")
         .master("local[*]")
@@ -75,7 +76,7 @@ public class SparklerExecutorTest {
         .config("spark.hadoop.fs.s3a.secret.key", localstack.getSecretKey())
         .config("spark.hadoop.fs.s3a.endpoint", localstack.getEndpoint().toString())
         .config("spark.hadoop.fs.s3a.endpoint.region", localstack.getRegion())
-        .getOrCreate();
+        .getOrCreate());
     try {
       S3Client s3 = S3Client.builder()
           .credentialsProvider(StaticCredentialsProvider.create(
@@ -100,7 +101,6 @@ public class SparklerExecutorTest {
           .withLatitude(10.5)
           .withProfileType(1)
           .withOriginatorsStationCode("foo")
-          .withGeohash("rdty")
           .withVariables(Collections.singletonList(Variable.builder()
               .withCode(5)
               .withMetadata(Collections.singletonList(Metadata.builder().withCode(2).withValue(55.4).build()))

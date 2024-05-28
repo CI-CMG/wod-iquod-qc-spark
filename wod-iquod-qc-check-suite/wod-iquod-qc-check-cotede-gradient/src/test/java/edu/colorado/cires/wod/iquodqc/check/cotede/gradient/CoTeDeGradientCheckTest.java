@@ -25,6 +25,12 @@ public class CoTeDeGradientCheckTest {
   @Test
   void testGradientFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(VALUES)
                 .mapToObj(t -> Depth.builder().withDepth(100D)
@@ -54,6 +60,12 @@ public class CoTeDeGradientCheckTest {
 
   @Test void testGradientFromCastPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(VALUES)
                 .mapToObj(ignored -> Depth.builder().withDepth(100D)

@@ -53,6 +53,10 @@ public class MinMaxCheckTest {
   
   @Test void testFlagResult() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)

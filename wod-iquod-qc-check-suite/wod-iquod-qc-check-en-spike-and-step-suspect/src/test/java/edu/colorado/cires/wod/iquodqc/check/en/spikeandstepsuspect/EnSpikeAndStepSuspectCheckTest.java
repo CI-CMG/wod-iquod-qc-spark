@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class EnSpikeAndStepSuspectCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -86,11 +86,15 @@ class EnSpikeAndStepSuspectCheckTest {
   @Test
   public void testEnSpikeAndStepCheckCNominal() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
+        .withLongitude(0)
         .withLatitude(20D)
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -138,8 +142,9 @@ class EnSpikeAndStepSuspectCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -230,8 +235,9 @@ class EnSpikeAndStepSuspectCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -316,8 +322,9 @@ class EnSpikeAndStepSuspectCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

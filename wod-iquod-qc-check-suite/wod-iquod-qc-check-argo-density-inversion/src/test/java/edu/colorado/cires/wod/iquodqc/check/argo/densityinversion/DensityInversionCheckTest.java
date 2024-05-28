@@ -25,6 +25,12 @@ public class DensityInversionCheckTest {
   
   @Test void testFailureFlags() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
+        .withTimestamp(0)
+        .withLongitude(0)
+        .withLatitude(0)
+        .withCastNumber(123)
         .withDepths(
             IntStream.range(0, P.length).boxed()
                 .map(i ->

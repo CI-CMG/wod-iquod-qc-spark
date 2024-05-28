@@ -16,7 +16,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckTropicsPrelim() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(0D)
+        .withLongitude(0D)
         .withCastNumber(2222)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -47,7 +51,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckANominal() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -78,7 +86,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckSpikeADepthConstraintShallow() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -109,7 +121,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckSpikeADepthConstraintDeep() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
@@ -140,7 +156,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckBNominal() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
@@ -171,7 +191,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckCNominal() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)
@@ -202,7 +226,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckExcpetionCIii() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(50D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(310D)
@@ -233,7 +261,11 @@ public class EnSpikeAndStepCheckerTest {
   @Test
   public void testEnSpikeAndStepCheckTrailingZero() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(50D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)

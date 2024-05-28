@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class CsiroWireBreakCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,8 +85,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckFailedColdTemp() throws Exception{
     // failed to flag too-cold temperature at bottom of profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -148,8 +150,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckFailedHotTemp() throws Exception{
     // failed to flag too-hot temperature at bottom of profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -211,8 +215,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckMarginalCold() throws Exception{
     // flagged marginally cold temperature at bottom of profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -273,8 +279,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckMarginalHot() throws Exception{
     // flagged marginally hot temperature at bottom of profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -336,8 +344,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckNotXBT() throws Exception{
     // flagged non-xbt profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -399,8 +409,10 @@ class CsiroWireBreakCheckTest {
   public void testCsiroWireBreakCheckMiddleHot() throws Exception{
     // flagged hot temperature that wasn't at bottom of profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

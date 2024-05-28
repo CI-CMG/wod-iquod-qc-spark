@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -41,11 +42,10 @@ class IcdcAqc04MaxObsDepthCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -109,8 +109,9 @@ class IcdcAqc04MaxObsDepthCheckTest {
 
   private Cast buildCast(ICDCdata data) {
     return Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(data.getLatitude())
         .withLongitude(data.getLongitude())
         .withYear(data.getYear())

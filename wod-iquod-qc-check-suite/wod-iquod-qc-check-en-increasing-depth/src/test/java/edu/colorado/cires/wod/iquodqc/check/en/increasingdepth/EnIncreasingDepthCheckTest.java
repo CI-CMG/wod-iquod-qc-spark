@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -45,11 +46,10 @@ public class EnIncreasingDepthCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put("EN_bgcheck_info.netcdf.uri", "https://www.metoffice.gov.uk/hadobs/en4/data/EN_bgcheck_info.nc");
     properties.put("data.dir", "../../test-data");
@@ -103,10 +103,15 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthOutsideValidRangeNegative() throws Exception {
 
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -185,10 +190,15 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthOutsideValidRangeBigun() throws Exception {
 
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -267,10 +277,15 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging() throws Exception {
 
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -349,10 +364,15 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging2() throws Exception {
 
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -431,8 +451,12 @@ public class EnIncreasingDepthCheckTest {
   public void testEnIncreasingDepthFlagging3() throws Exception {
 
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
         .withMonth(1)
         .withAttributes(Arrays.asList(
@@ -515,8 +539,7 @@ public class EnIncreasingDepthCheckTest {
 
     Cast cast = Cast.builder()
         .withDataset("TEST")
-        .withGeohash("TEST")
-        .withCastNumber(8888)
+                .withCastNumber(8888)
         .withMonth(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
@@ -595,8 +618,9 @@ public class EnIncreasingDepthCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -697,8 +721,8 @@ public class EnIncreasingDepthCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -783,8 +807,9 @@ public class EnIncreasingDepthCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

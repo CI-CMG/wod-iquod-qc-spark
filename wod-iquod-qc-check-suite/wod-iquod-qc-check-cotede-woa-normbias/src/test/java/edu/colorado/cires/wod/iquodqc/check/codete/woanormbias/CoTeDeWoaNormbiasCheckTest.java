@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -45,11 +46,10 @@ public class CoTeDeWoaNormbiasCheckTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = getProperties();
     context = new CastCheckContext() {
       @Override
@@ -105,8 +105,10 @@ public class CoTeDeWoaNormbiasCheckTest {
   @Test
   public void testInvalidPosition() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(38)
         .withLatitude(15)
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())
@@ -149,8 +151,10 @@ public class CoTeDeWoaNormbiasCheckTest {
   @Test
   public void testStandardDataset() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(-38)
         .withLatitude(15)
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())

@@ -26,6 +26,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -46,11 +47,10 @@ public class MinMaxCheckSparkTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put(WOD_TEMP_MIN_MAX_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/TEMP_MIN_MAX.nc");
     properties.put(WOD_INFO_DGG4H6_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/info_DGG4H6.mat");
@@ -104,9 +104,13 @@ public class MinMaxCheckSparkTest {
   
   @Test void testFlag() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withLongitude(FLAG_LONGITUDE)
         .withLatitude(FLAG_LATITUDE)
         .withPrincipalInvestigators(Collections.emptyList())

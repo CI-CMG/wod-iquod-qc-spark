@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -49,11 +50,10 @@ public class IquodBottomCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put("etopo5.netcdf.uri",
         "https://pae-paha.pacioos.hawaii.edu/thredds/ncss/etopo5?var=ROSE&disableLLSubset=on&disableProjSubset=on&horizStride=1&addLatLon=true");
@@ -101,8 +101,9 @@ public class IquodBottomCheckTest {
   @Test
   public void testStandardDataset() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(-38)
         .withLatitude(15)
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())
@@ -238,7 +239,6 @@ public class IquodBottomCheckTest {
         .withLongitude(-78.05)
         .withLatitude(17.1)
         .withProfileType(0)
-        .withGeohash("d70")
         .withVariables(Arrays.asList(
             Variable.builder().withCode(1).withMetadata(Arrays.asList(Metadata.builder().withCode(5).withValue(4D).build())).build()
         ))

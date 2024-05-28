@@ -41,7 +41,11 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionA() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(0D)
@@ -82,7 +86,11 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionASmallSpike() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
+        .withTimestamp(0L)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
@@ -123,7 +131,11 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionB() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(500D)
@@ -165,7 +177,11 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionC() throws Exception {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(123)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)
@@ -207,7 +223,12 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionCExceptionI() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withTimestamp(0L)
+        .withYear(1970)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(310D)
@@ -248,7 +269,11 @@ public class EnSpikeAndStepFunctionsTest {
   @Test
   public void testEnSpikeAndStepCheckConditionCExceptionIi() {
     Cast cast = Cast.builder()
+        .withTimestamp(0L)
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withLatitude(20D)
+        .withLongitude(20D)
         .withCastNumber(8888)
         .withDepths(Arrays.asList(
             Depth.builder().withDepth(10D)

@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class EnConstantValueCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,10 +85,15 @@ class EnConstantValueCheckTest {
   @Test
   public void testEnConstantValueThresholdFail() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -167,10 +172,15 @@ class EnConstantValueCheckTest {
   @Test
   public void testEnConstantValueThresholdPass() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -248,10 +258,15 @@ class EnConstantValueCheckTest {
   @Test
   public void testEnConstantValueSpacing() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
+        .withYear(1970)
         .withMonth(1)
+        .withDay(1)
         .withAttributes(Arrays.asList(
             Attribute.builder()
                 .withCode(ORIGINATORS_FLAGS)
@@ -330,9 +345,11 @@ class EnConstantValueCheckTest {
   @Test
   public void testForBuddy() throws Exception {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
-        .withCastNumber(1)
+                .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
         .withYear((short) 2000)
@@ -422,8 +439,9 @@ class EnConstantValueCheckTest {
   @Test
   public void testForBuddy2() throws Exception {
     Cast realProfile2 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(2)
         .withLatitude(-30.229)
         .withLongitude(2.658)
@@ -508,8 +526,9 @@ class EnConstantValueCheckTest {
 
 
     Cast realProfile3 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(3)
         .withLatitude(-28.36)
         .withLongitude(-0.752)

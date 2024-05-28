@@ -92,6 +92,10 @@ public class BuddyCheckFunctionsTest {
      */
 
     Cast p1 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -105,6 +109,10 @@ public class BuddyCheckFunctionsTest {
         .build();
 
     Cast p2 = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -118,6 +126,10 @@ public class BuddyCheckFunctionsTest {
         .build();
 
     Cast p3 = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -139,6 +151,10 @@ public class BuddyCheckFunctionsTest {
   public void testBuddyCovarianceMesoScale() {
 
     Cast p1 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -152,6 +168,10 @@ public class BuddyCheckFunctionsTest {
         .build();
 
     Cast p2 = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -174,6 +194,10 @@ public class BuddyCheckFunctionsTest {
   public void testBuddyCovarianceSynopticScale() {
 
     Cast p1 = Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -187,6 +211,10 @@ public class BuddyCheckFunctionsTest {
         .build();
 
     Cast p2 = Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withCastNumber(1)
         .withYear((short) 1900)
         .withMonth((short) 1)

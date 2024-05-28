@@ -23,6 +23,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -44,11 +45,10 @@ public class CoTeDeGlobalRangeGTSPPCheckSparkTest {
   private static CastCheckContext context;
 
   @BeforeAll static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -83,8 +83,10 @@ public class CoTeDeGlobalRangeGTSPPCheckSparkTest {
 
   @Test void testDigitRolloverFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -135,8 +137,10 @@ public class CoTeDeGlobalRangeGTSPPCheckSparkTest {
 
   @Test void testDigitRolloverFromCastPass() {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

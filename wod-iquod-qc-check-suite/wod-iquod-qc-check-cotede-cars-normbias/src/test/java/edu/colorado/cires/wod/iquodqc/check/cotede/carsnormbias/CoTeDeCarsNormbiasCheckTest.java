@@ -25,6 +25,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -46,11 +47,10 @@ public class CoTeDeCarsNormbiasCheckTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
     properties.put("data.dir", "../../test-data");
@@ -101,8 +101,10 @@ public class CoTeDeCarsNormbiasCheckTest {
   @Test
   public void testProduceSignal() {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(-38)
         .withLatitude(15)
         .withTimestamp(LocalDate.of(2016, 6, 4).atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())

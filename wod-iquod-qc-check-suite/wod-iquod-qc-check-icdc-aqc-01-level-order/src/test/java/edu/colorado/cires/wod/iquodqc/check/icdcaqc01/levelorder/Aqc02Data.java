@@ -57,8 +57,11 @@ public class Aqc02Data {
   }
   public Cast buildCast() {
     return Cast.builder()
+        .withCruiseNumber(111)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withCastNumber(8888)
         .withYear((short) 1900)
         .withMonth((short) 1)

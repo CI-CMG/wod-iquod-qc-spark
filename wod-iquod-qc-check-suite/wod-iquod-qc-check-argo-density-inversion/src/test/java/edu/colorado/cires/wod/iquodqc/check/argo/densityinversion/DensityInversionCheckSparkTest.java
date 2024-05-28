@@ -25,6 +25,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -54,11 +55,10 @@ public class DensityInversionCheckSparkTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -96,10 +96,11 @@ public class DensityInversionCheckSparkTest {
   
   @Test void testFailure() {
     Cast cast = Cast.builder()
-        .withDataset("TEST")
-        .withGeohash("TEST")
-        .withLatitude(0)
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withLongitude(0)
+        .withLatitude(0)
+        .withDataset("TEST")
         .withYear((short) 1900)
         .withMonth((short) 1)
         .withDay((short) 15)

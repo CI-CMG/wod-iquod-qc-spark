@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ public class AomlGradientCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -86,8 +86,12 @@ public class AomlGradientCheckTest {
   public void testAomlGradientBoundaries1() {
 
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
+        .withTimestamp(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Arrays.asList(
             Attribute.builder()
@@ -141,8 +145,12 @@ public class AomlGradientCheckTest {
   @Test
   public void testAomlGradientBoundaries2() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
+        .withTimestamp(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Arrays.asList(
             Attribute.builder()
@@ -196,8 +204,12 @@ public class AomlGradientCheckTest {
   @Test
   public void testAomlGradientEdge() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
+        .withTimestamp(0)
+        .withLongitude(0)
+        .withLatitude(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withPrincipalInvestigators(Collections.emptyList())
         .withAttributes(Arrays.asList(
             Attribute.builder()

@@ -20,6 +20,12 @@ public class CoTeDeGlobalRangeGTSPPCheckTest {
 
   @Test void testGlobalRangeGTSPPFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
+        .withLongitude(0)
+        .withLatitude(0)
+        .withTimestamp(0)
         .withDepths(
             Arrays.stream(FAILING_VALUES)
                 .mapToObj(t -> Depth.builder().withDepth(100D)
@@ -40,6 +46,12 @@ public class CoTeDeGlobalRangeGTSPPCheckTest {
 
   @Test void testGlobalRangeGTSPPFromCastPass() {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
+        .withLongitude(0)
+        .withLatitude(0)
+        .withTimestamp(0)
         .withDepths(
             Arrays.stream(FAILING_VALUES)
                 .mapToObj(v -> Depth.builder().withDepth(100D)

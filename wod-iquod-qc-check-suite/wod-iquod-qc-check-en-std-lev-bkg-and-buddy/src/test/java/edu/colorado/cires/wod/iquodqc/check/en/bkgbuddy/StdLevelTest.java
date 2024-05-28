@@ -32,6 +32,8 @@ public class StdLevelTest {
   @Test
   public void testMeanDifferencesAtStandardLevels() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)
@@ -82,6 +84,8 @@ public class StdLevelTest {
   @Test
   public void testFilterLevels() {
     Cast cast = Cast.builder()
+        .withProfileType(0)
+        .withCruiseNumber(111)
         .withCastNumber(1)
         .withLatitude(-39.889)
         .withLongitude(17.650000)

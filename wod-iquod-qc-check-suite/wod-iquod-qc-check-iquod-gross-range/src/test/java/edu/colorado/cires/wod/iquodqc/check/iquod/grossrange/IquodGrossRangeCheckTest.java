@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class IquodGrossRangeCheckTest {
 
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,8 +85,10 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailedColdTemp() throws Exception{
     // failed to flag temperature slightly colder than -4 C
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -136,8 +138,10 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckPassedColdTemp() throws Exception{
     // -4 OK
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -187,8 +191,10 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailedHotTemp() throws Exception{
     // failed to flag temperature slightly warmer than 100 C
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -238,9 +244,11 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckPassedHotTemp() throws Exception{
     // 100 OK
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
-        .withLatitude(0)
+                .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
         .withMonth((short) 1)
@@ -289,8 +297,10 @@ class IquodGrossRangeCheckTest {
   public void testIquodGrossRangeCheckFailTemps() throws Exception{
     // test of a sequence of temperatures contained in a profile
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)

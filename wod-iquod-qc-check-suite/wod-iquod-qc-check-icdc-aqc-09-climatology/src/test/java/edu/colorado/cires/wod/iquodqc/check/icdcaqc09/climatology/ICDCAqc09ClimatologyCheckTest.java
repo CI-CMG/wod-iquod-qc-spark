@@ -68,8 +68,9 @@ public class ICDCAqc09ClimatologyCheckTest {
 
   private Cast buildCast(ICDCdata data) {
     return Cast.builder()
+        .withCruiseNumber(111)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(data.getLatitude())
         .withLongitude(data.getLongitude())
         .withYear(data.getYear())

@@ -36,7 +36,6 @@ public class AsciiToSparkModelTransformer {
         .withLatitude(asciiCast.getLatitude())
         .withProfileType(asciiCast.getProfileType())
         .withOriginatorsStationCode(asciiCast.getOriginatorsStationCode())
-        .withGeohash(GeoHash.encodeHash(asciiCast.getLatitude(), asciiCast.getLongitude(), GEOHASH_LENGTH))
         .withVariables(asciiCast.getVariables().stream().map(AsciiToSparkModelTransformer::map).collect(Collectors.toList()))
         .withPrincipalInvestigators(
             asciiCast.getPrincipalInvestigators().stream().map(AsciiToSparkModelTransformer::map).collect(Collectors.toList()))

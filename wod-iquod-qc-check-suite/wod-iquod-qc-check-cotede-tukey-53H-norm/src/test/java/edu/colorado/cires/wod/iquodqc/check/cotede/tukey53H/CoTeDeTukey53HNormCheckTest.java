@@ -30,6 +30,12 @@ public class CoTeDeTukey53HNormCheckTest {
   @Test
   void testTukey53HFromCastTemperatureFailure() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(FAILING_VALUES)
                 .mapToObj(t -> Depth.builder().withDepth(100D)
@@ -59,6 +65,12 @@ public class CoTeDeTukey53HNormCheckTest {
 
   @Test void testTukey53HFromCastPass() {
     Cast cast = Cast.builder()
+        .withCruiseNumber(111)
+        .withCastNumber(123)
+        .withLatitude(0)
+        .withLongitude(0)
+        .withTimestamp(0)
+        .withProfileType(0)
         .withDepths(
             Arrays.stream(FAILING_VALUES)
                 .mapToObj(v -> Depth.builder().withDepth(100D)

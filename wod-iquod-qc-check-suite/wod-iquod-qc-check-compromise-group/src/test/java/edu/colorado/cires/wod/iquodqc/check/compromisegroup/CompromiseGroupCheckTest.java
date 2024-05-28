@@ -25,6 +25,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -54,11 +55,10 @@ public class CompromiseGroupCheckTest {
 
   @BeforeAll
   public static void beforeAll() {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     Properties properties = new Properties();
     context = new CastCheckContext() {
       @Override
@@ -121,8 +121,10 @@ public class CompromiseGroupCheckTest {
   })
   public void test(@NonNls String failingTest) {
     Cast cast = Cast.builder()
+        .withCastNumber(111)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLongitude(LONGITUDE)
         .withLatitude(LATITUDE)
         .withTimestamp(TIMESTAMP)

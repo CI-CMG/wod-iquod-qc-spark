@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
@@ -42,11 +43,10 @@ class ArgoSpikeCheckTest {
   private static CastCheckContext context;
   @BeforeAll
   public static void beforeAll() throws Exception {
-    spark = SparkSession
-        .builder()
+    spark = SedonaContext.create(SedonaContext.builder()
         .appName("test")
         .master("local[*]")
-        .getOrCreate();
+        .getOrCreate());
     context = new CastCheckContext() {
       @Override
       public SparkSession getSparkSession() {
@@ -85,8 +85,10 @@ class ArgoSpikeCheckTest {
   public void testArgoSpikeCheckPassShallowSpike() throws Exception{
     // pass a marginal positive spike (criteria exactly 6 C):
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -152,8 +154,10 @@ class ArgoSpikeCheckTest {
   public void testArgoSpikeCheckPassNegativeSpike() throws Exception{
     // pass a marginal negative spike (criteria exactly 6 C):
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -220,8 +224,10 @@ class ArgoSpikeCheckTest {
   public void testArgoSpikeCheckFailPositiveSpike() throws Exception{
     // fail a marginal positive spike (criteria > 6 C):
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -282,8 +288,10 @@ class ArgoSpikeCheckTest {
   public void testArgoSpikeCheckFailNegativeSpike() throws Exception{
     // fail a marginal negative spike (criteria > 6 C):
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -345,8 +353,10 @@ class ArgoSpikeCheckTest {
     // pass a marginal positive spike (criteria exactly 2 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -409,8 +419,10 @@ class ArgoSpikeCheckTest {
     // pass a marginal negative spike (criteria exactly 2 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -473,8 +485,10 @@ class ArgoSpikeCheckTest {
     // fail a marginal positive spike (criteria > 2 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -537,8 +551,10 @@ class ArgoSpikeCheckTest {
     // fail a marginal negative spike (criteria > 2 C)
     // deep - depth > 500 m
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(0)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -602,8 +618,10 @@ class ArgoSpikeCheckTest {
     // at threshold, use deep criteria
     double lat = 0.0;
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(lat)
         .withLongitude(0)
         .withYear((short) 1900)
@@ -666,8 +684,10 @@ class ArgoSpikeCheckTest {
     // at threshold, use deep criteria
     double lat = 0.0;
     Cast cast = Cast.builder()
+        .withCastNumber(121)
+        .withCruiseNumber(123)
+        .withProfileType(0)
         .withDataset("TEST")
-        .withGeohash("TEST")
         .withLatitude(lat)
         .withLongitude(0)
         .withYear((short) 1900)
