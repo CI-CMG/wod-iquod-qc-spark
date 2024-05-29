@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.scheduler.JobFailed;
 import org.apache.spark.scheduler.JobResult;
 import org.apache.spark.scheduler.SparkListener;
@@ -100,7 +101,8 @@ public class Sparkler implements Serializable, Runnable {
 
   @Override
   public void run() {
-    SparkSession.Builder sparkBuilder = SparkSession.builder();
+
+    SparkSession.Builder sparkBuilder = SedonaContext.builder();
 
     S3Client s3 = null;
     if (fs == FileSystemType.s3 || fs == FileSystemType.emrS3) {
@@ -117,7 +119,7 @@ public class Sparkler implements Serializable, Runnable {
       s3 = s3Builder.build();
     }
 
-    SparkSession spark = sparkBuilder.getOrCreate();
+    SparkSession spark = SedonaContext.create(sparkBuilder.getOrCreate());
 
     spark.sparkContext().addSparkListener(new SparkListener() {
 
