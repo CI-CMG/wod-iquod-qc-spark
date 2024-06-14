@@ -352,7 +352,7 @@ public class SparklerExecutor implements Runnable {
 
           @Override
           public Dataset<Cast> readCastDataset() {
-            return spark.read().parquet(inputUri).as(Encoders.bean(Cast.class));
+            return spark.read().format("geoparquet").load(inputUri).as(Encoders.bean(Cast.class));
           }
 
           @Override

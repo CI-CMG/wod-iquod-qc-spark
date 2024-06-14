@@ -54,7 +54,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <hadoop.version>3.3.4</hadoop.version>
-    <spark.version>3.4.1</spark.version>
+    <spark.version>3.4.3</spark.version>
     <scala.version>2.13</scala.version>
     <netcdf.version>5.5.3</netcdf.version>
     <geotools.version>29.0</geotools.version>

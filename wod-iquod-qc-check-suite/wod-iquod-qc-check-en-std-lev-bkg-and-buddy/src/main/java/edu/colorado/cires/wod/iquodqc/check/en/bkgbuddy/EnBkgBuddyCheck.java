@@ -42,8 +42,8 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
   private static List<Double> obev;
   private static final String NAME = CheckNames.EN_STD_LEV_BKG_AND_BUDDY_CHECK.getName();
   private static final String TEMP_T = NAME + "_t";
+  private static final String SOURCE_IDS = NAME + "_sourceIds";
   private static final String TEMP_NEIGHBORS = NAME + "_neighbors";
-  private static final String TEMP_BUDDIES = NAME + "_buddies";
 
   private static final Collection<String> DEPENDS_ON;
 
@@ -70,28 +70,41 @@ public class EnBkgBuddyCheck extends CommonCastCheck {
     Dataset<Row> joined = super.createQuery(context);
     joined.createOrReplaceTempView(TEMP_T);
 
+    // create smaller view to reduce memory usage
+    Dataset<Row> sourceIds = context.getSparkSession()
+        .sql("select "
+            + "joined.cast.castNumber as castNumber, "
+            + "joined.cast.location as location, "
+            + "joined.cast.year as year, "
+            + "joined.cast.month as month, "
+            + "joined.cast.cruiseNumber as cruiseNumber "
+            + "from " + TEMP_T + " joined");
+    sourceIds.createOrReplaceTempView(SOURCE_IDS);
+
     // Use distance join to find all pairs within a minimum distance (https://sedona.apache.org/1.5.2/api/sql/Optimizer/#distance-join)
     Dataset<Row> neighbors = context.getSparkSession().sql(
-        "select struct(A.*) as source, struct(B.*) as buddy, ST_DistanceSphere(A.cast.location, B.cast.location) as distance "
-            + " from " + TEMP_T + " A, " + TEMP_T + " B"
-            + " where ST_DistanceSphere(A.cast.location, B.cast.location) < " + MAX_DISTANCE_M
+        "select all_neighbors.sourceCastNumber as sourceCastNumber, min_by(all_neighbors.buddyCastNumber, distance) as buddyCastNumber, min(all_neighbors.distance) as distance "
+            + "from (select A.castNumber as sourceCastNumber, "
+            + "B.castNumber as buddyCastNumber, "
+            + "ST_DistanceSphere(A.location, B.location) as distance "
+            + "from " + SOURCE_IDS + " A, " + SOURCE_IDS + " B "
+            + "where A.castNumber != B.castNumber "
+            + "and A.year == B.year "
+            + "and A.month == B.month "
+            + "and A.cruiseNumber != B.cruiseNumber "
+            + "and ST_DistanceSphere(A.location, B.location) < " + MAX_DISTANCE_M + ") all_neighbors "
+            + "group by all_neighbors.sourceCastNumber"
     );
     neighbors.createOrReplaceTempView(TEMP_NEIGHBORS);
 
-    // Filter out non-relevant buddies
-    Dataset<Row> buddies = context.getSparkSession().sql(
-        "select source.cast.castNumber as castNumber, min_by(buddy, distance) as buddy, min(distance) as distance"
-            + " from " + TEMP_NEIGHBORS
-            + " where source.cast.year == buddy.cast.year"
-            + " and source.cast.month == buddy.cast.month"
-            + " and source.cast.cruiseNumber != buddy.cast.cruiseNumber group by source.cast.castNumber");
-    buddies.createOrReplaceTempView(TEMP_BUDDIES);
 
     // Join buddies back to parent table
-    return context.getSparkSession().sql(
-        "select source.*, buds.buddy as buddy, buds.distance as distance"
+    Dataset<Row> r = context.getSparkSession().sql(
+        "select source.*, (select first(struct(B.*)) from " + TEMP_T + " B where buds.buddyCastNumber == B.cast.castNumber) buddy, buds.distance as distance"
             + " from " + TEMP_T + " source"
-            + " left outer join " + TEMP_BUDDIES + " buds on source.cast.castNumber == buds.castNumber");
+            + " left outer join " + TEMP_NEIGHBORS + " buds on source.cast.castNumber == buds.sourceCastNumber");
+
+    return r;
   }
 
   @Override
