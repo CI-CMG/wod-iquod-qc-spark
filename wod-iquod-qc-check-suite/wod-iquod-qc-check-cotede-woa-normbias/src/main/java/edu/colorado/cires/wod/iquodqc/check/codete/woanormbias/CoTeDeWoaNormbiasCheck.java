@@ -27,7 +27,7 @@ import ucar.ma2.InvalidRangeException;
 public class CoTeDeWoaNormbiasCheck extends SignalProducingCastCheck {
 
   private static WoaParameters woaParameters;
-  private static final double THRESHOLD = 3D;
+  private static final double THRESHOLD = 10D;
   private static final int MIN_SAMPLES = 3;
 
   private Properties properties;
