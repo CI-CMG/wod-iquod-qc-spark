@@ -93,7 +93,14 @@
       <artifactId>geo</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.github.quickhull3d</groupId>
+      <artifactId>quickhull3d</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-geometry-euclidean</artifactId>
+    </dependency>
   </dependencies>
 
 
