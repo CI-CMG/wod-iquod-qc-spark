@@ -93,16 +93,16 @@ public class SparklerExecutor implements Runnable {
     
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
-        List<Integer> resolvedYears = YearResolver.resolveYears(years, s3, fs, inputBucket, inputPrefix, dataset, processingLevel);
+        List<String> resolvedYears = YearResolver.resolveYears(years, s3, fs, inputBucket, inputPrefix, dataset, processingLevel);
         for (CastCheck check : checks) {
-          for (int year : resolvedYears) {
+          for (String year : resolvedYears) {
             CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties, year);
             runner.run();
           }
         }
 
         if (addFlagsToCast && willGenerateIquodFlags) {
-          for (int year : resolvedYears) {
+          for (String year : resolvedYears) {
             String outputURI = getOutputCastURI(dataset, processingLevel, year);
             if (
                 exists(
@@ -151,7 +151,7 @@ public class SparklerExecutor implements Runnable {
         }
 
         if (generateReports) {
-          for (int year : resolvedYears) {
+          for (String year : resolvedYears) {
             PostProcessorContext context = new PostProcessorContext() {
               @Override
               public Dataset<Cast> readCastDataset() {
@@ -231,23 +231,27 @@ public class SparklerExecutor implements Runnable {
     }
   }
 
-  private String getCastURI(String dataset, String processingLevel, int year) {
+  private String getCastURI(String dataset, String processingLevel, String year) {
     StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(inputBucket).append("/");
     if (inputPrefix != null) {
       sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
     }
     sb.append(dataset).append("/")
-        .append(processingLevel).append("/")
-        .append(dataset).append(processingLevel.charAt(0)).append(year).append(".parquet");
+        .append(processingLevel).append("/");
+    if (YearResolver.SUR_ALL.equals(year)) {
+      sb.append(year);
+    } else {
+      sb.append(dataset).append(processingLevel.charAt(0)).append(year);
+    }
+    sb.append(".parquet");
     return sb.toString();
   }
   
-  private String getOutputCastURI(String dataset, String processingLevel, int year) {
+  private String getOutputCastURI(String dataset, String processingLevel, String year) {
     StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");
     if (outputPrefix != null) {
       sb.append(outputPrefix.replaceAll("/+$", "")).append("/");
     }
-
     sb.append(dataset).append("/")
         .append(processingLevel).append("/")
         .append(year).append("/")
@@ -255,7 +259,7 @@ public class SparklerExecutor implements Runnable {
     return sb.toString();
   }
 
-  private String getOutputSummaryURI(String dataset, String processingLevel, int year) {
+  private String getOutputSummaryURI(String dataset, String processingLevel, String year) {
     StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");
     if (outputPrefix != null) {
       sb.append(outputPrefix.replaceAll("/+$", "")).append("/");
@@ -268,7 +272,7 @@ public class SparklerExecutor implements Runnable {
     return sb.toString();
   }
 
-  private String getOutputFailuresURI(String dataset, String processingLevel, int year) {
+  private String getOutputFailuresURI(String dataset, String processingLevel, String year) {
     StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");
     if (outputPrefix != null) {
       sb.append(outputPrefix.replaceAll("/+$", "")).append("/");
@@ -281,7 +285,7 @@ public class SparklerExecutor implements Runnable {
     return sb.toString();
   }
 
-  private String getCheckResultURI(String checkName, String dataset, String processingLevel, int year) {
+  private String getCheckResultURI(String checkName, String dataset, String processingLevel, String year) {
     StringBuilder parquetUri = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");
     if (outputPrefix != null) {
       parquetUri.append(outputPrefix.replaceAll("/+$", "")).append("/");
@@ -300,30 +304,21 @@ public class SparklerExecutor implements Runnable {
     private final Properties properties;
     private final String inputUri;
     private final String outputUri;
-    private final int year;
+    private final String year;
     private final String prefix;
 
-    private CheckRunner(String dataset, String processingLevel, CastCheck check, Properties properties, int year) {
+    private CheckRunner(String dataset, String processingLevel, CastCheck check, Properties properties, String year) {
       this.dataset = dataset;
       this.processingLevel = processingLevel;
       this.check = check;
       this.properties = properties;
       this.year = year;
-      inputUri = getInputUri();
+      inputUri = getCastURI(dataset, processingLevel, year);
       outputUri = getOutputUri(this.check.getName());
       prefix = outputUri.replaceFirst("s3a://" + outputBucket + "/", "").replaceFirst("s3://" + outputBucket + "/", "").replaceFirst("file://" + outputBucket + "/", "");
     }
 
-    private String getInputUri() {
-      StringBuilder sb = new StringBuilder(FileSystemPrefix.resolve(fs)).append(inputBucket).append("/");
-      if (inputPrefix != null) {
-        sb.append(inputPrefix.replaceAll("/+$", "")).append("/");
-      }
-      sb.append(dataset).append("/")
-          .append(processingLevel).append("/")
-          .append(dataset).append(processingLevel.charAt(0)).append(year).append(".parquet");
-      return sb.toString();
-    }
+
 
     private String getOutputUri(String checkName) {
       StringBuilder parquetUri = new StringBuilder(FileSystemPrefix.resolve(fs)).append(outputBucket).append("/");

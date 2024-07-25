@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,7 +19,13 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 
 public class YearResolver {
 
-  public static List<Integer> resolveYears(List<Integer> providedYears, S3Client s3, FileSystemType fs, String bucket, String keyPrefix, String dataset, String processingLevel) {
+  public static final String SUR = "SUR";
+  public static final String SUR_ALL = "SUR_ALL";
+
+  public static List<String> resolveYears(List<Integer> providedYears, S3Client s3, FileSystemType fs, String bucket, String keyPrefix, String dataset, String processingLevel) {
+    if (SUR.equals(dataset)) {
+      return Collections.singletonList(SUR_ALL);
+    }
     if (providedYears == null || providedYears.isEmpty()) {
       Pattern pattern;
       Set<String> set;
@@ -38,10 +45,10 @@ public class YearResolver {
       return set.stream().map(key -> {
         Matcher matcher = pattern.matcher(key);
         matcher.matches();
-        return Integer.parseInt(matcher.group(1));
+        return matcher.group(1);
       }).sorted().collect(Collectors.toList());
     } else {
-      return providedYears;
+      return providedYears.stream().map(Object::toString).collect(Collectors.toList());
     }
   }
 

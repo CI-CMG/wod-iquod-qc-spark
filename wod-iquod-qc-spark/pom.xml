@@ -401,6 +401,11 @@
       <artifactId>jna</artifactId>
       <version>5.13.0</version>
     </dependency>
+    <dependency>
+      <groupId>io.findify</groupId>
+      <artifactId>s3mock_2.13</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 

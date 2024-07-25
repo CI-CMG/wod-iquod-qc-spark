@@ -28,6 +28,18 @@ public class YearResolverTest {
     parquetDir = dir.resolve(path).resolve(dataset).resolve(processingLevel).resolve("CTDO1900.parquet");
     Files.createDirectories(parquetDir);
     Files.createFile(parquetDir.resolve("foo"));
-    assertEquals(Arrays.asList(1900, 2021, 2022) ,YearResolver.resolveYears(null, null, FileSystemType.local, dir.toString(), path, dataset, processingLevel));
+    assertEquals(Arrays.asList("1900", "2021", "2022") ,YearResolver.resolveYears(null, null, FileSystemType.local, dir.toString(), path, dataset, processingLevel));
+  }
+
+  @Test
+  public void testSUR() throws Exception {
+    Path dir = Paths.get("target/wod-test-parquet");
+    String path = "wod-parquet/yearly";
+    String dataset = "SUR";
+    String processingLevel = "OBS";
+    FileUtils.deleteQuietly(dir.toFile());
+    Path parquetDir = dir.resolve(path).resolve(dataset).resolve(processingLevel).resolve("SUR_ALL.parquet");
+    Files.createDirectories(parquetDir);
+    assertEquals(Arrays.asList("SUR_ALL") ,YearResolver.resolveYears(null, null, FileSystemType.local, dir.toString(), path, dataset, processingLevel));
   }
 }
