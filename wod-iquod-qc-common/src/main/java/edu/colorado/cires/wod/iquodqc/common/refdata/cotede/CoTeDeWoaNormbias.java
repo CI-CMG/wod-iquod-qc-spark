@@ -1,6 +1,9 @@
 package edu.colorado.cires.wod.iquodqc.common.refdata.cotede;
 
+import edu.colorado.cires.wod.iquodqc.common.interpolation.MeshInterpolator;
+import edu.colorado.cires.wod.iquodqc.common.interpolation.UnableToInterpolateException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -12,13 +15,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.DoubleStream;
+import org.apache.commons.math3.analysis.MultivariateFunction;
+import org.apache.commons.math3.analysis.TrivariateFunction;
+import org.apache.commons.math3.analysis.interpolation.BicubicInterpolatingFunction;
+import org.apache.commons.math3.analysis.interpolation.BicubicInterpolator;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
+import org.apache.commons.math3.analysis.interpolation.MultivariateInterpolator;
 import org.apache.commons.math3.analysis.interpolation.TricubicInterpolatingFunction;
 import org.apache.commons.math3.analysis.interpolation.TricubicInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -140,7 +149,7 @@ public class CoTeDeWoaNormbias {
       for (int index = 0; index < seasons.size() - 1; index++) {
         SeasonFile seasonFile = seasons.get(index);
         SeasonFile afterSeasonFile = seasons.get(index + 1);
-        if (localDate.equals(seasonFile.getLocalDate()) || localDate.isAfter(seasonFile.getLocalDate())) {
+        if (localDate.isBefore(afterSeasonFile.getLocalDate()) || localDate.equals(afterSeasonFile.getLocalDate())) {
           startSeason = seasonFile;
           endSeason = afterSeasonFile;
           break;
@@ -151,44 +160,19 @@ public class CoTeDeWoaNormbias {
       int dayOfSeason = (int) ChronoUnit.DAYS.between(startSeason.getLocalDate(), localDate);
       double percentSeason = Math.max(0D, Math.min(1D, (double) (dayOfSeason - 1) / (double) daysInSeason));
 
-
 //      NetcdfFile[] netCDFSeasons = new NetcdfFile[]{s1, s2, s3, s4};
       double[] netCDFLons = readVariableAsDoubleArray(s1, "lon");
       double[] netCDFLats = readVariableAsDoubleArray(s1, "lat");
       double[] netCDFDepths = readVariableAsDoubleArray(s1, "depth");
 
-
-
-
-
-//      double firstTime = readTime(s1); // 373.5, 376.5, 379.5, 382.5
-
-
-
-//      double[] netCDFTimes = new double[]{
-//          readTime(s4) - 365.25,
-//          readTime(s1),
-//          readTime(s2),
-//          readTime(s3),
-//          readTime(s4),
-//          readTime(s1) + 365.25
-//      };
-//
-//      int[] timeToSeasonMappings = new int[] {3, 0, 1, 2, 3, 0};
-      
       int[] lonIndices = getEncompassingIndices(netCDFLons, lon);
       int[] latIndices = getEncompassingIndices(netCDFLats, lat);
-//      int[] timeMappingIndices = getEncompassingIndices(netCDFTimes, doy);
-//      int[] timeIndices = new int[]{timeToSeasonMappings[timeMappingIndices[0]], timeToSeasonMappings[timeMappingIndices[1]]};
       int[] depthIndices = getMinMaxIndices(netCDFDepths, depths);
 
 
       double[] latsSlice = Arrays.copyOfRange(netCDFLats, latIndices[0], latIndices[1] + 1);
       double[] lonsSlice = Arrays.copyOfRange(netCDFLons, lonIndices[0], lonIndices[1] + 1);
       double[] depthsSlice = Arrays.copyOfRange(netCDFDepths, depthIndices[0], depthIndices[1] + 1);
-//      double[] timesSlice = Arrays.copyOfRange(netCDFTimes, timeMappingIndices[0], timeMappingIndices[1] + 1);
-
-//      NetcdfFile[] seasons = new NetcdfFile[]{netCDFSeasons[timeIndices[0]], netCDFSeasons[timeIndices[1]]};
       
       double[] interpolatedMean = interpolateVariable(
           startSeason,
@@ -269,73 +253,40 @@ public class CoTeDeWoaNormbias {
       double[] sourceDepths
   ) throws InvalidRangeException, IOException {
 
-    double[][][] startKnots = getKnots(
+    double[] startKnots = getKnots(
         startSeason.getNetCdfFile(),
         variableName,
         depthIndices,
         latIndices,
         lonIndices);
 
-    double[][][] endKnots = getKnots(
+    double[] endKnots = getKnots(
         endSeason.getNetCdfFile(),
         variableName,
         depthIndices,
         latIndices,
         lonIndices);
 
-    TricubicInterpolatingFunction startInterpolator = new TricubicInterpolator().interpolate(depthsSlice, latsSlice, lonsSlice, startKnots);
-    TricubicInterpolatingFunction endInterpolator = new TricubicInterpolator().interpolate(depthsSlice, latsSlice, lonsSlice, endKnots);
+    double[] interpolatedValues = interpolateTime(
+        startKnots,
+        endKnots,
+        percentOfSeason
+    );
 
-    double[] startValues = new double[sourceDepths.length];
-    for (int i = 0; i < sourceDepths.length; i++) {
-      startValues[i] = startInterpolator.value(sourceDepths[i], lat, lon);
-    }
+    interpolatedValues = interpolateLatLon(
+        interpolatedValues,
+        latsSlice,
+        lonsSlice,
+        depthsSlice.length,
+        lat,
+        lon
+    );
 
-    double[] endValues = new double[sourceDepths.length];
-    for (int i = 0; i < sourceDepths.length; i++) {
-      endValues[i] = endInterpolator.value(sourceDepths[i], lat, lon);
-    }
-
-    double[] result = new double[sourceDepths.length];
-
-    for (int i = 0; i < sourceDepths.length; i++) {
-      result[i] = new LinearInterpolator().interpolate(new double[] {0D, 1D}, new double[]{startValues[i], endValues[i]}).value(percentOfSeason);
-    }
-
-    return result;
-
-//    double[] interpolatedValues = interpolateTime(
-//        getSlice(
-//            startSeason.getNetCdfFile(),
-//            variableName,
-//            depthIndices,
-//            latIndices,
-//            lonIndices
-//        ),
-//        getSlice(
-//            endSeason.getNetCdfFile(),
-//            variableName,
-//            depthIndices,
-//            latIndices,
-//            lonIndices
-//        ),
-//        percentOfSeason
-//    );
-//
-//    interpolatedValues = interpolateLatLon(
-//        interpolatedValues,
-//        latsSlice,
-//        lonsSlice,
-//        depthsSlice.length,
-//        lat,
-//        lon
-//    );
-//
-//    return interpolateDepth(
-//        interpolatedValues,
-//        sourceDepths,
-//        depthsSlice
-//    );
+    return interpolateDepth(
+        interpolatedValues,
+        sourceDepths,
+        depthsSlice
+    );
   }
 
   protected static Variable findVariable(NetcdfFile file, String variableName) {
@@ -404,7 +355,7 @@ public class CoTeDeWoaNormbias {
     return indices;
   }
 
-  private static double[][][] getKnots(NetcdfFile file, String variableName, int[] depthIndices, int[] latIndices, int[] lonIndices)
+  private static double[] getKnots(NetcdfFile file, String variableName, int[] depthIndices, int[] latIndices, int[] lonIndices)
       throws InvalidRangeException, IOException {
     Variable variable = findVariable(file, variableName);
     double fill = getFillValueFromVariable(variable);
@@ -422,18 +373,20 @@ public class CoTeDeWoaNormbias {
     ));
 
     int[] shape = sliceArray.getShape();
-    double[][][] knots = new double[shape[1]][shape[2]][shape[3]];
+    double[] knots = new double[shape[1]* shape[2]* shape[3]];
 
     Index index = sliceArray.getIndex();
+    int i = 0;
 
     for (int depthIndex = 0; depthIndex < shape[1]; depthIndex++) {
       for (int latIndex = 0; latIndex < shape[2]; latIndex++) {
         for (int lonIndex = 0; lonIndex < shape[3]; lonIndex++) {
           double value = sliceArray.getDouble(index.set(0, depthIndex, latIndex, lonIndex));
           if (Precision.equals(value, fill, 0.000001d)) {
-            value = interpolateNan(variable, fill, depthIndex + depthIndices[0], latIndex + latIndices[0], lonIndex + lonIndices[0], maxDepthIndex, maxLatIndex, maxLonIndex);
+//            value = interpolateNan(variable, fill, depthIndex + depthIndices[0], latIndex + latIndices[0], lonIndex + lonIndices[0], maxDepthIndex, maxLatIndex, maxLonIndex);
+              value = Double.NaN;
           }
-          knots[depthIndex][latIndex][lonIndex] = value;
+          knots[i++] = value;
         }
       }
     }
@@ -587,17 +540,29 @@ public class CoTeDeWoaNormbias {
     return slice;
   }
   
-  private static double[] interpolateTime(double[] startSeasonValues, double[] endSeasonValues, double percentOfSeason) {
+  private static double[] interpolateTime(double[] startSeasonValues, double[]endSeasonValues, double percentOfSeason) {
     double[] interpolatedValues = new double[startSeasonValues.length];
-    
+
     for (int i = 0; i < startSeasonValues.length; i++) {
       interpolatedValues[i] = new LinearInterpolator().interpolate(new double[] {0D, 1D}, new double[]{startSeasonValues[i], endSeasonValues[i]}).value(percentOfSeason);
     }
-    
+
     return interpolatedValues;
   }
 
-  //TODO handle antimeridian
+  private static class NaNRemoval{
+    private final double x;
+    private final double y;
+    private final double value;
+    public NaNRemoval(double x, double y, double value) {
+      this.x = x;
+      this.y = y;
+      this.value = value;
+    }
+
+  }
+
+    //TODO handle antimeridian
   protected static double[] interpolateLatLon(
       double[] interpolatedValues,
       double[] latsSlice,
@@ -606,34 +571,61 @@ public class CoTeDeWoaNormbias {
       double lat,
       double lon
   ) {
-    double[] latLonInterpolatedValues = new double[nDepths];
-    if (latsSlice.length != 1 && lonsSlice.length != 1) {
-      double[][] latInterpolatedValues = new double[interpolatedValues.length / 4][];
-      for (int i = 0; i < interpolatedValues.length; i += 4) {
-        latInterpolatedValues[i / 4] = new double[]{
-            new LinearInterpolator().interpolate(latsSlice, new double[]{interpolatedValues[i], interpolatedValues[i + 2]}).value(lat),
-            new LinearInterpolator().interpolate(latsSlice, new double[]{interpolatedValues[i + 1], interpolatedValues[i + 3]}).value(lat)
-        };
-      }
 
-      for (int i = 0; i < latInterpolatedValues.length; i++) {
-        latLonInterpolatedValues[i] = new LinearInterpolator().interpolate(lonsSlice, latInterpolatedValues[i]).value(lon);
-      }
-    } else if (lonsSlice.length == 1 && latsSlice.length == 1) {
-      latLonInterpolatedValues = interpolatedValues;
-    } else if (lonsSlice.length != 1) {
-      for (int i = 0; i < interpolatedValues.length; i+=2) {
-        latLonInterpolatedValues[i / 2] =  new LinearInterpolator().interpolate(lonsSlice, new double[]{
-            interpolatedValues[i], interpolatedValues[i + 1]
-        }).value(lon);
-      }
-    } else {
-      for (int i = 0; i < interpolatedValues.length; i+=2) {
-        latLonInterpolatedValues[i / 2] =  new LinearInterpolator().interpolate(latsSlice, new double[]{
-            interpolatedValues[i], interpolatedValues[i + 1]
-        }).value(lat);
+    double[] latLonInterpolatedValues = new double[nDepths];
+    if (latsSlice.length != 1 && lonsSlice.length != 1){
+      for (int i = 0; i < interpolatedValues.length; i += 4) {
+        List<NaNRemoval> toInterpolate = new ArrayList<>(Arrays.asList(
+            new NaNRemoval(latsSlice[0], lonsSlice[0], interpolatedValues[i]),
+            new NaNRemoval(latsSlice[0], lonsSlice[1], interpolatedValues[i + 1]),
+            new NaNRemoval(latsSlice[1], lonsSlice[0], interpolatedValues[i + 2]),
+            new NaNRemoval(latsSlice[1], lonsSlice[1], interpolatedValues[i + 3])
+        ));
+        Iterator<NaNRemoval> it = toInterpolate.iterator();
+        while (it.hasNext()) {
+          if (Double.isNaN(it.next().value)) {
+            it.remove();
+          }
+        }
+        if (toInterpolate.size() > 2) {
+          double[] x = new double[toInterpolate.size()];
+          double[] y = new double[toInterpolate.size()];
+          double[] v = new double[toInterpolate.size()];
+          for (int j = 0; j < toInterpolate.size(); j++) {
+            x[j] = toInterpolate.get(j).x;
+            y[j] = toInterpolate.get(j).y;
+            v[j] = toInterpolate.get(j).value;
+          }
+          MeshInterpolator interpolator = new MeshInterpolator(x, y, v);
+          try {
+            latLonInterpolatedValues[i / 4] = interpolator.interpolate(lat, lon);
+          } catch (UnableToInterpolateException e) {
+            latLonInterpolatedValues[i / 4] = Double.NaN;
+          }
+        } else {
+          latLonInterpolatedValues[i / 4] = Double.NaN;
+        }
       }
     }
+
+//      for (int i = 0; i < latInterpolatedValues.length; i++) {
+//        latLonInterpolatedValues[i] = new LinearInterpolator().interpolate(lonsSlice, latInterpolatedValues[i]).value(lon);
+//      }
+//    } else if (lonsSlice.length == 1 && latsSlice.length == 1) {
+//      latLonInterpolatedValues = interpolatedValues;
+//    } else if (lonsSlice.length != 1) {
+//      for (int i = 0; i < interpolatedValues.length; i+=2) {
+//        latLonInterpolatedValues[i / 2] =  new LinearInterpolator().interpolate(lonsSlice, new double[]{
+//            interpolatedValues[i], interpolatedValues[i + 1]
+//        }).value(lon);
+//      }
+//    } else {
+//      for (int i = 0; i < interpolatedValues.length; i+=2) {
+//        latLonInterpolatedValues[i / 2] =  new LinearInterpolator().interpolate(latsSlice, new double[]{
+//            interpolatedValues[i], interpolatedValues[i + 1]
+//        }).value(lat);
+//      }
+//    }
     
     return latLonInterpolatedValues;
   }

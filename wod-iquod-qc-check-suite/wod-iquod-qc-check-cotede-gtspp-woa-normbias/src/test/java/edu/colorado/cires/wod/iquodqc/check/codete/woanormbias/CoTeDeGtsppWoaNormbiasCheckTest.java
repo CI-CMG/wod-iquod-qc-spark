@@ -261,4 +261,132 @@ public class CoTeDeGtsppWoaNormbiasCheckTest {
     CastCheckResult result = results.get(0);
     assertEquals(expected, result);
   }
+
+  @Test
+  public void testCast13334391() throws Exception {
+    Cast cast = Cast.builder()
+        .withCruiseNumber(0)
+        .withProfileType(0)
+        .withDataset("CTD1997")
+        .withLongitude(-78.1333)
+        .withLatitude(29.6)
+        .withTimestamp(54187200000L)
+        .withCastNumber(13334391)
+        .withMonth(9)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(0.0)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(24.667)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(30.5)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(24.444)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(22.333)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(22.333)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(42.7)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(19.0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(48.8)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(18.056)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(61.0)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(16.667)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(67.1)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(15.556)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(91.4)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(15.0)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(118.9)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(14.167)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(140.2)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(13.5)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(176.8)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(13.056)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(213.4)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(12.222)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(243.8)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(11.667)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(274.3)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(11.111)
+                    .build()))
+                .build(),
+            Depth.builder().withDepth(304.8)
+                .withData(Collections.singletonList(ProfileData.builder()
+                    .withOriginatorsFlag(0).withQcFlag(0)
+                    .withVariableCode(TEMPERATURE).withValue(10.556)
+                    .build()))
+                .build()
+        ))
+        .build();
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
+    dataset.write().parquet(TEST_PARQUET);
+
+    CastCheckResult expected = CastCheckResult.builder()
+        .withCastNumber(13334391)
+        .withPassed(false)
+        .withFailedDepths(Arrays.asList(2,3,4,5,6,7,8 ))
+        .withSignal(Collections.emptyList())
+        .build();
+
+    List<CastCheckResult> results = check.joinResultDataset(context).collectAsList();
+    CastCheckResult result = results.get(0);
+    assertEquals(expected, result);
+
+    System.out.println(results);
+  }
 }
