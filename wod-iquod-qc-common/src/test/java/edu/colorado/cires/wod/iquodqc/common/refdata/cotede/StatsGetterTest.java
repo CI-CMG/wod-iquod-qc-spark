@@ -25,13 +25,13 @@ class StatsGetterTest {
     Properties properties = new Properties();
     properties.put(FileDownloader.DATA_DIR_PROP, DIR.toString());
     properties.put(WoaParametersReader.WOA_S1_NC_PROP,
-        "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
+        "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t13_5d.nc");
     properties.put(WoaParametersReader.WOA_S2_NC_PROP,
-        "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
+        "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t14_5d.nc");
     properties.put(WoaParametersReader.WOA_S3_NC_PROP,
-        "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
+        "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t15_5d.nc");
     properties.put(WoaParametersReader.WOA_S4_NC_PROP,
-        "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
+        "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t16_5d.nc");
     parameters = WoaParametersReader.loadParameters(properties);
   }
 
