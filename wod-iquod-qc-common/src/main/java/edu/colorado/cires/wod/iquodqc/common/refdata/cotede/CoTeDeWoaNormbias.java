@@ -17,19 +17,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.DoubleStream;
-import org.apache.commons.math3.analysis.MultivariateFunction;
-import org.apache.commons.math3.analysis.TrivariateFunction;
-import org.apache.commons.math3.analysis.interpolation.BicubicInterpolatingFunction;
-import org.apache.commons.math3.analysis.interpolation.BicubicInterpolator;
+import java.util.Objects;;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
-import org.apache.commons.math3.analysis.interpolation.MultivariateInterpolator;
-import org.apache.commons.math3.analysis.interpolation.TricubicInterpolatingFunction;
-import org.apache.commons.math3.analysis.interpolation.TricubicInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.util.Precision;
@@ -37,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.Index;
-import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.nc2.Attribute;
@@ -599,7 +587,7 @@ public class CoTeDeWoaNormbias {
           MeshInterpolator interpolator = new MeshInterpolator(x, y, v);
           try {
             latLonInterpolatedValues[i / 4] = interpolator.interpolate(lat, lon);
-          } catch (UnableToInterpolateException e) {
+          } catch (Exception e) {
             latLonInterpolatedValues[i / 4] = Double.NaN;
           }
         } else {

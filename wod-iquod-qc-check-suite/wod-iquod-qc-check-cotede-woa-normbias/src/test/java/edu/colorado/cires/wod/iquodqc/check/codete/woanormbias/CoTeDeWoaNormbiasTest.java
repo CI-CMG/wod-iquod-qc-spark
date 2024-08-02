@@ -46,10 +46,10 @@ public class CoTeDeWoaNormbiasTest {
   
   @BeforeAll static void beforeAll() {
     Properties properties = new Properties();
-    properties.put("woa_s1.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t13_5d.nc");
-    properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
-    properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
-    properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
+    properties.put("woa_s1.netcdf.uri", "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t13_5d.nc");
+    properties.put("woa_s2.netcdf.uri", "hhttps://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t14_5d.nc");
+    properties.put("woa_s3.netcdf.uri", "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t15_5d.nc");
+    properties.put("woa_s4.netcdf.uri", "https://wod-test-resources.s3.amazonaws.com/woa-paramaters/woa18_decav_t16_5d.nc");
     properties.put("data.dir", "../../test-data");
 
     woaParameters = WoaParametersReader.loadParameters(properties);

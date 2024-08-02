@@ -63,7 +63,7 @@ public class NetCdfEtopoParameters implements EtopoDataAccessor {
           } else {
             netCdfLon = lonI;
           }
-          result[resultLatIndex][resultLonIndex] = rose.read(new int[]{netCdfLat, netCdfLon}, new int[]{1, 1}).getFloat(0);
+          result[resultLonIndex][resultLatIndex] = rose.read(new int[]{netCdfLat, netCdfLon}, new int[]{1, 1}).getFloat(0);
           resultLatIndex++;
         }
         resultLonIndex++;

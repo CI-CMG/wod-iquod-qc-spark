@@ -63,7 +63,12 @@ public class MeshInterpolator {
     }
 
     QuickHull3D hull = new QuickHull3D();
-    hull.build(points);
+    try {
+      hull.build(points);
+    } catch (Exception e){
+      throw new UnableToInterpolateException(e.getMessage());
+    }
+
 
     Point3d[] verticies = hull.getVertices();
     int[][] faces = hull.getFaces();

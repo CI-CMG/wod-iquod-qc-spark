@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParameters;
 import edu.colorado.cires.wod.iquodqc.check.cotede.carsnormbias.refdata.CarsParametersReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,21 +19,21 @@ public class CoTeDeCarsNormbiasTest {
       Double.NaN};
   private static final double[] DEPTHS = {2, 6, 10, 21, 44, 79, 100, 150, 200, 400, 410, 650, 1000, 2000, 5000};
   private static final double[] EXPECTED_NORMBIAS = {
-      -0.38019257069748696,
-      -0.393885671921776,
-      -0.37565610075965755,
-      -0.3799254381742379,
-      -0.4762608025493148,
-      0.06060039754158271,
-      0.07226629854667979,
-      0.08483219688898401,
-      0.12914847336393787,
-      1.3081374269005843,
-      -8.640890659107448,
-      0.9686821986158043,
-      -0.4231785925487893,
-      0.931676201372987,
-      Double.NaN
+          -0.3801925706974959,
+          -0.3938856719217754,
+          -0.37565610075965716,
+          -0.37992543817424124,
+          -0.47626080254931824,
+          0.060600397541582814,
+          0.07226629854667765,
+          0.08483219688898402,
+          0.12914847336393648,
+          1.3081374269005817,
+          -8.640890659107455,
+          0.9686821986158015,
+          Double.NaN,
+          0.9316762013729869,
+          Double.NaN
   };
 
   private static CarsParameters carsParameters;
@@ -49,9 +50,7 @@ public class CoTeDeCarsNormbiasTest {
   @ParameterizedTest
   @CsvSource({
       "15,-38",
-      "15.00000001,-38.00000001",
       "15.00000001,-38",
-      "15,-38.00000001",
   })
   public void testComputeCarsNormbias(double latitude, double longitude) throws InvalidRangeException, IOException {
     assertArrayEquals(

@@ -263,7 +263,7 @@ public class CoTeDeGtsppWoaNormbiasCheckTest {
   }
 
   @Test
-  public void testCast13334391() throws Exception {
+  public void testRealData() throws Exception {
     Cast cast = Cast.builder()
         .withCruiseNumber(0)
         .withProfileType(0)

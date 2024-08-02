@@ -27,10 +27,10 @@ public class LocationInterpolationUtilsTest {
 
   @Test
   public void test() {
-    assertEquals(-366D, LocationInterpolationUtils.depthInterpolation(parameters, 30D, 10D), 0.0001);
-    assertEquals(5192.5, LocationInterpolationUtils.depthInterpolation(parameters, -30D, 10D), 0.0001);
-    assertEquals(5019.0825, LocationInterpolationUtils.depthInterpolation(parameters, -38D, 15D), 0.0001);
-    assertEquals(4995.0496, LocationInterpolationUtils.depthInterpolation(parameters, -138D, 12D), 0.0001);
+    assertEquals(-365.9999, LocationInterpolationUtils.depthInterpolation(parameters, 30D, 10D), 0.0001);
+    assertEquals(5192.0414, LocationInterpolationUtils.depthInterpolation(parameters, -30D, 10D), 0.0001);
+    assertEquals(5022.0733, LocationInterpolationUtils.depthInterpolation(parameters, -38D, 15D), 0.0001);
+    assertEquals(4995.0601, LocationInterpolationUtils.depthInterpolation(parameters, -138D, 12D), 0.0001);
     assertEquals(4876D, LocationInterpolationUtils.depthInterpolation(parameters, 0D, 0D), 0.0001);
     assertEquals(-76D, LocationInterpolationUtils.depthInterpolation(parameters, 0D, 6D), 0.0001);
     assertEquals(5454D, LocationInterpolationUtils.depthInterpolation(parameters, 0D, -10D), 0.0001);
