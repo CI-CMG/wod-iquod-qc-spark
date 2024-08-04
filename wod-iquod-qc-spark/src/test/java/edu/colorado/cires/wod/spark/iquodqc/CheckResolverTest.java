@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
+import edu.colorado.cires.wod.spark.iquodqc.CheckResolver.ParentChildren;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +37,18 @@ public class CheckResolverTest {
     properties.put("wod_range_area.json.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/range_area.json");
     properties.put("wod_ranges_temperature.json.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/WOD_ranges_Temperature.json");
     properties.put("data.dir", "../test-data");
+  }
+
+  @Test
+  public void testParentChildren() {
+    List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()));
+    for (ParentChildren pc : parentChildren) {
+      if (pc.getParent().equals(CheckNames.IQUOD_FLAGS_CHECK.getName())) {
+        assertTrue(pc.getChildren().isEmpty());
+      } else {
+        assertFalse(pc.getChildren().isEmpty());
+      }
+    }
   }
 
   @Test

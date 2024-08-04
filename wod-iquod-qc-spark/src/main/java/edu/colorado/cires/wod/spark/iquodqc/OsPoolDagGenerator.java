@@ -1,0 +1,143 @@
+package edu.colorado.cires.wod.spark.iquodqc;
+
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.google.common.annotations.VisibleForTesting;
+import edu.colorado.cires.wod.iquodqc.common.CheckNames;
+import edu.colorado.cires.wod.spark.iquodqc.CheckResolver.ParentChildren;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
+
+@Command(
+    name = "generate-dag",
+    description = "Generates an OSPool DAG file",
+    mixinStandardHelpOptions = true)
+public class OsPoolDagGenerator implements Runnable {
+
+  @Option(names = {"-l", "--list-file"}, required = true, description = "The list file from WOD ASCII conversion")
+  private Path listFile;
+  @Option(names = {"-o", "--output-file"}, required = true, description = "The dag file to create")
+  private Path outputFile;
+
+  @VisibleForTesting
+  void setListFile(Path listFile) {
+    this.listFile = listFile;
+  }
+
+  @VisibleForTesting
+  void setOutputFile(Path outputFile) {
+    this.outputFile = outputFile;
+  }
+
+  private Set<DatasetYear> getAll()  {
+    try {
+      List<String> lines = Files.readAllLines(listFile, StandardCharsets.UTF_8);
+      return new TreeSet<>(lines.stream()
+          .filter(StringUtils::isNotBlank)
+          .map(StringUtils::trim)
+          .map(line -> {
+            String[] split = line.split(",");
+            return new DatasetYear(split[1], split[0]);
+          })
+          .collect(Collectors.toSet()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static String getJobName(DatasetYear datasetYear, String check) {
+    return datasetYear.dataset + "_" + datasetYear.year + "_" + check;
+  }
+
+  @Override
+  public void run() {
+    List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()));
+    try(OutputStream outputStream = Files.newOutputStream(outputFile)) {
+      Set<DatasetYear> all = getAll();
+      for (DatasetYear datasetYear : all) {
+        for (ParentChildren pc : parentChildren) {
+          String jobName = getJobName(datasetYear, pc.getParent());
+          outputStream.write(("JOB " + jobName + " wod-iquod-qc-spark.submit\n").getBytes(StandardCharsets.UTF_8));
+          outputStream.write(("VARS " + jobName + " dataset=\"" + datasetYear.dataset + "\" year=\"" + datasetYear.year + "\" check=\"" + pc.getParent() + "\"\n").getBytes(StandardCharsets.UTF_8));
+        }
+      }
+      for (DatasetYear datasetYear : all) {
+        for (ParentChildren pc : parentChildren) {
+          if (!pc.getChildren().isEmpty()) {
+            String jobName = getJobName(datasetYear, pc.getParent());
+            outputStream.write(("PARENT " + jobName + " CHILD").getBytes(StandardCharsets.UTF_8));
+            for (String child : pc.getChildren()) {
+              outputStream.write((" " + getJobName(datasetYear, child)).getBytes(StandardCharsets.UTF_8));
+            }
+            outputStream.write("\n".getBytes(StandardCharsets.UTF_8));
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static class DatasetYear implements Comparable<DatasetYear> {
+    private final String dataset;
+    private final String year;
+
+    private DatasetYear(String dataset, String year) {
+      this.dataset = dataset;
+      this.year = year;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      DatasetYear that = (DatasetYear) o;
+      return Objects.equals(year, that.year) && Objects.equals(dataset, that.dataset);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(year, dataset);
+    }
+
+    @Override
+    public String toString() {
+      return "DatasetYear{" +
+          "dataset='" + dataset + '\'' +
+          ", year='" + year + '\'' +
+          '}';
+    }
+
+    public String toLine() {
+      return year + "," + dataset + "\n";
+    }
+
+    @Override
+    public int compareTo(@NotNull DatasetYear o) {
+      return toString().compareTo(o.toString());
+    }
+  }
+}

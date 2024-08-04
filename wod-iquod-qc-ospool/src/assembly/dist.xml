@@ -1,0 +1,37 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0 https://maven.apache.org/xsd/assembly-2.2.0.xsd">
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/ospool</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>*.sh</include>
+        <include>*.submit</include>
+      </includes>
+      <filtered>true</filtered>
+      <lineEnding>unix</lineEnding>
+      <fileMode>0770</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>src/ospool</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>*.submit</include>
+        <include>*.conf</include>
+      </includes>
+      <filtered>true</filtered>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory></outputDirectory>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <useProjectArtifact>false</useProjectArtifact>
+    </dependencySet>
+  </dependencySets>
+</assembly>

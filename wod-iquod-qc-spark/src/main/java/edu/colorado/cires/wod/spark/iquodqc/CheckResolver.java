@@ -8,25 +8,70 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
+import org.jetbrains.annotations.Nullable;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 
 public class CheckResolver {
 
 
-  public static List<CastCheck> getChecks(Set<String> checksToRun, Properties properties) {
-    CastCheckInitializationContext initContext = new CastCheckInitializationContext() {
-      @Override
-      public Properties getProperties() {
-        return properties;
+  public static class ParentChildren {
+    private final String parent;
+    private final Set<String> children = new LinkedHashSet<>();
+
+    public ParentChildren(String parent) {
+      this.parent = parent;
+    }
+
+    public String getParent() {
+      return parent;
+    }
+
+    public Set<String> getChildren() {
+      return children;
+    }
+
+    @Override
+    public String toString() {
+      return "ParentChildren{" +
+          "parent='" + parent + '\'' +
+          ", children=" + children +
+          '}';
+    }
+  }
+
+  public static List<ParentChildren> getParentChildren(Set<String> checksToRun) {
+    List<CastCheck> checks = getChecks(checksToRun, null);
+    Map<String, ParentChildren> parentChildren = new LinkedHashMap<>();
+    for (CastCheck check : checks) {
+      parentChildren.put(check.getName(), new ParentChildren(check.getName()));
+      Collection<String> dependsOn = check.dependsOn();
+      for (String d : dependsOn) {
+        ParentChildren pc = parentChildren.get(d);
+        pc.getChildren().add(check.getName());
       }
-    };
+    }
+    return new ArrayList<>(parentChildren.values());
+  }
+
+  public static List<CastCheck> getChecks(Set<String> checksToRun, @Nullable Properties properties) {
+    CastCheckInitializationContext initContext = null;
+    if (properties != null) {
+      initContext = new CastCheckInitializationContext() {
+        @Override
+        public Properties getProperties() {
+          return properties;
+        }
+      };
+    }
     Map<String, CastCheck> checks = loadChecks(checksToRun, initContext);
     DirectedAcyclicGraph<CastCheck, DefaultEdge> dag = planChecks(checks);
     List<CastCheck> order = new ArrayList<>(checks.size());
@@ -45,7 +90,7 @@ public class CheckResolver {
     }
   }
 
-  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun, CastCheckInitializationContext initContext) {
+  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun, @Nullable CastCheckInitializationContext initContext) {
     Map<String, CastCheck> allChecks = new HashMap<>();
     Set<String> checksToRunWithDependencies = new HashSet<>();
     for (CastCheck check : ServiceLoader.load(CastCheck.class)) {
@@ -64,7 +109,9 @@ public class CheckResolver {
     Map<String, CastCheck> checks = new HashMap<>();
     for (String checkName : checksToRunWithDependencies) {
       CastCheck check = allChecks.get(checkName);
-      check.initialize(initContext);
+      if (initContext != null) {
+        check.initialize(initContext);
+      }
       checks.put(checkName, check);
     }
     return checks;

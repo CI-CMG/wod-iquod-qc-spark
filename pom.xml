@@ -47,6 +47,7 @@
     <module>wod-iquod-qc-flag</module>
     <module>wod-iquod-qc-spark</module>
     <module>wod-iquod-qc-post-process</module>
+    <module>wod-iquod-qc-ospool</module>
   </modules>
 
   <properties>
@@ -157,7 +158,6 @@
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-aws</artifactId>
         <version>${hadoop.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.spark</groupId>

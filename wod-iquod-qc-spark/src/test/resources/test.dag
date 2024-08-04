@@ -1,0 +1,560 @@
+JOB GLD_2005_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_WOA_normbias"
+JOB GLD_2005_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_tukey_53H_check dataset="GLD" year="2005" check="CoTeDe_tukey_53H_check"
+JOB GLD_2005_EN_stability_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_stability_check dataset="GLD" year="2005" check="EN_stability_check"
+JOB GLD_2005_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_spike_and_step_suspect dataset="GLD" year="2005" check="EN_spike_and_step_suspect"
+JOB GLD_2005_CSIRO_surface_spikes wod-iquod-qc-spark.submit
+VARS GLD_2005_CSIRO_surface_spikes dataset="GLD" year="2005" check="CSIRO_surface_spikes"
+JOB GLD_2005_EN_spike_and_step_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_spike_and_step_check dataset="GLD" year="2005" check="EN_spike_and_step_check"
+JOB GLD_2005_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_08_gradient_check dataset="GLD" year="2005" check="ICDC_aqc_08_gradient_check"
+JOB GLD_2005_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_07_spike_check dataset="GLD" year="2005" check="ICDC_aqc_07_spike_check"
+JOB GLD_2005_EN_background_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_background_check dataset="GLD" year="2005" check="EN_background_check"
+JOB GLD_2005_EN_constant_value_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_constant_value_check dataset="GLD" year="2005" check="EN_constant_value_check"
+JOB GLD_2005_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_05_stuck_value dataset="GLD" year="2005" check="ICDC_aqc_05_stuck_value"
+JOB GLD_2005_CoTeDe_gradient wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_gradient dataset="GLD" year="2005" check="CoTeDe_gradient"
+JOB GLD_2005_CSIRO_wire_break wod-iquod-qc-spark.submit
+VARS GLD_2005_CSIRO_wire_break dataset="GLD" year="2005" check="CSIRO_wire_break"
+JOB GLD_2005_Argo_impossible_date_test wod-iquod-qc-spark.submit
+VARS GLD_2005_Argo_impossible_date_test dataset="GLD" year="2005" check="Argo_impossible_date_test"
+JOB GLD_2005_AOML_constant wod-iquod-qc-spark.submit
+VARS GLD_2005_AOML_constant dataset="GLD" year="2005" check="AOML_constant"
+JOB GLD_2005_EN_background_available_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_background_available_check dataset="GLD" year="2005" check="EN_background_available_check"
+JOB GLD_2005_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_01_level_order dataset="GLD" year="2005" check="ICDC_aqc_01_level_order"
+JOB GLD_2005_AOML_spike wod-iquod-qc-spark.submit
+VARS GLD_2005_AOML_spike dataset="GLD" year="2005" check="AOML_spike"
+JOB GLD_2005_Argo_impossible_location_test wod-iquod-qc-spark.submit
+VARS GLD_2005_Argo_impossible_location_test dataset="GLD" year="2005" check="Argo_impossible_location_test"
+JOB GLD_2005_IQuOD_gross_range_check wod-iquod-qc-spark.submit
+VARS GLD_2005_IQuOD_gross_range_check dataset="GLD" year="2005" check="IQuOD_gross_range_check"
+JOB GLD_2005_CSIRO_constant_bottom wod-iquod-qc-spark.submit
+VARS GLD_2005_CSIRO_constant_bottom dataset="GLD" year="2005" check="CSIRO_constant_bottom"
+JOB GLD_2005_IQUOD_bottom wod-iquod-qc-spark.submit
+VARS GLD_2005_IQUOD_bottom dataset="GLD" year="2005" check="IQUOD_bottom"
+JOB GLD_2005_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_10_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_10_climatology_check"
+JOB GLD_2005_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2005" check="CoTeDe_Constant_Cluster_Size_check"
+JOB GLD_2005_Argo_global_range_check wod-iquod-qc-spark.submit
+VARS GLD_2005_Argo_global_range_check dataset="GLD" year="2005" check="Argo_global_range_check"
+JOB GLD_2005_wod_range_check wod-iquod-qc-spark.submit
+VARS GLD_2005_wod_range_check dataset="GLD" year="2005" check="wod_range_check"
+JOB GLD_2005_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
+VARS GLD_2005_wod_loose_location_at_sea_check dataset="GLD" year="2005" check="wod_loose_location_at_sea_check"
+JOB GLD_2005_CoTeDe_spike wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_spike dataset="GLD" year="2005" check="CoTeDe_spike"
+JOB GLD_2005_EN_range_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_range_check dataset="GLD" year="2005" check="EN_range_check"
+JOB GLD_2005_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_GTSPP_WOA_normbias"
+JOB GLD_2005_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_02_crude_range dataset="GLD" year="2005" check="ICDC_aqc_02_crude_range"
+JOB GLD_2005_CSIRO_short_gradient wod-iquod-qc-spark.submit
+VARS GLD_2005_CSIRO_short_gradient dataset="GLD" year="2005" check="CSIRO_short_gradient"
+JOB GLD_2005_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_09_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_09_climatology_check"
+JOB GLD_2005_Argo_spike_test wod-iquod-qc-spark.submit
+VARS GLD_2005_Argo_spike_test dataset="GLD" year="2005" check="Argo_spike_test"
+JOB GLD_2005_AOML_climatology_test wod-iquod-qc-spark.submit
+VARS GLD_2005_AOML_climatology_test dataset="GLD" year="2005" check="AOML_climatology_test"
+JOB GLD_2005_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
+VARS GLD_2005_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2005" check="ICDC_aqc_06_n_temperature_extrema"
+JOB GLD_2005_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_rate_of_change dataset="GLD" year="2005" check="CoTeDe_rate_of_change"
+JOB GLD_2005_CSIRO_long_gradient wod-iquod-qc-spark.submit
+VARS GLD_2005_CSIRO_long_gradient dataset="GLD" year="2005" check="CSIRO_long_gradient"
+JOB GLD_2005_AOML_gradient wod-iquod-qc-spark.submit
+VARS GLD_2005_AOML_gradient dataset="GLD" year="2005" check="AOML_gradient"
+JOB GLD_2005_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_Cars_Normbias_check dataset="GLD" year="2005" check="CoTeDe_Cars_Normbias_check"
+JOB GLD_2005_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
+VARS GLD_2005_CoTeDe_anomaly_detection_check dataset="GLD" year="2005" check="CoTeDe_anomaly_detection_check"
+JOB GLD_2005_EN_increasing_depth_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_increasing_depth_check dataset="GLD" year="2005" check="EN_increasing_depth_check"
+JOB GLD_2005_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
+VARS GLD_2005_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2005" check="EN_std_lev_bkg_and_buddy_check"
+JOB GLD_2005_HTPR_check wod-iquod-qc-spark.submit
+VARS GLD_2005_HTPR_check dataset="GLD" year="2005" check="HTPR_check"
+JOB GLD_2005_COMP_check wod-iquod-qc-spark.submit
+VARS GLD_2005_COMP_check dataset="GLD" year="2005" check="COMP_check"
+JOB GLD_2005_LFPR_check wod-iquod-qc-spark.submit
+VARS GLD_2005_LFPR_check dataset="GLD" year="2005" check="LFPR_check"
+JOB GLD_2005_IQuOD_flags_check wod-iquod-qc-spark.submit
+VARS GLD_2005_IQuOD_flags_check dataset="GLD" year="2005" check="IQuOD_flags_check"
+JOB GLD_2006_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_WOA_normbias"
+JOB GLD_2006_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_tukey_53H_check dataset="GLD" year="2006" check="CoTeDe_tukey_53H_check"
+JOB GLD_2006_EN_stability_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_stability_check dataset="GLD" year="2006" check="EN_stability_check"
+JOB GLD_2006_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_spike_and_step_suspect dataset="GLD" year="2006" check="EN_spike_and_step_suspect"
+JOB GLD_2006_CSIRO_surface_spikes wod-iquod-qc-spark.submit
+VARS GLD_2006_CSIRO_surface_spikes dataset="GLD" year="2006" check="CSIRO_surface_spikes"
+JOB GLD_2006_EN_spike_and_step_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_spike_and_step_check dataset="GLD" year="2006" check="EN_spike_and_step_check"
+JOB GLD_2006_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_08_gradient_check dataset="GLD" year="2006" check="ICDC_aqc_08_gradient_check"
+JOB GLD_2006_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_07_spike_check dataset="GLD" year="2006" check="ICDC_aqc_07_spike_check"
+JOB GLD_2006_EN_background_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_background_check dataset="GLD" year="2006" check="EN_background_check"
+JOB GLD_2006_EN_constant_value_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_constant_value_check dataset="GLD" year="2006" check="EN_constant_value_check"
+JOB GLD_2006_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_05_stuck_value dataset="GLD" year="2006" check="ICDC_aqc_05_stuck_value"
+JOB GLD_2006_CoTeDe_gradient wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_gradient dataset="GLD" year="2006" check="CoTeDe_gradient"
+JOB GLD_2006_CSIRO_wire_break wod-iquod-qc-spark.submit
+VARS GLD_2006_CSIRO_wire_break dataset="GLD" year="2006" check="CSIRO_wire_break"
+JOB GLD_2006_Argo_impossible_date_test wod-iquod-qc-spark.submit
+VARS GLD_2006_Argo_impossible_date_test dataset="GLD" year="2006" check="Argo_impossible_date_test"
+JOB GLD_2006_AOML_constant wod-iquod-qc-spark.submit
+VARS GLD_2006_AOML_constant dataset="GLD" year="2006" check="AOML_constant"
+JOB GLD_2006_EN_background_available_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_background_available_check dataset="GLD" year="2006" check="EN_background_available_check"
+JOB GLD_2006_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_01_level_order dataset="GLD" year="2006" check="ICDC_aqc_01_level_order"
+JOB GLD_2006_AOML_spike wod-iquod-qc-spark.submit
+VARS GLD_2006_AOML_spike dataset="GLD" year="2006" check="AOML_spike"
+JOB GLD_2006_Argo_impossible_location_test wod-iquod-qc-spark.submit
+VARS GLD_2006_Argo_impossible_location_test dataset="GLD" year="2006" check="Argo_impossible_location_test"
+JOB GLD_2006_IQuOD_gross_range_check wod-iquod-qc-spark.submit
+VARS GLD_2006_IQuOD_gross_range_check dataset="GLD" year="2006" check="IQuOD_gross_range_check"
+JOB GLD_2006_CSIRO_constant_bottom wod-iquod-qc-spark.submit
+VARS GLD_2006_CSIRO_constant_bottom dataset="GLD" year="2006" check="CSIRO_constant_bottom"
+JOB GLD_2006_IQUOD_bottom wod-iquod-qc-spark.submit
+VARS GLD_2006_IQUOD_bottom dataset="GLD" year="2006" check="IQUOD_bottom"
+JOB GLD_2006_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_10_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_10_climatology_check"
+JOB GLD_2006_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2006" check="CoTeDe_Constant_Cluster_Size_check"
+JOB GLD_2006_Argo_global_range_check wod-iquod-qc-spark.submit
+VARS GLD_2006_Argo_global_range_check dataset="GLD" year="2006" check="Argo_global_range_check"
+JOB GLD_2006_wod_range_check wod-iquod-qc-spark.submit
+VARS GLD_2006_wod_range_check dataset="GLD" year="2006" check="wod_range_check"
+JOB GLD_2006_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
+VARS GLD_2006_wod_loose_location_at_sea_check dataset="GLD" year="2006" check="wod_loose_location_at_sea_check"
+JOB GLD_2006_CoTeDe_spike wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_spike dataset="GLD" year="2006" check="CoTeDe_spike"
+JOB GLD_2006_EN_range_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_range_check dataset="GLD" year="2006" check="EN_range_check"
+JOB GLD_2006_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_GTSPP_WOA_normbias"
+JOB GLD_2006_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_02_crude_range dataset="GLD" year="2006" check="ICDC_aqc_02_crude_range"
+JOB GLD_2006_CSIRO_short_gradient wod-iquod-qc-spark.submit
+VARS GLD_2006_CSIRO_short_gradient dataset="GLD" year="2006" check="CSIRO_short_gradient"
+JOB GLD_2006_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_09_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_09_climatology_check"
+JOB GLD_2006_Argo_spike_test wod-iquod-qc-spark.submit
+VARS GLD_2006_Argo_spike_test dataset="GLD" year="2006" check="Argo_spike_test"
+JOB GLD_2006_AOML_climatology_test wod-iquod-qc-spark.submit
+VARS GLD_2006_AOML_climatology_test dataset="GLD" year="2006" check="AOML_climatology_test"
+JOB GLD_2006_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
+VARS GLD_2006_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2006" check="ICDC_aqc_06_n_temperature_extrema"
+JOB GLD_2006_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_rate_of_change dataset="GLD" year="2006" check="CoTeDe_rate_of_change"
+JOB GLD_2006_CSIRO_long_gradient wod-iquod-qc-spark.submit
+VARS GLD_2006_CSIRO_long_gradient dataset="GLD" year="2006" check="CSIRO_long_gradient"
+JOB GLD_2006_AOML_gradient wod-iquod-qc-spark.submit
+VARS GLD_2006_AOML_gradient dataset="GLD" year="2006" check="AOML_gradient"
+JOB GLD_2006_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_Cars_Normbias_check dataset="GLD" year="2006" check="CoTeDe_Cars_Normbias_check"
+JOB GLD_2006_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
+VARS GLD_2006_CoTeDe_anomaly_detection_check dataset="GLD" year="2006" check="CoTeDe_anomaly_detection_check"
+JOB GLD_2006_EN_increasing_depth_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_increasing_depth_check dataset="GLD" year="2006" check="EN_increasing_depth_check"
+JOB GLD_2006_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
+VARS GLD_2006_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2006" check="EN_std_lev_bkg_and_buddy_check"
+JOB GLD_2006_HTPR_check wod-iquod-qc-spark.submit
+VARS GLD_2006_HTPR_check dataset="GLD" year="2006" check="HTPR_check"
+JOB GLD_2006_COMP_check wod-iquod-qc-spark.submit
+VARS GLD_2006_COMP_check dataset="GLD" year="2006" check="COMP_check"
+JOB GLD_2006_LFPR_check wod-iquod-qc-spark.submit
+VARS GLD_2006_LFPR_check dataset="GLD" year="2006" check="LFPR_check"
+JOB GLD_2006_IQuOD_flags_check wod-iquod-qc-spark.submit
+VARS GLD_2006_IQuOD_flags_check dataset="GLD" year="2006" check="IQuOD_flags_check"
+JOB PFL_2023_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_WOA_normbias"
+JOB PFL_2023_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_tukey_53H_check dataset="PFL" year="2023" check="CoTeDe_tukey_53H_check"
+JOB PFL_2023_EN_stability_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_stability_check dataset="PFL" year="2023" check="EN_stability_check"
+JOB PFL_2023_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_spike_and_step_suspect dataset="PFL" year="2023" check="EN_spike_and_step_suspect"
+JOB PFL_2023_CSIRO_surface_spikes wod-iquod-qc-spark.submit
+VARS PFL_2023_CSIRO_surface_spikes dataset="PFL" year="2023" check="CSIRO_surface_spikes"
+JOB PFL_2023_EN_spike_and_step_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_spike_and_step_check dataset="PFL" year="2023" check="EN_spike_and_step_check"
+JOB PFL_2023_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_08_gradient_check dataset="PFL" year="2023" check="ICDC_aqc_08_gradient_check"
+JOB PFL_2023_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_07_spike_check dataset="PFL" year="2023" check="ICDC_aqc_07_spike_check"
+JOB PFL_2023_EN_background_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_background_check dataset="PFL" year="2023" check="EN_background_check"
+JOB PFL_2023_EN_constant_value_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_constant_value_check dataset="PFL" year="2023" check="EN_constant_value_check"
+JOB PFL_2023_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_05_stuck_value dataset="PFL" year="2023" check="ICDC_aqc_05_stuck_value"
+JOB PFL_2023_CoTeDe_gradient wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_gradient dataset="PFL" year="2023" check="CoTeDe_gradient"
+JOB PFL_2023_CSIRO_wire_break wod-iquod-qc-spark.submit
+VARS PFL_2023_CSIRO_wire_break dataset="PFL" year="2023" check="CSIRO_wire_break"
+JOB PFL_2023_Argo_impossible_date_test wod-iquod-qc-spark.submit
+VARS PFL_2023_Argo_impossible_date_test dataset="PFL" year="2023" check="Argo_impossible_date_test"
+JOB PFL_2023_AOML_constant wod-iquod-qc-spark.submit
+VARS PFL_2023_AOML_constant dataset="PFL" year="2023" check="AOML_constant"
+JOB PFL_2023_EN_background_available_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_background_available_check dataset="PFL" year="2023" check="EN_background_available_check"
+JOB PFL_2023_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_01_level_order dataset="PFL" year="2023" check="ICDC_aqc_01_level_order"
+JOB PFL_2023_AOML_spike wod-iquod-qc-spark.submit
+VARS PFL_2023_AOML_spike dataset="PFL" year="2023" check="AOML_spike"
+JOB PFL_2023_Argo_impossible_location_test wod-iquod-qc-spark.submit
+VARS PFL_2023_Argo_impossible_location_test dataset="PFL" year="2023" check="Argo_impossible_location_test"
+JOB PFL_2023_IQuOD_gross_range_check wod-iquod-qc-spark.submit
+VARS PFL_2023_IQuOD_gross_range_check dataset="PFL" year="2023" check="IQuOD_gross_range_check"
+JOB PFL_2023_CSIRO_constant_bottom wod-iquod-qc-spark.submit
+VARS PFL_2023_CSIRO_constant_bottom dataset="PFL" year="2023" check="CSIRO_constant_bottom"
+JOB PFL_2023_IQUOD_bottom wod-iquod-qc-spark.submit
+VARS PFL_2023_IQUOD_bottom dataset="PFL" year="2023" check="IQUOD_bottom"
+JOB PFL_2023_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_10_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_10_climatology_check"
+JOB PFL_2023_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_Constant_Cluster_Size_check dataset="PFL" year="2023" check="CoTeDe_Constant_Cluster_Size_check"
+JOB PFL_2023_Argo_global_range_check wod-iquod-qc-spark.submit
+VARS PFL_2023_Argo_global_range_check dataset="PFL" year="2023" check="Argo_global_range_check"
+JOB PFL_2023_wod_range_check wod-iquod-qc-spark.submit
+VARS PFL_2023_wod_range_check dataset="PFL" year="2023" check="wod_range_check"
+JOB PFL_2023_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
+VARS PFL_2023_wod_loose_location_at_sea_check dataset="PFL" year="2023" check="wod_loose_location_at_sea_check"
+JOB PFL_2023_CoTeDe_spike wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_spike dataset="PFL" year="2023" check="CoTeDe_spike"
+JOB PFL_2023_EN_range_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_range_check dataset="PFL" year="2023" check="EN_range_check"
+JOB PFL_2023_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_GTSPP_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_GTSPP_WOA_normbias"
+JOB PFL_2023_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_02_crude_range dataset="PFL" year="2023" check="ICDC_aqc_02_crude_range"
+JOB PFL_2023_CSIRO_short_gradient wod-iquod-qc-spark.submit
+VARS PFL_2023_CSIRO_short_gradient dataset="PFL" year="2023" check="CSIRO_short_gradient"
+JOB PFL_2023_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_09_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_09_climatology_check"
+JOB PFL_2023_Argo_spike_test wod-iquod-qc-spark.submit
+VARS PFL_2023_Argo_spike_test dataset="PFL" year="2023" check="Argo_spike_test"
+JOB PFL_2023_AOML_climatology_test wod-iquod-qc-spark.submit
+VARS PFL_2023_AOML_climatology_test dataset="PFL" year="2023" check="AOML_climatology_test"
+JOB PFL_2023_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
+VARS PFL_2023_ICDC_aqc_06_n_temperature_extrema dataset="PFL" year="2023" check="ICDC_aqc_06_n_temperature_extrema"
+JOB PFL_2023_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_rate_of_change dataset="PFL" year="2023" check="CoTeDe_rate_of_change"
+JOB PFL_2023_CSIRO_long_gradient wod-iquod-qc-spark.submit
+VARS PFL_2023_CSIRO_long_gradient dataset="PFL" year="2023" check="CSIRO_long_gradient"
+JOB PFL_2023_AOML_gradient wod-iquod-qc-spark.submit
+VARS PFL_2023_AOML_gradient dataset="PFL" year="2023" check="AOML_gradient"
+JOB PFL_2023_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_Cars_Normbias_check dataset="PFL" year="2023" check="CoTeDe_Cars_Normbias_check"
+JOB PFL_2023_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
+VARS PFL_2023_CoTeDe_anomaly_detection_check dataset="PFL" year="2023" check="CoTeDe_anomaly_detection_check"
+JOB PFL_2023_EN_increasing_depth_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_increasing_depth_check dataset="PFL" year="2023" check="EN_increasing_depth_check"
+JOB PFL_2023_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
+VARS PFL_2023_EN_std_lev_bkg_and_buddy_check dataset="PFL" year="2023" check="EN_std_lev_bkg_and_buddy_check"
+JOB PFL_2023_HTPR_check wod-iquod-qc-spark.submit
+VARS PFL_2023_HTPR_check dataset="PFL" year="2023" check="HTPR_check"
+JOB PFL_2023_COMP_check wod-iquod-qc-spark.submit
+VARS PFL_2023_COMP_check dataset="PFL" year="2023" check="COMP_check"
+JOB PFL_2023_LFPR_check wod-iquod-qc-spark.submit
+VARS PFL_2023_LFPR_check dataset="PFL" year="2023" check="LFPR_check"
+JOB PFL_2023_IQuOD_flags_check wod-iquod-qc-spark.submit
+VARS PFL_2023_IQuOD_flags_check dataset="PFL" year="2023" check="IQuOD_flags_check"
+JOB SUR_ALL_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_WOA_normbias"
+JOB SUR_ALL_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_tukey_53H_check dataset="SUR" year="ALL" check="CoTeDe_tukey_53H_check"
+JOB SUR_ALL_EN_stability_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_stability_check dataset="SUR" year="ALL" check="EN_stability_check"
+JOB SUR_ALL_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_spike_and_step_suspect dataset="SUR" year="ALL" check="EN_spike_and_step_suspect"
+JOB SUR_ALL_CSIRO_surface_spikes wod-iquod-qc-spark.submit
+VARS SUR_ALL_CSIRO_surface_spikes dataset="SUR" year="ALL" check="CSIRO_surface_spikes"
+JOB SUR_ALL_EN_spike_and_step_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_spike_and_step_check dataset="SUR" year="ALL" check="EN_spike_and_step_check"
+JOB SUR_ALL_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_08_gradient_check dataset="SUR" year="ALL" check="ICDC_aqc_08_gradient_check"
+JOB SUR_ALL_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_07_spike_check dataset="SUR" year="ALL" check="ICDC_aqc_07_spike_check"
+JOB SUR_ALL_EN_background_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_background_check dataset="SUR" year="ALL" check="EN_background_check"
+JOB SUR_ALL_EN_constant_value_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_constant_value_check dataset="SUR" year="ALL" check="EN_constant_value_check"
+JOB SUR_ALL_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_05_stuck_value dataset="SUR" year="ALL" check="ICDC_aqc_05_stuck_value"
+JOB SUR_ALL_CoTeDe_gradient wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_gradient dataset="SUR" year="ALL" check="CoTeDe_gradient"
+JOB SUR_ALL_CSIRO_wire_break wod-iquod-qc-spark.submit
+VARS SUR_ALL_CSIRO_wire_break dataset="SUR" year="ALL" check="CSIRO_wire_break"
+JOB SUR_ALL_Argo_impossible_date_test wod-iquod-qc-spark.submit
+VARS SUR_ALL_Argo_impossible_date_test dataset="SUR" year="ALL" check="Argo_impossible_date_test"
+JOB SUR_ALL_AOML_constant wod-iquod-qc-spark.submit
+VARS SUR_ALL_AOML_constant dataset="SUR" year="ALL" check="AOML_constant"
+JOB SUR_ALL_EN_background_available_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_background_available_check dataset="SUR" year="ALL" check="EN_background_available_check"
+JOB SUR_ALL_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_01_level_order dataset="SUR" year="ALL" check="ICDC_aqc_01_level_order"
+JOB SUR_ALL_AOML_spike wod-iquod-qc-spark.submit
+VARS SUR_ALL_AOML_spike dataset="SUR" year="ALL" check="AOML_spike"
+JOB SUR_ALL_Argo_impossible_location_test wod-iquod-qc-spark.submit
+VARS SUR_ALL_Argo_impossible_location_test dataset="SUR" year="ALL" check="Argo_impossible_location_test"
+JOB SUR_ALL_IQuOD_gross_range_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_IQuOD_gross_range_check dataset="SUR" year="ALL" check="IQuOD_gross_range_check"
+JOB SUR_ALL_CSIRO_constant_bottom wod-iquod-qc-spark.submit
+VARS SUR_ALL_CSIRO_constant_bottom dataset="SUR" year="ALL" check="CSIRO_constant_bottom"
+JOB SUR_ALL_IQUOD_bottom wod-iquod-qc-spark.submit
+VARS SUR_ALL_IQUOD_bottom dataset="SUR" year="ALL" check="IQUOD_bottom"
+JOB SUR_ALL_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_10_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_10_climatology_check"
+JOB SUR_ALL_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_Constant_Cluster_Size_check dataset="SUR" year="ALL" check="CoTeDe_Constant_Cluster_Size_check"
+JOB SUR_ALL_Argo_global_range_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_Argo_global_range_check dataset="SUR" year="ALL" check="Argo_global_range_check"
+JOB SUR_ALL_wod_range_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_wod_range_check dataset="SUR" year="ALL" check="wod_range_check"
+JOB SUR_ALL_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_wod_loose_location_at_sea_check dataset="SUR" year="ALL" check="wod_loose_location_at_sea_check"
+JOB SUR_ALL_CoTeDe_spike wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_spike dataset="SUR" year="ALL" check="CoTeDe_spike"
+JOB SUR_ALL_EN_range_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_range_check dataset="SUR" year="ALL" check="EN_range_check"
+JOB SUR_ALL_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_GTSPP_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_GTSPP_WOA_normbias"
+JOB SUR_ALL_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_02_crude_range dataset="SUR" year="ALL" check="ICDC_aqc_02_crude_range"
+JOB SUR_ALL_CSIRO_short_gradient wod-iquod-qc-spark.submit
+VARS SUR_ALL_CSIRO_short_gradient dataset="SUR" year="ALL" check="CSIRO_short_gradient"
+JOB SUR_ALL_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_09_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_09_climatology_check"
+JOB SUR_ALL_Argo_spike_test wod-iquod-qc-spark.submit
+VARS SUR_ALL_Argo_spike_test dataset="SUR" year="ALL" check="Argo_spike_test"
+JOB SUR_ALL_AOML_climatology_test wod-iquod-qc-spark.submit
+VARS SUR_ALL_AOML_climatology_test dataset="SUR" year="ALL" check="AOML_climatology_test"
+JOB SUR_ALL_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
+VARS SUR_ALL_ICDC_aqc_06_n_temperature_extrema dataset="SUR" year="ALL" check="ICDC_aqc_06_n_temperature_extrema"
+JOB SUR_ALL_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_rate_of_change dataset="SUR" year="ALL" check="CoTeDe_rate_of_change"
+JOB SUR_ALL_CSIRO_long_gradient wod-iquod-qc-spark.submit
+VARS SUR_ALL_CSIRO_long_gradient dataset="SUR" year="ALL" check="CSIRO_long_gradient"
+JOB SUR_ALL_AOML_gradient wod-iquod-qc-spark.submit
+VARS SUR_ALL_AOML_gradient dataset="SUR" year="ALL" check="AOML_gradient"
+JOB SUR_ALL_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_Cars_Normbias_check dataset="SUR" year="ALL" check="CoTeDe_Cars_Normbias_check"
+JOB SUR_ALL_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_CoTeDe_anomaly_detection_check dataset="SUR" year="ALL" check="CoTeDe_anomaly_detection_check"
+JOB SUR_ALL_EN_increasing_depth_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_increasing_depth_check dataset="SUR" year="ALL" check="EN_increasing_depth_check"
+JOB SUR_ALL_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_EN_std_lev_bkg_and_buddy_check dataset="SUR" year="ALL" check="EN_std_lev_bkg_and_buddy_check"
+JOB SUR_ALL_HTPR_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_HTPR_check dataset="SUR" year="ALL" check="HTPR_check"
+JOB SUR_ALL_COMP_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_COMP_check dataset="SUR" year="ALL" check="COMP_check"
+JOB SUR_ALL_LFPR_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_LFPR_check dataset="SUR" year="ALL" check="LFPR_check"
+JOB SUR_ALL_IQuOD_flags_check wod-iquod-qc-spark.submit
+VARS SUR_ALL_IQuOD_flags_check dataset="SUR" year="ALL" check="IQuOD_flags_check"
+PARENT GLD_2005_CoTeDe_WOA_normbias CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_CoTeDe_tukey_53H_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_EN_stability_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_EN_spike_and_step_suspect CHILD GLD_2005_EN_background_check GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_HTPR_check
+PARENT GLD_2005_CSIRO_surface_spikes CHILD GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_EN_spike_and_step_check CHILD GLD_2005_EN_increasing_depth_check GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_ICDC_aqc_08_gradient_check CHILD GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_ICDC_aqc_07_spike_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_EN_background_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_LFPR_check
+PARENT GLD_2005_EN_constant_value_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_ICDC_aqc_05_stuck_value CHILD GLD_2005_LFPR_check
+PARENT GLD_2005_CoTeDe_gradient CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_CSIRO_wire_break CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_Argo_impossible_date_test CHILD GLD_2005_HTPR_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_AOML_constant CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_EN_background_available_check CHILD GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_ICDC_aqc_01_level_order CHILD GLD_2005_HTPR_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_AOML_spike CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_Argo_impossible_location_test CHILD GLD_2005_HTPR_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_IQuOD_gross_range_check CHILD GLD_2005_HTPR_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_CSIRO_constant_bottom CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_IQUOD_bottom CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_ICDC_aqc_10_climatology_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_CoTeDe_Constant_Cluster_Size_check CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_Argo_global_range_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_wod_range_check CHILD GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_wod_loose_location_at_sea_check CHILD GLD_2005_LFPR_check
+PARENT GLD_2005_CoTeDe_spike CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_EN_range_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_HTPR_check
+PARENT GLD_2005_CoTeDe_GTSPP_WOA_normbias CHILD GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_ICDC_aqc_02_crude_range CHILD GLD_2005_LFPR_check
+PARENT GLD_2005_CSIRO_short_gradient CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_ICDC_aqc_09_climatology_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_Argo_spike_test CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_AOML_climatology_test CHILD GLD_2005_HTPR_check GLD_2005_COMP_check
+PARENT GLD_2005_ICDC_aqc_06_n_temperature_extrema CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_CoTeDe_rate_of_change CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_CSIRO_long_gradient CHILD GLD_2005_HTPR_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_AOML_gradient CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_CoTeDe_Cars_Normbias_check CHILD GLD_2005_CoTeDe_anomaly_detection_check
+PARENT GLD_2005_CoTeDe_anomaly_detection_check CHILD GLD_2005_HTPR_check
+PARENT GLD_2005_EN_increasing_depth_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_COMP_check GLD_2005_LFPR_check
+PARENT GLD_2005_EN_std_lev_bkg_and_buddy_check CHILD GLD_2005_HTPR_check GLD_2005_LFPR_check
+PARENT GLD_2005_HTPR_check CHILD GLD_2005_IQuOD_flags_check
+PARENT GLD_2005_COMP_check CHILD GLD_2005_IQuOD_flags_check
+PARENT GLD_2005_LFPR_check CHILD GLD_2005_IQuOD_flags_check
+PARENT GLD_2006_CoTeDe_WOA_normbias CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_CoTeDe_tukey_53H_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_EN_stability_check CHILD GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_EN_spike_and_step_suspect CHILD GLD_2006_EN_background_check GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_HTPR_check
+PARENT GLD_2006_CSIRO_surface_spikes CHILD GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_EN_spike_and_step_check CHILD GLD_2006_EN_increasing_depth_check GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_ICDC_aqc_08_gradient_check CHILD GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_ICDC_aqc_07_spike_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_EN_background_check CHILD GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_LFPR_check
+PARENT GLD_2006_EN_constant_value_check CHILD GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_ICDC_aqc_05_stuck_value CHILD GLD_2006_LFPR_check
+PARENT GLD_2006_CoTeDe_gradient CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_CSIRO_wire_break CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_Argo_impossible_date_test CHILD GLD_2006_HTPR_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_AOML_constant CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_EN_background_available_check CHILD GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_ICDC_aqc_01_level_order CHILD GLD_2006_HTPR_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_AOML_spike CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_Argo_impossible_location_test CHILD GLD_2006_HTPR_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_IQuOD_gross_range_check CHILD GLD_2006_HTPR_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_CSIRO_constant_bottom CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_IQUOD_bottom CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_ICDC_aqc_10_climatology_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_CoTeDe_Constant_Cluster_Size_check CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_Argo_global_range_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_wod_range_check CHILD GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_wod_loose_location_at_sea_check CHILD GLD_2006_LFPR_check
+PARENT GLD_2006_CoTeDe_spike CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_EN_range_check CHILD GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_HTPR_check
+PARENT GLD_2006_CoTeDe_GTSPP_WOA_normbias CHILD GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_ICDC_aqc_02_crude_range CHILD GLD_2006_LFPR_check
+PARENT GLD_2006_CSIRO_short_gradient CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_ICDC_aqc_09_climatology_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_Argo_spike_test CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_AOML_climatology_test CHILD GLD_2006_HTPR_check GLD_2006_COMP_check
+PARENT GLD_2006_ICDC_aqc_06_n_temperature_extrema CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_CoTeDe_rate_of_change CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_CSIRO_long_gradient CHILD GLD_2006_HTPR_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_AOML_gradient CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_CoTeDe_Cars_Normbias_check CHILD GLD_2006_CoTeDe_anomaly_detection_check
+PARENT GLD_2006_CoTeDe_anomaly_detection_check CHILD GLD_2006_HTPR_check
+PARENT GLD_2006_EN_increasing_depth_check CHILD GLD_2006_EN_std_lev_bkg_and_buddy_check GLD_2006_COMP_check GLD_2006_LFPR_check
+PARENT GLD_2006_EN_std_lev_bkg_and_buddy_check CHILD GLD_2006_HTPR_check GLD_2006_LFPR_check
+PARENT GLD_2006_HTPR_check CHILD GLD_2006_IQuOD_flags_check
+PARENT GLD_2006_COMP_check CHILD GLD_2006_IQuOD_flags_check
+PARENT GLD_2006_LFPR_check CHILD GLD_2006_IQuOD_flags_check
+PARENT PFL_2023_CoTeDe_WOA_normbias CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_CoTeDe_tukey_53H_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_EN_stability_check CHILD PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_EN_spike_and_step_suspect CHILD PFL_2023_EN_background_check PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_HTPR_check
+PARENT PFL_2023_CSIRO_surface_spikes CHILD PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_EN_spike_and_step_check CHILD PFL_2023_EN_increasing_depth_check PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_ICDC_aqc_08_gradient_check CHILD PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_ICDC_aqc_07_spike_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_EN_background_check CHILD PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_LFPR_check
+PARENT PFL_2023_EN_constant_value_check CHILD PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_ICDC_aqc_05_stuck_value CHILD PFL_2023_LFPR_check
+PARENT PFL_2023_CoTeDe_gradient CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_CSIRO_wire_break CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_Argo_impossible_date_test CHILD PFL_2023_HTPR_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_AOML_constant CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_EN_background_available_check CHILD PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_ICDC_aqc_01_level_order CHILD PFL_2023_HTPR_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_AOML_spike CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_Argo_impossible_location_test CHILD PFL_2023_HTPR_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_IQuOD_gross_range_check CHILD PFL_2023_HTPR_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_CSIRO_constant_bottom CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_IQUOD_bottom CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_ICDC_aqc_10_climatology_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_CoTeDe_Constant_Cluster_Size_check CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_Argo_global_range_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_wod_range_check CHILD PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_wod_loose_location_at_sea_check CHILD PFL_2023_LFPR_check
+PARENT PFL_2023_CoTeDe_spike CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_EN_range_check CHILD PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_HTPR_check
+PARENT PFL_2023_CoTeDe_GTSPP_WOA_normbias CHILD PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_ICDC_aqc_02_crude_range CHILD PFL_2023_LFPR_check
+PARENT PFL_2023_CSIRO_short_gradient CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_ICDC_aqc_09_climatology_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_Argo_spike_test CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_AOML_climatology_test CHILD PFL_2023_HTPR_check PFL_2023_COMP_check
+PARENT PFL_2023_ICDC_aqc_06_n_temperature_extrema CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_CoTeDe_rate_of_change CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_CSIRO_long_gradient CHILD PFL_2023_HTPR_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_AOML_gradient CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_CoTeDe_Cars_Normbias_check CHILD PFL_2023_CoTeDe_anomaly_detection_check
+PARENT PFL_2023_CoTeDe_anomaly_detection_check CHILD PFL_2023_HTPR_check
+PARENT PFL_2023_EN_increasing_depth_check CHILD PFL_2023_EN_std_lev_bkg_and_buddy_check PFL_2023_COMP_check PFL_2023_LFPR_check
+PARENT PFL_2023_EN_std_lev_bkg_and_buddy_check CHILD PFL_2023_HTPR_check PFL_2023_LFPR_check
+PARENT PFL_2023_HTPR_check CHILD PFL_2023_IQuOD_flags_check
+PARENT PFL_2023_COMP_check CHILD PFL_2023_IQuOD_flags_check
+PARENT PFL_2023_LFPR_check CHILD PFL_2023_IQuOD_flags_check
+PARENT SUR_ALL_CoTeDe_WOA_normbias CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_CoTeDe_tukey_53H_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_EN_stability_check CHILD SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_EN_spike_and_step_suspect CHILD SUR_ALL_EN_background_check SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_HTPR_check
+PARENT SUR_ALL_CSIRO_surface_spikes CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_EN_spike_and_step_check CHILD SUR_ALL_EN_increasing_depth_check SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_ICDC_aqc_08_gradient_check CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_ICDC_aqc_07_spike_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_EN_background_check CHILD SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_EN_constant_value_check CHILD SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_ICDC_aqc_05_stuck_value CHILD SUR_ALL_LFPR_check
+PARENT SUR_ALL_CoTeDe_gradient CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_CSIRO_wire_break CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_Argo_impossible_date_test CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_AOML_constant CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_EN_background_available_check CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_ICDC_aqc_01_level_order CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_AOML_spike CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_Argo_impossible_location_test CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_IQuOD_gross_range_check CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_CSIRO_constant_bottom CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_IQUOD_bottom CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_ICDC_aqc_10_climatology_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_CoTeDe_Constant_Cluster_Size_check CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_Argo_global_range_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_wod_range_check CHILD SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_wod_loose_location_at_sea_check CHILD SUR_ALL_LFPR_check
+PARENT SUR_ALL_CoTeDe_spike CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_EN_range_check CHILD SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_HTPR_check
+PARENT SUR_ALL_CoTeDe_GTSPP_WOA_normbias CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_ICDC_aqc_02_crude_range CHILD SUR_ALL_LFPR_check
+PARENT SUR_ALL_CSIRO_short_gradient CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_ICDC_aqc_09_climatology_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_Argo_spike_test CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_AOML_climatology_test CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check
+PARENT SUR_ALL_ICDC_aqc_06_n_temperature_extrema CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_CoTeDe_rate_of_change CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_CSIRO_long_gradient CHILD SUR_ALL_HTPR_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_AOML_gradient CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_CoTeDe_Cars_Normbias_check CHILD SUR_ALL_CoTeDe_anomaly_detection_check
+PARENT SUR_ALL_CoTeDe_anomaly_detection_check CHILD SUR_ALL_HTPR_check
+PARENT SUR_ALL_EN_increasing_depth_check CHILD SUR_ALL_EN_std_lev_bkg_and_buddy_check SUR_ALL_COMP_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_EN_std_lev_bkg_and_buddy_check CHILD SUR_ALL_HTPR_check SUR_ALL_LFPR_check
+PARENT SUR_ALL_HTPR_check CHILD SUR_ALL_IQuOD_flags_check
+PARENT SUR_ALL_COMP_check CHILD SUR_ALL_IQuOD_flags_check
+PARENT SUR_ALL_LFPR_check CHILD SUR_ALL_IQuOD_flags_check
