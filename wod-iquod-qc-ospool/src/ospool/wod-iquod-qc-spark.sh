@@ -26,7 +26,9 @@ mkdir output
 spark-submit \
   --master 'local[4]' \
   --conf spark.cores.max=4 \
-  --driver-memory=19G \
+  --conf spark.ui.enabled=false \
+  --conf "spark.local.dir=$(pwd)/temp" \
+  --driver-memory=7G \
   --driver-java-options '-XX:ActiveProcessorCount=4' \
   --class edu.colorado.cires.wod.spark.iquodqc.Sparkler \
   wod-iquod-qc-spark-${project.version}.jar \

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.api.CastIoUtils;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
 import edu.colorado.cires.wod.parquet.model.Depth;
@@ -55,7 +56,7 @@ class CsiroShortGradientCheckTest {
 
       @Override
       public Dataset<Cast> readCastDataset() {
-        return spark.read().parquet(TEST_PARQUET).as(Encoders.bean(Cast.class));
+        return CastIoUtils.readCastDataset(spark, TEST_PARQUET);
       }
 
       @Override
@@ -126,7 +127,7 @@ class CsiroShortGradientCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
@@ -185,7 +186,7 @@ class CsiroShortGradientCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)
@@ -244,7 +245,7 @@ class CsiroShortGradientCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(cast), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     CastCheckResult expected = CastCheckResult.builder()
         .withCastNumber(123)

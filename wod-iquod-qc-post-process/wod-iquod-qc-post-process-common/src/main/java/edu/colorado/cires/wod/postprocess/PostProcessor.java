@@ -9,13 +9,7 @@ public abstract class PostProcessor<T extends Serializable> implements Serializa
   
   private static final long serialVersionUID = 0L;
   
-  protected abstract Dataset<T> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset);
-  
-  Dataset<T> process(PostProcessorContext postProcessorContext) {
-    Dataset<Cast> castDataset = postProcessorContext.readCastDataset();
-    Dataset<CastCheckResult> checkResultDataset = postProcessorContext.readCheckResultDataset();
-    
-    return processDatasets(castDataset, checkResultDataset);
-  }
+  public abstract Dataset<T> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset);
+
 
 }

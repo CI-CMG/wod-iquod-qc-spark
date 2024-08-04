@@ -29,7 +29,7 @@ public class FailureReportPostProcessor extends PostProcessor<Failures> {
   private static final long serialVersionUID = 0L;
   
   @Override
-  protected Dataset<Failures> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
+  public Dataset<Failures> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
     Dataset<Row> resultDataset = DatasetUtil.addCheckNameToCastCheckResultDataset(castCheckResultDataset);
 
     Dataset<Row> castRowDataset = castDataset.select(

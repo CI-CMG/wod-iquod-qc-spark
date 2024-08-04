@@ -18,7 +18,7 @@ public class AddResultToCastPostProcessor extends PostProcessor<Cast> {
   private static final long serialVersionUID = 0L;
 
   @Override
-  protected Dataset<Cast> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
+  public Dataset<Cast> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
     return castDataset.join(castCheckResultDataset, castDataset.col("castNumber").equalTo(castCheckResultDataset.col("castNumber")), "left_outer")
         .map((MapFunction<Row, Cast>) this::addResultInfoToCast, Encoders.bean(Cast.class));
   }

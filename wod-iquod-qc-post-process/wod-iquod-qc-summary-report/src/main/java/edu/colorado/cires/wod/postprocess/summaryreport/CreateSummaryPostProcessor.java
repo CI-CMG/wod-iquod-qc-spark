@@ -22,7 +22,7 @@ public class CreateSummaryPostProcessor extends PostProcessor<Summary> {
   private static final long serialVersionUID = 0L;
   
   @Override
-  protected Dataset<Summary> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
+  public Dataset<Summary> processDatasets(Dataset<Cast> castDataset, Dataset<CastCheckResult> castCheckResultDataset) {
     long totalCasts = castDataset.count();
     long totalExceptions = castCheckResultDataset.filter(col("error").equalTo(true)).count();
     

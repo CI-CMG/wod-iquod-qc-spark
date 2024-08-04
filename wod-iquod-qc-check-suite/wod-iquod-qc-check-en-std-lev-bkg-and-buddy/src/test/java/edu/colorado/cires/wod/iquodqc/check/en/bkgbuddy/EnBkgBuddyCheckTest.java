@@ -13,6 +13,7 @@ import edu.colorado.cires.wod.iquodqc.check.api.CastCheck;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckInitializationContext;
 import edu.colorado.cires.wod.iquodqc.check.api.CastCheckResult;
+import edu.colorado.cires.wod.iquodqc.check.api.CastIoUtils;
 import edu.colorado.cires.wod.iquodqc.common.CheckNames;
 import edu.colorado.cires.wod.parquet.model.Attribute;
 import edu.colorado.cires.wod.parquet.model.Cast;
@@ -102,7 +103,7 @@ public class EnBkgBuddyCheckTest {
 
       @Override
       public Dataset<Cast> readCastDataset() {
-        return spark.read().parquet(TEST_PARQUET).as(Encoders.bean(Cast.class));
+        return CastIoUtils.readCastDataset(spark, TEST_PARQUET);
       }
 
       @Override
@@ -280,7 +281,7 @@ public class EnBkgBuddyCheckTest {
         );
 
     Dataset<Cast> dataset = spark.createDataset(casts, Encoders.bean(Cast.class));
-    dataset.write().partitionBy("geohash", "year").parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     for (String other : Arrays.asList(CheckNames.EN_BACKGROUND_CHECK.getName(),
         CheckNames.EN_CONSTANT_VALUE_CHECK.getName(),
@@ -445,7 +446,7 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Arrays.asList(cast, buddy), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
         CastCheckResult.builder().withCastNumber(8888).withPassed(false).withFailedDepths(Collections.singletonList(3)).build(),
@@ -582,7 +583,7 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Arrays.asList(realProfile1), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
         CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
@@ -796,7 +797,7 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Arrays.asList(realProfile2, realProfile3), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
         CastCheckResult.builder().withCastNumber(2).withPassed(true).build(),
@@ -928,7 +929,7 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Arrays.asList(realProfile1), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
         CastCheckResult.builder().withCastNumber(1).withPassed(true).build()
@@ -1188,7 +1189,7 @@ public class EnBkgBuddyCheckTest {
         .build();
 
     Dataset<Cast> dataset = spark.createDataset(Arrays.asList(cast, buddy), Encoders.bean(Cast.class));
-    dataset.write().parquet(TEST_PARQUET);
+    CastIoUtils.writeCastDataset(dataset, TEST_PARQUET);
 
     Dataset<CastCheckResult> otherResult = spark.createDataset(Arrays.asList(
         CastCheckResult.builder().withCastNumber(13334306).withPassed(false).withFiltered(false).withError(false).withFailedDepths(Arrays.asList(16, 17)).build(),

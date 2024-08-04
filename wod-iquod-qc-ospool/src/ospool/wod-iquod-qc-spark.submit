@@ -14,7 +14,7 @@ output = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.out
 error = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.err
 
 request_cpus = 4
-request_memory = 20GB
-request_disk = 20GB
+request_memory = 8GB
+request_disk = 10GB
 
 queue
