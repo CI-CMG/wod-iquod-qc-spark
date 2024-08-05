@@ -58,9 +58,10 @@ rm -rf wod-iquod-qc-spark
 rm wod-iquod-qc.dag.*
 ```
 
-Execute the job
+Execute the job. Limit the number of concurrent jobs to prevent 503, slow down, errors from s3. 
+The optimal value needs to be determined.
 ```bash
-condor_submit_dag wod-iquod-qc.dag
+condor_submit_dag -MaxJobs 100 wod-iquod-qc.dag
 ```
 
 
