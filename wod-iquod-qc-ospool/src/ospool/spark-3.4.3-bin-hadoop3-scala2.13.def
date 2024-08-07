@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: eclipse-temurin:11-jre
+
+%files
+  spark-3.4.3-bin-hadoop3-scala2.13.tgz /opt/spark-3.4.3-bin-hadoop3-scala2.13.tgz
+
+
+%post
+  cd /opt && tar -xvf spark-3.4.3-bin-hadoop3-scala2.13.tgz
+
+%environment
+  export SPARK_HOME="/opt/spark-3.4.3-bin-hadoop3-scala2.13"
+  export PATH="$SPARK_HOME/bin:$PATH"

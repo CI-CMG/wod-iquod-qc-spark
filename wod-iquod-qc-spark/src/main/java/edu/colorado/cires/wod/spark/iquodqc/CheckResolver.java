@@ -49,7 +49,7 @@ public class CheckResolver {
   }
 
   public static List<ParentChildren> getParentChildren(Set<String> checksToRun) {
-    List<CastCheck> checks = getChecks(checksToRun, null);
+    List<CastCheck> checks = getChecks(checksToRun, false, null);
     Map<String, ParentChildren> parentChildren = new LinkedHashMap<>();
     for (CastCheck check : checks) {
       parentChildren.put(check.getName(), new ParentChildren(check.getName()));
@@ -62,7 +62,7 @@ public class CheckResolver {
     return new ArrayList<>(parentChildren.values());
   }
 
-  public static List<CastCheck> getChecks(Set<String> checksToRun, @Nullable Properties properties) {
+  public static List<CastCheck> getChecks(Set<String> checksToRun, boolean singleTest, @Nullable Properties properties) {
     CastCheckInitializationContext initContext = null;
     if (properties != null) {
       initContext = new CastCheckInitializationContext() {
@@ -72,7 +72,10 @@ public class CheckResolver {
         }
       };
     }
-    Map<String, CastCheck> checks = loadChecks(checksToRun, initContext);
+    Map<String, CastCheck> checks = loadChecks(checksToRun, singleTest, initContext);
+    if (singleTest) {
+      return new ArrayList<>(checks.values());
+    }
     DirectedAcyclicGraph<CastCheck, DefaultEdge> dag = planChecks(checks);
     List<CastCheck> order = new ArrayList<>(checks.size());
     Iterator<CastCheck> it = dag.iterator();
@@ -90,7 +93,7 @@ public class CheckResolver {
     }
   }
 
-  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun, @Nullable CastCheckInitializationContext initContext) {
+  private static Map<String, CastCheck> loadChecks(Set<String> checksToRun, boolean singleTest, @Nullable CastCheckInitializationContext initContext) {
     Map<String, CastCheck> allChecks = new HashMap<>();
     Set<String> checksToRunWithDependencies = new HashSet<>();
     for (CastCheck check : ServiceLoader.load(CastCheck.class)) {
@@ -101,6 +104,14 @@ public class CheckResolver {
     }
     if (checksToRun.isEmpty()) {
       checksToRunWithDependencies.addAll(allChecks.keySet());
+    } if (singleTest) {
+      for (String checkToRun : checksToRun) {
+        if (allChecks.containsKey(checkToRun)) {
+          checksToRunWithDependencies.add(checkToRun);
+        } else {
+          throw new IllegalArgumentException("Invalid check '" + checkToRun + "'");
+        }
+      }
     } else {
       for (String checkName : checksToRun) {
         updateChecks(checksToRunWithDependencies, allChecks, allChecks.get(checkName));

@@ -1,10 +1,11 @@
-executable = wod-iquod-qc-spark.sh
+executable = wod-iquod-qc-spark-container.sh
 arguments = $(year) $(dataset) $(check)
 
++SingularityImage = "osdf:///ospool/ap21/data/electricsam/spark-3.4.3-bin-hadoop3-scala2.13-v1.sif"
 +JobBatchName = "WOD-IQUOD-QC"
 
 should_transfer_files = YES
-transfer_input_files = OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz, spark-3.4.3-bin-hadoop3-scala2.13.tgz, wod-iquod-qc-spark-${project.version}.jar, wod-iquod-qc.conf
+transfer_input_files = wod-iquod-qc-spark-${project.version}.jar, wod-iquod-qc.conf
 when_to_transfer_output = ON_EXIT
 transfer_output_files = ""
 

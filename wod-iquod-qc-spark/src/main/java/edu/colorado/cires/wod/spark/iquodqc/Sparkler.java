@@ -96,6 +96,9 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-ftc", "--flags-to-cast"}, description = "Save new set of casts containing IQUOD flags (Requires that IQUOD flags are generated via IQUOD flags check) - ${DEFAULT-VALUE}", defaultValue = "false")
   private Boolean flagsToCast;
 
+  @Option(names = {"-s", "--force-single-check"}, description = "Run only the provided checks and do not run dependent checks - ${DEFAULT-VALUE}", defaultValue = "false")
+  private Boolean singleTest;
+
   @Option(names = {"-fs", "--file-system"}, description = "Optimize S3 access for EMR")
   private FileSystemType fs = FileSystemType.local;
 
@@ -167,7 +170,8 @@ public class Sparkler implements Serializable, Runnable {
         properties,
         fs, years, s3,
         generateReports,
-        flagsToCast
+        flagsToCast,
+        singleTest
     );
     executor.run();
   }

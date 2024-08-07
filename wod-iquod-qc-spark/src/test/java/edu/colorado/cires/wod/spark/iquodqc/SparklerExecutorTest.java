@@ -179,7 +179,7 @@ public class SparklerExecutorTest {
         new HashSet<>(CHECK_NAMES),
         properties,
         FileSystemType.s3, null, s3,
-        false, false);
+        false, false, false);
     executor.run();
 
     for (String name : CHECK_NAMES) {
@@ -273,7 +273,7 @@ public class SparklerExecutorTest {
         new HashSet<>(CHECK_NAMES),
         properties,
         FileSystemType.s3, null, s3,
-        false, false);
+        false, false, false);
     executor.run();
 
     for (String name : CHECK_NAMES) {
@@ -403,7 +403,7 @@ public class SparklerExecutorTest {
         Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
         properties,
         FileSystemType.s3, null, s3,
-        true, true);
+        true, true, false);
     executor.run();
 
     List<Summary> summaryDataset = spark.read()

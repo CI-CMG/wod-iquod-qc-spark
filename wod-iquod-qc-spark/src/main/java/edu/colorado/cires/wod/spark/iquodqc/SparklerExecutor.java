@@ -49,6 +49,7 @@ public class SparklerExecutor implements Runnable {
   private final S3Client s3;
   private final boolean generateReports;
   private final boolean addFlagsToCast;
+  private final boolean singleTest;
 
   public SparklerExecutor(
       SparkSession spark,
@@ -60,7 +61,7 @@ public class SparklerExecutor implements Runnable {
       String outputPrefix,
       Set<String> checksToRun,
       Properties properties,
-      FileSystemType fs, List<Integer> years, S3Client s3, boolean generateReports, boolean addFlagsToCast) {
+      FileSystemType fs, List<Integer> years, S3Client s3, boolean generateReports, boolean addFlagsToCast, boolean singleTest) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
@@ -75,11 +76,12 @@ public class SparklerExecutor implements Runnable {
     this.s3 = s3;
     this.generateReports = generateReports;
     this.addFlagsToCast = addFlagsToCast;
+    this.singleTest = singleTest;
   }
 
   @Override
   public void run() {
-    List<CastCheck> checks = CheckResolver.getChecks(checksToRun, properties);
+    List<CastCheck> checks = CheckResolver.getChecks(checksToRun, singleTest, properties);
 
     boolean willGenerateIquodFlags = checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
     if (generateReports && !willGenerateIquodFlags) {

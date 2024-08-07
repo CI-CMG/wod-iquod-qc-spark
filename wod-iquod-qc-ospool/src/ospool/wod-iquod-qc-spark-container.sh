@@ -13,15 +13,10 @@ year="$1"
 dataset="$2"
 check="$3"
 
-tar -xvf OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
-tar -xvf spark-3.4.3-bin-hadoop3-scala2.13.tgz
-
-export JAVA_HOME="$PWD/jdk-11.0.23+9-jre"
-export SPARK_HOME="$PWD/spark-3.4.3-bin-hadoop3-scala2.13"
-export PATH="$SPARK_HOME/bin:$JAVA_HOME/bin:$PATH"
-
 mkdir temp
 mkdir output
+
+#spark.shuffle.service.port	7337
 
 spark-submit \
   --master 'local[4]' \
