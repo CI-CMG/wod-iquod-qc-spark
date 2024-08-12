@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.math3.util.Precision;
+import ucar.ma2.Array;
 import ucar.ma2.DataType;
+import ucar.ma2.Index;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.nc2.NetcdfFile;
@@ -71,7 +73,7 @@ public class CoTeDeCarsNormbias extends CoTeDeWoaNormbias {
       return normBiases;
     }
   }
-  
+
   private static double[] interpolateVariable(
       NetcdfFile file,
       String variableName,
@@ -86,17 +88,54 @@ public class CoTeDeCarsNormbias extends CoTeDeWoaNormbias {
       double[] sourceDepths
   ) throws InvalidRangeException, IOException {
     double[] interpolatedValues = interpolateLatLon(
-        getSlice(file, variableName, depthIndices, latIndices, lonIndices),
+        getKnots(file, variableName, depthIndices, latIndices, lonIndices),
         latsSlice,
         lonsSlice,
         depthsSlice.length,
         lat,
         lon
     );
-    
+
     return interpolateDepth(interpolatedValues, sourceDepths, depthsSlice);
   }
 
+  private static double[] getKnots(NetcdfFile file, String variableName, int[] depthIndices, int[] latIndices, int[] lonIndices)
+      throws InvalidRangeException, IOException {
+    Variable variable = findVariable(file, variableName);
+    double fill = getFillValueFromVariable(variable);
+
+    int[] netCdfShape = variable.getShape();
+
+    Array sliceArray = variable.read(List.of(
+        Range.make(depthIndices[0], depthIndices[1]),
+        Range.make(latIndices[0], latIndices[1]),
+        Range.make(lonIndices[0], lonIndices[1])
+    ));
+    double scaleFactor = getScaleFactorFromVariable(variable);
+    double addOffset = getAddOffsetFromVariable(variable);
+
+    int[] shape = sliceArray.getShape();
+    double[] knots = new double[shape[0]* shape[1]* shape[2]];
+
+    Index index = sliceArray.getIndex();
+    int i = 0;
+
+    for (int depthIndex = 0; depthIndex < shape[0]; depthIndex++) {
+      for (int latIndex = 0; latIndex < shape[1]; latIndex++) {
+        for (int lonIndex = 0; lonIndex < shape[2]; lonIndex++) {
+          double value = sliceArray.getDouble(index.set( depthIndex, latIndex, lonIndex));
+          if (Precision.equals(value, fill, 0.000001d)) {
+            value = Double.NaN;
+          } else {
+            value = (value * scaleFactor) + addOffset;
+          }
+          knots[i++] = value;
+        }
+      }
+    }
+
+    return knots;
+  }
   private static double[] getSlice(NetcdfFile file, String variableName, int[] depthIndices, int[] latIndices, int[] lonIndices)
       throws InvalidRangeException, IOException {
     Variable variable = findVariable(file, variableName);
@@ -113,12 +152,11 @@ public class CoTeDeCarsNormbias extends CoTeDeWoaNormbias {
 
     slice = Arrays.stream(slice)
         .map(v -> {
-          v = (v * scaleFactor) + addOffset;
           
           if (Precision.equals(v, fill, 0.000001d)) {
             return Double.NaN;
           }
-          return v;
+          return (v * scaleFactor) + addOffset;
         }).toArray();
 
     return slice;

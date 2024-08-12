@@ -48,7 +48,7 @@ public class CoTeDeAnomalyDetectionTest {
   private static final double[] EXPECTED_WOA_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
       Double.NaN};
 
-  private static final double[] EXPECTED_CARS_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.791718000267658, 0.0, 0.0, 0.0,
+  private static final double[] EXPECTED_CARS_NORM_BIAS_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.791718000267658, 0.0,  Double.NaN, 0.0,
       Double.NaN};
 
   private static final double[] EXPECTED_CONSTANT_CLUSTER_SIZE_PROB = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};

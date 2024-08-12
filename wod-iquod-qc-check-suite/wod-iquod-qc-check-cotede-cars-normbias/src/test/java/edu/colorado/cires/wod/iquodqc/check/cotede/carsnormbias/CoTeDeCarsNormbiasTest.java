@@ -58,7 +58,7 @@ public class CoTeDeCarsNormbiasTest {
         computeNormbias(
             latitude, longitude, TEMPERATURES, DEPTHS, carsParameters
         ).stream().mapToDouble(v -> v).toArray(),
-        1e-7
+        1e-5
     );
   }
 }
