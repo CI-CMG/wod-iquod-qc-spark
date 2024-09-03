@@ -26,9 +26,11 @@ public class CheckResolver {
   public static class ParentChildren {
     private final String parent;
     private final Set<String> children = new LinkedHashSet<>();
+    private final Set<String> dependsOn;
 
-    public ParentChildren(String parent) {
+    public ParentChildren(String parent, Set<String> dependsOn) {
       this.parent = parent;
+      this.dependsOn = dependsOn;
     }
 
     public String getParent() {
@@ -39,11 +41,16 @@ public class CheckResolver {
       return children;
     }
 
+    public Set<String> getDependsOn() {
+      return dependsOn;
+    }
+
     @Override
     public String toString() {
       return "ParentChildren{" +
           "parent='" + parent + '\'' +
           ", children=" + children +
+          ", dependsOn=" + dependsOn +
           '}';
     }
   }
@@ -52,8 +59,8 @@ public class CheckResolver {
     List<CastCheck> checks = getChecks(checksToRun, false, null);
     Map<String, ParentChildren> parentChildren = new LinkedHashMap<>();
     for (CastCheck check : checks) {
-      parentChildren.put(check.getName(), new ParentChildren(check.getName()));
       Collection<String> dependsOn = check.dependsOn();
+      parentChildren.put(check.getName(), new ParentChildren(check.getName(), new HashSet<>(dependsOn)));
       for (String d : dependsOn) {
         ParentChildren pc = parentChildren.get(d);
         pc.getChildren().add(check.getName());

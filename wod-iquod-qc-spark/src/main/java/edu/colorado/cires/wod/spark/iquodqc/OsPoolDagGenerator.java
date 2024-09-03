@@ -36,6 +36,10 @@ public class OsPoolDagGenerator implements Runnable {
   private Path listFile;
   @Option(names = {"-o", "--output-file"}, required = true, description = "The dag file to create")
   private Path outputFile;
+  @Option(names = {"-osdf", "--osdf-prefix"}, required = true, description = "The OSDF url prefix")
+  private String osdfPrefix;
+  @Option(names = {"-df", "--date-folder"}, required = true, description = "The date folder")
+  private String dateFolder;
 
   @VisibleForTesting
   void setListFile(Path listFile) {
@@ -45,6 +49,16 @@ public class OsPoolDagGenerator implements Runnable {
   @VisibleForTesting
   void setOutputFile(Path outputFile) {
     this.outputFile = outputFile;
+  }
+
+  @VisibleForTesting
+  void setOsdfPrefix(String osdfPrefix) {
+    this.osdfPrefix = osdfPrefix;
+  }
+
+  @VisibleForTesting
+  void setDateFolder(String dateFolder) {
+    this.dateFolder = dateFolder;
   }
 
   private Set<DatasetYear> getAll()  {
@@ -67,6 +81,19 @@ public class OsPoolDagGenerator implements Runnable {
     return datasetYear.dataset + "_" + datasetYear.year + "_" + check;
   }
 
+
+  private String toOsdfUrl(String check) {
+    return osdfPrefix + "/" + dateFolder + "/data/qc/" + check + ".parquet?recursive";
+  }
+
+  private String generateDependsOn(ParentChildren pc) {
+    String dependsOn = String.join(",", pc.getDependsOn().stream().map(this::toOsdfUrl).collect(Collectors.toList()));
+    if (dependsOn.length() > 0) {
+      dependsOn = "," + dependsOn;
+    }
+    return dependsOn;
+  }
+
   @Override
   public void run() {
     List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()));
@@ -76,7 +103,12 @@ public class OsPoolDagGenerator implements Runnable {
         for (ParentChildren pc : parentChildren) {
           String jobName = getJobName(datasetYear, pc.getParent());
           outputStream.write(("JOB " + jobName + " wod-iquod-qc-spark.submit\n").getBytes(StandardCharsets.UTF_8));
-          outputStream.write(("VARS " + jobName + " dataset=\"" + datasetYear.dataset + "\" year=\"" + datasetYear.year + "\" check=\"" + pc.getParent() + "\"\n").getBytes(StandardCharsets.UTF_8));
+          outputStream.write(("VARS " + jobName + " "
+              + "dataset=\"" + datasetYear.dataset + "\" "
+              + "year=\"" + datasetYear.year + "\" "
+              + "check=\"" + pc.getParent() + "\" "
+              + "dependsOn=\"" + generateDependsOn(pc) + "\"\n"
+          ).getBytes(StandardCharsets.UTF_8));
         }
       }
       for (DatasetYear datasetYear : all) {

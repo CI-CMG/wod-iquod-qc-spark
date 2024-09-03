@@ -1,13 +1,8 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 . wod-iquod-qc.conf
-export AWS_ACCESS_KEY_ID="$aws_access_key_id"
-export AWS_SECRET_ACCESS_KEY="$aws_secret_access_key"
-export AWS_REGION=us-east-1
-
-set -x
 
 year="$1"
 dataset="$2"
@@ -36,25 +31,13 @@ spark-submit \
   --driver-java-options "-Djava.io.tmpdir=$(pwd)/temp" \
   --class edu.colorado.cires.wod.spark.iquodqc.Sparkler \
   wod-iquod-qc-spark-${project.version}.jar \
-  -fs s3 \
-  -ib wod-test-resources \
+  -ib . \
   -ip $date_folder/data/parquet/yearly \
-  -ibr us-east-1 \
-  -ia $aws_access_key_id \
-  -is $aws_secret_access_key \
-  -ob wod-test-resources \
+  -ob . \
   -op $date_folder/data/qc \
-  -obr us-east-1 \
-  -oa $aws_access_key_id \
-  -os $aws_secret_access_key \
-  -pb wod-test-resources \
-  -pk $date_folder/resources/spark-s3.properties \
-  -pbr us-east-1 \
-  -pa $aws_access_key_id \
-  -ps $aws_secret_access_key \
+  -pb . \
+  -pk $date_folder/resources/spark.properties \
   -qc $check \
   -ds $dataset \
   -y $year \
-  -gr \
-  -ftc \
   -s

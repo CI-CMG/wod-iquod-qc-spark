@@ -18,6 +18,9 @@ public class OsPoolDagGeneratorTest {
     OsPoolDagGenerator osPoolDagGenerator = new OsPoolDagGenerator();
     osPoolDagGenerator.setListFile(listFile);
     osPoolDagGenerator.setOutputFile(outputFile);
+    osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
+    osPoolDagGenerator.setDateFolder("2024-08");
+
     osPoolDagGenerator.run();
     assertEquals(
         FileUtils.readFileToString(new File("src/test/resources/test.dag"), StandardCharsets.UTF_8),

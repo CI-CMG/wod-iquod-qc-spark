@@ -1,379 +1,379 @@
 JOB GLD_2005_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_WOA_normbias"
+VARS GLD_2005_CoTeDe_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_WOA_normbias" dependsOn=""
 JOB GLD_2005_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_tukey_53H_check dataset="GLD" year="2005" check="CoTeDe_tukey_53H_check"
+VARS GLD_2005_CoTeDe_tukey_53H_check dataset="GLD" year="2005" check="CoTeDe_tukey_53H_check" dependsOn=""
 JOB GLD_2005_EN_stability_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_stability_check dataset="GLD" year="2005" check="EN_stability_check"
+VARS GLD_2005_EN_stability_check dataset="GLD" year="2005" check="EN_stability_check" dependsOn=""
 JOB GLD_2005_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_spike_and_step_suspect dataset="GLD" year="2005" check="EN_spike_and_step_suspect"
+VARS GLD_2005_EN_spike_and_step_suspect dataset="GLD" year="2005" check="EN_spike_and_step_suspect" dependsOn=""
 JOB GLD_2005_CSIRO_surface_spikes wod-iquod-qc-spark.submit
-VARS GLD_2005_CSIRO_surface_spikes dataset="GLD" year="2005" check="CSIRO_surface_spikes"
+VARS GLD_2005_CSIRO_surface_spikes dataset="GLD" year="2005" check="CSIRO_surface_spikes" dependsOn=""
 JOB GLD_2005_EN_spike_and_step_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_spike_and_step_check dataset="GLD" year="2005" check="EN_spike_and_step_check"
+VARS GLD_2005_EN_spike_and_step_check dataset="GLD" year="2005" check="EN_spike_and_step_check" dependsOn=""
 JOB GLD_2005_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_08_gradient_check dataset="GLD" year="2005" check="ICDC_aqc_08_gradient_check"
+VARS GLD_2005_ICDC_aqc_08_gradient_check dataset="GLD" year="2005" check="ICDC_aqc_08_gradient_check" dependsOn=""
 JOB GLD_2005_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_07_spike_check dataset="GLD" year="2005" check="ICDC_aqc_07_spike_check"
+VARS GLD_2005_ICDC_aqc_07_spike_check dataset="GLD" year="2005" check="ICDC_aqc_07_spike_check" dependsOn=""
 JOB GLD_2005_EN_background_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_background_check dataset="GLD" year="2005" check="EN_background_check"
+VARS GLD_2005_EN_background_check dataset="GLD" year="2005" check="EN_background_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB GLD_2005_EN_constant_value_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_constant_value_check dataset="GLD" year="2005" check="EN_constant_value_check"
+VARS GLD_2005_EN_constant_value_check dataset="GLD" year="2005" check="EN_constant_value_check" dependsOn=""
 JOB GLD_2005_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_05_stuck_value dataset="GLD" year="2005" check="ICDC_aqc_05_stuck_value"
+VARS GLD_2005_ICDC_aqc_05_stuck_value dataset="GLD" year="2005" check="ICDC_aqc_05_stuck_value" dependsOn=""
 JOB GLD_2005_CoTeDe_gradient wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_gradient dataset="GLD" year="2005" check="CoTeDe_gradient"
+VARS GLD_2005_CoTeDe_gradient dataset="GLD" year="2005" check="CoTeDe_gradient" dependsOn=""
 JOB GLD_2005_CSIRO_wire_break wod-iquod-qc-spark.submit
-VARS GLD_2005_CSIRO_wire_break dataset="GLD" year="2005" check="CSIRO_wire_break"
+VARS GLD_2005_CSIRO_wire_break dataset="GLD" year="2005" check="CSIRO_wire_break" dependsOn=""
 JOB GLD_2005_Argo_impossible_date_test wod-iquod-qc-spark.submit
-VARS GLD_2005_Argo_impossible_date_test dataset="GLD" year="2005" check="Argo_impossible_date_test"
+VARS GLD_2005_Argo_impossible_date_test dataset="GLD" year="2005" check="Argo_impossible_date_test" dependsOn=""
 JOB GLD_2005_AOML_constant wod-iquod-qc-spark.submit
-VARS GLD_2005_AOML_constant dataset="GLD" year="2005" check="AOML_constant"
+VARS GLD_2005_AOML_constant dataset="GLD" year="2005" check="AOML_constant" dependsOn=""
 JOB GLD_2005_EN_background_available_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_background_available_check dataset="GLD" year="2005" check="EN_background_available_check"
+VARS GLD_2005_EN_background_available_check dataset="GLD" year="2005" check="EN_background_available_check" dependsOn=""
 JOB GLD_2005_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_01_level_order dataset="GLD" year="2005" check="ICDC_aqc_01_level_order"
+VARS GLD_2005_ICDC_aqc_01_level_order dataset="GLD" year="2005" check="ICDC_aqc_01_level_order" dependsOn=""
 JOB GLD_2005_AOML_spike wod-iquod-qc-spark.submit
-VARS GLD_2005_AOML_spike dataset="GLD" year="2005" check="AOML_spike"
+VARS GLD_2005_AOML_spike dataset="GLD" year="2005" check="AOML_spike" dependsOn=""
 JOB GLD_2005_Argo_impossible_location_test wod-iquod-qc-spark.submit
-VARS GLD_2005_Argo_impossible_location_test dataset="GLD" year="2005" check="Argo_impossible_location_test"
+VARS GLD_2005_Argo_impossible_location_test dataset="GLD" year="2005" check="Argo_impossible_location_test" dependsOn=""
 JOB GLD_2005_IQuOD_gross_range_check wod-iquod-qc-spark.submit
-VARS GLD_2005_IQuOD_gross_range_check dataset="GLD" year="2005" check="IQuOD_gross_range_check"
+VARS GLD_2005_IQuOD_gross_range_check dataset="GLD" year="2005" check="IQuOD_gross_range_check" dependsOn=""
 JOB GLD_2005_CSIRO_constant_bottom wod-iquod-qc-spark.submit
-VARS GLD_2005_CSIRO_constant_bottom dataset="GLD" year="2005" check="CSIRO_constant_bottom"
+VARS GLD_2005_CSIRO_constant_bottom dataset="GLD" year="2005" check="CSIRO_constant_bottom" dependsOn=""
 JOB GLD_2005_IQUOD_bottom wod-iquod-qc-spark.submit
-VARS GLD_2005_IQUOD_bottom dataset="GLD" year="2005" check="IQUOD_bottom"
+VARS GLD_2005_IQUOD_bottom dataset="GLD" year="2005" check="IQUOD_bottom" dependsOn=""
 JOB GLD_2005_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_10_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_10_climatology_check"
+VARS GLD_2005_ICDC_aqc_10_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_10_climatology_check" dependsOn=""
 JOB GLD_2005_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2005" check="CoTeDe_Constant_Cluster_Size_check"
+VARS GLD_2005_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2005" check="CoTeDe_Constant_Cluster_Size_check" dependsOn=""
 JOB GLD_2005_Argo_global_range_check wod-iquod-qc-spark.submit
-VARS GLD_2005_Argo_global_range_check dataset="GLD" year="2005" check="Argo_global_range_check"
+VARS GLD_2005_Argo_global_range_check dataset="GLD" year="2005" check="Argo_global_range_check" dependsOn=""
 JOB GLD_2005_wod_range_check wod-iquod-qc-spark.submit
-VARS GLD_2005_wod_range_check dataset="GLD" year="2005" check="wod_range_check"
+VARS GLD_2005_wod_range_check dataset="GLD" year="2005" check="wod_range_check" dependsOn=""
 JOB GLD_2005_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
-VARS GLD_2005_wod_loose_location_at_sea_check dataset="GLD" year="2005" check="wod_loose_location_at_sea_check"
+VARS GLD_2005_wod_loose_location_at_sea_check dataset="GLD" year="2005" check="wod_loose_location_at_sea_check" dependsOn=""
 JOB GLD_2005_CoTeDe_spike wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_spike dataset="GLD" year="2005" check="CoTeDe_spike"
+VARS GLD_2005_CoTeDe_spike dataset="GLD" year="2005" check="CoTeDe_spike" dependsOn=""
 JOB GLD_2005_EN_range_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_range_check dataset="GLD" year="2005" check="EN_range_check"
+VARS GLD_2005_EN_range_check dataset="GLD" year="2005" check="EN_range_check" dependsOn=""
 JOB GLD_2005_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_GTSPP_WOA_normbias"
+VARS GLD_2005_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2005" check="CoTeDe_GTSPP_WOA_normbias" dependsOn=""
 JOB GLD_2005_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_02_crude_range dataset="GLD" year="2005" check="ICDC_aqc_02_crude_range"
+VARS GLD_2005_ICDC_aqc_02_crude_range dataset="GLD" year="2005" check="ICDC_aqc_02_crude_range" dependsOn=""
 JOB GLD_2005_CSIRO_short_gradient wod-iquod-qc-spark.submit
-VARS GLD_2005_CSIRO_short_gradient dataset="GLD" year="2005" check="CSIRO_short_gradient"
+VARS GLD_2005_CSIRO_short_gradient dataset="GLD" year="2005" check="CSIRO_short_gradient" dependsOn=""
 JOB GLD_2005_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_09_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_09_climatology_check"
+VARS GLD_2005_ICDC_aqc_09_climatology_check dataset="GLD" year="2005" check="ICDC_aqc_09_climatology_check" dependsOn=""
 JOB GLD_2005_Argo_spike_test wod-iquod-qc-spark.submit
-VARS GLD_2005_Argo_spike_test dataset="GLD" year="2005" check="Argo_spike_test"
+VARS GLD_2005_Argo_spike_test dataset="GLD" year="2005" check="Argo_spike_test" dependsOn=""
 JOB GLD_2005_AOML_climatology_test wod-iquod-qc-spark.submit
-VARS GLD_2005_AOML_climatology_test dataset="GLD" year="2005" check="AOML_climatology_test"
+VARS GLD_2005_AOML_climatology_test dataset="GLD" year="2005" check="AOML_climatology_test" dependsOn=""
 JOB GLD_2005_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
-VARS GLD_2005_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2005" check="ICDC_aqc_06_n_temperature_extrema"
+VARS GLD_2005_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2005" check="ICDC_aqc_06_n_temperature_extrema" dependsOn=""
 JOB GLD_2005_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_rate_of_change dataset="GLD" year="2005" check="CoTeDe_rate_of_change"
+VARS GLD_2005_CoTeDe_rate_of_change dataset="GLD" year="2005" check="CoTeDe_rate_of_change" dependsOn=""
 JOB GLD_2005_CSIRO_long_gradient wod-iquod-qc-spark.submit
-VARS GLD_2005_CSIRO_long_gradient dataset="GLD" year="2005" check="CSIRO_long_gradient"
+VARS GLD_2005_CSIRO_long_gradient dataset="GLD" year="2005" check="CSIRO_long_gradient" dependsOn=""
 JOB GLD_2005_AOML_gradient wod-iquod-qc-spark.submit
-VARS GLD_2005_AOML_gradient dataset="GLD" year="2005" check="AOML_gradient"
+VARS GLD_2005_AOML_gradient dataset="GLD" year="2005" check="AOML_gradient" dependsOn=""
 JOB GLD_2005_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_Cars_Normbias_check dataset="GLD" year="2005" check="CoTeDe_Cars_Normbias_check"
+VARS GLD_2005_CoTeDe_Cars_Normbias_check dataset="GLD" year="2005" check="CoTeDe_Cars_Normbias_check" dependsOn=""
 JOB GLD_2005_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
-VARS GLD_2005_CoTeDe_anomaly_detection_check dataset="GLD" year="2005" check="CoTeDe_anomaly_detection_check"
+VARS GLD_2005_CoTeDe_anomaly_detection_check dataset="GLD" year="2005" check="CoTeDe_anomaly_detection_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_rate_of_change.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Cars_Normbias_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Constant_Cluster_Size_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_WOA_normbias.parquet?recursive"
 JOB GLD_2005_EN_increasing_depth_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_increasing_depth_check dataset="GLD" year="2005" check="EN_increasing_depth_check"
+VARS GLD_2005_EN_increasing_depth_check dataset="GLD" year="2005" check="EN_increasing_depth_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive"
 JOB GLD_2005_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
-VARS GLD_2005_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2005" check="EN_std_lev_bkg_and_buddy_check"
+VARS GLD_2005_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2005" check="EN_std_lev_bkg_and_buddy_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB GLD_2005_HTPR_check wod-iquod-qc-spark.submit
-VARS GLD_2005_HTPR_check dataset="GLD" year="2005" check="HTPR_check"
+VARS GLD_2005_HTPR_check dataset="GLD" year="2005" check="HTPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_06_n_temperature_extrema.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_spike_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_09_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_short_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQUOD_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_anomaly_detection_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_global_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_10_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_constant_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_constant.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_wire_break.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_07_spike_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_tukey_53H_check.parquet?recursive"
 JOB GLD_2005_COMP_check wod-iquod-qc-spark.submit
-VARS GLD_2005_COMP_check dataset="GLD" year="2005" check="COMP_check"
+VARS GLD_2005_COMP_check dataset="GLD" year="2005" check="COMP_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB GLD_2005_LFPR_check wod-iquod-qc-spark.submit
-VARS GLD_2005_LFPR_check dataset="GLD" year="2005" check="LFPR_check"
+VARS GLD_2005_LFPR_check dataset="GLD" year="2005" check="LFPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_02_crude_range.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_05_stuck_value.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_loose_location_at_sea_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB GLD_2005_IQuOD_flags_check wod-iquod-qc-spark.submit
-VARS GLD_2005_IQuOD_flags_check dataset="GLD" year="2005" check="IQuOD_flags_check"
+VARS GLD_2005_IQuOD_flags_check dataset="GLD" year="2005" check="IQuOD_flags_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/LFPR_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/COMP_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/HTPR_check.parquet?recursive"
 JOB GLD_2006_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_WOA_normbias"
+VARS GLD_2006_CoTeDe_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_WOA_normbias" dependsOn=""
 JOB GLD_2006_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_tukey_53H_check dataset="GLD" year="2006" check="CoTeDe_tukey_53H_check"
+VARS GLD_2006_CoTeDe_tukey_53H_check dataset="GLD" year="2006" check="CoTeDe_tukey_53H_check" dependsOn=""
 JOB GLD_2006_EN_stability_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_stability_check dataset="GLD" year="2006" check="EN_stability_check"
+VARS GLD_2006_EN_stability_check dataset="GLD" year="2006" check="EN_stability_check" dependsOn=""
 JOB GLD_2006_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_spike_and_step_suspect dataset="GLD" year="2006" check="EN_spike_and_step_suspect"
+VARS GLD_2006_EN_spike_and_step_suspect dataset="GLD" year="2006" check="EN_spike_and_step_suspect" dependsOn=""
 JOB GLD_2006_CSIRO_surface_spikes wod-iquod-qc-spark.submit
-VARS GLD_2006_CSIRO_surface_spikes dataset="GLD" year="2006" check="CSIRO_surface_spikes"
+VARS GLD_2006_CSIRO_surface_spikes dataset="GLD" year="2006" check="CSIRO_surface_spikes" dependsOn=""
 JOB GLD_2006_EN_spike_and_step_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_spike_and_step_check dataset="GLD" year="2006" check="EN_spike_and_step_check"
+VARS GLD_2006_EN_spike_and_step_check dataset="GLD" year="2006" check="EN_spike_and_step_check" dependsOn=""
 JOB GLD_2006_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_08_gradient_check dataset="GLD" year="2006" check="ICDC_aqc_08_gradient_check"
+VARS GLD_2006_ICDC_aqc_08_gradient_check dataset="GLD" year="2006" check="ICDC_aqc_08_gradient_check" dependsOn=""
 JOB GLD_2006_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_07_spike_check dataset="GLD" year="2006" check="ICDC_aqc_07_spike_check"
+VARS GLD_2006_ICDC_aqc_07_spike_check dataset="GLD" year="2006" check="ICDC_aqc_07_spike_check" dependsOn=""
 JOB GLD_2006_EN_background_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_background_check dataset="GLD" year="2006" check="EN_background_check"
+VARS GLD_2006_EN_background_check dataset="GLD" year="2006" check="EN_background_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB GLD_2006_EN_constant_value_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_constant_value_check dataset="GLD" year="2006" check="EN_constant_value_check"
+VARS GLD_2006_EN_constant_value_check dataset="GLD" year="2006" check="EN_constant_value_check" dependsOn=""
 JOB GLD_2006_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_05_stuck_value dataset="GLD" year="2006" check="ICDC_aqc_05_stuck_value"
+VARS GLD_2006_ICDC_aqc_05_stuck_value dataset="GLD" year="2006" check="ICDC_aqc_05_stuck_value" dependsOn=""
 JOB GLD_2006_CoTeDe_gradient wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_gradient dataset="GLD" year="2006" check="CoTeDe_gradient"
+VARS GLD_2006_CoTeDe_gradient dataset="GLD" year="2006" check="CoTeDe_gradient" dependsOn=""
 JOB GLD_2006_CSIRO_wire_break wod-iquod-qc-spark.submit
-VARS GLD_2006_CSIRO_wire_break dataset="GLD" year="2006" check="CSIRO_wire_break"
+VARS GLD_2006_CSIRO_wire_break dataset="GLD" year="2006" check="CSIRO_wire_break" dependsOn=""
 JOB GLD_2006_Argo_impossible_date_test wod-iquod-qc-spark.submit
-VARS GLD_2006_Argo_impossible_date_test dataset="GLD" year="2006" check="Argo_impossible_date_test"
+VARS GLD_2006_Argo_impossible_date_test dataset="GLD" year="2006" check="Argo_impossible_date_test" dependsOn=""
 JOB GLD_2006_AOML_constant wod-iquod-qc-spark.submit
-VARS GLD_2006_AOML_constant dataset="GLD" year="2006" check="AOML_constant"
+VARS GLD_2006_AOML_constant dataset="GLD" year="2006" check="AOML_constant" dependsOn=""
 JOB GLD_2006_EN_background_available_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_background_available_check dataset="GLD" year="2006" check="EN_background_available_check"
+VARS GLD_2006_EN_background_available_check dataset="GLD" year="2006" check="EN_background_available_check" dependsOn=""
 JOB GLD_2006_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_01_level_order dataset="GLD" year="2006" check="ICDC_aqc_01_level_order"
+VARS GLD_2006_ICDC_aqc_01_level_order dataset="GLD" year="2006" check="ICDC_aqc_01_level_order" dependsOn=""
 JOB GLD_2006_AOML_spike wod-iquod-qc-spark.submit
-VARS GLD_2006_AOML_spike dataset="GLD" year="2006" check="AOML_spike"
+VARS GLD_2006_AOML_spike dataset="GLD" year="2006" check="AOML_spike" dependsOn=""
 JOB GLD_2006_Argo_impossible_location_test wod-iquod-qc-spark.submit
-VARS GLD_2006_Argo_impossible_location_test dataset="GLD" year="2006" check="Argo_impossible_location_test"
+VARS GLD_2006_Argo_impossible_location_test dataset="GLD" year="2006" check="Argo_impossible_location_test" dependsOn=""
 JOB GLD_2006_IQuOD_gross_range_check wod-iquod-qc-spark.submit
-VARS GLD_2006_IQuOD_gross_range_check dataset="GLD" year="2006" check="IQuOD_gross_range_check"
+VARS GLD_2006_IQuOD_gross_range_check dataset="GLD" year="2006" check="IQuOD_gross_range_check" dependsOn=""
 JOB GLD_2006_CSIRO_constant_bottom wod-iquod-qc-spark.submit
-VARS GLD_2006_CSIRO_constant_bottom dataset="GLD" year="2006" check="CSIRO_constant_bottom"
+VARS GLD_2006_CSIRO_constant_bottom dataset="GLD" year="2006" check="CSIRO_constant_bottom" dependsOn=""
 JOB GLD_2006_IQUOD_bottom wod-iquod-qc-spark.submit
-VARS GLD_2006_IQUOD_bottom dataset="GLD" year="2006" check="IQUOD_bottom"
+VARS GLD_2006_IQUOD_bottom dataset="GLD" year="2006" check="IQUOD_bottom" dependsOn=""
 JOB GLD_2006_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_10_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_10_climatology_check"
+VARS GLD_2006_ICDC_aqc_10_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_10_climatology_check" dependsOn=""
 JOB GLD_2006_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2006" check="CoTeDe_Constant_Cluster_Size_check"
+VARS GLD_2006_CoTeDe_Constant_Cluster_Size_check dataset="GLD" year="2006" check="CoTeDe_Constant_Cluster_Size_check" dependsOn=""
 JOB GLD_2006_Argo_global_range_check wod-iquod-qc-spark.submit
-VARS GLD_2006_Argo_global_range_check dataset="GLD" year="2006" check="Argo_global_range_check"
+VARS GLD_2006_Argo_global_range_check dataset="GLD" year="2006" check="Argo_global_range_check" dependsOn=""
 JOB GLD_2006_wod_range_check wod-iquod-qc-spark.submit
-VARS GLD_2006_wod_range_check dataset="GLD" year="2006" check="wod_range_check"
+VARS GLD_2006_wod_range_check dataset="GLD" year="2006" check="wod_range_check" dependsOn=""
 JOB GLD_2006_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
-VARS GLD_2006_wod_loose_location_at_sea_check dataset="GLD" year="2006" check="wod_loose_location_at_sea_check"
+VARS GLD_2006_wod_loose_location_at_sea_check dataset="GLD" year="2006" check="wod_loose_location_at_sea_check" dependsOn=""
 JOB GLD_2006_CoTeDe_spike wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_spike dataset="GLD" year="2006" check="CoTeDe_spike"
+VARS GLD_2006_CoTeDe_spike dataset="GLD" year="2006" check="CoTeDe_spike" dependsOn=""
 JOB GLD_2006_EN_range_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_range_check dataset="GLD" year="2006" check="EN_range_check"
+VARS GLD_2006_EN_range_check dataset="GLD" year="2006" check="EN_range_check" dependsOn=""
 JOB GLD_2006_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_GTSPP_WOA_normbias"
+VARS GLD_2006_CoTeDe_GTSPP_WOA_normbias dataset="GLD" year="2006" check="CoTeDe_GTSPP_WOA_normbias" dependsOn=""
 JOB GLD_2006_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_02_crude_range dataset="GLD" year="2006" check="ICDC_aqc_02_crude_range"
+VARS GLD_2006_ICDC_aqc_02_crude_range dataset="GLD" year="2006" check="ICDC_aqc_02_crude_range" dependsOn=""
 JOB GLD_2006_CSIRO_short_gradient wod-iquod-qc-spark.submit
-VARS GLD_2006_CSIRO_short_gradient dataset="GLD" year="2006" check="CSIRO_short_gradient"
+VARS GLD_2006_CSIRO_short_gradient dataset="GLD" year="2006" check="CSIRO_short_gradient" dependsOn=""
 JOB GLD_2006_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_09_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_09_climatology_check"
+VARS GLD_2006_ICDC_aqc_09_climatology_check dataset="GLD" year="2006" check="ICDC_aqc_09_climatology_check" dependsOn=""
 JOB GLD_2006_Argo_spike_test wod-iquod-qc-spark.submit
-VARS GLD_2006_Argo_spike_test dataset="GLD" year="2006" check="Argo_spike_test"
+VARS GLD_2006_Argo_spike_test dataset="GLD" year="2006" check="Argo_spike_test" dependsOn=""
 JOB GLD_2006_AOML_climatology_test wod-iquod-qc-spark.submit
-VARS GLD_2006_AOML_climatology_test dataset="GLD" year="2006" check="AOML_climatology_test"
+VARS GLD_2006_AOML_climatology_test dataset="GLD" year="2006" check="AOML_climatology_test" dependsOn=""
 JOB GLD_2006_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
-VARS GLD_2006_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2006" check="ICDC_aqc_06_n_temperature_extrema"
+VARS GLD_2006_ICDC_aqc_06_n_temperature_extrema dataset="GLD" year="2006" check="ICDC_aqc_06_n_temperature_extrema" dependsOn=""
 JOB GLD_2006_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_rate_of_change dataset="GLD" year="2006" check="CoTeDe_rate_of_change"
+VARS GLD_2006_CoTeDe_rate_of_change dataset="GLD" year="2006" check="CoTeDe_rate_of_change" dependsOn=""
 JOB GLD_2006_CSIRO_long_gradient wod-iquod-qc-spark.submit
-VARS GLD_2006_CSIRO_long_gradient dataset="GLD" year="2006" check="CSIRO_long_gradient"
+VARS GLD_2006_CSIRO_long_gradient dataset="GLD" year="2006" check="CSIRO_long_gradient" dependsOn=""
 JOB GLD_2006_AOML_gradient wod-iquod-qc-spark.submit
-VARS GLD_2006_AOML_gradient dataset="GLD" year="2006" check="AOML_gradient"
+VARS GLD_2006_AOML_gradient dataset="GLD" year="2006" check="AOML_gradient" dependsOn=""
 JOB GLD_2006_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_Cars_Normbias_check dataset="GLD" year="2006" check="CoTeDe_Cars_Normbias_check"
+VARS GLD_2006_CoTeDe_Cars_Normbias_check dataset="GLD" year="2006" check="CoTeDe_Cars_Normbias_check" dependsOn=""
 JOB GLD_2006_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
-VARS GLD_2006_CoTeDe_anomaly_detection_check dataset="GLD" year="2006" check="CoTeDe_anomaly_detection_check"
+VARS GLD_2006_CoTeDe_anomaly_detection_check dataset="GLD" year="2006" check="CoTeDe_anomaly_detection_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_rate_of_change.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Cars_Normbias_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Constant_Cluster_Size_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_WOA_normbias.parquet?recursive"
 JOB GLD_2006_EN_increasing_depth_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_increasing_depth_check dataset="GLD" year="2006" check="EN_increasing_depth_check"
+VARS GLD_2006_EN_increasing_depth_check dataset="GLD" year="2006" check="EN_increasing_depth_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive"
 JOB GLD_2006_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
-VARS GLD_2006_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2006" check="EN_std_lev_bkg_and_buddy_check"
+VARS GLD_2006_EN_std_lev_bkg_and_buddy_check dataset="GLD" year="2006" check="EN_std_lev_bkg_and_buddy_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB GLD_2006_HTPR_check wod-iquod-qc-spark.submit
-VARS GLD_2006_HTPR_check dataset="GLD" year="2006" check="HTPR_check"
+VARS GLD_2006_HTPR_check dataset="GLD" year="2006" check="HTPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_06_n_temperature_extrema.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_spike_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_09_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_short_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQUOD_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_anomaly_detection_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_global_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_10_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_constant_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_constant.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_wire_break.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_07_spike_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_tukey_53H_check.parquet?recursive"
 JOB GLD_2006_COMP_check wod-iquod-qc-spark.submit
-VARS GLD_2006_COMP_check dataset="GLD" year="2006" check="COMP_check"
+VARS GLD_2006_COMP_check dataset="GLD" year="2006" check="COMP_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB GLD_2006_LFPR_check wod-iquod-qc-spark.submit
-VARS GLD_2006_LFPR_check dataset="GLD" year="2006" check="LFPR_check"
+VARS GLD_2006_LFPR_check dataset="GLD" year="2006" check="LFPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_02_crude_range.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_05_stuck_value.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_loose_location_at_sea_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB GLD_2006_IQuOD_flags_check wod-iquod-qc-spark.submit
-VARS GLD_2006_IQuOD_flags_check dataset="GLD" year="2006" check="IQuOD_flags_check"
+VARS GLD_2006_IQuOD_flags_check dataset="GLD" year="2006" check="IQuOD_flags_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/LFPR_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/COMP_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/HTPR_check.parquet?recursive"
 JOB PFL_2023_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_WOA_normbias"
+VARS PFL_2023_CoTeDe_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_WOA_normbias" dependsOn=""
 JOB PFL_2023_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_tukey_53H_check dataset="PFL" year="2023" check="CoTeDe_tukey_53H_check"
+VARS PFL_2023_CoTeDe_tukey_53H_check dataset="PFL" year="2023" check="CoTeDe_tukey_53H_check" dependsOn=""
 JOB PFL_2023_EN_stability_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_stability_check dataset="PFL" year="2023" check="EN_stability_check"
+VARS PFL_2023_EN_stability_check dataset="PFL" year="2023" check="EN_stability_check" dependsOn=""
 JOB PFL_2023_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_spike_and_step_suspect dataset="PFL" year="2023" check="EN_spike_and_step_suspect"
+VARS PFL_2023_EN_spike_and_step_suspect dataset="PFL" year="2023" check="EN_spike_and_step_suspect" dependsOn=""
 JOB PFL_2023_CSIRO_surface_spikes wod-iquod-qc-spark.submit
-VARS PFL_2023_CSIRO_surface_spikes dataset="PFL" year="2023" check="CSIRO_surface_spikes"
+VARS PFL_2023_CSIRO_surface_spikes dataset="PFL" year="2023" check="CSIRO_surface_spikes" dependsOn=""
 JOB PFL_2023_EN_spike_and_step_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_spike_and_step_check dataset="PFL" year="2023" check="EN_spike_and_step_check"
+VARS PFL_2023_EN_spike_and_step_check dataset="PFL" year="2023" check="EN_spike_and_step_check" dependsOn=""
 JOB PFL_2023_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_08_gradient_check dataset="PFL" year="2023" check="ICDC_aqc_08_gradient_check"
+VARS PFL_2023_ICDC_aqc_08_gradient_check dataset="PFL" year="2023" check="ICDC_aqc_08_gradient_check" dependsOn=""
 JOB PFL_2023_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_07_spike_check dataset="PFL" year="2023" check="ICDC_aqc_07_spike_check"
+VARS PFL_2023_ICDC_aqc_07_spike_check dataset="PFL" year="2023" check="ICDC_aqc_07_spike_check" dependsOn=""
 JOB PFL_2023_EN_background_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_background_check dataset="PFL" year="2023" check="EN_background_check"
+VARS PFL_2023_EN_background_check dataset="PFL" year="2023" check="EN_background_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB PFL_2023_EN_constant_value_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_constant_value_check dataset="PFL" year="2023" check="EN_constant_value_check"
+VARS PFL_2023_EN_constant_value_check dataset="PFL" year="2023" check="EN_constant_value_check" dependsOn=""
 JOB PFL_2023_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_05_stuck_value dataset="PFL" year="2023" check="ICDC_aqc_05_stuck_value"
+VARS PFL_2023_ICDC_aqc_05_stuck_value dataset="PFL" year="2023" check="ICDC_aqc_05_stuck_value" dependsOn=""
 JOB PFL_2023_CoTeDe_gradient wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_gradient dataset="PFL" year="2023" check="CoTeDe_gradient"
+VARS PFL_2023_CoTeDe_gradient dataset="PFL" year="2023" check="CoTeDe_gradient" dependsOn=""
 JOB PFL_2023_CSIRO_wire_break wod-iquod-qc-spark.submit
-VARS PFL_2023_CSIRO_wire_break dataset="PFL" year="2023" check="CSIRO_wire_break"
+VARS PFL_2023_CSIRO_wire_break dataset="PFL" year="2023" check="CSIRO_wire_break" dependsOn=""
 JOB PFL_2023_Argo_impossible_date_test wod-iquod-qc-spark.submit
-VARS PFL_2023_Argo_impossible_date_test dataset="PFL" year="2023" check="Argo_impossible_date_test"
+VARS PFL_2023_Argo_impossible_date_test dataset="PFL" year="2023" check="Argo_impossible_date_test" dependsOn=""
 JOB PFL_2023_AOML_constant wod-iquod-qc-spark.submit
-VARS PFL_2023_AOML_constant dataset="PFL" year="2023" check="AOML_constant"
+VARS PFL_2023_AOML_constant dataset="PFL" year="2023" check="AOML_constant" dependsOn=""
 JOB PFL_2023_EN_background_available_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_background_available_check dataset="PFL" year="2023" check="EN_background_available_check"
+VARS PFL_2023_EN_background_available_check dataset="PFL" year="2023" check="EN_background_available_check" dependsOn=""
 JOB PFL_2023_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_01_level_order dataset="PFL" year="2023" check="ICDC_aqc_01_level_order"
+VARS PFL_2023_ICDC_aqc_01_level_order dataset="PFL" year="2023" check="ICDC_aqc_01_level_order" dependsOn=""
 JOB PFL_2023_AOML_spike wod-iquod-qc-spark.submit
-VARS PFL_2023_AOML_spike dataset="PFL" year="2023" check="AOML_spike"
+VARS PFL_2023_AOML_spike dataset="PFL" year="2023" check="AOML_spike" dependsOn=""
 JOB PFL_2023_Argo_impossible_location_test wod-iquod-qc-spark.submit
-VARS PFL_2023_Argo_impossible_location_test dataset="PFL" year="2023" check="Argo_impossible_location_test"
+VARS PFL_2023_Argo_impossible_location_test dataset="PFL" year="2023" check="Argo_impossible_location_test" dependsOn=""
 JOB PFL_2023_IQuOD_gross_range_check wod-iquod-qc-spark.submit
-VARS PFL_2023_IQuOD_gross_range_check dataset="PFL" year="2023" check="IQuOD_gross_range_check"
+VARS PFL_2023_IQuOD_gross_range_check dataset="PFL" year="2023" check="IQuOD_gross_range_check" dependsOn=""
 JOB PFL_2023_CSIRO_constant_bottom wod-iquod-qc-spark.submit
-VARS PFL_2023_CSIRO_constant_bottom dataset="PFL" year="2023" check="CSIRO_constant_bottom"
+VARS PFL_2023_CSIRO_constant_bottom dataset="PFL" year="2023" check="CSIRO_constant_bottom" dependsOn=""
 JOB PFL_2023_IQUOD_bottom wod-iquod-qc-spark.submit
-VARS PFL_2023_IQUOD_bottom dataset="PFL" year="2023" check="IQUOD_bottom"
+VARS PFL_2023_IQUOD_bottom dataset="PFL" year="2023" check="IQUOD_bottom" dependsOn=""
 JOB PFL_2023_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_10_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_10_climatology_check"
+VARS PFL_2023_ICDC_aqc_10_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_10_climatology_check" dependsOn=""
 JOB PFL_2023_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_Constant_Cluster_Size_check dataset="PFL" year="2023" check="CoTeDe_Constant_Cluster_Size_check"
+VARS PFL_2023_CoTeDe_Constant_Cluster_Size_check dataset="PFL" year="2023" check="CoTeDe_Constant_Cluster_Size_check" dependsOn=""
 JOB PFL_2023_Argo_global_range_check wod-iquod-qc-spark.submit
-VARS PFL_2023_Argo_global_range_check dataset="PFL" year="2023" check="Argo_global_range_check"
+VARS PFL_2023_Argo_global_range_check dataset="PFL" year="2023" check="Argo_global_range_check" dependsOn=""
 JOB PFL_2023_wod_range_check wod-iquod-qc-spark.submit
-VARS PFL_2023_wod_range_check dataset="PFL" year="2023" check="wod_range_check"
+VARS PFL_2023_wod_range_check dataset="PFL" year="2023" check="wod_range_check" dependsOn=""
 JOB PFL_2023_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
-VARS PFL_2023_wod_loose_location_at_sea_check dataset="PFL" year="2023" check="wod_loose_location_at_sea_check"
+VARS PFL_2023_wod_loose_location_at_sea_check dataset="PFL" year="2023" check="wod_loose_location_at_sea_check" dependsOn=""
 JOB PFL_2023_CoTeDe_spike wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_spike dataset="PFL" year="2023" check="CoTeDe_spike"
+VARS PFL_2023_CoTeDe_spike dataset="PFL" year="2023" check="CoTeDe_spike" dependsOn=""
 JOB PFL_2023_EN_range_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_range_check dataset="PFL" year="2023" check="EN_range_check"
+VARS PFL_2023_EN_range_check dataset="PFL" year="2023" check="EN_range_check" dependsOn=""
 JOB PFL_2023_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_GTSPP_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_GTSPP_WOA_normbias"
+VARS PFL_2023_CoTeDe_GTSPP_WOA_normbias dataset="PFL" year="2023" check="CoTeDe_GTSPP_WOA_normbias" dependsOn=""
 JOB PFL_2023_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_02_crude_range dataset="PFL" year="2023" check="ICDC_aqc_02_crude_range"
+VARS PFL_2023_ICDC_aqc_02_crude_range dataset="PFL" year="2023" check="ICDC_aqc_02_crude_range" dependsOn=""
 JOB PFL_2023_CSIRO_short_gradient wod-iquod-qc-spark.submit
-VARS PFL_2023_CSIRO_short_gradient dataset="PFL" year="2023" check="CSIRO_short_gradient"
+VARS PFL_2023_CSIRO_short_gradient dataset="PFL" year="2023" check="CSIRO_short_gradient" dependsOn=""
 JOB PFL_2023_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_09_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_09_climatology_check"
+VARS PFL_2023_ICDC_aqc_09_climatology_check dataset="PFL" year="2023" check="ICDC_aqc_09_climatology_check" dependsOn=""
 JOB PFL_2023_Argo_spike_test wod-iquod-qc-spark.submit
-VARS PFL_2023_Argo_spike_test dataset="PFL" year="2023" check="Argo_spike_test"
+VARS PFL_2023_Argo_spike_test dataset="PFL" year="2023" check="Argo_spike_test" dependsOn=""
 JOB PFL_2023_AOML_climatology_test wod-iquod-qc-spark.submit
-VARS PFL_2023_AOML_climatology_test dataset="PFL" year="2023" check="AOML_climatology_test"
+VARS PFL_2023_AOML_climatology_test dataset="PFL" year="2023" check="AOML_climatology_test" dependsOn=""
 JOB PFL_2023_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
-VARS PFL_2023_ICDC_aqc_06_n_temperature_extrema dataset="PFL" year="2023" check="ICDC_aqc_06_n_temperature_extrema"
+VARS PFL_2023_ICDC_aqc_06_n_temperature_extrema dataset="PFL" year="2023" check="ICDC_aqc_06_n_temperature_extrema" dependsOn=""
 JOB PFL_2023_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_rate_of_change dataset="PFL" year="2023" check="CoTeDe_rate_of_change"
+VARS PFL_2023_CoTeDe_rate_of_change dataset="PFL" year="2023" check="CoTeDe_rate_of_change" dependsOn=""
 JOB PFL_2023_CSIRO_long_gradient wod-iquod-qc-spark.submit
-VARS PFL_2023_CSIRO_long_gradient dataset="PFL" year="2023" check="CSIRO_long_gradient"
+VARS PFL_2023_CSIRO_long_gradient dataset="PFL" year="2023" check="CSIRO_long_gradient" dependsOn=""
 JOB PFL_2023_AOML_gradient wod-iquod-qc-spark.submit
-VARS PFL_2023_AOML_gradient dataset="PFL" year="2023" check="AOML_gradient"
+VARS PFL_2023_AOML_gradient dataset="PFL" year="2023" check="AOML_gradient" dependsOn=""
 JOB PFL_2023_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_Cars_Normbias_check dataset="PFL" year="2023" check="CoTeDe_Cars_Normbias_check"
+VARS PFL_2023_CoTeDe_Cars_Normbias_check dataset="PFL" year="2023" check="CoTeDe_Cars_Normbias_check" dependsOn=""
 JOB PFL_2023_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
-VARS PFL_2023_CoTeDe_anomaly_detection_check dataset="PFL" year="2023" check="CoTeDe_anomaly_detection_check"
+VARS PFL_2023_CoTeDe_anomaly_detection_check dataset="PFL" year="2023" check="CoTeDe_anomaly_detection_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_rate_of_change.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Cars_Normbias_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Constant_Cluster_Size_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_WOA_normbias.parquet?recursive"
 JOB PFL_2023_EN_increasing_depth_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_increasing_depth_check dataset="PFL" year="2023" check="EN_increasing_depth_check"
+VARS PFL_2023_EN_increasing_depth_check dataset="PFL" year="2023" check="EN_increasing_depth_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive"
 JOB PFL_2023_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
-VARS PFL_2023_EN_std_lev_bkg_and_buddy_check dataset="PFL" year="2023" check="EN_std_lev_bkg_and_buddy_check"
+VARS PFL_2023_EN_std_lev_bkg_and_buddy_check dataset="PFL" year="2023" check="EN_std_lev_bkg_and_buddy_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB PFL_2023_HTPR_check wod-iquod-qc-spark.submit
-VARS PFL_2023_HTPR_check dataset="PFL" year="2023" check="HTPR_check"
+VARS PFL_2023_HTPR_check dataset="PFL" year="2023" check="HTPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_06_n_temperature_extrema.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_spike_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_09_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_short_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQUOD_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_anomaly_detection_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_global_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_10_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_constant_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_constant.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_wire_break.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_07_spike_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_tukey_53H_check.parquet?recursive"
 JOB PFL_2023_COMP_check wod-iquod-qc-spark.submit
-VARS PFL_2023_COMP_check dataset="PFL" year="2023" check="COMP_check"
+VARS PFL_2023_COMP_check dataset="PFL" year="2023" check="COMP_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB PFL_2023_LFPR_check wod-iquod-qc-spark.submit
-VARS PFL_2023_LFPR_check dataset="PFL" year="2023" check="LFPR_check"
+VARS PFL_2023_LFPR_check dataset="PFL" year="2023" check="LFPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_02_crude_range.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_05_stuck_value.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_loose_location_at_sea_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB PFL_2023_IQuOD_flags_check wod-iquod-qc-spark.submit
-VARS PFL_2023_IQuOD_flags_check dataset="PFL" year="2023" check="IQuOD_flags_check"
+VARS PFL_2023_IQuOD_flags_check dataset="PFL" year="2023" check="IQuOD_flags_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/LFPR_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/COMP_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/HTPR_check.parquet?recursive"
 JOB SUR_ALL_CoTeDe_WOA_normbias wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_WOA_normbias"
+VARS SUR_ALL_CoTeDe_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_WOA_normbias" dependsOn=""
 JOB SUR_ALL_CoTeDe_tukey_53H_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_tukey_53H_check dataset="SUR" year="ALL" check="CoTeDe_tukey_53H_check"
+VARS SUR_ALL_CoTeDe_tukey_53H_check dataset="SUR" year="ALL" check="CoTeDe_tukey_53H_check" dependsOn=""
 JOB SUR_ALL_EN_stability_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_stability_check dataset="SUR" year="ALL" check="EN_stability_check"
+VARS SUR_ALL_EN_stability_check dataset="SUR" year="ALL" check="EN_stability_check" dependsOn=""
 JOB SUR_ALL_EN_spike_and_step_suspect wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_spike_and_step_suspect dataset="SUR" year="ALL" check="EN_spike_and_step_suspect"
+VARS SUR_ALL_EN_spike_and_step_suspect dataset="SUR" year="ALL" check="EN_spike_and_step_suspect" dependsOn=""
 JOB SUR_ALL_CSIRO_surface_spikes wod-iquod-qc-spark.submit
-VARS SUR_ALL_CSIRO_surface_spikes dataset="SUR" year="ALL" check="CSIRO_surface_spikes"
+VARS SUR_ALL_CSIRO_surface_spikes dataset="SUR" year="ALL" check="CSIRO_surface_spikes" dependsOn=""
 JOB SUR_ALL_EN_spike_and_step_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_spike_and_step_check dataset="SUR" year="ALL" check="EN_spike_and_step_check"
+VARS SUR_ALL_EN_spike_and_step_check dataset="SUR" year="ALL" check="EN_spike_and_step_check" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_08_gradient_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_08_gradient_check dataset="SUR" year="ALL" check="ICDC_aqc_08_gradient_check"
+VARS SUR_ALL_ICDC_aqc_08_gradient_check dataset="SUR" year="ALL" check="ICDC_aqc_08_gradient_check" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_07_spike_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_07_spike_check dataset="SUR" year="ALL" check="ICDC_aqc_07_spike_check"
+VARS SUR_ALL_ICDC_aqc_07_spike_check dataset="SUR" year="ALL" check="ICDC_aqc_07_spike_check" dependsOn=""
 JOB SUR_ALL_EN_background_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_background_check dataset="SUR" year="ALL" check="EN_background_check"
+VARS SUR_ALL_EN_background_check dataset="SUR" year="ALL" check="EN_background_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB SUR_ALL_EN_constant_value_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_constant_value_check dataset="SUR" year="ALL" check="EN_constant_value_check"
+VARS SUR_ALL_EN_constant_value_check dataset="SUR" year="ALL" check="EN_constant_value_check" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_05_stuck_value wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_05_stuck_value dataset="SUR" year="ALL" check="ICDC_aqc_05_stuck_value"
+VARS SUR_ALL_ICDC_aqc_05_stuck_value dataset="SUR" year="ALL" check="ICDC_aqc_05_stuck_value" dependsOn=""
 JOB SUR_ALL_CoTeDe_gradient wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_gradient dataset="SUR" year="ALL" check="CoTeDe_gradient"
+VARS SUR_ALL_CoTeDe_gradient dataset="SUR" year="ALL" check="CoTeDe_gradient" dependsOn=""
 JOB SUR_ALL_CSIRO_wire_break wod-iquod-qc-spark.submit
-VARS SUR_ALL_CSIRO_wire_break dataset="SUR" year="ALL" check="CSIRO_wire_break"
+VARS SUR_ALL_CSIRO_wire_break dataset="SUR" year="ALL" check="CSIRO_wire_break" dependsOn=""
 JOB SUR_ALL_Argo_impossible_date_test wod-iquod-qc-spark.submit
-VARS SUR_ALL_Argo_impossible_date_test dataset="SUR" year="ALL" check="Argo_impossible_date_test"
+VARS SUR_ALL_Argo_impossible_date_test dataset="SUR" year="ALL" check="Argo_impossible_date_test" dependsOn=""
 JOB SUR_ALL_AOML_constant wod-iquod-qc-spark.submit
-VARS SUR_ALL_AOML_constant dataset="SUR" year="ALL" check="AOML_constant"
+VARS SUR_ALL_AOML_constant dataset="SUR" year="ALL" check="AOML_constant" dependsOn=""
 JOB SUR_ALL_EN_background_available_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_background_available_check dataset="SUR" year="ALL" check="EN_background_available_check"
+VARS SUR_ALL_EN_background_available_check dataset="SUR" year="ALL" check="EN_background_available_check" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_01_level_order wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_01_level_order dataset="SUR" year="ALL" check="ICDC_aqc_01_level_order"
+VARS SUR_ALL_ICDC_aqc_01_level_order dataset="SUR" year="ALL" check="ICDC_aqc_01_level_order" dependsOn=""
 JOB SUR_ALL_AOML_spike wod-iquod-qc-spark.submit
-VARS SUR_ALL_AOML_spike dataset="SUR" year="ALL" check="AOML_spike"
+VARS SUR_ALL_AOML_spike dataset="SUR" year="ALL" check="AOML_spike" dependsOn=""
 JOB SUR_ALL_Argo_impossible_location_test wod-iquod-qc-spark.submit
-VARS SUR_ALL_Argo_impossible_location_test dataset="SUR" year="ALL" check="Argo_impossible_location_test"
+VARS SUR_ALL_Argo_impossible_location_test dataset="SUR" year="ALL" check="Argo_impossible_location_test" dependsOn=""
 JOB SUR_ALL_IQuOD_gross_range_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_IQuOD_gross_range_check dataset="SUR" year="ALL" check="IQuOD_gross_range_check"
+VARS SUR_ALL_IQuOD_gross_range_check dataset="SUR" year="ALL" check="IQuOD_gross_range_check" dependsOn=""
 JOB SUR_ALL_CSIRO_constant_bottom wod-iquod-qc-spark.submit
-VARS SUR_ALL_CSIRO_constant_bottom dataset="SUR" year="ALL" check="CSIRO_constant_bottom"
+VARS SUR_ALL_CSIRO_constant_bottom dataset="SUR" year="ALL" check="CSIRO_constant_bottom" dependsOn=""
 JOB SUR_ALL_IQUOD_bottom wod-iquod-qc-spark.submit
-VARS SUR_ALL_IQUOD_bottom dataset="SUR" year="ALL" check="IQUOD_bottom"
+VARS SUR_ALL_IQUOD_bottom dataset="SUR" year="ALL" check="IQUOD_bottom" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_10_climatology_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_10_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_10_climatology_check"
+VARS SUR_ALL_ICDC_aqc_10_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_10_climatology_check" dependsOn=""
 JOB SUR_ALL_CoTeDe_Constant_Cluster_Size_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_Constant_Cluster_Size_check dataset="SUR" year="ALL" check="CoTeDe_Constant_Cluster_Size_check"
+VARS SUR_ALL_CoTeDe_Constant_Cluster_Size_check dataset="SUR" year="ALL" check="CoTeDe_Constant_Cluster_Size_check" dependsOn=""
 JOB SUR_ALL_Argo_global_range_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_Argo_global_range_check dataset="SUR" year="ALL" check="Argo_global_range_check"
+VARS SUR_ALL_Argo_global_range_check dataset="SUR" year="ALL" check="Argo_global_range_check" dependsOn=""
 JOB SUR_ALL_wod_range_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_wod_range_check dataset="SUR" year="ALL" check="wod_range_check"
+VARS SUR_ALL_wod_range_check dataset="SUR" year="ALL" check="wod_range_check" dependsOn=""
 JOB SUR_ALL_wod_loose_location_at_sea_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_wod_loose_location_at_sea_check dataset="SUR" year="ALL" check="wod_loose_location_at_sea_check"
+VARS SUR_ALL_wod_loose_location_at_sea_check dataset="SUR" year="ALL" check="wod_loose_location_at_sea_check" dependsOn=""
 JOB SUR_ALL_CoTeDe_spike wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_spike dataset="SUR" year="ALL" check="CoTeDe_spike"
+VARS SUR_ALL_CoTeDe_spike dataset="SUR" year="ALL" check="CoTeDe_spike" dependsOn=""
 JOB SUR_ALL_EN_range_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_range_check dataset="SUR" year="ALL" check="EN_range_check"
+VARS SUR_ALL_EN_range_check dataset="SUR" year="ALL" check="EN_range_check" dependsOn=""
 JOB SUR_ALL_CoTeDe_GTSPP_WOA_normbias wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_GTSPP_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_GTSPP_WOA_normbias"
+VARS SUR_ALL_CoTeDe_GTSPP_WOA_normbias dataset="SUR" year="ALL" check="CoTeDe_GTSPP_WOA_normbias" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_02_crude_range wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_02_crude_range dataset="SUR" year="ALL" check="ICDC_aqc_02_crude_range"
+VARS SUR_ALL_ICDC_aqc_02_crude_range dataset="SUR" year="ALL" check="ICDC_aqc_02_crude_range" dependsOn=""
 JOB SUR_ALL_CSIRO_short_gradient wod-iquod-qc-spark.submit
-VARS SUR_ALL_CSIRO_short_gradient dataset="SUR" year="ALL" check="CSIRO_short_gradient"
+VARS SUR_ALL_CSIRO_short_gradient dataset="SUR" year="ALL" check="CSIRO_short_gradient" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_09_climatology_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_09_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_09_climatology_check"
+VARS SUR_ALL_ICDC_aqc_09_climatology_check dataset="SUR" year="ALL" check="ICDC_aqc_09_climatology_check" dependsOn=""
 JOB SUR_ALL_Argo_spike_test wod-iquod-qc-spark.submit
-VARS SUR_ALL_Argo_spike_test dataset="SUR" year="ALL" check="Argo_spike_test"
+VARS SUR_ALL_Argo_spike_test dataset="SUR" year="ALL" check="Argo_spike_test" dependsOn=""
 JOB SUR_ALL_AOML_climatology_test wod-iquod-qc-spark.submit
-VARS SUR_ALL_AOML_climatology_test dataset="SUR" year="ALL" check="AOML_climatology_test"
+VARS SUR_ALL_AOML_climatology_test dataset="SUR" year="ALL" check="AOML_climatology_test" dependsOn=""
 JOB SUR_ALL_ICDC_aqc_06_n_temperature_extrema wod-iquod-qc-spark.submit
-VARS SUR_ALL_ICDC_aqc_06_n_temperature_extrema dataset="SUR" year="ALL" check="ICDC_aqc_06_n_temperature_extrema"
+VARS SUR_ALL_ICDC_aqc_06_n_temperature_extrema dataset="SUR" year="ALL" check="ICDC_aqc_06_n_temperature_extrema" dependsOn=""
 JOB SUR_ALL_CoTeDe_rate_of_change wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_rate_of_change dataset="SUR" year="ALL" check="CoTeDe_rate_of_change"
+VARS SUR_ALL_CoTeDe_rate_of_change dataset="SUR" year="ALL" check="CoTeDe_rate_of_change" dependsOn=""
 JOB SUR_ALL_CSIRO_long_gradient wod-iquod-qc-spark.submit
-VARS SUR_ALL_CSIRO_long_gradient dataset="SUR" year="ALL" check="CSIRO_long_gradient"
+VARS SUR_ALL_CSIRO_long_gradient dataset="SUR" year="ALL" check="CSIRO_long_gradient" dependsOn=""
 JOB SUR_ALL_AOML_gradient wod-iquod-qc-spark.submit
-VARS SUR_ALL_AOML_gradient dataset="SUR" year="ALL" check="AOML_gradient"
+VARS SUR_ALL_AOML_gradient dataset="SUR" year="ALL" check="AOML_gradient" dependsOn=""
 JOB SUR_ALL_CoTeDe_Cars_Normbias_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_Cars_Normbias_check dataset="SUR" year="ALL" check="CoTeDe_Cars_Normbias_check"
+VARS SUR_ALL_CoTeDe_Cars_Normbias_check dataset="SUR" year="ALL" check="CoTeDe_Cars_Normbias_check" dependsOn=""
 JOB SUR_ALL_CoTeDe_anomaly_detection_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_CoTeDe_anomaly_detection_check dataset="SUR" year="ALL" check="CoTeDe_anomaly_detection_check"
+VARS SUR_ALL_CoTeDe_anomaly_detection_check dataset="SUR" year="ALL" check="CoTeDe_anomaly_detection_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_rate_of_change.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Cars_Normbias_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_Constant_Cluster_Size_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_WOA_normbias.parquet?recursive"
 JOB SUR_ALL_EN_increasing_depth_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_increasing_depth_check dataset="SUR" year="ALL" check="EN_increasing_depth_check"
+VARS SUR_ALL_EN_increasing_depth_check dataset="SUR" year="ALL" check="EN_increasing_depth_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive"
 JOB SUR_ALL_EN_std_lev_bkg_and_buddy_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_EN_std_lev_bkg_and_buddy_check dataset="SUR" year="ALL" check="EN_std_lev_bkg_and_buddy_check"
+VARS SUR_ALL_EN_std_lev_bkg_and_buddy_check dataset="SUR" year="ALL" check="EN_std_lev_bkg_and_buddy_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive"
 JOB SUR_ALL_HTPR_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_HTPR_check dataset="SUR" year="ALL" check="HTPR_check"
+VARS SUR_ALL_HTPR_check dataset="SUR" year="ALL" check="HTPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_06_n_temperature_extrema.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_spike_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_09_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_short_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQUOD_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_anomaly_detection_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_global_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_10_climatology_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_constant_bottom.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_spike.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_constant.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_wire_break.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_07_spike_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_suspect.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_tukey_53H_check.parquet?recursive"
 JOB SUR_ALL_COMP_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_COMP_check dataset="SUR" year="ALL" check="COMP_check"
+VARS SUR_ALL_COMP_check dataset="SUR" year="ALL" check="COMP_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_available_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/AOML_climatology_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CoTeDe_GTSPP_WOA_normbias.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_constant_value_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_08_gradient_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_surface_spikes.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB SUR_ALL_LFPR_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_LFPR_check dataset="SUR" year="ALL" check="LFPR_check"
+VARS SUR_ALL_LFPR_check dataset="SUR" year="ALL" check="LFPR_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_date_test.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/IQuOD_gross_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_background_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_increasing_depth_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/CSIRO_long_gradient.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_01_level_order.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_02_crude_range.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/ICDC_aqc_05_stuck_value.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_std_lev_bkg_and_buddy_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_range_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/wod_loose_location_at_sea_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_spike_and_step_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/EN_stability_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/Argo_impossible_location_test.parquet?recursive"
 JOB SUR_ALL_IQuOD_flags_check wod-iquod-qc-spark.submit
-VARS SUR_ALL_IQuOD_flags_check dataset="SUR" year="ALL" check="IQuOD_flags_check"
+VARS SUR_ALL_IQuOD_flags_check dataset="SUR" year="ALL" check="IQuOD_flags_check" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/LFPR_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/COMP_check.parquet?recursive,osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/HTPR_check.parquet?recursive"
 PARENT GLD_2005_CoTeDe_WOA_normbias CHILD GLD_2005_CoTeDe_anomaly_detection_check
 PARENT GLD_2005_CoTeDe_tukey_53H_check CHILD GLD_2005_HTPR_check
 PARENT GLD_2005_EN_stability_check CHILD GLD_2005_EN_std_lev_bkg_and_buddy_check GLD_2005_COMP_check GLD_2005_LFPR_check
