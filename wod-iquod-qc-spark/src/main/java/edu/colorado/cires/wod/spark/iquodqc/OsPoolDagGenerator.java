@@ -135,7 +135,7 @@ public class OsPoolDagGenerator implements Runnable {
 
 
   private String toOsdfUrl(String check, String year, String dataset) {
-    return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "/" + check + ".parquet.zip";
+    return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "/" + check + ".parquet.tar.gz";
   }
 
   private String generateDependsOn(ParentChildren pc, String year, String dataset) {
