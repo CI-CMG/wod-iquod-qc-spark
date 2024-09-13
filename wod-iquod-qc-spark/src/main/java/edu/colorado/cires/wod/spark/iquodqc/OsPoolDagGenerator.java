@@ -83,7 +83,7 @@ public class OsPoolDagGenerator implements Runnable {
 
 
   private String toOsdfUrl(String check) {
-    return osdfPrefix + "/" + dateFolder + "/data/qc/" + check + ".parquet?recursive";
+    return osdfPrefix + "/" + dateFolder + "/data/qc/" + check + ".parquet.zip";
   }
 
   private String generateDependsOn(ParentChildren pc) {
@@ -107,6 +107,7 @@ public class OsPoolDagGenerator implements Runnable {
               + "dataset=\"" + datasetYear.dataset + "\" "
               + "year=\"" + datasetYear.year + "\" "
               + "check=\"" + pc.getParent() + "\" "
+              + "date_folder=\"" + dateFolder + "\" "
               + "dependsOn=\"" + generateDependsOn(pc) + "\"\n"
           ).getBytes(StandardCharsets.UTF_8));
         }

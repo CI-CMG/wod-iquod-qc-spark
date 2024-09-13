@@ -32,7 +32,7 @@ spark-submit \
   --class edu.colorado.cires.wod.spark.iquodqc.Sparkler \
   wod-iquod-qc-spark-${project.version}.jar \
   -ib . \
-  -ip $date_folder/data/parquet/yearly \
+  -ip date_folder/data/parquet/yearly \
   -ob . \
   -op $date_folder/data/qc \
   -pb . \
