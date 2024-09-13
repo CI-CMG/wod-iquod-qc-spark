@@ -20,6 +20,7 @@ public class OsPoolDagGeneratorTest {
     osPoolDagGenerator.setOutputFile(outputFile);
     osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
     osPoolDagGenerator.setDateFolder("2024-08");
+    osPoolDagGenerator.setDagType("qc");
 
     osPoolDagGenerator.run();
     assertEquals(
@@ -39,6 +40,7 @@ public class OsPoolDagGeneratorTest {
     osPoolDagGenerator.setOutputFile(outputFile);
     osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
     osPoolDagGenerator.setDateFolder("2024-08");
+    osPoolDagGenerator.setDagType("qc");
 
     osPoolDagGenerator.run();
     assertEquals(
@@ -58,10 +60,29 @@ public class OsPoolDagGeneratorTest {
     osPoolDagGenerator.setOutputFile(outputFile);
     osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
     osPoolDagGenerator.setDateFolder("2024-08");
+    osPoolDagGenerator.setDagType("qc");
 
     osPoolDagGenerator.run();
     assertEquals(
         FileUtils.readFileToString(new File("src/test/resources/pruned-test.dag"), StandardCharsets.UTF_8),
+        FileUtils.readFileToString(outputFile.toFile(), StandardCharsets.UTF_8)
+    );
+  }
+
+  @Test
+  public void testFailuresJson() throws Exception {
+    Path outputFile = Paths.get("target/test.dag");
+    Path listFile = Paths.get("src/test/resources/dataset-year-list.txt");
+    OsPoolDagGenerator osPoolDagGenerator = new OsPoolDagGenerator();
+    osPoolDagGenerator.setListFile(listFile);
+    osPoolDagGenerator.setOutputFile(outputFile);
+    osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
+    osPoolDagGenerator.setDateFolder("2024-08");
+    osPoolDagGenerator.setDagType("failures");
+
+    osPoolDagGenerator.run();
+    assertEquals(
+        FileUtils.readFileToString(new File("src/test/resources/failures-test.dag"), StandardCharsets.UTF_8),
         FileUtils.readFileToString(outputFile.toFile(), StandardCharsets.UTF_8)
     );
   }

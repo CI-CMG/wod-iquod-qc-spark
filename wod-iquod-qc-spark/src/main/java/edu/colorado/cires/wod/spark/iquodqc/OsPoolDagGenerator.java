@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,6 +43,13 @@ public class OsPoolDagGenerator implements Runnable {
   private Path pruneFile;
   @Option(names = {"-pd", "--prune-directory"}, description = "A directory to scan for completed checks in order prune the DAG")
   private Path pruneDir;
+  @Option(names = {"-t", "--type"}, required = true, defaultValue = "qc", description = "The type of dag to generate. Either 'qc' or 'failure' - Default: ${DEFAULT-VALUE}")
+  private String dagType;
+
+  @VisibleForTesting
+  void setDagType(String dagType) {
+    this.dagType = dagType;
+  }
 
   @VisibleForTesting
   void setPruneDir(Path pruneDir) {
@@ -138,6 +146,10 @@ public class OsPoolDagGenerator implements Runnable {
     return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "/" + check + ".parquet.tar.gz";
   }
 
+  private String toOsdfUrl(String year, String dataset) {
+    return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "?recursive";
+  }
+
   private String generateDependsOn(ParentChildren pc, String year, String dataset) {
     String dependsOn = String.join(",", pc.getDependsOn().stream().map((check) -> toOsdfUrl(check, year, dataset)).collect(Collectors.toList()));
     if (dependsOn.length() > 0) {
@@ -146,44 +158,66 @@ public class OsPoolDagGenerator implements Runnable {
     return dependsOn;
   }
 
-  @Override
-  public void run() {
+  private void generateQcDag(OutputStream outputStream, Set<DatasetYear> all) throws IOException {
     Set<DagPruneEntry> prunes = getPrunes();
-    try(OutputStream outputStream = Files.newOutputStream(outputFile)) {
-      Set<DatasetYear> all = getAll();
-      Map<DatasetYear, List<ParentChildren>> parentChildrenMap = new HashMap<>();
-      for (DatasetYear datasetYear : all) {
-        List<ParentChildren> parentChildren = CheckResolver.getParentChildren(
-            Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
-            datasetYear.year,
-            datasetYear.dataset,
-            prunes
-        );
-        parentChildrenMap.put(datasetYear, parentChildren);
-        for (ParentChildren pc : parentChildren) {
+    Map<DatasetYear, List<ParentChildren>> parentChildrenMap = new HashMap<>();
+    for (DatasetYear datasetYear : all) {
+      List<ParentChildren> parentChildren = CheckResolver.getParentChildren(
+          Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
+          datasetYear.year,
+          datasetYear.dataset,
+          prunes
+      );
+      parentChildrenMap.put(datasetYear, parentChildren);
+      for (ParentChildren pc : parentChildren) {
+        String jobName = getJobName(datasetYear, pc.getParent());
+        outputStream.write(("JOB " + jobName + " wod-iquod-qc-spark.submit\n").getBytes(StandardCharsets.UTF_8));
+        outputStream.write(("VARS " + jobName + " "
+            + "dataset=\"" + datasetYear.dataset + "\" "
+            + "year=\"" + datasetYear.year + "\" "
+            + "check=\"" + pc.getParent() + "\" "
+            + "date_folder=\"" + dateFolder + "\" "
+            + "dependsOn=\"" + generateDependsOn(pc, datasetYear.year, datasetYear.dataset) + "\"\n"
+        ).getBytes(StandardCharsets.UTF_8));
+      }
+    }
+    for (DatasetYear datasetYear : all) {
+      List<ParentChildren> parentChildren = parentChildrenMap.get(datasetYear);
+      for (ParentChildren pc : parentChildren) {
+        if (!pc.getChildren().isEmpty()) {
           String jobName = getJobName(datasetYear, pc.getParent());
-          outputStream.write(("JOB " + jobName + " wod-iquod-qc-spark.submit\n").getBytes(StandardCharsets.UTF_8));
-          outputStream.write(("VARS " + jobName + " "
-              + "dataset=\"" + datasetYear.dataset + "\" "
-              + "year=\"" + datasetYear.year + "\" "
-              + "check=\"" + pc.getParent() + "\" "
-              + "date_folder=\"" + dateFolder + "\" "
-              + "dependsOn=\"" + generateDependsOn(pc, datasetYear.year, datasetYear.dataset) + "\"\n"
-          ).getBytes(StandardCharsets.UTF_8));
+          outputStream.write(("PARENT " + jobName + " CHILD").getBytes(StandardCharsets.UTF_8));
+          for (String child : pc.getChildren()) {
+            outputStream.write((" " + getJobName(datasetYear, child)).getBytes(StandardCharsets.UTF_8));
+          }
+          outputStream.write("\n".getBytes(StandardCharsets.UTF_8));
         }
       }
-      for (DatasetYear datasetYear : all) {
-        List<ParentChildren> parentChildren = parentChildrenMap.get(datasetYear);
-        for (ParentChildren pc : parentChildren) {
-          if (!pc.getChildren().isEmpty()) {
-            String jobName = getJobName(datasetYear, pc.getParent());
-            outputStream.write(("PARENT " + jobName + " CHILD").getBytes(StandardCharsets.UTF_8));
-            for (String child : pc.getChildren()) {
-              outputStream.write((" " + getJobName(datasetYear, child)).getBytes(StandardCharsets.UTF_8));
-            }
-            outputStream.write("\n".getBytes(StandardCharsets.UTF_8));
-          }
-        }
+    }
+  }
+
+  private void generateFailuresDag(OutputStream outputStream, Set<DatasetYear> all) throws IOException {
+    for (DatasetYear datasetYear : all) {
+      String jobName = datasetYear.dataset + "_" + datasetYear.year;
+      outputStream.write(("JOB " + jobName + " wod-iquod-failures-json-spark.submit\n").getBytes(StandardCharsets.UTF_8));
+      outputStream.write(("VARS " + jobName + " "
+          + "dataset=\"" + datasetYear.dataset + "\" "
+          + "year=\"" + datasetYear.year + "\" "
+          + "dependsOn=\"" + toOsdfUrl(datasetYear.year, datasetYear.dataset) + "\"\n"
+      ).getBytes(StandardCharsets.UTF_8));
+    }
+  }
+
+  @Override
+  public void run() {
+    try(OutputStream outputStream = Files.newOutputStream(outputFile)) {
+      Set<DatasetYear> all = getAll();
+      if (dagType.equals("qc")) {
+        generateQcDag(outputStream, all);
+      } else if (dagType.equals("failures")) {
+        generateFailuresDag(outputStream, all);
+      } else {
+        throw new IllegalArgumentException("Unsupported dag type: " + dagType);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);

@@ -50,6 +50,7 @@ public class SparklerExecutor implements Runnable {
   private final boolean generateReports;
   private final boolean addFlagsToCast;
   private final boolean singleTest;
+  private final boolean onlyPostProcessing;
 
   public SparklerExecutor(
       SparkSession spark,
@@ -61,7 +62,13 @@ public class SparklerExecutor implements Runnable {
       String outputPrefix,
       Set<String> checksToRun,
       Properties properties,
-      FileSystemType fs, List<Integer> years, S3Client s3, boolean generateReports, boolean addFlagsToCast, boolean singleTest) {
+      FileSystemType fs,
+      List<Integer> years,
+      S3Client s3,
+      boolean generateReports,
+      boolean addFlagsToCast,
+      boolean singleTest,
+      boolean onlyPostProcessing) {
     this.spark = spark;
     this.inputBucket = inputBucket;
     this.outputBucket = outputBucket;
@@ -77,13 +84,14 @@ public class SparklerExecutor implements Runnable {
     this.generateReports = generateReports;
     this.addFlagsToCast = addFlagsToCast;
     this.singleTest = singleTest;
+    this.onlyPostProcessing = onlyPostProcessing;
   }
 
   @Override
   public void run() {
-    List<CastCheck> checks = CheckResolver.getChecks(checksToRun, singleTest, properties, null);
+    List<CastCheck> qcChecks = onlyPostProcessing ? Collections.emptyList() : CheckResolver.getChecks(checksToRun, singleTest, properties, null);
 
-    boolean willGenerateIquodFlags = checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
+    boolean willGenerateIquodFlags = onlyPostProcessing || qcChecks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
     if (generateReports && !willGenerateIquodFlags) {
       LOGGER.warn("{} not specified in --checks/-qc. Will not generate summary/failure reports.", IQUOD_FLAG_PRODUCING_CHECK);
     }
@@ -95,7 +103,7 @@ public class SparklerExecutor implements Runnable {
     for (String dataset : datasets) {
       for (String processingLevel : processingLevels) {
         List<String> resolvedYears = YearResolver.resolveYears(years, s3, fs, inputBucket, inputPrefix, dataset, processingLevel);
-        for (CastCheck check : checks) {
+        for (CastCheck check : qcChecks) {
           for (String year : resolvedYears) {
             CheckRunner runner = new CheckRunner(dataset, processingLevel, check, properties, year);
             runner.run();
@@ -129,6 +137,8 @@ public class SparklerExecutor implements Runnable {
         }
 
         if (generateReports) {
+          List<CastCheck> checks = CheckResolver.getChecks(Collections.singleton(IQUOD_FLAG_PRODUCING_CHECK), false, properties, null);
+
           for (String year : resolvedYears) {
             Dataset<Cast> castDataset = CastIoUtils.readCastDataset(spark, getCastURI(dataset, processingLevel, year));
             Dataset<CastCheckResult> checkResultDataset = spark.read()

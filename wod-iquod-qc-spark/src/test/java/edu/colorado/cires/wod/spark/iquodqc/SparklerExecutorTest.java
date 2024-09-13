@@ -182,7 +182,7 @@ public class SparklerExecutorTest {
         new HashSet<>(CHECK_NAMES),
         properties,
         FileSystemType.s3, null, s3,
-        false, false, false);
+        false, false, false, false);
     executor.run();
 
     for (String name : CHECK_NAMES) {
@@ -276,7 +276,7 @@ public class SparklerExecutorTest {
         new HashSet<>(CHECK_NAMES),
         properties,
         FileSystemType.s3, null, s3,
-        false, false, false);
+        false, false, false, false);
     executor.run();
 
     for (String name : CHECK_NAMES) {
@@ -406,7 +406,7 @@ public class SparklerExecutorTest {
         Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
         properties,
         FileSystemType.s3, null, s3,
-        true, true, false);
+        true, true, false, false);
     executor.run();
 
     List<Summary> summaryDataset = spark.read()
@@ -432,15 +432,168 @@ public class SparklerExecutorTest {
     Cast cast = flagDataset.get(0);
     assertEquals(1, cast.getDepths().get(0).getData().get(0).getQcFlag());
 
-    s3.listObjectsV2((builder) -> builder.bucket(outputBucket)).contents().stream().forEach((ob) -> {
-      try(ResponseInputStream<GetObjectResponse> in = s3.getObject((b) -> b.key(ob.key()).bucket(outputBucket)) ) {
-        Path p = Paths.get("target/bucket/" + ob.key());
-        Files.createDirectories(p.getParent());
-        FileUtils.copyToFile(in, p.toFile());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
+//    s3.listObjectsV2((builder) -> builder.bucket(outputBucket)).contents().stream().forEach((ob) -> {
+//      try(ResponseInputStream<GetObjectResponse> in = s3.getObject((b) -> b.key(ob.key()).bucket(outputBucket)) ) {
+//        Path p = Paths.get("target/bucket/" + ob.key());
+//        Files.createDirectories(p.getParent());
+//        FileUtils.copyToFile(in, p.toFile());
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+
+  }
+
+  @Test
+  public void testPostProcessingForce() throws Exception {
+
+    final String inputKey = inputPrefix + "/APB/OBS/APBO2006.parquet";
+    final List<String> datasets = Collections.singletonList("APB");
+
+    Dataset<Cast> dataset = spark.createDataset(Collections.singletonList(Cast.builder()
+        .withProfileType(0)
+        .withDataset("TEST")
+        .withCastNumber(2)
+        .withLatitude(-30.229)
+        .withLongitude(2.658)
+        .withYear((short) 2000)
+        .withMonth((short) 1)
+        .withDay((short) 10)
+        .withTime(0D)
+        .withCruiseNumber(2)
+        .withAttributes(Arrays.asList(
+            Attribute.builder()
+                .withCode(ORIGINATORS_FLAGS)
+                .withValue(1)
+                .build()
+        ))
+        .withDepths(Arrays.asList(
+            Depth.builder().withDepth(5).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.4200).build())).build(),
+            Depth.builder().withDepth(10).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(21.1300).build())).build(),
+            Depth.builder().withDepth(15).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(20.4800).build())).build(),
+            Depth.builder().withDepth(20).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.8400).build())).build(),
+            Depth.builder().withDepth(25).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(19.2000).build())).build(),
+            Depth.builder().withDepth(30).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.9400).build())).build(),
+            Depth.builder().withDepth(35).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.7600).build())).build(),
+            Depth.builder().withDepth(40).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.5000).build())).build(),
+            Depth.builder().withDepth(45).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(18.0700).build())).build(),
+            Depth.builder().withDepth(50).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(17.5900).build())).build(),
+            Depth.builder().withDepth(55).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(17.3400).build())).build(),
+            Depth.builder().withDepth(60).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(17.0000).build())).build(),
+            Depth.builder().withDepth(65).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.8000).build())).build(),
+            Depth.builder().withDepth(70).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.6200).build())).build(),
+            Depth.builder().withDepth(74).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.5700).build())).build(),
+            Depth.builder().withDepth(79).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.4900).build())).build(),
+            Depth.builder().withDepth(84).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.4500).build())).build(),
+            Depth.builder().withDepth(89).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.4100).build())).build(),
+            Depth.builder().withDepth(94).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3900).build())).build(),
+            Depth.builder().withDepth(99).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3500).build())).build(),
+            Depth.builder().withDepth(104).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3300).build())).build(),
+            Depth.builder().withDepth(109).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3300).build())).build(),
+            Depth.builder().withDepth(114).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3300).build())).build(),
+            Depth.builder().withDepth(119).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3200).build())).build(),
+            Depth.builder().withDepth(124).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.3000).build())).build(),
+            Depth.builder().withDepth(129).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2800).build())).build(),
+            Depth.builder().withDepth(134).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2700).build())).build(),
+            Depth.builder().withDepth(139).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2400).build())).build(),
+            Depth.builder().withDepth(144).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2300).build())).build(),
+            Depth.builder().withDepth(149).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2100).build())).build(),
+            Depth.builder().withDepth(154).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.2000).build())).build(),
+            Depth.builder().withDepth(159).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.1700).build())).build(),
+            Depth.builder().withDepth(164).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.1400).build())).build(),
+            Depth.builder().withDepth(169).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.1100).build())).build(),
+            Depth.builder().withDepth(174).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.0800).build())).build(),
+            Depth.builder().withDepth(179).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.0500).build())).build(),
+            Depth.builder().withDepth(184).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(16.0200).build())).build(),
+            Depth.builder().withDepth(189).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.9900).build())).build(),
+            Depth.builder().withDepth(194).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.9700).build())).build(),
+            Depth.builder().withDepth(199).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.9400).build())).build(),
+            Depth.builder().withDepth(218).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.7500).build())).build(),
+            Depth.builder().withDepth(238).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.6000).build())).build(),
+            Depth.builder().withDepth(258).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(15.3700).build())).build(),
+            Depth.builder().withDepth(278).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.9300).build())).build(),
+            Depth.builder().withDepth(298).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.7200).build())).build(),
+            Depth.builder().withDepth(318).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.4800).build())).build(),
+            Depth.builder().withDepth(337).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(14.1600).build())).build(),
+            Depth.builder().withDepth(357).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.8000).build())).build(),
+            Depth.builder().withDepth(377).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.6600).build())).build(),
+            Depth.builder().withDepth(397).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(13.3100).build())).build(),
+            Depth.builder().withDepth(446).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(12.4700).build())).build(),
+            Depth.builder().withDepth(496).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(11.7400).build())).build(),
+            Depth.builder().withDepth(546).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.9700).build())).build(),
+            Depth.builder().withDepth(595).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(10.4300).build())).build(),
+            Depth.builder().withDepth(645).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(9.69000).build())).build(),
+            Depth.builder().withDepth(694).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(8.42000).build())).build(),
+            Depth.builder().withDepth(744).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(7.20000).build())).build(),
+            Depth.builder().withDepth(793).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(6.22000).build())).build(),
+            Depth.builder().withDepth(842).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.48000).build())).build(),
+            Depth.builder().withDepth(892).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(5.02000).build())).build(),
+            Depth.builder().withDepth(941).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.59000).build())).build(),
+            Depth.builder().withDepth(991).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.18000).build())).build(),
+            Depth.builder().withDepth(1040).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.05000).build())).build(),
+            Depth.builder().withDepth(1068).withData(Collections.singletonList(ProfileData.builder().withVariableCode(TEMPERATURE).withValue(4.01000).build())).build()
+        ))
+        .build()), Encoders.bean(Cast.class));
+
+    dataset.write()
+        .format("geoparquet")
+        .option("geoparquet.version", GEOPARQUET_VERSION)
+        .option("geoparquet.crs", WCS84_PROJJSON)
+        .save(String.format("s3a://%s/%s", inputBucket, inputKey));
+
+
+
+    Properties properties = new Properties();
+    try (InputStream in = Files.newInputStream(Paths.get("src/test/resources/spark.properties"))) {
+      properties.load(in);
+    }
+
+    SparklerExecutor executor = new SparklerExecutor(
+        spark,
+        inputBucket,
+        outputBucket,
+        inputPrefix,
+        datasets,
+        processingLevels,
+        outputPrefix,
+        Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
+        properties,
+        FileSystemType.s3, null, s3,
+        true, true, false, false);
+    executor.run();
+
+    List<Summary> summaryDataset = spark.read()
+        .schema(Summary.structType())
+        .json("s3a://wod-qc-results-bucket/2024-02/data/qc/APB/OBS/2006/summary.json")
+        .as(Encoders.bean(Summary.class))
+        .collectAsList();
+    assertEquals(1, summaryDataset.size());
+    Summary summary = summaryDataset.get(0);
+    assertEquals("TEST", summary.getDataset());
+
+    List<Failures> failureDataset = spark.read()
+        .schema(Failures.structType())
+        .json("s3a://wod-qc-results-bucket/2024-02/data/qc/APB/OBS/2006/failures.json")
+        .as(Encoders.bean(Failures.class))
+        .collectAsList();
+    assertEquals(1, failureDataset.size());
+    Failures failure = failureDataset.get(0);
+    assertEquals(2, failure.getCastNumber());
+
+    List<Cast> flagDataset = CastIoUtils.readCastDataset(spark, "s3a://wod-qc-results-bucket/2024-02/data/qc/APB/OBS/2006/APBO2006_flags.parquet").collectAsList();
+    assertEquals(1, flagDataset.size());
+    Cast cast = flagDataset.get(0);
+    assertEquals(1, cast.getDepths().get(0).getData().get(0).getQcFlag());
+
+//    s3.listObjectsV2((builder) -> builder.bucket(outputBucket)).contents().stream().forEach((ob) -> {
+//      try(ResponseInputStream<GetObjectResponse> in = s3.getObject((b) -> b.key(ob.key()).bucket(outputBucket)) ) {
+//        Path p = Paths.get("target/bucket/" + ob.key());
+//        Files.createDirectories(p.getParent());
+//        FileUtils.copyToFile(in, p.toFile());
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
 
   }
 

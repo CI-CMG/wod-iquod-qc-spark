@@ -93,14 +93,17 @@ public class Sparkler implements Serializable, Runnable {
   @Option(names = {"-gr", "--generate-reports"}, description = "Create failure reports for each cast and a summary report for each dataset - Default: ${DEFAULT-VALUE}", defaultValue = "false")
   private Boolean generateReports;
   
-  @Option(names = {"-ftc", "--flags-to-cast"}, description = "Save new set of casts containing IQUOD flags (Requires that IQUOD flags are generated via IQUOD flags check) - ${DEFAULT-VALUE}", defaultValue = "false")
+  @Option(names = {"-ftc", "--flags-to-cast"}, description = "Save new set of casts containing IQUOD flags (Requires that IQUOD flags are generated via IQUOD flags check) - Default:  ${DEFAULT-VALUE}", defaultValue = "false")
   private Boolean flagsToCast;
 
-  @Option(names = {"-s", "--force-single-check"}, description = "Run only the provided checks and do not run dependent checks - ${DEFAULT-VALUE}", defaultValue = "false")
+  @Option(names = {"-s", "--force-single-check"}, description = "Run only the provided checks and do not run dependent checks - Default: ${DEFAULT-VALUE}", defaultValue = "false")
   private Boolean singleTest;
 
   @Option(names = {"-fs", "--file-system"}, description = "Optimize S3 access for EMR")
   private FileSystemType fs = FileSystemType.local;
+
+  @Option(names = {"-pp", "--only-post-processing"}, description = "Only run post processing steps, bypassing checks for QC checks. - Default: ${DEFAULT-VALUE}", defaultValue = "false")
+  private Boolean onlyPostProcessing;
 
   @Override
   public void run() {
@@ -171,7 +174,8 @@ public class Sparkler implements Serializable, Runnable {
         fs, years, s3,
         generateReports,
         flagsToCast,
-        singleTest
+        singleTest,
+        onlyPostProcessing
     );
     executor.run();
   }
