@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -55,21 +56,42 @@ public class CheckResolver {
     }
   }
 
-  public static List<ParentChildren> getParentChildren(Set<String> checksToRun) {
-    List<CastCheck> checks = getChecks(checksToRun, false, null);
+  public static List<ParentChildren> getParentChildren(Set<String> checksToRun, String year, String dataset, Set<DagPruneEntry> prunes) {
+    Set<String> prunedChecks = getChecks(
+        checksToRun,
+        false,
+        null,
+        prunes.stream()
+            .filter((dpe) -> dpe.getDataset().equals(dataset) && dpe.getYear().equals(year))
+            .map(DagPruneEntry::getCheck)
+            .collect(Collectors.toSet()))
+        .stream()
+        .map(CastCheck::getName)
+        .collect(Collectors.toSet());
+
+    List<CastCheck> checks = getChecks(checksToRun, false, null, null)
+        .stream()
+        .filter((cc) -> prunedChecks.contains(cc.getName()))
+        .collect(Collectors.toList());
+
     Map<String, ParentChildren> parentChildren = new LinkedHashMap<>();
     for (CastCheck check : checks) {
-      Collection<String> dependsOn = check.dependsOn();
-      parentChildren.put(check.getName(), new ParentChildren(check.getName(), new HashSet<>(dependsOn)));
-      for (String d : dependsOn) {
-        ParentChildren pc = parentChildren.get(d);
-        pc.getChildren().add(check.getName());
+      DagPruneEntry prune = new DagPruneEntry(year, dataset, check.getName());
+      if (!prunes.contains(prune)) {
+        Collection<String> dependsOn = check.dependsOn();
+        parentChildren.put(check.getName(), new ParentChildren(check.getName(), new HashSet<>(dependsOn)));
+        for (String d : dependsOn) {
+          ParentChildren pc = parentChildren.get(d);
+          if (pc != null) {
+            pc.getChildren().add(check.getName());
+          }
+        }
       }
     }
     return new ArrayList<>(parentChildren.values());
   }
 
-  public static List<CastCheck> getChecks(Set<String> checksToRun, boolean singleTest, @Nullable Properties properties) {
+  public static List<CastCheck> getChecks(Set<String> checksToRun, boolean singleTest, @Nullable Properties properties, @Nullable Set<String> prunes) {
     CastCheckInitializationContext initContext = null;
     if (properties != null) {
       initContext = new CastCheckInitializationContext() {
@@ -84,6 +106,23 @@ public class CheckResolver {
       return new ArrayList<>(checks.values());
     }
     DirectedAcyclicGraph<CastCheck, DefaultEdge> dag = planChecks(checks);
+    if(prunes != null) {
+//      Set<String> victims = new HashSet<>();
+//      dag.forEach((cc) -> {
+//        if(prunes.contains(cc.getName())) {
+//          victims.add(cc.getName());
+//          victims.addAll(cc.dependsOn());
+//        }
+//      });
+      Set<CastCheck> victimCastChecks = new HashSet<>();
+      dag.forEach((cc) -> {
+        if(prunes.contains(cc.getName())) {
+          victimCastChecks.add(cc);
+          victimCastChecks.addAll(dag.getDescendants(cc));
+        }
+      });
+      victimCastChecks.forEach(dag::removeVertex);
+    }
     List<CastCheck> order = new ArrayList<>(checks.size());
     Iterator<CastCheck> it = dag.iterator();
     while (it.hasNext()) {

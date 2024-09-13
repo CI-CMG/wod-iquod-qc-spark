@@ -81,7 +81,7 @@ public class SparklerExecutor implements Runnable {
 
   @Override
   public void run() {
-    List<CastCheck> checks = CheckResolver.getChecks(checksToRun, singleTest, properties);
+    List<CastCheck> checks = CheckResolver.getChecks(checksToRun, singleTest, properties, null);
 
     boolean willGenerateIquodFlags = checks.stream().map(CastCheck::getName).anyMatch(n -> n.equals(IQUOD_FLAG_PRODUCING_CHECK));
     if (generateReports && !willGenerateIquodFlags) {

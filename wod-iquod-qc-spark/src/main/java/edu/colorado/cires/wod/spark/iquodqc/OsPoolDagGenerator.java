@@ -15,7 +15,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,6 +43,13 @@ public class OsPoolDagGenerator implements Runnable {
   private String osdfPrefix;
   @Option(names = {"-df", "--date-folder"}, required = true, description = "The date folder")
   private String dateFolder;
+  @Option(names = {"-p", "--prune-list-file"}, description = "A CSV file with year,dataset,check to prune from the DAG")
+  private Path pruneFile;
+
+  @VisibleForTesting
+  void setPruneFile(Path pruneFile) {
+    this.pruneFile = pruneFile;
+  }
 
   @VisibleForTesting
   void setListFile(Path listFile) {
@@ -77,6 +87,25 @@ public class OsPoolDagGenerator implements Runnable {
     }
   }
 
+  private Set<DagPruneEntry> getPrunes()  {
+    if (pruneFile == null) {
+      return Collections.emptySet();
+    }
+    try {
+      List<String> lines = Files.readAllLines(pruneFile, StandardCharsets.UTF_8);
+      return Collections.unmodifiableSet(lines.stream()
+          .filter(StringUtils::isNotBlank)
+          .map(StringUtils::trim)
+          .map(line -> {
+            String[] split = line.split(",");
+            return new DagPruneEntry(split[0], split[1], split[2]);
+          })
+          .collect(Collectors.toSet()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   private static String getJobName(DatasetYear datasetYear, String check) {
     return datasetYear.dataset + "_" + datasetYear.year + "_" + check;
   }
@@ -96,10 +125,18 @@ public class OsPoolDagGenerator implements Runnable {
 
   @Override
   public void run() {
-    List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()));
+    Set<DagPruneEntry> prunes = getPrunes();
     try(OutputStream outputStream = Files.newOutputStream(outputFile)) {
       Set<DatasetYear> all = getAll();
+      Map<DatasetYear, List<ParentChildren>> parentChildrenMap = new HashMap<>();
       for (DatasetYear datasetYear : all) {
+        List<ParentChildren> parentChildren = CheckResolver.getParentChildren(
+            Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()),
+            datasetYear.year,
+            datasetYear.dataset,
+            prunes
+        );
+        parentChildrenMap.put(datasetYear, parentChildren);
         for (ParentChildren pc : parentChildren) {
           String jobName = getJobName(datasetYear, pc.getParent());
           outputStream.write(("JOB " + jobName + " wod-iquod-qc-spark.submit\n").getBytes(StandardCharsets.UTF_8));
@@ -113,6 +150,7 @@ public class OsPoolDagGenerator implements Runnable {
         }
       }
       for (DatasetYear datasetYear : all) {
+        List<ParentChildren> parentChildren = parentChildrenMap.get(datasetYear);
         for (ParentChildren pc : parentChildren) {
           if (!pc.getChildren().isEmpty()) {
             String jobName = getJobName(datasetYear, pc.getParent());

@@ -42,7 +42,7 @@ public class CheckResolverTest {
 
   @Test
   public void testParentChildren() {
-    List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()));
+    List<ParentChildren> parentChildren = CheckResolver.getParentChildren(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()), null, null, Collections.emptySet());
     for (ParentChildren pc : parentChildren) {
       if (pc.getParent().equals(CheckNames.IQUOD_FLAGS_CHECK.getName())) {
         assertTrue(pc.getChildren().isEmpty());
@@ -57,7 +57,7 @@ public class CheckResolverTest {
 
     // missing cars, constant cluster size
 
-    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(Collections.emptySet(), false, properties));
+    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(Collections.emptySet(), false, properties, null));
     assertEquals(CheckNames.values().length, checks.size());
     Set<String> testsRan = new HashSet<>();
     Iterator<CastCheck> it = checks.iterator();
@@ -71,7 +71,7 @@ public class CheckResolverTest {
 
   @Test
   public void testIquodFlags() {
-    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()), false, properties));
+    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(Collections.singleton(CheckNames.IQUOD_FLAGS_CHECK.getName()), false, properties, null));
     assertTrue(checks.size() < CheckNames.values().length);
     assertTrue(checks.size() > 4);
     List<String> names = checks.stream().map(CastCheck::getName).collect(Collectors.toList());
@@ -84,7 +84,7 @@ public class CheckResolverTest {
 
   @Test
   public void testSingleTest() {
-    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(new HashSet<>(Arrays.asList(CheckNames.IQUOD_FLAGS_CHECK.getName(), CheckNames.ICDC_AQC_04_MAX_OBS_DEPTH.getName())), true, properties));
+    List<CastCheck> checks = new ArrayList<>(CheckResolver.getChecks(new HashSet<>(Arrays.asList(CheckNames.IQUOD_FLAGS_CHECK.getName(), CheckNames.ICDC_AQC_04_MAX_OBS_DEPTH.getName())), true, properties, null));
     assertEquals(2, checks.size());
     List<String> names = checks.stream().map(CastCheck::getName).collect(Collectors.toList());
     assertTrue(names.contains(CheckNames.IQUOD_FLAGS_CHECK.getName()));

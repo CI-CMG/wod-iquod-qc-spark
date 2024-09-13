@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,18 +32,20 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import org.apache.commons.io.FileUtils;
 import org.apache.sedona.spark.SedonaContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.auth.credentials.AnonymousCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 public class SparklerExecutorTest {
 
@@ -428,6 +431,16 @@ public class SparklerExecutorTest {
     assertEquals(1, flagDataset.size());
     Cast cast = flagDataset.get(0);
     assertEquals(1, cast.getDepths().get(0).getData().get(0).getQcFlag());
+
+    s3.listObjectsV2((builder) -> builder.bucket(outputBucket)).contents().stream().forEach((ob) -> {
+      try(ResponseInputStream<GetObjectResponse> in = s3.getObject((b) -> b.key(ob.key()).bucket(outputBucket)) ) {
+        Path p = Paths.get("target/bucket/" + ob.key());
+        Files.createDirectories(p.getParent());
+        FileUtils.copyToFile(in, p.toFile());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
 
   }
 
