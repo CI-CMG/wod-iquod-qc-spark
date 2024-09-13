@@ -1,3 +1,5 @@
 2005,GLD,EN_stability_check
+2023,PFL,EN_stability_check
 2023,PFL,IQuOD_flags_check
+2023,PFL,CSIRO_surface_spikes
 ALL,SUR,HTPR_check
