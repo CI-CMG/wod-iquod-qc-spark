@@ -134,12 +134,12 @@ public class OsPoolDagGenerator implements Runnable {
   }
 
 
-  private String toOsdfUrl(String check) {
-    return osdfPrefix + "/" + dateFolder + "/data/qc/" + check + ".parquet.zip";
+  private String toOsdfUrl(String check, String year, String dataset) {
+    return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "/" + check + ".parquet.zip";
   }
 
-  private String generateDependsOn(ParentChildren pc) {
-    String dependsOn = String.join(",", pc.getDependsOn().stream().map(this::toOsdfUrl).collect(Collectors.toList()));
+  private String generateDependsOn(ParentChildren pc, String year, String dataset) {
+    String dependsOn = String.join(",", pc.getDependsOn().stream().map((check) -> toOsdfUrl(check, year, dataset)).collect(Collectors.toList()));
     if (dependsOn.length() > 0) {
       dependsOn = "," + dependsOn;
     }
@@ -168,7 +168,7 @@ public class OsPoolDagGenerator implements Runnable {
               + "year=\"" + datasetYear.year + "\" "
               + "check=\"" + pc.getParent() + "\" "
               + "date_folder=\"" + dateFolder + "\" "
-              + "dependsOn=\"" + generateDependsOn(pc) + "\"\n"
+              + "dependsOn=\"" + generateDependsOn(pc, datasetYear.year, datasetYear.dataset) + "\"\n"
           ).getBytes(StandardCharsets.UTF_8));
         }
       }
