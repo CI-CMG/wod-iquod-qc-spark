@@ -117,13 +117,13 @@ public class OsPoolDagGenerator implements Runnable {
         try(Stream<Path> pathStream = Files.walk(pruneDir)) {
           Set<DagPruneEntry> prunes = pathStream
               .filter(Files::isRegularFile)
-              .filter((file) -> file.getFileName().toString().endsWith(".tar.gz"))
+              .filter((file) -> file.getFileName().toString().endsWith(".parquet.tar.gz"))
               .map((file) -> {
                 List<String> parts = new ArrayList<>();
                 for (Path part : file) {
                   parts.add(part.getFileName().toString());
                 }
-                String check = parts.get(parts.size() - 1).replaceAll("\\.tar\\.gz$", "");
+                String check = parts.get(parts.size() - 1).replaceAll("\\.parquet\\.tar\\.gz$", "");
                 String year = parts.get(parts.size() - 2);
                 String dataset = parts.get(parts.size() - 3);
                 return new DagPruneEntry(year, dataset, check);
