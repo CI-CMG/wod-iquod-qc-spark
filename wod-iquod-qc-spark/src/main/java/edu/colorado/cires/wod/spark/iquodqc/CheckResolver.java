@@ -107,13 +107,6 @@ public class CheckResolver {
     }
     DirectedAcyclicGraph<CastCheck, DefaultEdge> dag = planChecks(checks);
     if(prunes != null) {
-//      Set<String> victims = new HashSet<>();
-//      dag.forEach((cc) -> {
-//        if(prunes.contains(cc.getName())) {
-//          victims.add(cc.getName());
-//          victims.addAll(cc.dependsOn());
-//        }
-//      });
       Set<CastCheck> victimCastChecks = new HashSet<>();
       dag.forEach((cc) -> {
         if(prunes.contains(cc.getName())) {

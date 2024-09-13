@@ -29,13 +29,32 @@ public class OsPoolDagGeneratorTest {
   }
 
   @Test
-  public void testPrune() throws Exception {
+  public void testPruneFile() throws Exception {
     Path outputFile = Paths.get("target/test.dag");
     Path listFile = Paths.get("src/test/resources/dataset-year-list.txt");
     Path pruneFile = Paths.get("src/test/resources/prune-list.txt");
     OsPoolDagGenerator osPoolDagGenerator = new OsPoolDagGenerator();
     osPoolDagGenerator.setListFile(listFile);
     osPoolDagGenerator.setPruneFile(pruneFile);
+    osPoolDagGenerator.setOutputFile(outputFile);
+    osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
+    osPoolDagGenerator.setDateFolder("2024-08");
+
+    osPoolDagGenerator.run();
+    assertEquals(
+        FileUtils.readFileToString(new File("src/test/resources/pruned-test.dag"), StandardCharsets.UTF_8),
+        FileUtils.readFileToString(outputFile.toFile(), StandardCharsets.UTF_8)
+    );
+  }
+
+  @Test
+  public void testPruneDir() throws Exception {
+    Path outputFile = Paths.get("target/test.dag");
+    Path listFile = Paths.get("src/test/resources/dataset-year-list.txt");
+    Path pruneDir = Paths.get("src/test/resources/qc");
+    OsPoolDagGenerator osPoolDagGenerator = new OsPoolDagGenerator();
+    osPoolDagGenerator.setListFile(listFile);
+    osPoolDagGenerator.setPruneDir(pruneDir);
     osPoolDagGenerator.setOutputFile(outputFile);
     osPoolDagGenerator.setOsdfPrefix("osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08");
     osPoolDagGenerator.setDateFolder("2024-08");

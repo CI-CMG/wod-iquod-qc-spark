@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import picocli.CommandLine.Command;
@@ -43,8 +45,15 @@ public class OsPoolDagGenerator implements Runnable {
   private String osdfPrefix;
   @Option(names = {"-df", "--date-folder"}, required = true, description = "The date folder")
   private String dateFolder;
-  @Option(names = {"-p", "--prune-list-file"}, description = "A CSV file with year,dataset,check to prune from the DAG")
+  @Option(names = {"-pf", "--prune-list-file"}, description = "A CSV file with year,dataset,check to prune from the DAG")
   private Path pruneFile;
+  @Option(names = {"-pd", "--prune-directory"}, description = "A directory to scan for completed checks in order prune the DAG")
+  private Path pruneDir;
+
+  @VisibleForTesting
+  void setPruneDir(Path pruneDir) {
+    this.pruneDir = pruneDir;
+  }
 
   @VisibleForTesting
   void setPruneFile(Path pruneFile) {
@@ -87,20 +96,41 @@ public class OsPoolDagGenerator implements Runnable {
     }
   }
 
-  private Set<DagPruneEntry> getPrunes()  {
-    if (pruneFile == null) {
+  private Set<DagPruneEntry> getPrunes() {
+    if (pruneFile == null && pruneDir == null) {
       return Collections.emptySet();
     }
+    if (pruneFile != null && pruneDir != null) {
+      throw new IllegalArgumentException("Both prune file and prune directory were specified. Only one is supported.");
+    }
     try {
-      List<String> lines = Files.readAllLines(pruneFile, StandardCharsets.UTF_8);
-      return Collections.unmodifiableSet(lines.stream()
-          .filter(StringUtils::isNotBlank)
-          .map(StringUtils::trim)
-          .map(line -> {
-            String[] split = line.split(",");
-            return new DagPruneEntry(split[0], split[1], split[2]);
-          })
-          .collect(Collectors.toSet()));
+      if (pruneFile != null) {
+        List<String> lines = Files.readAllLines(pruneFile, StandardCharsets.UTF_8);
+        return Collections.unmodifiableSet(lines.stream()
+            .filter(StringUtils::isNotBlank)
+            .map(StringUtils::trim)
+            .map(line -> {
+              String[] split = line.split(",");
+              return new DagPruneEntry(split[0], split[1], split[2]);
+            }).collect(Collectors.toSet()));
+      } else {
+        try(Stream<Path> pathStream = Files.walk(pruneDir)) {
+          Set<DagPruneEntry> prunes = pathStream
+              .filter(Files::isRegularFile)
+              .filter((file) -> file.getFileName().toString().endsWith(".tar.gz"))
+              .map((file) -> {
+                List<String> parts = new ArrayList<>();
+                for (Path part : file) {
+                  parts.add(part.getFileName().toString());
+                }
+                String check = parts.get(parts.size() - 1).replaceAll("\\.tar\\.gz$", "");
+                String year = parts.get(parts.size() - 2);
+                String dataset = parts.get(parts.size() - 3);
+                return new DagPruneEntry(year, dataset, check);
+              }).collect(Collectors.toSet());
+          return Collections.unmodifiableSet(prunes);
+        }
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
