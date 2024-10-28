@@ -1,22 +1,46 @@
 #!/bin/bash
 
-set -ex
-
-. wod-iquod-qc.conf
+set -e
 
 year="$1"
 dataset="$2"
 check="$3"
+date_folder="$4"
+working_dir="$PWD"
 
 tar -xvf OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
 tar -xvf spark-3.4.3-bin-hadoop3-scala2.13.tgz
+rm OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
+rm spark-3.4.3-bin-hadoop3-scala2.13.tgz
+
+mkdir -p $date_folder/data/qc/$dataset/OBS/$year
+mkdir -p $date_folder/data/parquet/yearly/$dataset/OBS
+
+tar -xvf ${dataset}${year}.parquet.tar.gz -C $date_folder/data/parquet/yearly/$dataset/OBS
+rm ${dataset}${year}.parquet.tar.gz
+
+tar -xvf resources.tar.gz
+rm resources.tar.gz
+
+if [[ $dataset = 'SUR' ]]; then
+  qc_dir=$date_folder/data/qc/$dataset/OBS/SUR_ALL
+else
+  qc_dir=$date_folder/data/qc/$dataset/OBS/$year
+fi
+
+mkdir -p $qc_dir
+
+shopt -s nullglob
+for filename in ./*.tar.gz; do
+  tar -xvf "$filename" -C $qc_dir
+  rm "$filename"
+done
 
 export JAVA_HOME="$PWD/jdk-11.0.23+9-jre"
 export SPARK_HOME="$PWD/spark-3.4.3-bin-hadoop3-scala2.13"
 export PATH="$SPARK_HOME/bin:$JAVA_HOME/bin:$PATH"
 
 mkdir temp
-mkdir output
 
 spark-submit \
   --master 'local[4]' \
@@ -31,13 +55,19 @@ spark-submit \
   --driver-java-options "-Djava.io.tmpdir=$(pwd)/temp" \
   --class edu.colorado.cires.wod.spark.iquodqc.Sparkler \
   wod-iquod-qc-spark-${project.version}.jar \
-  -ib . \
-  -ip date_folder/data/parquet/yearly \
-  -ob . \
-  -op $date_folder/data/qc \
-  -pb . \
-  -pk $date_folder/resources/spark.properties \
+  -ib "$PWD/$date_folder" \
+  -ip data/parquet/yearly \
+  -ob "$PWD/$date_folder" \
+  -op data/qc \
+  -pb resources \
+  -pk spark.properties \
   -qc $check \
   -ds $dataset \
   -y $year \
   -s
+
+cd $qc_dir
+tar -czf output.tar.gz $check.parquet
+
+cd "$working_dir"
+mv $qc_dir/output.tar.gz .

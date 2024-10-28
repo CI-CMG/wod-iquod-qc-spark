@@ -22,7 +22,7 @@ public class YearResolver {
   public static final String SUR = "SUR";
   public static final String SUR_ALL = "SUR_ALL";
 
-  public static List<String> resolveYears(List<Integer> providedYears, S3Client s3, FileSystemType fs, String bucket, String keyPrefix, String dataset, String processingLevel) {
+  public static List<String> resolveYears(List<String> providedYears, S3Client s3, FileSystemType fs, String bucket, String keyPrefix, String dataset, String processingLevel) {
     if (SUR.equals(dataset)) {
       return Collections.singletonList(SUR_ALL);
     }

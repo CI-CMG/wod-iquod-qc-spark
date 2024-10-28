@@ -147,7 +147,7 @@ public class OsPoolDagGenerator implements Runnable {
   }
 
   private String toOsdfUrl(String year, String dataset) {
-    return osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "?recursive";
+    return "," + osdfPrefix + "/" + dateFolder + "/data/qc/" + dataset + "/" + year + "?recursive";
   }
 
   private String generateDependsOn(ParentChildren pc, String year, String dataset) {
@@ -203,6 +203,7 @@ public class OsPoolDagGenerator implements Runnable {
       outputStream.write(("VARS " + jobName + " "
           + "dataset=\"" + datasetYear.dataset + "\" "
           + "year=\"" + datasetYear.year + "\" "
+          + "date_folder=\"" + dateFolder + "\" "
           + "dependsOn=\"" + toOsdfUrl(datasetYear.year, datasetYear.dataset) + "\"\n"
       ).getBytes(StandardCharsets.UTF_8));
     }

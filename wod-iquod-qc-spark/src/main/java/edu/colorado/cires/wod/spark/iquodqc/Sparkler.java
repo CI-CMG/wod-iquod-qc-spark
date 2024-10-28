@@ -57,7 +57,7 @@ public class Sparkler implements Serializable, Runnable {
   private List<String> processingLevels;
 
   @Option(names = {"-y", "--year"}, required = false, split = ",", description = "A comma separated list of years")
-  private List<Integer> years = new ArrayList<>(0);
+  private List<String> years = new ArrayList<>(0);
 
   @Option(names = {"-ip", "--input-prefix"}, description = "An optional key prefix of where the dataset directory starts for the input file")
   private String inputPrefix;

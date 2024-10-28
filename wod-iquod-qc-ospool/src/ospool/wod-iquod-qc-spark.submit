@@ -1,14 +1,22 @@
 executable = wod-iquod-qc-spark.sh
-arguments = $(year) $(dataset) $(check)
+arguments = $(year) $(dataset) $(check) $(date_folder)
 
 +JobBatchName = "WOD-IQUOD-QC"
 
+username =
+access_point =
+OSDF_LOCATION = osdf:///ospool/$(access_point)/data/$(username)/$(date_folder)
+
 should_transfer_files = YES
-transfer_input_files = OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz,spark-3.4.3-bin-hadoop3-scala2.13.tgz,wod-iquod-qc-spark-${project.version}.jar,wod-iquod-qc.conf$(dependsOn)
+transfer_input_files = OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz,spark-3.4.3-bin-hadoop3-scala2.13.tgz,wod-iquod-qc-spark-${project.version}.jar,$(OSDF_LOCATION)/data/parquet/yearly/$(dataset)/OBS/$(dataset)$(year).parquet.tar.gz,$(OSDF_LOCATION)/resources.tar.gz$(dependsOn)
 when_to_transfer_output = ON_EXIT
-transfer_output_files = ""
+transfer_output_files = output.tar.gz
+transfer_output_remaps = "output.tar.gz=$(OSDF_LOCATION)/data/qc/$(dataset)/$(year)/$(check).parquet.tar.gz"
 
+periodic_release = (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 15*60)
+periodic_remove = (NumJobStarts >= 4)
 
+starter_log = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.starter.log
 log = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.log
 output = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.out
 error = wod-iquod-qc-spark/$(dataset)/$(year)/$(check)/job.err

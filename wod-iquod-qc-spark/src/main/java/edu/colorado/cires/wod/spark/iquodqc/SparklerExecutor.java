@@ -45,7 +45,7 @@ public class SparklerExecutor implements Runnable {
   private final Set<String> checksToRun;
   private final Properties properties;
   private final FileSystemType fs;
-  private final List<Integer> years;
+  private final List<String> years;
   private final S3Client s3;
   private final boolean generateReports;
   private final boolean addFlagsToCast;
@@ -63,7 +63,7 @@ public class SparklerExecutor implements Runnable {
       Set<String> checksToRun,
       Properties properties,
       FileSystemType fs,
-      List<Integer> years,
+      List<String> years,
       S3Client s3,
       boolean generateReports,
       boolean addFlagsToCast,

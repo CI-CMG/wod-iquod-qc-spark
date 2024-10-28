@@ -1,8 +1,8 @@
 JOB GLD_2005 wod-iquod-failures-json-spark.submit
-VARS GLD_2005 dataset="GLD" year="2005" dependsOn="osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/GLD/2005?recursive"
+VARS GLD_2005 dataset="GLD" year="2005" date_folder="2024-08" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/GLD/2005?recursive"
 JOB GLD_2006 wod-iquod-failures-json-spark.submit
-VARS GLD_2006 dataset="GLD" year="2006" dependsOn="osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/GLD/2006?recursive"
+VARS GLD_2006 dataset="GLD" year="2006" date_folder="2024-08" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/GLD/2006?recursive"
 JOB PFL_2023 wod-iquod-failures-json-spark.submit
-VARS PFL_2023 dataset="PFL" year="2023" dependsOn="osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/PFL/2023?recursive"
+VARS PFL_2023 dataset="PFL" year="2023" date_folder="2024-08" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/PFL/2023?recursive"
 JOB SUR_ALL wod-iquod-failures-json-spark.submit
-VARS SUR_ALL dataset="SUR" year="ALL" dependsOn="osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/SUR/ALL?recursive"
+VARS SUR_ALL dataset="SUR" year="ALL" date_folder="2024-08" dependsOn=",osdf:///ospool/apXX/data/<username>/iquod-qc/2024-08/2024-08/data/qc/SUR/ALL?recursive"

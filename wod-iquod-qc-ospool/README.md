@@ -40,16 +40,21 @@ Unzip the bundle
 ```bash
 unzip wod-iquod-qc-ospool-1.1.0.zip
 ```
+Edit the wod-iquod-qc.conf file and set the OSPOOL username, access point, and date folder.
+Note: can not contain spaces
+```bash
+vim wod-iquod-qc.conf
+```
+
+Edit the wod-iquod-qc-spark.submit and set the OSPOOL username and access_point
+```bash
+username =
+access_point =
+```
 
 Build DAG file.  This uses the file created from verifying the conversion to parquet (original-wod-ascii-to-parquet-spark-list.txt)
 ```bash
 ./wod-iquod-qc-build-dag.sh
-```
-
-
-Edit the wod-iquod-qc.conf file and set the AWS credentials and date folder used in the bucket.
-```bash
-vim wod-iquod-qc.conf
 ```
 
 Clean up any existing logs and DAG state
@@ -58,10 +63,10 @@ rm -rf wod-iquod-qc-spark
 rm wod-iquod-qc.dag.*
 ```
 
-Execute the job. Limit the number of concurrent jobs to prevent 503, slow down, errors from s3. 
-The optimal value needs to be determined.
+Execute the job. 
+The optimal value needs to be determined with a max of 10000 jobs.
 ```bash
-condor_submit_dag -MaxJobs 120 wod-iquod-qc.dag
+condor_submit_dag -maxidle 10000 wod-iquod-qc.dag
 ```
 
 
@@ -82,12 +87,18 @@ Cancel all jobs
 condor_rm <username>
 ```
 
+Cancel specific job
+```bash
+condor_rm <job id>
+```
+
 Check for failed jobs
 ```bash
 cat wod-iquod-qc.dag.dagman.out | grep failed
 ```
 
-
-
-
+Check for number of jobs completed
+```bash
+condor_history <username> | head
+```
 
