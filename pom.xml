@@ -30,7 +30,7 @@
     <connection>scm:git:git@github.com:CI-CMG/wod-iquod-qc-spark.git</connection>
     <developerConnection>scm:git:git@github.com:CI-CMG/wod-iquod-qc-spark.git</developerConnection>
     <url>https://github.com/CI-CMG/wod-iquod-qc-spark</url>
-    <tag>HEAD</tag>
+    <tag>1.1</tag>
   </scm>
 
   <distributionManagement>
