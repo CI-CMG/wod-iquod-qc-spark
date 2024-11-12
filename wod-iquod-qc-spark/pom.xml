@@ -9,6 +9,10 @@
 
   <artifactId>wod-iquod-qc-spark</artifactId>
 
+  <properties>
+    <project-root>${project.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -347,22 +351,6 @@
       <artifactId>wod-iquod-qc-failure-report</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-aws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_${scala.version}</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_${scala.version}</artifactId>
-      <version>${spark.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>

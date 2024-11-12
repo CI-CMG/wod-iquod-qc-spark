@@ -9,19 +9,15 @@
 
   <artifactId>wod-iquod-qc-common</artifactId>
 
+  <properties>
+    <project-root>${project.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-check-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sedona</groupId>
-      <artifactId>sedona-spark-3.4_2.13</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.datasyslab</groupId>
-      <artifactId>geotools-wrapper</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -55,17 +51,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_${scala.version}</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_${scala.version}</artifactId>
-      <version>${spark.version}</version>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>

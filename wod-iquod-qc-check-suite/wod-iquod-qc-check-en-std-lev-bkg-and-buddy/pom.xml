@@ -9,6 +9,10 @@
 
   <artifactId>wod-iquod-qc-check-en-std-lev-bkg-and-buddy</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>

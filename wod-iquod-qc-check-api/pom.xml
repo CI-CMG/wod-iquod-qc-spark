@@ -10,15 +10,11 @@
 
   <artifactId>wod-iquod-qc-check-api</artifactId>
 
+  <properties>
+    <project-root>${project.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_${scala.version}</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_${scala.version}</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-parquet-model</artifactId>

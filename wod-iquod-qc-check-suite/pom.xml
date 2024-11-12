@@ -10,6 +10,9 @@
   <artifactId>wod-iquod-qc-check-suite</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <project-root>${project.parent.basedir}</project-root>
+  </properties>
 
   <!--
 
@@ -91,21 +94,6 @@
       <groupId>io.github.ci-cmg.wod</groupId>
       <artifactId>wod-iquod-qc-common</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-aws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_${scala.version}</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_${scala.version}</artifactId>
-      <version>${spark.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

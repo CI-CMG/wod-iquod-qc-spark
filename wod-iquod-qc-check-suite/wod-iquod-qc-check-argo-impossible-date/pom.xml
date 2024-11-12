@@ -9,5 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-argo-impossible-date</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
 
 </project>

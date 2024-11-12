@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-cotede-woa-normbias</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

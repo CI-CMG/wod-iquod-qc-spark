@@ -9,5 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-aoml-gross</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
 
 </project>

@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-icdc-aqc-08-gradient-check</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

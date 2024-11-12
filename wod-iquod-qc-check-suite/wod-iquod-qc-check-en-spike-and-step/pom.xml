@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-en-spike-and-step</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

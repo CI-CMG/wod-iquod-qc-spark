@@ -9,11 +9,14 @@
 
   <artifactId>wod-iquod-qc-check-min-max</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>us.hebi.matlab.mat</groupId>
       <artifactId>mfl-core</artifactId>
-      <version>0.5.14</version>
     </dependency>
   </dependencies>
 

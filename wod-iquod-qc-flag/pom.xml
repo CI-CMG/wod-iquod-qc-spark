@@ -10,9 +10,7 @@
   <artifactId>wod-iquod-qc-flag</artifactId>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project-root>${project.parent.basedir}</project-root>
   </properties>
 
 </project>

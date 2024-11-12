@@ -2,10 +2,10 @@ package edu.colorado.cires.wod.iquodqc.common;
 
 import java.util.OptionalDouble;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public final class InterpolationUtils {
 

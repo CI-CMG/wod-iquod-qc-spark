@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-csiro-long-gradient</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

@@ -9,6 +9,9 @@
 
   <artifactId>wod-iquod-qc-ospool</artifactId>
 
+  <properties>
+    <project-root>${project.parent.basedir}</project-root>
+  </properties>
 
   <dependencies>
 

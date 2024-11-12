@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-icdc-aqc-01-level-order</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

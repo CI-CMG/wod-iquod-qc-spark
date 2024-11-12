@@ -13,7 +13,6 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.geotools.referencing.GeodeticCalculator;
 import org.jetbrains.annotations.Nullable;
 import org.locationtech.spatial4j.distance.DistanceUtils;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;

@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-icdc-aqc-09-climatology</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

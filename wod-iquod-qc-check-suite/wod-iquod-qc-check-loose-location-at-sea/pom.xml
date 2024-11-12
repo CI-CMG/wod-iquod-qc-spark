@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-loose-location-at-sea</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

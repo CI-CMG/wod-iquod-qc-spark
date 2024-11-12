@@ -3,10 +3,10 @@ package edu.colorado.cires.wod.iquodqc.check.en.bkgbuddy;
 import com.github.davidmoten.geo.GeoHash;
 import java.util.Set;
 import java.util.TreeSet;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoHashFinder {
 

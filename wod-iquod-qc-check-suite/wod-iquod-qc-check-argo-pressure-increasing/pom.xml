@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-argo-pressure-increasing</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

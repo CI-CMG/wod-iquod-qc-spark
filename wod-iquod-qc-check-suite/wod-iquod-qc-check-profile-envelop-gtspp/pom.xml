@@ -9,4 +9,8 @@
 
   <artifactId>wod-iquod-qc-check-profile-envelop-gtspp</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
 </project>

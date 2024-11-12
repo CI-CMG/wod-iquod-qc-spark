@@ -8,6 +8,10 @@
   </parent>
 
   <artifactId>wod-iquod-qc-check-cotede-spike-gtspp</artifactId>
+
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
   
   <dependencies>
     <dependency>

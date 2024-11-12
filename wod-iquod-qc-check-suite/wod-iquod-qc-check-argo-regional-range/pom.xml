@@ -9,6 +9,9 @@
 
   <artifactId>wod-iquod-qc-check-argo-regional-range</artifactId>
 
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
 
   <dependencies>
     <dependency>

@@ -8,7 +8,11 @@
   </parent>
 
   <artifactId>wod-iquod-qc-check-cotede-gradient-gtspp</artifactId>
-  
+
+  <properties>
+    <project-root>${project.parent.parent.basedir}</project-root>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.github.ci-cmg.wod</groupId>
