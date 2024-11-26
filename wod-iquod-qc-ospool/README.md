@@ -16,15 +16,15 @@ when the job is submitted.  Run the following if these files do not exist.
 
 ```bash
 wget https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.23%2B9/OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
-wget https://downloads.apache.org/spark/spark-3.4.3/spark-3.4.3-bin-hadoop3-scala2.13.tgz
-tar -xvf spark-3.4.3-bin-hadoop3-scala2.13.tgz
+wget https://downloads.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3-scala2.13.tgz
+tar -xvf spark-3.5.3-bin-hadoop3-scala2.13.tgz
 ```
 
 #### On your laptop
 
 Copy the zip file to your OSPool gateway (assuming you have an ospool SSH alias)
 ```bash
-scp wod-iquod-qc-ospool-1.1.0.zip ospool:~/
+scp wod-iquod-qc-ospool-1.2.0.zip ospool:~/
 ```
 
 SSH into the OSPool gateway (assuming you have an ospool SSH alias)
@@ -38,7 +38,7 @@ Test resources need to be set up in the S3 bucket.  Copy these and spark-s3.prop
 
 Unzip the bundle
 ```bash
-unzip wod-iquod-qc-ospool-1.1.0.zip
+unzip wod-iquod-qc-ospool-1.2.0.zip
 ```
 Edit the wod-iquod-qc.conf file and set the OSPOOL username, access point, and date folder.
 Note: can not contain spaces

@@ -9,7 +9,7 @@ OSDF_LOCATION = osdf:///ospool/$(access_point)/data/$(username)/$(date_folder)
 JSON_LOCATION = $(OSDF_LOCATION)/data/json/$(dataset)/OBS/$(year)
 
 should_transfer_files = YES
-transfer_input_files = OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz,spark-3.5.3-bin-hadoop3-scala2.13.tgz,wod-iquod-qc-spark-${project.version}.jar,$(OSDF_LOCATION)/resources.tar.gz$(dependsOn)
+transfer_input_files = OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz,spark-3.5.3-bin-hadoop3-scala2.13.tgz,wod-iquod-qc-spark-${project.version}.jar,$(OSDF_LOCATION)/data/parquet/yearly/$(dataset)/OBS/$(dataset)$(year).parquet.tar.gz,$(OSDF_LOCATION)/resources.tar.gz$(dependsOn)
 when_to_transfer_output = ON_EXIT
 transfer_output_files = failures.tar.gz,summary.tar.gz
 transfer_output_remaps = "failures.tar.gz=$(JSON_LOCATION)/failure.json.tar.gz;summary.tar.gz=$(JSON_LOCATION)/summary.json.tar.gz"
