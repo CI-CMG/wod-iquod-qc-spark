@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 year="$1"
 dataset="$2"
@@ -9,9 +9,9 @@ date_folder="$3"
 working_dir="$PWD"
 
 tar -xvf OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
-tar -xvf spark-3.4.3-bin-hadoop3-scala2.13.tgz
+tar -xvf spark-3.5.3-bin-hadoop3-scala2.13.tgz
 rm OpenJDK11U-jre_x64_linux_hotspot_11.0.23_9.tar.gz
-rm spark-3.4.3-bin-hadoop3-scala2.13.tgz
+rm spark-3.5.3-bin-hadoop3-scala2.13.tgz
 
 tar -xvf resources.tar.gz
 rm resources.tar.gz
@@ -40,7 +40,7 @@ done
 cd "$working_dir"
 
 export JAVA_HOME="$PWD/jdk-11.0.23+9-jre"
-export SPARK_HOME="$PWD/spark-3.4.3-bin-hadoop3-scala2.13"
+export SPARK_HOME="$PWD/spark-3.5.3-bin-hadoop3-scala2.13"
 export PATH="$SPARK_HOME/bin:$JAVA_HOME/bin:$PATH"
 
 mkdir temp
