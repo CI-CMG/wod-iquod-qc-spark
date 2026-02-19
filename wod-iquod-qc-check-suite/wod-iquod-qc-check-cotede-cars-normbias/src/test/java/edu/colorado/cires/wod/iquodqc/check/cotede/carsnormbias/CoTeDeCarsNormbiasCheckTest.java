@@ -53,7 +53,7 @@ public class CoTeDeCarsNormbiasCheckTest {
         .master("local[*]")
         .getOrCreate());
     Properties properties = new Properties();
-    properties.put(CarsParametersReader.CARS_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
+    properties.put(CarsParametersReader.CARS_NC_PROP, "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/temperature_cars2009a.nc");
     properties.put("data.dir", "../../test-data");
     context = new CastCheckContext() {
       @Override

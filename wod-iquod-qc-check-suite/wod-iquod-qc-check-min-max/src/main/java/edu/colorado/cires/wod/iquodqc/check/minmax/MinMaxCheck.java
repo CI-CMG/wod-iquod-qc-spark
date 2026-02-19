@@ -14,6 +14,7 @@ import edu.colorado.cires.wod.parquet.model.Depth;
 import edu.colorado.cires.wod.parquet.model.ProfileData;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -68,20 +69,22 @@ public class MinMaxCheck extends CommonCastCheck {
       Variable minTemp = netcdfFile.findVariable("temp_min");
       Variable maxTemp = netcdfFile.findVariable("temp_max");
 
+
       List<Depth> castDepths = cast.getDepths();
-      return IntStream.range(0, castDepths.size()).boxed()
-          .filter(i -> {
-            Depth depth = castDepths.get(i);
-            double t = getTemperature(depth).map(ProfileData::getValue)
-                .orElse(Double.NaN);
-            double p = getPressure(depth).map(ProfileData::getValue)
-                .orElse(Double.NaN);
-            return !MinMax.checkMinMax(
-                t,
-                MinMax.getMinMax(p, depths, gridIndex, minTemp, maxTemp)
-            );
-          })
-          .collect(Collectors.toList());
+      List<Integer> failedDepths = new ArrayList<>(castDepths.size());
+      for(int i = 0; i < castDepths.size(); i++) {
+        final Integer boxed = i;
+        Depth depth = castDepths.get(i);
+        getTemperature(depth).map(ProfileData::getValue).ifPresent(t -> {
+          getPressure(depth).map(ProfileData::getValue).ifPresent( p -> {
+            if(!MinMax.checkMinMax(t, MinMax.getMinMax(p, depths, gridIndex, minTemp, maxTemp))) {
+              failedDepths.add(boxed);
+            }
+          });
+        });
+
+      }
+      return failedDepths;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
