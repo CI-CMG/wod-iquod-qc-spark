@@ -35,6 +35,7 @@ class IcdcAqc04MaxObsDepthCheckTest {
 
   private static final Path TEMP_DIR = Paths.get("target/testspace").toAbsolutePath().normalize();
   private static final String TEST_PARQUET = TEMP_DIR.resolve("test.parquet").toString();
+  private static final Path dataPath = Paths.get("src/test/resources/test-files/data.txt");
 
   private final IcdcAqc04MaxObsDepthCheck check = (IcdcAqc04MaxObsDepthCheck) ServiceLoader.load(CastCheck.class).iterator().next();
 
@@ -82,16 +83,12 @@ class IcdcAqc04MaxObsDepthCheckTest {
     FileUtils.deleteQuietly(TEMP_DIR.toFile());
   }
 
-  private final Path dataPath = Paths.get("src/test/resources/test-files/data.txt");
-
-  private List<ICDCdata> getTestData() throws Exception {
+  private static List<ICDCdata> getTestData() {
     List<ICDCdata> icdCdata = new ArrayList<>();
-    BufferedReader reader;
-    try {
-      reader = Files.newBufferedReader(dataPath);
+    try (BufferedReader reader = Files.newBufferedReader(dataPath)){
       String line = reader.readLine();
       while (line != null) {
-        if (line.substring(0, 2).equals("HH")) {
+        if (line.startsWith("HH")) {
           ICDCdata d = new ICDCdata(line);
           for (int i = 0; i < d.getRows(); i++) {
             line = reader.readLine();
@@ -108,7 +105,7 @@ class IcdcAqc04MaxObsDepthCheckTest {
     return icdCdata;
   }
 
-  private Cast buildCast(ICDCdata data) {
+  private static Cast buildCast(ICDCdata data) {
     return Cast.builder()
         .withCruiseNumber(111)
         .withProfileType(0)
