@@ -77,7 +77,7 @@ public class MinMaxCheck extends CommonCastCheck {
         Depth depth = castDepths.get(i);
         getTemperature(depth).map(ProfileData::getValue).ifPresent(t -> {
           getPressure(depth).map(ProfileData::getValue).ifPresent( p -> {
-            if(!MinMax.checkMinMax(t, MinMax.getMinMax(p, depths, gridIndex, minTemp, maxTemp))) {
+            if (!Double.isNaN(t) && !Double.isNaN(p) && !MinMax.checkMinMax(t, MinMax.getMinMax(p, depths, gridIndex, minTemp, maxTemp))) {
               failedDepths.add(boxed);
             }
           });
