@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ICDCdata {
+
   private int castnumber;
   private double latitude;
   private double longitude;
@@ -23,7 +24,7 @@ public class ICDCdata {
   private List<Depth> depths = new ArrayList<>();
   private List<Integer> failures = new ArrayList<>();
 
-  private Map<String, Integer> probeTypes = ImmutableMap.<String, Integer>builder()
+  private static final Map<String, Integer> probeTypes = ImmutableMap.<String, Integer>builder()
       .put("OSD", Integer.valueOf(7))
       .put("CTD", Integer.valueOf(4))
       .put("PFL", Integer.valueOf(9))
@@ -32,19 +33,17 @@ public class ICDCdata {
       .put("XBT", Integer.valueOf(2))
       .build();
 
-  public  ICDCdata(String header) {
+  public ICDCdata(String header) {
     String[] fields = header.trim().split("\\s+");
-    String probeType = fields[7].substring(fields[7].length() - 3);
-    this.probeType = probeTypes.get(probeType);
-    this.country = "JP";
-    this.castnumber = Integer.parseInt(fields[1]);
-    this.latitude = Double.parseDouble(fields[2]);
-    this.longitude = Double.parseDouble(fields[3]);
-    this.year = Short.parseShort(fields[4]);
-    this.month = Short.parseShort(fields[5]);
-    this.day = Short.parseShort(fields[6]);
-    this.rows = Integer.parseInt(fields[7].substring(0, fields[7].length() - 3));
-
+    probeType = probeTypes.get(fields[7].substring(fields[7].length() - 3));
+    country = fields[8].trim().equals("0") ? null : fields[8].trim();
+    castnumber = Integer.parseInt(fields[1]);
+    latitude = Double.parseDouble(fields[2]);
+    longitude = Double.parseDouble(fields[3]);
+    year = Short.parseShort(fields[4]);
+    month = Short.parseShort(fields[5]);
+    day = Short.parseShort(fields[6]);
+    rows = Integer.parseInt(fields[7].substring(0, fields[7].length() - 3));
   }
 
   public int getCastnumber() {
@@ -89,7 +88,7 @@ public class ICDCdata {
 
   public void addDepth(int i, String line) {
     String[] data = line.trim().split("\\s+");
-    if (Integer.parseInt(data[1])> 0) {
+    if (Integer.parseInt(data[1]) > 0) {
       failures.add(i);
     }
     depths.add(Depth.builder().withDepth(Double.parseDouble(data[0]))
