@@ -36,8 +36,8 @@ public class MinMaxCheckTest {
   private static final Properties properties = new Properties();
   private static final MinMaxCheck check = new MinMaxCheck();
   static {
-    properties.put(WOD_TEMP_MIN_MAX_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/TEMP_MIN_MAX.nc");
-    properties.put(WOD_INFO_DGG4H6_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/info_DGG4H6.mat");
+    properties.put(WOD_TEMP_MIN_MAX_PROP, "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/TEMP_MIN_MAX.nc");
+    properties.put(WOD_INFO_DGG4H6_PROP, "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/info_DGG4H6.mat");
     properties.put("data.dir", "../../test-data");
 
     CastCheckInitializationContext context = mock(CastCheckInitializationContext.class);

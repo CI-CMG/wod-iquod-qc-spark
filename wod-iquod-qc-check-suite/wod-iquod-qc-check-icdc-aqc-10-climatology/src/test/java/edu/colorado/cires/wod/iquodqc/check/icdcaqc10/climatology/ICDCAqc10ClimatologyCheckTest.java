@@ -28,7 +28,7 @@ public class ICDCAqc10ClimatologyCheckTest {
   
   @BeforeAll static void beforeAll() {
     Properties properties = new Properties();
-    properties.put(GlobalMedianQuartilesMedcoupleSmoothedParametersReader.GLOBAL_MEAN_MEDIAN_QUARTILES_MEDCOUPLE_SMOOTHED_NC_PROP, "https://auto-qc-data.s3.us-west-2.amazonaws.com/global_mean_median_quartiles_medcouple_smoothed.nc");
+    properties.put(GlobalMedianQuartilesMedcoupleSmoothedParametersReader.GLOBAL_MEAN_MEDIAN_QUARTILES_MEDCOUPLE_SMOOTHED_NC_PROP, "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/global_mean_median_quartiles_medcouple_smoothed.nc");
     properties.put("data.dir", "../../test-data");
     
     CastCheckInitializationContext context = mock(CastCheckInitializationContext.class);

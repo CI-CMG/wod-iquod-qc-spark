@@ -24,9 +24,9 @@ public class WodRangeCheckTest {
   @BeforeAll static void beforeAll() {
     Properties properties = new Properties();
     properties.put(JsonParametersReader.WOD_RANGE_AREA_PROP,
-        "https://auto-qc-data.s3.us-west-2.amazonaws.com/range_area.json");
+        "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/range_area.json");
     properties.put(JsonParametersReader.WOD_RANGES_TEMPERATURE_PROP,
-        "https://auto-qc-data.s3.us-west-2.amazonaws.com/WOD_ranges_Temperature.json");
+        "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/WOD_ranges_Temperature.json");
     properties.put("data.dir", "../../test-data");
 
     CastCheckInitializationContext context = mock(CastCheckInitializationContext.class);

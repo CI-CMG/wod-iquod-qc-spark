@@ -29,14 +29,14 @@ public class CheckResolverTest {
     properties.put("woa_s2.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t14_5d.nc");
     properties.put("woa_s3.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t15_5d.nc");
     properties.put("woa_s4.netcdf.uri", "https://data.nodc.noaa.gov/woa/WOA18/DATA/temperature/netcdf/decav/5deg/woa18_decav_t16_5d.nc");
-    properties.put("cars.netcdf.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/temperature_cars2009a.nc");
+    properties.put("cars.netcdf.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/temperature_cars2009a.nc");
     properties.put("etopo5.netcdf.uri", "https://pae-paha.pacioos.hawaii.edu/thredds/ncss/etopo5?var=ROSE&disableLLSubset=on&disableProjSubset=on&horizStride=1&addLatLon=true");
     properties.put("climatological_t_median_and_amd_for_aqc.netcdf.uri", "https://s3-us-west-2.amazonaws.com/autoqc/climatological_t_median_and_amd_for_aqc.nc");
-    properties.put("global_mean_median_quartiles_medcouple_smoothed.netcdf.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/global_mean_median_quartiles_medcouple_smoothed.nc");
-    properties.put("wod_temp_min_max.netcdf.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/TEMP_MIN_MAX.nc");
-    properties.put("wod_info_dgg4h6.mat.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/info_DGG4H6.mat");
-    properties.put("wod_range_area.json.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/range_area.json");
-    properties.put("wod_ranges_temperature.json.uri", "https://auto-qc-data.s3.us-west-2.amazonaws.com/WOD_ranges_Temperature.json");
+    properties.put("global_mean_median_quartiles_medcouple_smoothed.netcdf.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/global_mean_median_quartiles_medcouple_smoothed.nc");
+    properties.put("wod_temp_min_max.netcdf.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/TEMP_MIN_MAX.nc");
+    properties.put("wod_info_dgg4h6.mat.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/info_DGG4H6.mat");
+    properties.put("wod_range_area.json.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/range_area.json");
+    properties.put("wod_ranges_temperature.json.uri", "https://github.com/CI-CMG/wod-iquod-qc-spark/releases/download/test-data-2026-02-19/WOD_ranges_Temperature.json");
     properties.put("data.dir", "../test-data");
   }
 
